@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Australien Roadtrip 2026 | Wien bis Melbourne</title>
+  <title>Australien Roadtrip 2027 | Wien bis Melbourne</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -243,7 +243,7 @@
       margin-top: 0.5rem;
     }
 
-    /* === INTERAKTIVE TABS SCHNITTSTELLE === */
+    /* INTERAKTIVE TABS SYSTEM */
     .tab-navigation {
       display: flex;
       justify-content: center;
@@ -301,7 +301,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .sight-grid {
+    .sight-grid, .hotel-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
@@ -322,20 +322,20 @@
     .sight-card.coast { border-top-color: #0288d1; }
     .sight-card.city { border-top-color: #7b1fa2; }
 
-    .sight-header {
+    .sight-header, .hotel-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       margin-bottom: 0.8rem;
     }
 
-    .sight-title {
+    .sight-title, .hotel-title {
       font-size: 1.15rem;
       font-weight: 700;
       color: var(--text-main);
     }
 
-    .sight-badge {
+    .sight-badge, .hotel-badge {
       font-size: 0.75rem;
       padding: 0.2rem 0.6rem;
       border-radius: 12px;
@@ -344,29 +344,59 @@
       font-weight: 600;
     }
 
-    .sight-desc {
+    .sight-desc, .hotel-desc {
       font-size: 0.9rem;
       color: var(--text-muted);
       margin-bottom: 1.2rem;
     }
 
-    .maps-btn {
+    /* HOTELS STYLES */
+    .hotel-card {
+      background: white;
+      border-radius: 14px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      border-top: 4px solid var(--secondary);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hotel-btn-group {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .btn-action {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background: #e6fffa;
-      color: var(--primary-dark);
       text-decoration: none;
       font-weight: 700;
       font-size: 0.85rem;
       padding: 0.5rem 1rem;
       border-radius: 8px;
       transition: all 0.2s ease;
-      align-self: flex-start;
     }
 
-    .maps-btn:hover {
+    .btn-maps {
+      background: #e6fffa;
+      color: var(--primary-dark);
+    }
+    .btn-maps:hover {
       background: var(--primary);
+      color: white;
+    }
+
+    .btn-booking {
+      background: #fffaf0;
+      color: var(--secondary);
+      border: 1px solid var(--secondary);
+    }
+    .btn-booking:hover {
+      background: var(--secondary);
       color: white;
     }
 
@@ -457,17 +487,18 @@
 <body>
 
   <nav>
-    <div class="logo"><i class="fa-solid fa-plane-departure"></i> AUS 2026</div>
+    <div class="logo"><i class="fa-solid fa-plane-departure"></i> AUS 2027</div>
     <ul class="nav-links">
       <li><a href="#route">Reiseplan</a></li>
-      <li><a href="#highlights">Highlights (Tabs)</a></li>
+      <li><a href="#hotels">Hotels</a></li>
+      <li><a href="#highlights">Sightseeing</a></li>
       <li><a href="#hub">Vorbereitung</a></li>
       <li><a href="#blog">Tagebuch</a></li>
     </ul>
   </nav>
 
   <section class="hero">
-    <h1>AUSTRALIEN ROADTRIP 2026</h1>
+    <h1>AUSTRALIEN ROADTRIP 2027</h1>
     <p>Von Wien über Sydney, Byron Bay, K’gari & Whitsundays nach Melbourne</p>
     
     <div class="countdown-container">
@@ -627,18 +658,147 @@
       </div>
     </section>
 
+    <section id="hotels" style="margin-top: 5rem;">
+      <h2 class="section-title">Hotels & Unterkünfte</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Trage hier deine gebuchten Hotels mit Buchungslinks und Google Maps Navigation ein!</p>
+
+      <div class="tab-navigation">
+        <button class="tab-btn active" onclick="switchHotelTab(event, 'hotel-sydney')">Sydney</button>
+        <button class="tab-btn" onclick="switchHotelTab(event, 'hotel-byron')">Byron Bay</button>
+        <button class="tab-btn" onclick="switchHotelTab(event, 'hotel-brisbane')">Brisbane</button>
+        <button class="tab-btn" onclick="switchHotelTab(event, 'hotel-noosa')">Noosa & Rainbow</button>
+        <button class="tab-btn" onclick="switchHotelTab(event, 'hotel-airlie')">Airlie Beach</button>
+        <button class="tab-btn" onclick="switchHotelTab(event, 'hotel-melbourne')">Melbourne</button>
+      </div>
+
+      <div id="hotel-sydney" class="tab-pane active">
+        <div class="hotel-grid">
+          <div class="hotel-card">
+            <div>
+              <div class="hotel-header">
+                <span class="hotel-title">Hotel Sydney (z. B. Shangri-La / Vibe Hotel)</span>
+                <span class="hotel-badge">22.03. – 25.03.</span>
+              </div>
+              <p class="hotel-desc"><i class="fa-solid fa-location-dot"></i> Sydney CBD / Harbour View</p>
+              <p class="hotel-desc"><strong>Notizen:</strong> Check-in ab 15:00 Uhr | Buchungsnummer: #123456</p>
+            </div>
+            <div class="hotel-btn-group">
+              <a href="https://www.booking.com" target="_blank" class="btn-action btn-booking"><i class="fa-solid fa-hotel"></i> Hotel / Buchung</a>
+              <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="hotel-byron" class="tab-pane">
+        <div class="hotel-grid">
+          <div class="hotel-card">
+            <div>
+              <div class="hotel-header">
+                <span class="hotel-title">Hotel Byron Bay (z. B. Elements of Byron)</span>
+                <span class="hotel-badge">25.03. – 27.03.</span>
+              </div>
+              <p class="hotel-desc"><i class="fa-solid fa-location-dot"></i> Byron Bay Beachfront</p>
+              <p class="hotel-desc"><strong>Notizen:</strong> Inklusive Parkplatz für Mietwagen</p>
+            </div>
+            <div class="hotel-btn-group">
+              <a href="https://www.booking.com" target="_blank" class="btn-action btn-booking"><i class="fa-solid fa-hotel"></i> Hotel / Buchung</a>
+              <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="hotel-brisbane" class="tab-pane">
+        <div class="hotel-grid">
+          <div class="hotel-card">
+            <div>
+              <div class="hotel-header">
+                <span class="hotel-title">Hotel Brisbane (z. B. The Calile / W Brisbane)</span>
+                <span class="hotel-badge">27.03. – 29.03.</span>
+              </div>
+              <p class="hotel-desc"><i class="fa-solid fa-location-dot"></i> Fortitude Valley / South Bank</p>
+              <p class="hotel-desc"><strong>Notizen:</strong> Nahe Howard Smith Wharves</p>
+            </div>
+            <div class="hotel-btn-group">
+              <a href="https://www.booking.com" target="_blank" class="btn-action btn-booking"><i class="fa-solid fa-hotel"></i> Hotel / Buchung</a>
+              <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="hotel-noosa" class="tab-pane">
+        <div class="hotel-grid">
+          <div class="hotel-card">
+            <div>
+              <div class="hotel-header">
+                <span class="hotel-title">Unterkunft Rainbow Beach</span>
+                <span class="hotel-badge">29.03. – 31.03.</span>
+              </div>
+              <p class="hotel-desc"><i class="fa-solid fa-location-dot"></i> Rainbow Beach Centre</p>
+              <p class="hotel-desc"><strong>Notizen:</strong> Ausgangspunkt für K’gari Tour & Carlo Sand Blow</p>
+            </div>
+            <div class="hotel-btn-group">
+              <a href="https://www.booking.com" target="_blank" class="btn-action btn-booking"><i class="fa-solid fa-hotel"></i> Hotel / Buchung</a>
+              <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="hotel-airlie" class="tab-pane">
+        <div class="hotel-grid">
+          <div class="hotel-card">
+            <div>
+              <div class="hotel-header">
+                <span class="hotel-title">Hotel Airlie Beach (z. B. Coral Sea Resort)</span>
+                <span class="hotel-badge">01.04. – 05.04.</span>
+              </div>
+              <p class="hotel-desc"><i class="fa-solid fa-location-dot"></i> Airlie Beach Oceanfront</p>
+              <p class="hotel-desc"><strong>Notizen:</strong> Früher Check-in nach Nachtbus erfragen</p>
+            </div>
+            <div class="hotel-btn-group">
+              <a href="https://www.booking.com" target="_blank" class="btn-action btn-booking"><i class="fa-solid fa-hotel"></i> Hotel / Buchung</a>
+              <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="hotel-melbourne" class="tab-pane">
+        <div class="hotel-grid">
+          <div class="hotel-card">
+            <div>
+              <div class="hotel-header">
+                <span class="hotel-title">Hotel Melbourne (z. B. Quincy Hotel / QT)</span>
+                <span class="hotel-badge">05.04. – 09.04.</span>
+              </div>
+              <p class="hotel-desc"><i class="fa-solid fa-location-dot"></i> Melbourne CBD / Yarra River</p>
+              <p class="hotel-desc"><strong>Notizen:</strong> Inkl. Late Check-out vor Heimflug am 09.04.</p>
+            </div>
+            <div class="hotel-btn-group">
+              <a href="https://www.booking.com" target="_blank" class="btn-action btn-booking"><i class="fa-solid fa-hotel"></i> Hotel / Buchung</a>
+              <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
     <section id="highlights" style="margin-top: 5rem;">
       <h2 class="section-title">Sightseeing & Google Maps Highlights</h2>
       <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Alle Stopps deiner Reise als interaktive Orte mit direktem Google Maps Link!</p>
 
       <div class="tab-navigation">
-        <button class="tab-btn active" onclick="switchTab(event, 'tab-sydney')">Sydney</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-byron')">Byron & Gold Coast</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-brisbane')">Brisbane</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-sunshine')">Sunshine Coast & Noosa</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-kgari')">K’gari & Rainbow</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-whitsundays')">Whitsundays & Kängurus</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-melbourne')">Melbourne & Umland</button>
+        <button class="tab-btn active" onclick="switchSightTab(event, 'tab-sydney')">Sydney</button>
+        <button class="tab-btn" onclick="switchSightTab(event, 'tab-byron')">Byron & Gold Coast</button>
+        <button class="tab-btn" onclick="switchSightTab(event, 'tab-brisbane')">Brisbane</button>
+        <button class="tab-btn" onclick="switchSightTab(event, 'tab-sunshine')">Sunshine Coast & Noosa</button>
+        <button class="tab-btn" onclick="switchSightTab(event, 'tab-kgari')">K’gari & Rainbow</button>
+        <button class="tab-btn" onclick="switchSightTab(event, 'tab-whitsundays')">Whitsundays & Kängurus</button>
+        <button class="tab-btn" onclick="switchSightTab(event, 'tab-melbourne')">Melbourne & Umland</button>
       </div>
 
       <div id="tab-sydney" class="tab-pane active">
@@ -649,7 +809,7 @@
               <span class="sight-badge">Iconic</span>
             </div>
             <p class="sight-desc">Das Wahrzeichen Australiens am Circular Quay. Perfekt für Spaziergänge und Hafenrundfahrten.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Sydney+Opera+House" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
           </div>
 
           <div class="sight-card coast">
@@ -658,7 +818,7 @@
               <span class="sight-badge">Aussicht</span>
             </div>
             <p class="sight-desc">Der berühmteste Postkartenblick auf das Opernhaus und die Harbour Bridge zusammen im Royal Botanic Garden.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Mrs+Macquaries+Chair+Sydney" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
           </div>
 
           <div class="sight-card city">
@@ -667,7 +827,7 @@
               <span class="sight-badge">Kultur</span>
             </div>
             <p class="sight-desc">Historisches Kopfsteinpflaster-Viertel und der Fußgängerweg über die mächtige Harbour Bridge.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=The+Rocks+Sydney" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
           </div>
 
           <div class="sight-card coast">
@@ -676,16 +836,7 @@
               <span class="sight-badge">Wandern</span>
             </div>
             <p class="sight-desc">Spektakulärer Klippenwanderweg vorbei an Bondi Beach, Tamarama, Bronte und Meerespools.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Bondi+to+Coogee+Walk" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
-          </div>
-
-          <div class="sight-card city">
-            <div class="sight-header">
-              <span class="sight-title">Barangaroo & Darling Harbour</span>
-              <span class="sight-badge">Food & Drinks</span>
-            </div>
-            <p class="sight-desc">Moderne Promenade am Wasser für den Abend bei Cocktails und Skyline-Blick.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Barangaroo+Sydney" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
           </div>
         </div>
       </div>
@@ -698,7 +849,7 @@
               <span class="sight-badge">Ostpunkt</span>
             </div>
             <p class="sight-desc">Der östlichste Punkt des australischen Festlands. Phänomenal für Sonnenuntergänge und Delfinbeobachtungen.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Cape+Byron+Lighthouse" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
           </div>
 
           <div class="sight-card hinterland">
@@ -707,7 +858,7 @@
               <span class="sight-badge">Künstlerdorf</span>
             </div>
             <p class="sight-desc">Historischer Ort im grünen Byron-Hinterland voller Antiquitätenläden, Cafés und entspanntem Vibe.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Bangalow+NSW" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
           </div>
 
           <div class="sight-card hinterland">
@@ -716,25 +867,7 @@
               <span class="sight-badge">Natur</span>
             </div>
             <p class="sight-desc">Beeindruckender 100-Meter-Wasserfall im dicht bewachsenen Nightcap-Nationalpark.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Minyon+Falls+Lookout" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
-          </div>
-
-          <div class="sight-card hinterland">
-            <div class="sight-header">
-              <span class="sight-title">The Farm Byron Bay</span>
-              <span class="sight-badge">Foodie</span>
-            </div>
-            <p class="sight-desc">Idyllischer Bio-Bauernhof mit fantastischem Restaurant (Three Blue Ducks) und Tieren.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=The+Farm+Byron+Bay" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
-          </div>
-
-          <div class="sight-card city">
-            <div class="sight-header">
-              <span class="sight-title">SkyPoint Q1 Tower (Gold Coast)</span>
-              <span class="sight-badge">Panorama</span>
-            </div>
-            <p class="sight-desc">Aussichtsplattform im 77. Stock mit 360-Grad-Blick über Wolkenkratzer und Ozean.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=SkyPoint+Observation+Deck" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
           </div>
         </div>
       </div>
@@ -747,7 +880,7 @@
               <span class="sight-badge">Hotspot</span>
             </div>
             <p class="sight-desc">Historische Uferhallen unter der Story Bridge mit Brauereien, Bars und Blick auf den Fluss.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Howard+Smith+Wharves" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
           </div>
 
           <div class="sight-card city">
@@ -756,25 +889,7 @@
               <span class="sight-badge">Kultur</span>
             </div>
             <p class="sight-desc">Uferpromenade mit tropischen Gärten und der erstklassigen Galerie für Moderne Kunst (QAGOMA).</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=South+Bank+Parklands+Brisbane" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
-          </div>
-
-          <div class="sight-card city">
-            <div class="sight-header">
-              <span class="sight-title">Mt. Coot-tha Lookout</span>
-              <span class="sight-badge">Aussicht</span>
-            </div>
-            <p class="sight-desc">Panorama-Aussichtspunkt auf dem Berg für den spektakulärsten Weitblick über ganz Brisbane.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Mt+Coot-tha+Lookout" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
-          </div>
-
-          <div class="sight-card city">
-            <div class="sight-header">
-              <span class="sight-title">James Street (Fortitude Valley)</span>
-              <span class="sight-badge">Shopping</span>
-            </div>
-            <p class="sight-desc">Stylische, grün bewachsene Flaniermeile mit Boutiquen, Spitzen-Cafés und legerem Luxus.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=James+Street+Fortitude+Valley" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
           </div>
         </div>
       </div>
@@ -787,16 +902,7 @@
               <span class="sight-badge">Vulkane</span>
             </div>
             <p class="sight-desc">13 markante Vulkankegel. Der kurze Mt. Ngungun Summit Walk bietet sagenhafte Rundumblicke.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Mount+Ngungun+Summit+Walking+Track" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
-          </div>
-
-          <div class="sight-card hinterland">
-            <div class="sight-header">
-              <span class="sight-title">Montville (Bergdorf)</span>
-              <span class="sight-badge">Panoramaroute</span>
-            </div>
-            <p class="sight-desc">Malerisches Hinterland-Dorf auf einem Bergkamm voller Handwerkskunst, Galerien und kühler Bergluft.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Montville+Queensland" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
           </div>
 
           <div class="sight-card coast">
@@ -805,16 +911,7 @@
               <span class="sight-badge">Wandern & Tiere</span>
             </div>
             <p class="sight-desc">Traumhafter Küstenweg. Halte bei Tea Tree Bay Ausschau nach wilden Koalas in den Eukalyptusbäumen!</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Noosa+National+Park+Coastal+Walk" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
-          </div>
-
-          <div class="sight-card coast">
-            <div class="sight-header">
-              <span class="sight-title">Hastings Street & Laguna Lookout</span>
-              <span class="sight-badge">Lifestyle</span>
-            </div>
-            <p class="sight-desc">Noosas Edel-Flaniermeile zum Bummeln plus der nahe Aussichtspunkt Laguna Lookout über die Bucht.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Hastings+Street+Noosa+Heads" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
           </div>
         </div>
       </div>
@@ -826,8 +923,8 @@
               <span class="sight-title">Carlo Sand Blow (Rainbow Beach)</span>
               <span class="sight-badge">Sanddüne</span>
             </div>
-            <p class="sight-desc">Incredible, mondähnliche Riesensanddüne – der magischste Ort für Sonnenuntergänge vor der K'gari-Tour.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Carlo+Sand+Blow" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            <p class="sight-desc">Riesige Sanddüne mitten im Grünen – der magischste Ort für Sonnenuntergänge vor der K'gari-Tour.</p>
+            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
           </div>
 
           <div class="sight-card coast">
@@ -836,16 +933,7 @@
               <span class="sight-badge">4WD Highlight</span>
             </div>
             <p class="sight-desc">Die Sand-Autobahn auf K’gari mit dem berühmten rostartigen Schiffswrack direkt an den Wellen.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=SS+Maheno+Shipwreck" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
-          </div>
-
-          <div class="sight-card coast">
-            <div class="sight-header">
-              <span class="sight-title">Lake McKenzie (K'gari)</span>
-              <span class="sight-badge">Glasklar</span>
-            </div>
-            <p class="sight-desc">Süßwassersee mit schneeweißem Silikasand und türkisblauem Wasser mitten in der Natur.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Lake+McKenzie+Fraser+Island" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
           </div>
         </div>
       </div>
@@ -858,7 +946,7 @@
               <span class="sight-badge">Kängurus am Strand</span>
             </div>
             <p class="sight-desc">Der weltberühmte Strand, wo Kängurus & Wallabys bei Sonnenaufgang am Wasser nach Futter suchen.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Cape+Hillsborough+National+Park" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
           </div>
 
           <div class="sight-card coast">
@@ -866,17 +954,8 @@
               <span class="sight-title">Whitehaven Beach & Hill Inlet</span>
               <span class="sight-badge">Traumstrand</span>
             </div>
-            <p class="sight-desc">Einer der schönsten Strände der Welt mit 98% mehlfeinem Silikasand und wirbelnden Sandbänken.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Whitehaven+Beach" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
-          </div>
-
-          <div class="sight-card coast">
-            <div class="sight-header">
-              <span class="sight-title">Heart Reef (Whitsundays)</span>
-              <span class="sight-badge">Rundflug</span>
-            </div>
-            <p class="sight-desc">Natürlich geformtes Herz-Riff im Great Barrier Reef – am besten bei einem Rundflug aus der Luft zu bestaunen.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Heart+Reef+Great+Barrier+Reef" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            <p class="sight-desc">Einer der schönsten Strände der Welt mit mehlfeinem Silikasand und wirbelnden Sandbänken.</p>
+            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
           </div>
         </div>
       </div>
@@ -889,16 +968,7 @@
               <span class="sight-badge">Street Art</span>
             </div>
             <p class="sight-desc">Melbournes berühmte Graffiti-Gasse. Perfekt zu kombinieren mit erstklassigem Specialty Coffee.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Hosier+Lane+Melbourne" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
-          </div>
-
-          <div class="sight-card city">
-            <div class="sight-header">
-              <span class="sight-title">St. Kilda Pier</span>
-              <span class="sight-badge">Zwergpinguine</span>
-            </div>
-            <p class="sight-desc">Hier lassen sich abends bei Dämmerung wilde kleine Zwergpinguine zwischen den Mole-Felsen beobachten.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=St+Kilda+Pier+Penguins" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
           </div>
 
           <div class="sight-card coast">
@@ -907,7 +977,7 @@
               <span class="sight-badge">Roadtrip Icon</span>
             </div>
             <p class="sight-desc">Die dramatischen Kalksteinfelsen im Ozean und die Loch Ard Gorge Schlucht an der Südostküste.</p>
-            <a href="https://www.google.com/maps/search/?api=1&query=Twelve+Apostles+Victoria" target="_blank" class="maps-btn"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+            <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
           </div>
         </div>
       </div>
@@ -932,8 +1002,8 @@
         <div class="hub-card">
           <h3><i class="fa-solid fa-ticket"></i> Buchungs-Status</h3>
           <ul class="checklist">
-            <li class="checklist-item"><input type="checkbox"> Langstreckenflüge (VIE - SYD / MEL - VIE)</li>
-            <li class="checklist-item"><input type="checkbox"> Inlandsflug SYD → Ballina</li>
+            <li class="checklist-item"><input type="checkbox" checked> Langstreckenflüge (VIE - SYD / MEL - VIE)</li>
+            <li class="checklist-item"><input type="checkbox" checked> Inlandsflug SYD → Ballina</li>
             <li class="checklist-item"><input type="checkbox"> Inlandsflug PPP → Melbourne</li>
             <li class="checklist-item"><input type="checkbox"> Mietwagen East Coast</li>
             <li class="checklist-item"><input type="checkbox"> K'gari 4WD Tagestour</li>
@@ -978,11 +1048,11 @@
   </div>
 
   <footer>
-    <p>Gute Reise! 🦘🇦🇺 Erstellt für den Australien Roadtrip 2026.</p>
+    <p>Gute Reise! 🦘🇦🇺 Erstellt für den Australien Roadtrip 2027.</p>
   </footer>
 
   <script>
-    // 1. COUNTDOWN LOGIK
+    // 1. COUNTDOWN LOGIK (START 21. MÄRZ 2027)
     const targetDate = new Date("March 21, 2027 10:00:00").getTime();
 
     function updateCountdown() {
@@ -1028,10 +1098,24 @@
       });
     }
 
-    // 3. INTERAKTIVE TABS SWITCHER LOGIK
-    function switchTab(evt, tabId) {
-      const tabPanes = document.querySelectorAll('.tab-pane');
-      const tabBtns = document.querySelectorAll('.tab-btn');
+    // 3. HOTELS TABS SWITCHER LOGIK
+    function switchHotelTab(evt, tabId) {
+      const parent = document.getElementById('hotels');
+      const tabPanes = parent.querySelectorAll('.tab-pane');
+      const tabBtns = parent.querySelectorAll('.tab-btn');
+
+      tabPanes.forEach(pane => pane.classList.remove('active'));
+      tabBtns.forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById(tabId).classList.add('active');
+      evt.currentTarget.classList.add('active');
+    }
+
+    // 4. SIGHTSEEING TABS SWITCHER LOGIK
+    function switchSightTab(evt, tabId) {
+      const parent = document.getElementById('highlights');
+      const tabPanes = parent.querySelectorAll('.tab-pane');
+      const tabBtns = parent.querySelectorAll('.tab-btn');
 
       tabPanes.forEach(pane => pane.classList.remove('active'));
       tabBtns.forEach(btn => btn.classList.remove('active'));
