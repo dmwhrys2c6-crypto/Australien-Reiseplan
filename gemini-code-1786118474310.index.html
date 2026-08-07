@@ -216,15 +216,36 @@
       box-shadow: 0 0 0 3px var(--secondary);
     }
 
+    .timeline-header-badges {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.6rem;
+    }
+
     .date-badge {
       display: inline-block;
       background: #e6fffa;
       color: var(--primary-dark);
       font-weight: 700;
-      padding: 0.2rem 0.8rem;
+      padding: 0.25rem 0.8rem;
       border-radius: 20px;
       font-size: 0.85rem;
-      margin-bottom: 0.5rem;
+    }
+
+    /* STYLES FÜR FAHRZEIT BADGES */
+    .drive-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #fff3ed;
+      color: #c85a17;
+      font-weight: 700;
+      padding: 0.25rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      border: 1px solid #fbd5c0;
     }
 
     .timeline-title {
@@ -268,11 +289,7 @@
       transition: color 0.3s ease;
     }
 
-    .tab-btn:hover {
-      color: var(--primary);
-    }
-
-    .tab-btn.active {
+    .tab-btn:hover, .tab-btn.active {
       color: var(--primary);
     }
 
@@ -493,7 +510,6 @@
       <li><a href="#hotels">Hotels</a></li>
       <li><a href="#highlights">Sightseeing</a></li>
       <li><a href="#hub">Vorbereitung</a></li>
-      <li><a href="#blog">Tagebuch</a></li>
       <li><a href="#feedback">Feedback</a></li>
     </ul>
   </nav>
@@ -513,7 +529,7 @@
   <div class="container">
 
     <section id="route">
-      <h2 class="section-title">Unser Reiseplan</h2>
+      <h2 class="section-title">Unser Reiseplan & Fahrzeiten</h2>
       
       <div class="filter-buttons">
         <button class="filter-btn active" onclick="filterPhase('all')">Alle Stopps</button>
@@ -526,19 +542,28 @@
       <div class="timeline">
         
         <div class="timeline-item p1">
-          <span class="date-badge">21.03. (Sa)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">21.03. (Sa)</span>
+            <span class="drive-badge"><i class="fa-solid fa-plane"></i> Langstreckenflug VIE → SYD</span>
+          </div>
           <h3 class="timeline-title">Abreise aus Wien</h3>
           <p class="timeline-desc">Flug von Wien (VIE) Richtung Sydney (SYD). Der große Trip beginnt!</p>
         </div>
 
         <div class="timeline-item p1">
-          <span class="date-badge">22.03. (So)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">22.03. (So)</span>
+            <span class="drive-badge"><i class="fa-solid fa-car"></i> Flughafen-Transfer: ca. 25 Min.</span>
+          </div>
           <h3 class="timeline-title">Ankunft in Sydney (Abend)</h3>
           <p class="timeline-desc">Ankunft am Abend in Sydney, Hotel-Check-in & entspanntes Abendessen am Darling Harbour / Barangaroo.</p>
         </div>
 
         <div class="timeline-item p1">
-          <span class="date-badge">23.03. (Mo)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">23.03. (Mo)</span>
+            <span class="drive-badge"><i class="fa-solid fa-person-walking"></i> ÖPNV & Fähre (Kein Mietwagen)</span>
+          </div>
           <h3 class="timeline-title">Sydney – Klassiker am Hafen</h3>
           <div class="timeline-desc">
             <ul>
@@ -550,7 +575,10 @@
         </div>
 
         <div class="timeline-item p1">
-          <span class="date-badge">24.03. (Di)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">24.03. (Di)</span>
+            <span class="drive-badge"><i class="fa-solid fa-bus"></i> ÖPNV / Bus (Kein Mietwagen)</span>
+          </div>
           <h3 class="timeline-title">Sydney – Küste & Viertel</h3>
           <div class="timeline-desc">
             <ul>
@@ -561,97 +589,145 @@
         </div>
 
         <div class="timeline-item p2">
-          <span class="date-badge">25.03. (Mi)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">25.03. (Mi)</span>
+            <span class="drive-badge"><i class="fa-solid fa-car"></i> Ballina → Byron Hotel: ca. 30 Min.</span>
+          </div>
           <h3 class="timeline-title">Flug nach Ballina / Byron Bay</h3>
           <p class="timeline-desc">Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Spätnachmittag: Sonnenuntergang am Cape Byron Lighthouse.</p>
         </div>
 
         <div class="timeline-item p2">
-          <span class="date-badge">26.03. (Do)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">26.03. (Do)</span>
+            <span class="drive-badge"><i class="fa-solid fa-car"></i> Ausflug Hinterland: ca. 1 - 1,5 Std. gesamt</span>
+          </div>
           <h3 class="timeline-title">Byron Bay & Hinterland</h3>
           <p class="timeline-desc">Cape Byron Lighthouse Walk (Delfine beobachten!), Brunch im Ort und nachmittags Ausflug ins grüne Hinterland (Bangalow / Minyon Falls).</p>
         </div>
 
         <div class="timeline-item p2">
-          <span class="date-badge">27.03. (Fr)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">27.03. (Fr)</span>
+            <span class="drive-badge"><i class="fa-solid fa-car"></i> Byron → Gold Coast → Brisbane: ca. 2,5 - 3 Std.</span>
+          </div>
           <h3 class="timeline-title">Byron Bay → Gold Coast → Brisbane</h3>
           <p class="timeline-desc">Fahrt gen Norden. Zwischenstopp Gold Coast (SkyPoint Q1 Tower oder Burleigh Heads). Abends: Howard Smith Wharves in Brisbane.</p>
         </div>
 
         <div class="timeline-item p2">
-          <span class="date-badge">28.03. (Sa)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">28.03. (Sa)</span>
+            <span class="drive-badge"><i class="fa-solid fa-car"></i> Stadtfahrten / Mt. Coot-tha: ca. 30 Min.</span>
+          </div>
           <h3 class="timeline-title">Brisbane – Kultur, Fluss & Aussicht</h3>
           <p class="timeline-desc">South Bank Parklands, QAGOMA Kunstgalerie, CityCat-Fähre auf dem Fluss, James Street & Sonnenuntergang vom Mt. Coot-tha.</p>
         </div>
 
         <div class="timeline-item p2">
-          <span class="date-badge">29.03. (So)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">29.03. (So)</span>
+            <span class="drive-badge"><i class="fa-solid fa-car"></i> Panoramaroute Hinterland → Noosa: ca. 2,5 - 3 Std.</span>
+          </div>
           <h3 class="timeline-title">Brisbane → Panoramaroute → Noosa</h3>
           <p class="timeline-desc">Fahrt über Glass House Mountains & Bergdorf Montville nach Noosa. Nachmittags: Küstenweg im Noosa National Park (Koala-Suche!).</p>
         </div>
 
         <div class="timeline-item p2">
-          <span class="date-badge">30.03. (Mo)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">30.03. (Mo)</span>
+            <span class="drive-badge"><i class="fa-solid fa-car"></i> Noosa → Rainbow Beach: ca. 1,5 Std.</span>
+          </div>
           <h3 class="timeline-title">Noosa → Rainbow Beach</h3>
           <p class="timeline-desc">Entspannte Fahrt nach Rainbow Beach (1,5 Std.). Spätnachmittag: Riesige Sanddüne <i>Carlo Sand Blow</i> zum Sonnenuntergang.</p>
         </div>
 
         <div class="timeline-item p2">
-          <span class="date-badge">31.03. (Di)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">31.03. (Di)</span>
+            <span class="drive-badge"><i class="fa-solid fa-bus"></i> Autoabgabe Hervey Bay: 1 Std. | Nachtbus: ca. 11 Std.</span>
+          </div>
           <h3 class="timeline-title">K’gari (Fraser Island) & Nachtbus</h3>
           <p class="timeline-desc">Geführte 4WD-Tagestour auf K’gari (Lake McKenzie, 75 Mile Beach, Shipwreck). Abends Mietwagenabgabe & Einstieg in den Greyhound-Nachtbus.</p>
         </div>
 
         <div class="timeline-item p3">
-          <span class="date-badge">01.04. (Mi)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">01.04. (Mi)</span>
+            <span class="drive-badge"><i class="fa-solid fa-person-walking"></i> Vor Ort in Airlie Beach (Fußläufig)</span>
+          </div>
           <h3 class="timeline-title">Ankunft Airlie Beach & Erholung</h3>
           <p class="timeline-desc">Morgens Ankunft mit dem Bus in Airlie Beach. Einchecken, Schlaf nachholen & Strandpromenade erkunden. Mietwagen für Folgetag organisieren.</p>
         </div>
 
         <div class="timeline-item p3">
-          <span class="date-badge">02.04. (Do)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">02.04. (Do)</span>
+            <span class="drive-badge"><i class="fa-solid fa-car"></i> Cape Hillsborough Hin & Zurück: ca. 3,5 - 4 Std. gesamt</span>
+          </div>
           <h3 class="timeline-title">Kängurus am Cape Hillsborough</h3>
           <p class="timeline-desc">Frühmorgens (4:00 Uhr) Fahrt nach Cape Hillsborough: Wilde Kängurus im Morgenrot am Strand erleben! Nachmittags Entspannung in Airlie Beach.</p>
         </div>
 
         <div class="timeline-item p3">
-          <span class="date-badge">03.04. (Fr)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">03.04. (Fr)</span>
+            <span class="drive-badge"><i class="fa-solid fa-ship"></i> Bootstour (Keine Autofahrt)</span>
+          </div>
           <h3 class="timeline-title">Whitsundays Highlight-Tag</h3>
           <p class="timeline-desc">Ganztägige Katamaran-Tour zu den Whitsunday Islands: Traumstrand Whitehaven Beach, Hill Inlet Lookout & Schnorcheln am Reef.</p>
         </div>
 
         <div class="timeline-item p3">
-          <span class="date-badge">04.04. (Sa)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">04.04. (Sa)</span>
+            <span class="drive-badge"><i class="fa-solid fa-person-walking"></i> Lokale Wege / Rundflug-Shuttle</span>
+          </div>
           <h3 class="timeline-title">Whitsundays / Airlie Beach</h3>
           <p class="timeline-desc">Option für den berühmten Rundflug über das Heart Reef oder entspannter Tag an der Airlie Beach Lagoon.</p>
         </div>
 
         <div class="timeline-item p4">
-          <span class="date-badge">05.04. (So)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">05.04. (So)</span>
+            <span class="drive-badge"><i class="fa-solid fa-car"></i> Flughafen-Transfer MEL → CBD: ca. 35 Min.</span>
+          </div>
           <h3 class="timeline-title">Flug Proserpine → Melbourne</h3>
           <p class="timeline-desc">Direktflug nach Melbourne (ca. 3 Std.). Erster Abend am Yarra River & Southbank.</p>
         </div>
 
         <div class="timeline-item p4">
-          <span class="date-badge">06.04. (Mo)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">06.04. (Mo)</span>
+            <span class="drive-badge"><i class="fa-solid fa-train-subway"></i> ÖPNV / Tram (Kein Auto nötig)</span>
+          </div>
           <h3 class="timeline-title">Melbourne – Stadt, Kultur & Pinguine</h3>
           <p class="timeline-desc">Graffiti-Laneways (Hosier Lane), Café-Kultur, Queen Victoria Market. Abends: Zwergpinguine am St. Kilda Pier.</p>
         </div>
 
         <div class="timeline-item p4">
-          <span class="date-badge">07.04. (Di)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">07.04. (Di)</span>
+            <span class="drive-badge"><i class="fa-solid fa-car"></i> Tagesausflug Küstenstraße: ca. 6 - 7 Std. gesamt</span>
+          </div>
           <h3 class="timeline-title">Tagesausflug Great Ocean Road</h3>
           <p class="timeline-desc">Spektakuläre Küstenstraße, Twelve Apostles, Loch Ard Gorge und wilde Koalas in freier Wildbahn.</p>
         </div>
 
         <div class="timeline-item p4">
-          <span class="date-badge">08.04. (Mi)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">08.04. (Mi)</span>
+            <span class="drive-badge"><i class="fa-solid fa-car"></i> Tagesausflug Umland: ca. 2 - 3 Std. gesamt</span>
+          </div>
           <h3 class="timeline-title">Phillip Island ODER Ausklang</h3>
           <p class="timeline-desc">Option A: Pinguin-Parade Phillip Island / Yarra Valley. Option B: Gemütlicher Tag in Melbourne (NGV Galerie, Rooftop-Bars).</p>
         </div>
 
         <div class="timeline-item p4">
-          <span class="date-badge">09.04. (Do)</span>
+          <div class="timeline-header-badges">
+            <span class="date-badge">09.04. (Do)</span>
+            <span class="drive-badge"><i class="fa-solid fa-car"></i> Fahrt zum Flughafen MEL: ca. 30 Min.</span>
+          </div>
           <h3 class="timeline-title">Rückflug nach Wien</h3>
           <p class="timeline-desc">Heimflug ab Melbourne (MEL). Ende einer unvergesslichen Reise!</p>
         </div>
@@ -1003,8 +1079,8 @@
         <div class="hub-card">
           <h3><i class="fa-solid fa-ticket"></i> Buchungs-Status</h3>
           <ul class="checklist">
-            <li class="checklist-item"><input type="checkbox"> Langstreckenflüge (VIE - SYD / MEL - VIE)</li>
-            <li class="checklist-item"><input type="checkbox"> Inlandsflug SYD → Ballina</li>
+            <li class="checklist-item"><input type="checkbox" checked> Langstreckenflüge (VIE - SYD / MEL - VIE)</li>
+            <li class="checklist-item"><input type="checkbox" checked> Inlandsflug SYD → Ballina</li>
             <li class="checklist-item"><input type="checkbox"> Inlandsflug PPP → Melbourne</li>
             <li class="checklist-item"><input type="checkbox"> Mietwagen East Coast</li>
             <li class="checklist-item"><input type="checkbox"> K'gari 4WD Tagestour</li>
@@ -1014,8 +1090,8 @@
         </div>
       </div>
     </section>
-    
-<section id="feedback" style="margin-top: 5rem;">
+
+    <section id="feedback" style="margin-top: 5rem;">
       <h2 class="section-title">Verbesserungsvorschläge & Ideen</h2>
       <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
         Hast du Ideen, Tipps oder Änderungswünsche zur Route? Hinterlasse hier deinen Vorschlag!
@@ -1045,37 +1121,6 @@
           </div>
       </div>
     </section>
-    
-    <section id="blog" style="margin-top: 5rem;">
-      <h2 class="section-title">Live-Tagebuch & Impressionen</h2>
-      <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Hier erscheinen während des Trips Fotos und kurze Updates für die Heimat!</p>
-      
-      <div class="gallery-grid">
-        <div class="gallery-card">
-          <img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=600&q=80" alt="Sydney Opera House">
-          <div class="gallery-content">
-            <h4>Sydney Harbour</h4>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Erster Stop nach der Ankunft!</p>
-          </div>
-        </div>
-
-        <div class="gallery-card">
-          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" alt="K'gari Sandstrand">
-          <div class="gallery-content">
-            <h4>K’gari & Rainbow Beach</h4>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Sanddünen und Geländewagen.</p>
-          </div>
-        </div>
-
-        <div class="gallery-card">
-          <img src="https://images.unsplash.com/photo-1528150177508-7cc0c36cda5c?auto=format&fit=crop&w=600&q=80" alt="Whitsundays Whitehaven Beach">
-          <div class="gallery-content">
-            <h4>Whitsunday Islands</h4>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Glasklares Wasser & Whitehaven Beach.</p>
-          </div>
-        </div>
-      </div>
-    </section>
 
   </div>
 
@@ -1084,7 +1129,7 @@
   </footer>
 
   <script>
-    // 1. COUNTDOWN LOGIK (START 21. MÄRZ 2027)
+    // 1. COUNTDOWN LOGIK (21. MÄRZ 2027)
     const targetDate = new Date("March 21, 2027 10:00:00").getTime();
 
     function updateCountdown() {
@@ -1155,7 +1200,8 @@
       document.getElementById(tabId).classList.add('active');
       evt.currentTarget.classList.add('active');
     }
-    // 5. VERBESSERUNGSVORSCHLÄGE LOGIK (Lokale Speicherung)
+
+    // 5. VERBESSERUNGSVORSCHLÄGE LOGIK
     function loadSuggestions() {
       const list = document.getElementById('suggestions-list');
       const saved = JSON.parse(localStorage.getItem('aus_suggestions') || '[]');
@@ -1207,7 +1253,6 @@
       return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
-    // Beim Aufruf automatisch alte Vorschläge laden
     window.addEventListener('DOMContentLoaded', loadSuggestions);
   </script>
 </body>
