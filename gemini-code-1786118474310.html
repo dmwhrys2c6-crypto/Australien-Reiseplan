@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Australien Roadtrip 2026 | Wien bis Melbourne</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #008080;
+      --primary-dark: #005a5a;
+      --secondary: #e28743;
+      --bg-light: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-main: #2d3748;
+      --text-muted: #718096;
+      --accent-gold: #f6ad55;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Navigation */
+    nav {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--secondary);
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), 
+                  url('https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      color: white;
+      text-align: center;
+      padding: 6rem 1rem 4rem 1rem;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    /* Countdown Widget */
+    .countdown-container {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: inline-flex;
+      gap: 1.5rem;
+      padding: 1.5rem 2.5rem;
+      border-radius: 16px;
+      margin-top: 1rem;
+    }
+
+    .time-box {
+      text-align: center;
+    }
+
+    .time-box span {
+      display: block;
+      font-size: 2.2rem;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .time-box label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.8;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1100px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: var(--primary-dark);
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 4px;
+      background: var(--secondary);
+      margin: 0.5rem auto 0;
+      border-radius: 2px;
+    }
+
+    /* Phase Filter Buttons */
+    .filter-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: white;
+      border: 2px solid #e2e8f0;
+      padding: 0.6rem 1.2rem;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--text-muted);
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Timeline Section */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+      border-left: 3px solid #cbd5e0;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2rem;
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      transition: transform 0.2s;
+    }
+
+    .timeline-item:hover {
+      transform: translateY(-3px);
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.6rem;
+      top: 1.5rem;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--secondary);
+      border: 4px solid white;
+      box-shadow: 0 0 0 3px var(--secondary);
+    }
+
+    .date-badge {
+      display: inline-block;
+      background: #e6fffa;
+      color: var(--primary-dark);
+      font-weight: 700;
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .timeline-title {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-main);
+    }
+
+    .timeline-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .timeline-desc ul {
+      margin-left: 1.2rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Hub & Packliste */
+    .hub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .hub-card {
+      background: white;
+      padding: 1.8rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .hub-card h3 {
+      margin-bottom: 1rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .checklist {
+      list-style: none;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+      font-size: 0.95rem;
+    }
+
+    .checklist-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* Photo Blog Section */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .gallery-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .gallery-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .gallery-content {
+      padding: 1rem;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--primary-dark);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 4rem;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.2rem; }
+      .countdown-container { gap: 0.8rem; padding: 1rem; }
+      .time-box span { font-size: 1.5rem; }
+      .nav-links { display: none; } /* vereinfacht für Mobile */
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo"><i class="fa-solid fa-plane-departure"></i> AUS 2026</div>
+    <ul class="nav-links">
+      <li><a href="#route">Route & Plan</a></li>
+      <li><a href="#hub">Vorbereitung</a></li>
+      <li><a href="#blog">Tagebuch</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <h1>AUSTRALIEN ROADTRIP 2026</h1>
+    <p>Von Wien über Sydney, Byron Bay, K’gari & Whitsundays nach Melbourne</p>
+    
+    <div class="countdown-container">
+      <div class="time-box"><span id="days">00</span><label>Tage</label></div>
+      <div class="time-box"><span id="hours">00</span><label>Stunden</label></div>
+      <div class="time-box"><span id="minutes">00</span><label>Minuten</label></div>
+      <div class="time-box"><span id="seconds">00</span><label>Sekunden</label></div>
+    </div>
+  </section>
+
+  <div class="container">
+
+    <section id="route">
+      <h2 class="section-title">Unser Reiseplan</h2>
+      
+      <div class="filter-buttons">
+        <button class="filter-btn active" onclick="filterPhase('all')">Alle Stopps</button>
+        <button class="filter-btn" onclick="filterPhase('p1')">Phase 1: Sydney</button>
+        <button class="filter-btn" onclick="filterPhase('p2')">Phase 2: Byron & K’gari</button>
+        <button class="filter-btn" onclick="filterPhase('p3')">Phase 3: Whitsundays</button>
+        <button class="filter-btn" onclick="filterPhase('p4')">Phase 4: Melbourne</button>
+      </div>
+
+      <div class="timeline">
+        
+        <div class="timeline-item p1">
+          <span class="date-badge">21.03. (Sa)</span>
+          <h3 class="timeline-title">Abreise aus Wien</h3>
+          <p class="timeline-desc">Flug von Wien (VIE) nach Sydney (SYD). Der große Trip beginnt!</p>
+        </div>
+
+        <div class="timeline-item p1">
+          <span class="date-badge">22.03. (So)</span>
+          <h3 class="timeline-title">Ankunft in Sydney</h3>
+          <p class="timeline-desc">Ankunft am Abend in Sydney, Hotel-Check-in & entspanntes Abendessen am Darling Harbour / Barangaroo.</p>
+        </div>
+
+        <div class="timeline-item p1">
+          <span class="date-badge">23.03. (Mo)</span>
+          <h3 class="timeline-title">Sydney – Klassiker am Hafen</h3>
+          <div class="timeline-desc">
+            <ul>
+              <li>Circular Quay, Sydney Opera House & Royal Botanic Garden</li>
+              <li>Mrs Macquarie’s Chair, The Rocks & Harbour Bridge Walk</li>
+              <li>Nachmittags: Fähre nach Manly Beach</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="timeline-item p1">
+          <span class="date-badge">24.03. (Di)</span>
+          <h3 class="timeline-title">Sydney – Küste & Viertel</h3>
+          <div class="timeline-desc">
+            <ul>
+              <li>Bondi Beach & Bondi to Coogee Coastal Walk</li>
+              <li>Café-Kultur & Bummeln in Surry Hills oder Paddington</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="timeline-item p2">
+          <span class="date-badge">25.03. (Mi)</span>
+          <h3 class="timeline-title">Flug nach Ballina / Byron Bay</h3>
+          <p class="timeline-desc">Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Spätnachmittag: Sonnenuntergang am Cape Byron Lighthouse.</p>
+        </div>
+
+        <div class="timeline-item p2">
+          <span class="date-badge">26.03. (Do)</span>
+          <h3 class="timeline-title">Byron Bay & Hinterland</h3>
+          <p class="timeline-desc">Cape Byron Lighthouse Walk (Delfine beobachten!), Brunch im Ort und nachmittags Ausflug ins grüne Hinterland (Bangalow / Minyon Falls).</p>
+        </div>
+
+        <div class="timeline-item p2">
+          <span class="date-badge">27.03. (Fr)</span>
+          <h3 class="timeline-title">Byron Bay → Gold Coast → Brisbane</h3>
+          <p class="timeline-desc">Fahrt gen Norden. Zwischenstopp Gold Coast (SkyPoint Q1 Tower oder Burleigh Heads). Abends: Howard Smith Wharves in Brisbane.</p>
+        </div>
+
+        <div class="timeline-item p2">
+          <span class="date-badge">28.03. (Sa)</span>
+          <h3 class="timeline-title">Brisbane – Kultur, Fluss & Aussicht</h3>
+          <p class="timeline-desc">South Bank Parklands, QAGOMA Kunstgalerie, CityCat-Fähre auf dem Fluss, James Street & Sonnenuntergang vom Mt. Coot-tha.</p>
+        </div>
+
+        <div class="timeline-item p2">
+          <span class="date-badge">29.03. (So)</span>
+          <h3 class="timeline-title">Brisbane → Panoramaroute → Noosa</h3>
+          <p class="timeline-desc">Fahrt über Glass House Mountains & Bergdorf Montville nach Noosa. Nachmittags: Küstenweg im Noosa National Park (Koala-Suche!).</p>
+        </div>
+
+        <div class="timeline-item p2">
+          <span class="date-badge">30.03. (Mo)</span>
+          <h3 class="timeline-title">Noosa → Rainbow Beach</h3>
+          <p class="timeline-desc">Entspannte Fahrt nach Rainbow Beach (1,5 Std.). Spätnachmittag: Riesige Sanddüne <i>Carlo Sand Blow</i> zum Sonnenuntergang.</p>
+        </div>
+
+        <div class="timeline-item p2">
+          <span class="date-badge">31.03. (Di)</span>
+          <h3 class="timeline-title">K’gari (Fraser Island) & Nachtbus</h3>
+          <p class="timeline-desc">Geführte 4WD-Tagestour auf K’gari (Lake McKenzie, 75 Mile Beach, Shipwreck). Abends Mietwagenabgabe & Einstieg in den Greyhound-Nachtbus.</p>
+        </div>
+
+        <div class="timeline-item p3">
+          <span class="date-badge">01.04. (Mi)</span>
+          <h3 class="timeline-title">Ankunft Airlie Beach & Erholung</h3>
+          <p class="timeline-desc">Morgens Ankunft mit dem Bus in Airlie Beach. Einchecken, Schlaf nachholen & Strandpromenade erkunden. Mietwagen für Folgetag organisieren.</p>
+        </div>
+
+        <div class="timeline-item p3">
+          <span class="date-badge">02.04. (Do)</span>
+          <h3 class="timeline-title">Kängurus am Cape Hillsborough</h3>
+          <p class="timeline-desc">Frühmorgens (4:00 Uhr) Fahrt nach Cape Hillsborough: Wilde Kängurus im Morgenrot am Strand erleben! Nachmittags Entspannung in Airlie Beach.</p>
+        </div>
+
+        <div class="timeline-item p3">
+          <span class="date-badge">03.04. (Fr)</span>
+          <h3 class="timeline-title">Whitsundays Highlight-Tag</h3>
+          <p class="timeline-desc">Ganztägige Katamaran-Tour zu den Whitsunday Islands: Traumstrand Whitehaven Beach, Hill Inlet Lookout & Schnorcheln am Reef.</p>
+        </div>
+
+        <div class="timeline-item p3">
+          <span class="date-badge">04.04. (Sa)</span>
+          <h3 class="timeline-title">Whitsundays / Airlie Beach</h3>
+          <p class="timeline-desc">Option für den berühmten Rundflug über das Heart Reef oder entspannter Tag an der Airlie Beach Lagoon.</p>
+        </div>
+
+        <div class="timeline-item p4">
+          <span class="date-badge">05.04. (So)</span>
+          <h3 class="timeline-title">Flug Proserpine → Melbourne</h3>
+          <p class="timeline-desc">Direktflug nach Melbourne (ca. 3 Std.). Erster Abend am Yarra River & Southbank.</p>
+        </div>
+
+        <div class="timeline-item p4">
+          <span class="date-badge">06.04. (Mo)</span>
+          <h3 class="timeline-title">Melbourne – Stadt, Kultur & Pinguine</h3>
+          <p class="timeline-desc">Graffiti-Laneways (Hosier Lane), Café-Kultur, Queen Victoria Market. Abends: Zwergpinguine am St. Kilda Pier.</p>
+        </div>
+
+        <div class="timeline-item p4">
+          <span class="date-badge">07.04. (Di)</span>
+          <h3 class="timeline-title">Tagesausflug Great Ocean Road</h3>
+          <p class="timeline-desc">Spektakuläre Küstenstraße, Twelve Apostles, Loch Ard Gorge und wilde Koalas in freier Wildbahn.</p>
+        </div>
+
+        <div class="timeline-item p4">
+          <span class="date-badge">08.04. (Mi)</span>
+          <h3 class="timeline-title">Phillip Island ODER Ausklang</h3>
+          <p class="timeline-desc">Option A: Pinguin-Parade Phillip Island / Yarra Valley. Option B: Gemütlicher Tag in Melbourne (NGV Galerie, Rooftop-Bars).</p>
+        </div>
+
+        <div class="timeline-item p4">
+          <span class="date-badge">09.04. (Do)</span>
+          <h3 class="timeline-title">Rückflug nach Wien</h3>
+          <p class="timeline-desc">Heimflug ab Melbourne (MEL). Ende einer unvergesslichen Reise!</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="hub" style="margin-top: 4rem;">
+      <h2 class="section-title">Vorbereitung & Dokumente</h2>
+      
+      <div class="hub-grid">
+        <div class="hub-card">
+          <h3><i class="fa-solid fa-passport"></i> Essentials Checkliste</h3>
+          <ul class="checklist">
+            <li class="checklist-item"><input type="checkbox"> Reisepass (Mind. 6 Monate gültig)</li>
+            <li class="checklist-item"><input type="checkbox"> Visum (eVisitor Subclass 651 / ETA)</li>
+            <li class="checklist-item"><input type="checkbox"> Internationaler Führerschein</li>
+            <li class="checklist-item"><input type="checkbox"> Kreditkarte ohne Fremdwährungsgebühr</li>
+            <li class="checklist-item"><input type="checkbox"> Reiseversicherung abgeschlossen</li>
+          </ul>
+        </div>
+
+        <div class="hub-card">
+          <h3><i class="fa-solid fa-ticket"></i> Buche-Status</h3>
+          <ul class="checklist">
+            <li class="checklist-item"><input type="checkbox" checked> Langstreckenflüge (VIE - SYD / MEL - VIE)</li>
+            <li class="checklist-item"><input type="checkbox" checked> Inlandsflug SYD → Ballina</li>
+            <li class="checklist-item"><input type="checkbox"> Inlandsflug PPP → Melbourne</li>
+            <li class="checklist-item"><input type="checkbox"> Mietwagen East Coast</li>
+            <li class="checklist-item"><input type="checkbox"> K'gari 4WD Tagestour</li>
+            <li class="checklist-item"><input type="checkbox"> Greyhound Nachtbus</li>
+            <li class="checklist-item"><input type="checkbox"> Whitsundays Katamaran-Tour</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="blog" style="margin-top: 4rem;">
+      <h2 class="section-title">Live-Tagebuch & Impressionen</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Hier erscheinen während des Trips Fotos und kurze Updates für die Heimat!</p>
+      
+      <div class="gallery-grid">
+        <div class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=600&q=80" alt="Sydney Opera House">
+          <div class="gallery-content">
+            <h4>Sydney Harbour</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Erster Stop nach der Ankunft!</p>
+          </div>
+        </div>
+
+        <div class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" alt="K'gari Sandstrand">
+          <div class="gallery-content">
+            <h4>K’gari & Rainbow Beach</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Sanddünen und Geländewagen.</p>
+          </div>
+        </div>
+
+        <div class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1528150177508-7cc0c36cda5c?auto=format&fit=crop&w=600&q=80" alt="Whitsundays Whitehaven Beach">
+          <div class="gallery-content">
+            <h4>Whitsunday Islands</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Glasklares Wasser & Whitehaven Beach.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <p>Gute Reise! 🦘🇦🇺 Erstellt für den Australien Roadtrip 2026.</p>
+  </footer>
+
+  <script>
+    // 1. COUNTDOWN LOGIK
+    const targetDate = new Date("March 21, 2026 10:00:00").getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+
+      if (difference > 0) {
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        document.getElementById("days").innerText = days < 10 ? '0' + days : days;
+        document.getElementById("hours").innerText = hours < 10 ? '0' + hours : hours;
+        document.getElementById("minutes").innerText = minutes < 10 ? '0' + minutes : minutes;
+        document.getElementById("seconds").innerText = seconds < 10 ? '0' + seconds : seconds;
+      } else {
+        document.querySelector(".countdown-container").innerHTML = "<h3>Der Trip hat begonnen! G'day Mate! 🎉</h3>";
+      }
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // 2. TIMELINE FILTER LOGIK
+    function filterPhase(phaseClass) {
+      const items = document.querySelectorAll('.timeline-item');
+      const buttons = document.querySelectorAll('.filter-btn');
+
+      // Active-Klasse bei Buttons umstellen
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      // Items filtern
+      items.forEach(item => {
+        if (phaseClass === 'all') {
+          item.style.display = 'block';
+        } else {
+          if (item.classList.contains(phaseClass)) {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
