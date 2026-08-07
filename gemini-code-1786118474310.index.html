@@ -494,6 +494,7 @@
       <li><a href="#highlights">Sightseeing</a></li>
       <li><a href="#hub">Vorbereitung</a></li>
       <li><a href="#blog">Tagebuch</a></li>
+      <li><a href="#feedback">Feedback</a></li>
     </ul>
   </nav>
 
@@ -1013,7 +1014,38 @@
         </div>
       </div>
     </section>
+    
+<section id="feedback" style="margin-top: 5rem;">
+      <h2 class="section-title">Verbesserungsvorschläge & Ideen</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
+        Hast du Ideen, Tipps oder Änderungswünsche zur Route? Hinterlasse hier deinen Vorschlag!
+      </p>
 
+      <div class="hub-card" style="max-width: 650px; margin: 0 auto;">
+        <form id="feedback-form" onsubmit="addSuggestion(event)">
+          <div style="margin-bottom: 1rem;">
+            <label for="user-name" style="display: block; font-weight: 600; margin-bottom: 0.4rem;">Dein Name:</label>
+            <input type="text" id="user-name" required placeholder="z. B. Alex" style="width: 100%; padding: 0.8rem; border: 1px solid #cbd5e0; border-radius: 8px; font-family: inherit;">
+          </div>
+          <div style="margin-bottom: 1.2rem;">
+            <label for="user-text" style="display: block; font-weight: 600; margin-bottom: 0.4rem;">Dein Vorschlag:</label>
+            <textarea id="user-text" rows="4" required placeholder="Was sollen wir anpassen oder hinzufügen?" style="width: 100%; padding: 0.8rem; border: 1px solid #cbd5e0; border-radius: 8px; font-family: inherit; resize: vertical;"></textarea>
+          </div>
+          <button type="submit" class="filter-btn active" style="width: 100%; cursor: pointer; border: none; font-size: 1rem;">
+            <i class="fa-solid fa-paper-plane"></i> Vorschlag absenden
+          </button>
+        </form>
+
+        <hr style="margin: 2rem 0; border: none; border-top: 1px solid #e2e8f0;">
+
+        <h3 style="font-size: 1.2rem; color: var(--primary-dark); margin-bottom: 1rem;">
+          <i class="fa-solid fa-comments"></i> Bisherige Vorschläge:
+        </h3>
+        <div id="suggestions-list" style="display: flex; flex-direction: column; gap: 1rem;">
+          </div>
+      </div>
+    </section>
+    
     <section id="blog" style="margin-top: 5rem;">
       <h2 class="section-title">Live-Tagebuch & Impressionen</h2>
       <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Hier erscheinen während des Trips Fotos und kurze Updates für die Heimat!</p>
@@ -1123,6 +1155,60 @@
       document.getElementById(tabId).classList.add('active');
       evt.currentTarget.classList.add('active');
     }
+    // 5. VERBESSERUNGSVORSCHLÄGE LOGIK (Lokale Speicherung)
+    function loadSuggestions() {
+      const list = document.getElementById('suggestions-list');
+      const saved = JSON.parse(localStorage.getItem('aus_suggestions') || '[]');
+      list.innerHTML = '';
+      
+      if (saved.length === 0) {
+        list.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem; text-align: center;">Noch keine Vorschläge vorhanden. Sei der Erste!</p>';
+        return;
+      }
+
+      saved.forEach((item) => {
+        const card = document.createElement('div');
+        card.style.background = '#f8f9fa';
+        card.style.padding = '1rem';
+        card.style.borderRadius = '10px';
+        card.style.borderLeft = '4px solid var(--primary)';
+        card.innerHTML = `
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+            <strong style="color: var(--text-main);"><i class="fa-solid fa-user-circle"></i> ${escapeHtml(item.name)}</strong>
+            <small style="color: var(--text-muted); font-size: 0.8rem;">${item.date}</small>
+          </div>
+          <p style="color: var(--text-main); font-size: 0.95rem; margin: 0;">${escapeHtml(item.text)}</p>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    function addSuggestion(e) {
+      e.preventDefault();
+      const nameInput = document.getElementById('user-name');
+      const textInput = document.getElementById('user-text');
+      
+      const newEntry = {
+        name: nameInput.value.trim(),
+        text: textInput.value.trim(),
+        date: new Date().toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+      };
+
+      const saved = JSON.parse(localStorage.getItem('aus_suggestions') || '[]');
+      saved.unshift(newEntry);
+      localStorage.setItem('aus_suggestions', JSON.stringify(saved));
+
+      nameInput.value = '';
+      textInput.value = '';
+      loadSuggestions();
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    // Beim Aufruf automatisch alte Vorschläge laden
+    window.addEventListener('DOMContentLoaded', loadSuggestions);
   </script>
 </body>
 </html>
