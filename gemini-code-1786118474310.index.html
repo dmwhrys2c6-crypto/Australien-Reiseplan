@@ -1243,59 +1243,69 @@
       evt.currentTarget.classList.add('active');
     }
 
-    // 5. VERBESSERUNGSVORSCHLÄGE LOGIK
-    function loadSuggestions() {
-      const list = document.getElementById('suggestions-list');
-      const saved = JSON.parse(localStorage.getItem('aus_suggestions') || '[]');
-      list.innerHTML = '';
-      
-      if (saved.length === 0) {
-        list.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem; text-align: center;">Noch keine Vorschläge vorhanden. Sei der Erste!</p>';
-        return;
-      }
+  // 5. VERBESSERUNGSVORSCHLÄGE LOGIK (KORRIGIERT)
+function loadSuggestions() {
+  const list = document.getElementById('suggestions-list');
+  if (!list) return;
 
-      saved.forEach((item) => {
-        const card = document.createElement('div');
-        card.style.background = '#f8f9fa';
-        card.style.padding = '1rem';
-        card.style.borderRadius = '10px';
-        card.style.borderLeft = '4px solid var(--primary)';
-        card.innerHTML = `
-          <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
-            <strong style="color: var(--text-main);"><i class="fa-solid fa-user-circle"></i> ${escapeHtml(item.name)}</strong>
-            <small style="color: var(--text-muted); font-size: 0.8rem;">${item.date}</small>
-          </div>
-          <p style="color: var(--text-main); font-size: 0.95rem; margin: 0;">${escapeHtml(item.text)}</p>
-        `;
-        list.appendChild(card);
-      });
-    }
+  const saved = JSON.parse(localStorage.getItem('aus_suggestions') || '[]');
+  list.innerHTML = '';
+  
+  if (saved.length === 0) {
+    list.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem; text-align: center;">Noch keine Vorschläge vorhanden. Sei der Erste!</p>';
+    return;
+  }
 
-    function addSuggestion(e) {
-      e.preventDefault();
-      const nameInput = document.getElementById('user-name');
-      const textInput = document.getElementById('user-text');
-      
-      const newEntry = {
-        name: nameInput.value.trim(),
-        text: textInput.value.trim(),
-        date: new Date().toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
-      };
+  saved.forEach((item) => {
+    const card = document.createElement('div');
+    card.style.background = '#f8f9fa';
+    card.style.padding = '1rem';
+    card.style.borderRadius = '10px';
+    card.style.borderLeft = '4px solid var(--primary)';
+    card.innerHTML = `
+      <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+        <strong style="color: var(--text-main);"><i class="fa-solid fa-user-circle"></i> ${escapeHtml(item.name)}</strong>
+        <small style="color: var(--text-muted); font-size: 0.8rem;">${item.date}</small>
+      </div>
+      <p style="color: var(--text-main); font-size: 0.95rem; margin: 0;">${escapeHtml(item.text)}</p>
+    `;
+    list.appendChild(card);
+  });
+}
 
-      const saved = JSON.parse(localStorage.getItem('aus_suggestions') || '[]');
-      saved.unshift(newEntry);
-      localStorage.setItem('aus_suggestions', JSON.stringify(saved));
+function addSuggestion(e) {
+  e.preventDefault();
+  const nameInput = document.getElementById('user-name');
+  const textInput = document.getElementById('user-text');
+  
+  if (!nameInput || !textInput) return;
 
-      nameInput.value = '';
-      textInput.value = '';
-      loadSuggestions();
-    }
+  const newEntry = {
+    name: nameInput.value.trim(),
+    text: textInput.value.trim(),
+    date: new Date().toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+  };
 
-    function escapeHtml(text) {
-      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-    }
+  const saved = JSON.parse(localStorage.getItem('aus_suggestions') || '[]');
+  saved.unshift(newEntry);
+  localStorage.setItem('aus_suggestions', JSON.stringify(saved));
 
-    window.addEventListener('DOMContentLoaded', loadSuggestions);
+  nameInput.value = '';
+  textInput.value = '';
+  loadSuggestions();
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+window.addEventListener('DOMContentLoaded', loadSuggestions);
     // 6. WÄHRUNGSRECHNER LOGIK
     const AUD_TO_EUR_RATE = 0.60; // Aktueller Durchschnittskurs (1 AUD = 0,60 EUR)
 
