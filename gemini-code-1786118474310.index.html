@@ -731,7 +731,143 @@
           <h3 class="timeline-title">Rückflug nach Wien</h3>
           <p class="timeline-desc">Heimflug ab Melbourne (MEL). Ende einer unvergesslichen Reise!</p>
         </div>
+    <section id="budget" style="margin-top: 5rem;">
+      <h2 class="section-title">Kosten- & Budgetübersicht</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
+        Transparenter Überblick über alle Reisekosten, Bereits-Bezahltes und das Tagesbudget vor Ort.
+      </p>
 
+      <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-bottom: 2.5rem;">
+        <span style="font-weight: 700; color: var(--text-main);">Gesamtkosten (Gruppe)</span>
+        <label style="position: relative; display: inline-block; width: 60px; height: 32px;">
+          <input type="checkbox" id="person-toggle" onchange="updateBudgetCalculations()" style="opacity: 0; width: 0; height: 0;">
+          <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--primary); transition: .4s; border-radius: 34px;"></span>
+          <span id="toggle-dot" style="position: absolute; content: ''; height: 24px; width: 24px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+        </label>
+        <span style="font-weight: 700; color: var(--text-main);">Kosten pro Person</span>
+      </div>
+
+      <div class="hub-card" style="margin-bottom: 2.5rem; padding: 1.8rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem;">
+          <h3 style="margin: 0; color: var(--primary);"><i class="fa-solid fa-chart-pie"></i> Zahlungsfortschritt</h3>
+          <span id="total-sum-badge" style="font-weight: 800; font-size: 1.2rem; color: var(--primary-dark);">Gesamt: 0 €</span>
+        </div>
+        
+        <div style="width: 100%; background-color: #e2e8f0; height: 22px; border-radius: 12px; overflow: hidden; display: flex; margin-bottom: 1rem;">
+          <div id="progress-paid" style="width: 60%; background: #38a169; height: 100%; transition: width 0.4s ease;" title="Bereits bezahlt"></div>
+          <div id="progress-open" style="width: 40%; background: var(--secondary); height: 100%; transition: width 0.4s ease;" title="Offen vor Ort"></div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; flex-wrap: wrap; gap: 1rem;">
+          <span style="color: #276749;"><i class="fa-solid fa-circle-check"></i> Bereits bezahlt: <strong id="paid-amount">0 €</strong></span>
+          <span style="color: #c85a17;"><i class="fa-solid fa-wallet"></i> Offen vor Ort: <strong id="open-amount">0 €</strong></span>
+        </div>
+      </div>
+
+      <div class="hub-card" style="margin-bottom: 2.5rem;">
+        <h3><i class="fa-solid fa-sliders"></i> Interaktives Tagesbudget (Verpflegung & Vergnügen)</h3>
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
+          Schiebe den Regler, um dein kalkuliertes Tagesbudget anzupassen:
+        </p>
+        <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
+          <input type="range" id="daily-slider" min="30" max="150" step="5" value="70" oninput="updateBudgetCalculations()" style="flex: 1; min-width: 200px; accent-color: var(--primary); cursor: pointer;">
+          <span style="font-weight: 800; font-size: 1.2rem; background: #e6fffa; padding: 0.4rem 1rem; border-radius: 12px; color: var(--primary-dark);">
+            <span id="slider-val">70</span> AUD / Tag p.P.
+          </span>
+        </div>
+      </div>
+
+      <div class="sight-grid" style="margin-bottom: 3rem;">
+        
+        <div class="sight-card city">
+          <div>
+            <div class="sight-header">
+              <span class="sight-title"><i class="fa-solid fa-plane"></i> Flüge</span>
+              <span class="sight-badge" style="background: #c6f6d5; color: #22543d;">100% Bezahlt</span>
+            </div>
+            <p class="sight-desc">Langstrecke (VIE-SYD/MEL-VIE) & Inlandsflüge (SYD-BNK & PPP-MEL)</p>
+          </div>
+          <div style="font-weight: 800; font-size: 1.3rem; color: var(--text-main);" class="card-price" data-eur="1450" data-paid="true">
+            1.450 € <small style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">(~2.416 AUD)</small>
+          </div>
+        </div>
+
+        <div class="sight-card coast">
+          <div>
+            <div class="sight-header">
+              <span class="sight-title"><i class="fa-solid fa-car"></i> Mietwagen & Sprit</span>
+              <span class="sight-badge" style="background: #feebc8; color: #744210;">Teils Offen</span>
+            </div>
+            <p class="sight-desc">Mietwagen East Coast, Sprit, Maut & Parkgebühren</p>
+          </div>
+          <div style="font-weight: 800; font-size: 1.3rem; color: var(--text-main);" class="card-price" data-eur="450" data-paid="false">
+            450 € <small style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">(~750 AUD)</small>
+          </div>
+        </div>
+
+        <div class="sight-card city">
+          <div>
+            <div class="sight-header">
+              <span class="sight-title"><i class="fa-solid fa-hotel"></i> Unterkünfte</span>
+              <span class="sight-badge" style="background: #c6f6d5; color: #22543d;">Bezahlt</span>
+            </div>
+            <p class="sight-desc">Hotels in Sydney, Byron, Brisbane, Noosa, Airlie Beach & Melbourne</p>
+          </div>
+          <div style="font-weight: 800; font-size: 1.3rem; color: var(--text-main);" class="card-price" data-eur="950" data-paid="true">
+            950 € <small style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">(~1.583 AUD)</small>
+          </div>
+        </div>
+
+        <div class="sight-card coast">
+          <div>
+            <div class="sight-header">
+              <span class="sight-title"><i class="fa-solid fa-ticket"></i> Ausflüge & Touren</span>
+              <span class="sight-badge" style="background: #c6f6d5; color: #22543d;">Bezahlt</span>
+            </div>
+            <p class="sight-desc">K'gari 4WD Tagestour, Whitsundays Katamaran, Great Ocean Road etc.</p>
+          </div>
+          <div style="font-weight: 800; font-size: 1.3rem; color: var(--text-main);" class="card-price" data-eur="380" data-paid="true">
+            380 € <small style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">(~633 AUD)</small>
+          </div>
+        </div>
+
+        <div class="sight-card hinterland" style="grid-column: span 1 / -1;">
+          <div>
+            <div class="sight-header">
+              <span class="sight-title"><i class="fa-solid fa-utensils"></i> Verpflegung & Taschengeld</span>
+              <span class="sight-badge" style="background: #feebc8; color: #744210;">Vor Ort</span>
+            </div>
+            <p class="sight-desc">Kalkulation für 19 Tage Essen, Drinks, Supermarkt & Souvenirs</p>
+          </div>
+          <div style="font-weight: 800; font-size: 1.4rem; color: var(--primary-dark);" id="food-calculated-price">
+            0 €
+          </div>
+        </div>
+
+      </div>
+
+      <div class="hub-card">
+        <h3><i class="fa-solid fa-users-gear"></i> Wer hat was ausgelegt? (Fair-Share)</h3>
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.2rem;">
+          Übersicht der bisher getätigten Zahlungen zur späteren Abrechnung im Team:
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+          <div style="background: #f8f9fa; padding: 1rem; border-radius: 10px; border-left: 4px solid var(--primary);">
+            <strong style="display: block; font-size: 1.05rem;">Person A (z. B. Alex)</strong>
+            <small style="color: var(--text-muted);">Ausgelegt für: Langstreckenflüge & Hotels</small>
+            <div style="font-weight: 800; margin-top: 0.4rem; color: var(--primary-dark);">2.400 €</div>
+          </div>
+
+          <div style="background: #f8f9fa; padding: 1rem; border-radius: 10px; border-left: 4px solid var(--secondary);">
+            <strong style="display: block; font-size: 1.05rem;">Person B (z. B. Sam)</strong>
+            <small style="color: var(--text-muted);">Ausgelegt für: Inlandsflüge & Touren</small>
+            <div style="font-weight: 800; margin-top: 0.4rem; color: var(--secondary);">1.380 €</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+        
       </div>
     </section>
 
@@ -1326,6 +1462,76 @@ window.addEventListener('DOMContentLoaded', loadSuggestions);
         audInput.value = '';
       }
     }
+        // === BUDGET & KOSTEN CALCULATOR LOGIK ===
+    const GROUP_SIZE = 2; // Anzahl der Personen in der Gruppe (anpassen falls nötig)
+    const TRIP_DAYS = 19;  // Reisetage
+    const AUD_RATE = 0.60; // 1 AUD = 0.60 EUR
+
+    function updateBudgetCalculations() {
+      const isPerPerson = document.getElementById('person-toggle').checked;
+      const dailyAud = parseInt(document.getElementById('daily-slider').value);
+      
+      // Update Slider Label
+      document.getElementById('slider-val').innerText = dailyAud;
+
+      // Move Toggle Dot
+      const dot = document.getElementById('toggle-dot');
+      if (isPerPerson) {
+        dot.style.transform = 'translateX(28px)';
+      } else {
+        dot.style.transform = 'translateX(0px)';
+      }
+
+      // Calculate Food Total
+      const foodTotalEurPerson = Math.round(dailyAud * TRIP_DAYS * AUD_RATE);
+      const foodTotalEurGroup = foodTotalEurPerson * GROUP_SIZE;
+      const displayFoodEur = isPerPerson ? foodTotalEurPerson : foodTotalEurGroup;
+      const displayFoodAud = Math.round(displayFoodEur / AUD_RATE);
+
+      document.getElementById('food-calculated-price').innerHTML = 
+        `${displayFoodEur.toLocaleString('de-DE')} € <small style="font-size: 0.9rem; color: var(--text-muted); font-weight: 500;">(~${displayFoodAud.toLocaleString('de-DE')} AUD)</small>`;
+
+      // Base sums from cards (Base values are per person in data-eur)
+      const cards = document.querySelectorAll('.card-price');
+      let paidSumEur = 0;
+      let openSumEur = displayFoodEur; // Food is open vor Ort
+
+      cards.forEach(card => {
+        const baseEur = parseFloat(card.getAttribute('data-eur'));
+        const isPaid = card.getAttribute('data-paid') === 'true';
+        
+        const currentEur = isPerPerson ? baseEur : (baseEur * GROUP_SIZE);
+        const currentAud = Math.round(currentEur / AUD_RATE);
+
+        card.innerHTML = `${currentEur.toLocaleString('de-DE')} € <small style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">(~${currentAud.toLocaleString('de-DE')} AUD)</small>`;
+
+        if (isPaid) {
+          paidSumEur += currentEur;
+        } else {
+          openSumEur += currentEur;
+        }
+      });
+
+      const totalSumEur = paidSumEur + openSumEur;
+
+      // Update UI Header & Progress
+      document.getElementById('total-sum-badge').innerText = `Gesamt: ${totalSumEur.toLocaleString('de-DE')} €`;
+      document.getElementById('paid-amount').innerText = `${paidSumEur.toLocaleString('de-DE')} €`;
+      document.getElementById('open-amount').innerText = `${openSumEur.toLocaleString('de-DE')} €`;
+
+      const paidPercent = Math.round((paidSumEur / totalSumEur) * 100);
+      const openPercent = 100 - paidPercent;
+
+      document.getElementById('progress-paid').style.width = paidPercent + '%';
+      document.getElementById('progress-open').style.width = openPercent + '%';
+    }
+
+    // Beim Laden der Seite direkt einmal ausführen
+    window.addEventListener('DOMContentLoaded', () => {
+      if (document.getElementById('budget')) {
+        updateBudgetCalculations();
+      }
+    });
   </script>
 </body>
 </html>
