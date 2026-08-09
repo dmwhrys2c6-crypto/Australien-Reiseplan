@@ -300,6 +300,44 @@
       gap: 0.5rem;
     }
 
+    /* Hotel Cost Box Styling */
+    .hotel-cost-box {
+      background: #ffffff;
+      border: 1px solid #fbd5c0;
+      border-left: 4px solid var(--secondary);
+      border-radius: 10px;
+      padding: 0.8rem 1rem;
+      margin: 0.8rem 0;
+    }
+
+    .hotel-cost-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #c85a17;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.3rem;
+    }
+
+    .hotel-price-group {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .hotel-price-person {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-top: 0.15rem;
+    }
+
+    .hotel-price-aud {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
     /* Action Buttons */
     .btn-action {
       display: inline-flex;
@@ -414,8 +452,7 @@
 
     <section id="route">
       <h2 class="section-title">Unser Reiseplan, Spots & Fahrzeiten</h2>
-      <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
-      </p>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;"></p>
 
       <div class="timeline">
         
@@ -435,7 +472,7 @@
               <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
               <p>Flug von Wien (VIE) Richtung Sydney (SYD). Der große Trip beginnt!</p>
             </div>
-              <div class="day-subcard budget">
+            <div class="day-subcard budget">
               <div class="subcard-title"><i class="fa-solid fa-wallet"></i> Budget & Kosten</div>
               <ul class="sub-item-list">
                 <li><span>Langstreckenflug Wien ↔ Australien (Anteil):</span> <strong class="sub-price" data-eur="1100">1.100 €</strong></li>
@@ -472,7 +509,18 @@
             </div>
             <div class="day-subcard hotel">
               <div class="subcard-title"><i class="fa-solid fa-hotel"></i> Unterkunft Sydney</div>
-              <p><strong>Hotel Sydney CBD / Harbour View:</strong> 22.03. – 25.03.</p>
+              <p><strong>Hotel Sydney CBD / Harbour View:</strong> 22.03. – 25.03. (3 Nächte)</p>
+              
+              <div class="hotel-cost-box">
+                <div class="hotel-cost-title"><i class="fa-solid fa-calculator"></i> Hotelkosten Übersicht</div>
+                <div class="hotel-price-group">
+                  <i class="fa-solid fa-users"></i> Gesamtkosten (Gruppe): <strong>480 €</strong> <span class="hotel-price-aud">(~800 AUD)</span>
+                </div>
+                <div class="hotel-price-person">
+                  <i class="fa-solid fa-user"></i> Pro Person: <strong>240 €</strong> <span class="hotel-price-aud">(~400 AUD)</span>
+                </div>
+              </div>
+
               <a href="https://www.booking.com" target="_blank" class="btn-action btn-booking"><i class="fa-solid fa-hotel"></i> Booking</a>
               <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
             </div>
@@ -558,7 +606,18 @@
             </div>
             <div class="day-subcard hotel">
               <div class="subcard-title"><i class="fa-solid fa-hotel"></i> Unterkunft Byron Bay</div>
-              <p><strong>Hotel / Resort Byron Bay:</strong> 25.03. – 27.03.</p>
+              <p><strong>Hotel / Resort Byron Bay:</strong> 25.03. – 27.03. (2 Nächte)</p>
+
+              <div class="hotel-cost-box">
+                <div class="hotel-cost-title"><i class="fa-solid fa-calculator"></i> Hotelkosten Übersicht</div>
+                <div class="hotel-price-group">
+                  <i class="fa-solid fa-users"></i> Gesamtkosten (Gruppe): <strong>320 €</strong> <span class="hotel-price-aud">(~533 AUD)</span>
+                </div>
+                <div class="hotel-price-person">
+                  <i class="fa-solid fa-user"></i> Pro Person: <strong>160 €</strong> <span class="hotel-price-aud">(~267 AUD)</span>
+                </div>
+              </div>
+
               <a href="https://www.booking.com" target="_blank" class="btn-action btn-booking"><i class="fa-solid fa-hotel"></i> Booking</a>
             </div>
             <div class="day-subcard budget">
@@ -620,7 +679,18 @@
             </div>
             <div class="day-subcard hotel">
               <div class="subcard-title"><i class="fa-solid fa-hotel"></i> Unterkunft Brisbane</div>
-              <p><strong>Rambla at Story House:</strong> 27.03. – 30.03. (Rooftop Pool)</p>
+              <p><strong>Rambla at Story House:</strong> 27.03. – 30.03. (3 Nächte, Rooftop Pool)</p>
+
+              <div class="hotel-cost-box">
+                <div class="hotel-cost-title"><i class="fa-solid fa-calculator"></i> Hotelkosten Übersicht</div>
+                <div class="hotel-price-group">
+                  <i class="fa-solid fa-users"></i> Gesamtkosten (Gruppe): <strong>360 €</strong> <span class="hotel-price-aud">(~600 AUD)</span>
+                </div>
+                <div class="hotel-price-person">
+                  <i class="fa-solid fa-user"></i> Pro Person: <strong>180 €</strong> <span class="hotel-price-aud">(~300 AUD)</span>
+                </div>
+              </div>
+
               <a href="https://www.booking.com/hotel/au/rambla-at-story-house.de.html" target="_blank" class="btn-action btn-booking"><i class="fa-solid fa-hotel"></i> Booking</a>
             </div>
             <div class="day-subcard budget">
@@ -700,7 +770,18 @@
             </div>
             <div class="day-subcard hotel">
               <div class="subcard-title"><i class="fa-solid fa-hotel"></i> Unterkunft Noosa</div>
-              <p><strong>Unterkunft Noosa Heads:</strong> 30.03. – 31.03.</p>
+              <p><strong>Unterkunft Noosa Heads:</strong> 30.03. – 31.03. (1 Nacht)</p>
+
+              <div class="hotel-cost-box">
+                <div class="hotel-cost-title"><i class="fa-solid fa-calculator"></i> Hotelkosten Übersicht</div>
+                <div class="hotel-price-group">
+                  <i class="fa-solid fa-users"></i> Gesamtkosten (Gruppe): <strong>120 €</strong> <span class="hotel-price-aud">(~200 AUD)</span>
+                </div>
+                <div class="hotel-price-person">
+                  <i class="fa-solid fa-user"></i> Pro Person: <strong>60 €</strong> <span class="hotel-price-aud">(~100 AUD)</span>
+                </div>
+              </div>
+
               <a href="https://www.booking.com" target="_blank" class="btn-action btn-booking"><i class="fa-solid fa-hotel"></i> Booking</a>
             </div>
             <div class="day-subcard budget">
@@ -735,7 +816,18 @@
             </div>
             <div class="day-subcard hotel">
               <div class="subcard-title"><i class="fa-solid fa-hotel"></i> Unterkunft Hervey Bay</div>
-              <p><strong>Unterkunft Hervey Bay:</strong> 31.03. – 01.04.</p>
+              <p><strong>Unterkunft Hervey Bay:</strong> 31.03. – 01.04. (1 Nacht)</p>
+
+              <div class="hotel-cost-box">
+                <div class="hotel-cost-title"><i class="fa-solid fa-calculator"></i> Hotelkosten Übersicht</div>
+                <div class="hotel-price-group">
+                  <i class="fa-solid fa-users"></i> Gesamtkosten (Gruppe): <strong>120 €</strong> <span class="hotel-price-aud">(~200 AUD)</span>
+                </div>
+                <div class="hotel-price-person">
+                  <i class="fa-solid fa-user"></i> Pro Person: <strong>60 €</strong> <span class="hotel-price-aud">(~100 AUD)</span>
+                </div>
+              </div>
+
               <a href="https://www.booking.com" target="_blank" class="btn-action btn-booking"><i class="fa-solid fa-hotel"></i> Booking</a>
             </div>
           </div>
@@ -790,7 +882,18 @@
             </div>
             <div class="day-subcard hotel">
               <div class="subcard-title"><i class="fa-solid fa-hotel"></i> Unterkunft Airlie Beach</div>
-              <p><strong>Hotel / Resort Airlie Beach:</strong> 02.04. – 05.04.</p>
+              <p><strong>Hotel / Resort Airlie Beach:</strong> 02.04. – 05.04. (3 Nächte)</p>
+
+              <div class="hotel-cost-box">
+                <div class="hotel-cost-title"><i class="fa-solid fa-calculator"></i> Hotelkosten Übersicht</div>
+                <div class="hotel-price-group">
+                  <i class="fa-solid fa-users"></i> Gesamtkosten (Gruppe): <strong>300 €</strong> <span class="hotel-price-aud">(~500 AUD)</span>
+                </div>
+                <div class="hotel-price-person">
+                  <i class="fa-solid fa-user"></i> Pro Person: <strong>150 €</strong> <span class="hotel-price-aud">(~250 AUD)</span>
+                </div>
+              </div>
+
               <a href="https://www.booking.com" target="_blank" class="btn-action btn-booking"><i class="fa-solid fa-hotel"></i> Booking</a>
             </div>
             <div class="day-subcard budget">
@@ -875,14 +978,25 @@
             </div>
             <div class="day-subcard hotel">
               <div class="subcard-title"><i class="fa-solid fa-hotel"></i> Unterkunft Melbourne</div>
-              <p><strong>Hotel Melbourne CBD:</strong> 05.04. – 09.04.</p>
+              <p><strong>Hotel Melbourne CBD:</strong> 05.04. – 09.04. (4 Nächte)</p>
+
+              <div class="hotel-cost-box">
+                <div class="hotel-cost-title"><i class="fa-solid fa-calculator"></i> Hotelkosten Übersicht</div>
+                <div class="hotel-price-group">
+                  <i class="fa-solid fa-users"></i> Gesamtkosten (Gruppe): <strong>200 €</strong> <span class="hotel-price-aud">(~333 AUD)</span>
+                </div>
+                <div class="hotel-price-person">
+                  <i class="fa-solid fa-user"></i> Pro Person: <strong>100 €</strong> <span class="hotel-price-aud">(~167 AUD)</span>
+                </div>
+              </div>
+
               <a href="https://www.booking.com" target="_blank" class="btn-action btn-booking"><i class="fa-solid fa-hotel"></i> Booking</a>
             </div>
             <div class="day-subcard budget">
               <div class="subcard-title"><i class="fa-solid fa-wallet"></i> Budget Melbourne Stopp</div>
               <ul class="sub-item-list">
                 <li><span>Inlandsflug PPP → MEL:</span> <strong class="sub-price" data-eur="200">200 €</strong></li>
-                <li><span>Unterkunft Melbourne (4 Nächte):</span> <strong class="sub-price" data-eur="200">200 €</strong></li>
+                <li><span>Unterkunft Melbourne (4 Nächte):</span> <strong class="sub-price" data-eur="100">100 €</strong></li>
               </ul>
             </div>
           </div>
@@ -1020,7 +1134,7 @@
       <div class="hub-card" style="margin-bottom: 2.5rem;">
         <h3><i class="fa-solid fa-sliders"></i> Interaktives Tagesbudget (Verpflegung & Vergnügen)</h3>
         <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
-          Schiebe den Regler, um dein kalkuliertes Tagesbudget anzupassen ($1 \text{ AUD} \approx 0{,}60 \text{ EUR}$):
+          Schiebe den Regler, um dein kalkuliertes Tagesbudget anzupassen (1 AUD ≈ 0,60 EUR):
         </p>
         <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
           <input type="range" id="daily-slider" min="30" max="150" step="5" value="70" oninput="updateBudgetCalculations()" style="flex: 1; min-width: 200px; accent-color: var(--primary); cursor: pointer;">
