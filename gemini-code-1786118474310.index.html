@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Australien Roadtrip 2027 | Wien bis Melbourne</title>
+  <title>Australien Roadtrip 2027 | Wien bis Melbourne (4 Personen)</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,7 +55,7 @@
       top: 0;
       z-index: 1000;
       box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-      padding: 1rem 2rem;
+      padding: 0.8rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -72,20 +72,39 @@
 
     .nav-links {
       display: flex;
-      gap: 1.5rem;
+      gap: 1.2rem;
       list-style: none;
+      align-items: center;
     }
 
     .nav-links a {
       text-decoration: none;
       color: var(--text-main);
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       transition: color 0.2s;
     }
 
     .nav-links a:hover {
       color: var(--secondary);
+    }
+
+    .btn-print-nav {
+      background: var(--primary);
+      color: white !important;
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      border: none;
+      transition: background 0.2s;
+    }
+
+    .btn-print-nav:hover {
+      background: var(--primary-dark);
     }
 
     /* Hero Section */
@@ -109,9 +128,23 @@
       font-size: 1.2rem;
       margin-bottom: 2rem;
       opacity: 0.95;
-      max-width: 700px;
+      max-width: 750px;
       margin-left: auto;
       margin-right: auto;
+    }
+
+    /* Group Tag */
+    .group-badge-hero {
+      display: inline-block;
+      background: var(--secondary);
+      color: white;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 0.3rem 1rem;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     /* Countdown Widget */
@@ -149,7 +182,7 @@
 
     /* Main Container */
     .container {
-      max-width: 1050px;
+      max-width: 1100px;
       margin: 3.5rem auto;
       padding: 0 1.5rem;
     }
@@ -173,13 +206,12 @@
       border-radius: 4px;
     }
 
-    /* Timeline Section & Continuous Line Fix (1.1) */
+    /* Timeline Section & Continuous Line */
     .timeline-wrapper {
       position: relative;
       padding: 0.5rem 0;
     }
 
-    /* Durchgehender vertikaler Strich */
     .timeline {
       position: relative;
       padding-left: 2.5rem;
@@ -190,7 +222,7 @@
       position: absolute;
       left: 11px;
       top: 15px;
-      bottom: 25px; /* Erstreckt sich bis ganz unten */
+      bottom: 25px;
       width: 4px;
       background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
       border-radius: 2px;
@@ -214,7 +246,6 @@
       box-shadow: 0 8px 25px rgba(0, 109, 104, 0.12);
     }
 
-    /* Bullet Node auf der Linie */
     details.timeline-item::before {
       content: '';
       position: absolute;
@@ -301,7 +332,6 @@
       color: var(--text-main);
     }
 
-    /* Accordion Body Content (1.2 Übersichtlicheres Layout) */
     .timeline-body {
       margin-top: 1.2rem;
       padding-top: 1.2rem;
@@ -398,7 +428,7 @@
     .btn-booking { background: #fff3ec; color: var(--secondary); border: 1px solid #fbd5c0; }
     .btn-booking:hover { background: var(--secondary); color: white; }
 
-    /* Budget Section & Cards */
+    /* Hub Cards & Grid */
     .hub-card {
       background: white;
       padding: 1.8rem;
@@ -444,13 +474,14 @@
     .status-pill.paid { background: var(--status-paid-bg); color: var(--status-paid); }
     .status-pill.open { background: var(--status-open-bg); color: var(--status-open); }
 
+    /* Checklists & Progress */
     .checklist { list-style: none; }
     .checklist-item {
       display: flex;
       align-items: center;
       gap: 0.8rem;
       margin-bottom: 0.8rem;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
     }
     .checklist-item input[type="checkbox"] {
       width: 18px;
@@ -459,13 +490,122 @@
       cursor: pointer;
     }
 
-    /* Footer */
-    footer {
-      background: var(--primary-dark);
-      color: white;
-      text-align: center;
-      padding: 2.5rem;
-      margin-top: 5rem;
+    .progress-bar-container {
+      width: 100%;
+      background-color: #e2e8f0;
+      height: 12px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 0.8rem 0 1.2rem 0;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--primary);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Slang & Feature Grids */
+    .slang-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .slang-card {
+      background: var(--primary-light);
+      padding: 0.9rem 1.1rem;
+      border-radius: 12px;
+      border: 1px solid #b2dfdb;
+    }
+
+    .slang-word {
+      font-weight: 800;
+      color: var(--primary-dark);
+      font-size: 1rem;
+    }
+
+    .slang-meaning {
+      font-size: 0.85rem;
+      color: var(--text-main);
+    }
+
+    /* Weather Table */
+    .weather-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .weather-table th, .weather-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .weather-table th {
+      background-color: var(--primary-light);
+      color: var(--primary-dark);
+      font-weight: 700;
+    }
+
+    /* Photo Diary Grid Placeholder */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .photo-placeholder {
+      aspect-ratio: 1;
+      background: #e2e8f0;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      border: 2px dashed #cbd5e0;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .photo-placeholder:hover {
+      background: #cbd5e0;
+    }
+
+    /* Print Stylesheet */
+    @media print {
+      nav, .hero, .btn-action, button, #daily-slider, .countdown-container, .photo-grid {
+        display: none !important;
+      }
+      body {
+        background: white;
+        color: black;
+      }
+      .container {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      details.timeline-item {
+        border: 1px solid #ccc !important;
+        break-inside: avoid;
+        margin-bottom: 1rem;
+      }
+      details.timeline-item[open] {
+        box-shadow: none !important;
+      }
+      details.timeline-item summary {
+        pointer-events: none;
+      }
+      .timeline::before {
+        display: none;
+      }
     }
 
     @media (max-width: 768px) {
@@ -484,14 +624,18 @@
   <nav>
     <div class="logo"><i class="fa-solid fa-plane-departure"></i> AUS 2027</div>
     <ul class="nav-links">
+      <li><a href="#map">Route</a></li>
       <li><a href="#route">Reiseplan</a></li>
-      <li><a href="#budget">Budget & Kosten</a></li>
-      <li><a href="#hub">Vorbereitung</a></li>
-      <li><a href="#calculator">Währungsrechner</a></li>
+      <li><a href="#budget">Budget (4 Pers.)</a></li>
+      <li><a href="#hub">Tools & Packen</a></li>
+      <li><a href="#bucketlist">Bucket List & Slang</a></li>
+      <li><a href="#emergency">Notfall & Admin</a></li>
+      <li><button onclick="window.print()" class="btn-print-nav"><i class="fa-solid fa-print"></i> PDF / Drucken</button></li>
     </ul>
   </nav>
 
   <section class="hero">
+    <span class="group-badge-hero"><i class="fa-solid fa-users"></i> 4-Personen Roadtrip Edition</span>
     <h1>AUSTRALIEN ROADTRIP 2027</h1>
     <p>Von Wien über Sydney, Byron Bay, K’gari & Whitsundays nach Melbourne</p>
     
@@ -504,6 +648,39 @@
   </section>
 
   <div class="container">
+
+    <section id="map" style="margin-bottom: 4rem;">
+      <h2 class="section-title">Interaktive Routenkarte & Eckdaten</h2>
+      
+      <div class="hub-card" style="padding: 1.5rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; text-align: center;">
+          <div style="background: var(--primary-light); padding: 1rem; border-radius: 12px;">
+            <i class="fa-solid fa-road" style="font-size: 1.5rem; color: var(--primary);"></i>
+            <div style="font-weight: 800; font-size: 1.2rem; margin-top: 0.3rem;">ca. 2.100 km</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Mietwagen-Strecke</div>
+          </div>
+          <div style="background: var(--secondary-light); padding: 1rem; border-radius: 12px;">
+            <i class="fa-solid fa-plane" style="font-size: 1.5rem; color: var(--secondary);"></i>
+            <div style="font-weight: 800; font-size: 1.2rem; margin-top: 0.3rem;">2 Inlandsflüge</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">SYD → BNK & PPP → MEL</div>
+          </div>
+          <div style="background: var(--primary-light); padding: 1rem; border-radius: 12px;">
+            <i class="fa-solid fa-calendar-days" style="font-size: 1.5rem; color: var(--primary);"></i>
+            <div style="font-weight: 800; font-size: 1.2rem; margin-top: 0.3rem;">20 Reisetage</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">21. März – 09. April 2027</div>
+          </div>
+          <div style="background: var(--secondary-light); padding: 1rem; border-radius: 12px;">
+            <i class="fa-solid fa-users" style="font-size: 1.5rem; color: var(--secondary);"></i>
+            <div style="font-weight: 800; font-size: 1.2rem; margin-top: 0.3rem;">4 Personen</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Gruppe & Kostenteilung</div>
+          </div>
+        </div>
+
+        <div style="border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); height: 350px;">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13543883.350392357!2d141.22909477042572!3d-29.6200293121516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b129838f39a743f%3A0x3017d681632a850!2sSydney%20NSW%2C%20Australien!5e0!3m2!1sde!2sat!4v1710000000000!5m2!1sde!2sat" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </section>
 
     <section id="route">
       <h2 class="section-title">Unser Reiseplan, Spots & Fahrzeiten</h2>
@@ -530,7 +707,7 @@
               <div class="day-subcard budget">
                 <div class="subcard-title"><i class="fa-solid fa-wallet"></i> Budget & Kosten</div>
                 <ul class="sub-item-list">
-                  <li><span>Langstreckenflug Wien → Sydney (p.P. Anteil):</span> <strong>453 €</strong> <span class="status-pill paid">Bezahlt</span></li>
+                  <li><span>Langstreckenflug Wien → Sydney (p.P.):</span> <strong>453 €</strong> <span class="status-pill paid">Bezahlt</span></li>
                 </ul>
               </div>
               <div class="day-subcard hotel">
@@ -569,7 +746,7 @@
                 <div class="hotel-cost-box">
                   <div class="hotel-cost-title"><i class="fa-solid fa-calculator"></i> Hotelkosten Übersicht</div>
                   <div class="hotel-price-group">
-                    <i class="fa-solid fa-users"></i> Gesamtkosten (Gruppe): <strong>476 €</strong> <span class="hotel-price-aud">(~793,33 AUD)</span>
+                    <i class="fa-solid fa-users"></i> Gesamtkosten (4 Pers. Gruppe): <strong>476 €</strong> <span class="hotel-price-aud">(~793,33 AUD)</span>
                   </div>
                   <div class="hotel-price-person">
                     <i class="fa-solid fa-user"></i> Pro Person: <strong>119 €</strong> <span class="hotel-price-aud">(~198,33 AUD)</span>
@@ -663,7 +840,7 @@
                 <div class="hotel-cost-box">
                   <div class="hotel-cost-title"><i class="fa-solid fa-calculator"></i> Hotelkosten Übersicht</div>
                   <div class="hotel-price-group">
-                    <i class="fa-solid fa-users"></i> Gesamtkosten (Gruppe): <strong>300 €</strong> <span class="hotel-price-aud">(~500 AUD)</span>
+                    <i class="fa-solid fa-users"></i> Gesamtkosten (4 Pers. Gruppe): <strong>300 €</strong> <span class="hotel-price-aud">(~500 AUD)</span>
                   </div>
                   <div class="hotel-price-person">
                     <i class="fa-solid fa-user"></i> Pro Person: <strong>75 €</strong> <span class="hotel-price-aud">(~125 AUD)</span>
@@ -727,7 +904,7 @@
                 <div class="hotel-cost-box">
                   <div class="hotel-cost-title"><i class="fa-solid fa-calculator"></i> Hotelkosten Übersicht</div>
                   <div class="hotel-price-group">
-                    <i class="fa-solid fa-users"></i> Gesamtkosten (Gruppe): <strong>476 €</strong> <span class="hotel-price-aud">(~793,33 AUD)</span>
+                    <i class="fa-solid fa-users"></i> Gesamtkosten (4 Pers. Gruppe): <strong>476 €</strong> <span class="hotel-price-aud">(~793,33 AUD)</span>
                   </div>
                   <div class="hotel-price-person">
                     <i class="fa-solid fa-user"></i> Pro Person: <strong>119 €</strong> <span class="hotel-price-aud">(~198,33 AUD)</span>
@@ -811,7 +988,7 @@
                 <div class="hotel-cost-box">
                   <div class="hotel-cost-title"><i class="fa-solid fa-calculator"></i> Hotelkosten Übersicht</div>
                   <div class="hotel-price-group">
-                    <i class="fa-solid fa-users"></i> Gesamtkosten (Gruppe): <strong>134 €</strong> <span class="hotel-price-aud">(~223,33 AUD)</span>
+                    <i class="fa-solid fa-users"></i> Gesamtkosten (4 Pers. Gruppe): <strong>134 €</strong> <span class="hotel-price-aud">(~223,33 AUD)</span>
                   </div>
                   <div class="hotel-price-person">
                     <i class="fa-solid fa-user"></i> Pro Person: <strong>33,50 €</strong> <span class="hotel-price-aud">(~55,83 AUD)</span>
@@ -850,7 +1027,7 @@
                 <div class="hotel-cost-box">
                   <div class="hotel-cost-title"><i class="fa-solid fa-calculator"></i> Hotelkosten Übersicht</div>
                   <div class="hotel-price-group">
-                    <i class="fa-solid fa-users"></i> Gesamtkosten (Gruppe): <strong>169 €</strong> <span class="hotel-price-aud">(~281,67 AUD)</span>
+                    <i class="fa-solid fa-users"></i> Gesamtkosten (4 Pers. Gruppe): <strong>169 €</strong> <span class="hotel-price-aud">(~281,67 AUD)</span>
                   </div>
                   <div class="hotel-price-person">
                     <i class="fa-solid fa-user"></i> Pro Person: <strong>42,25 €</strong> <span class="hotel-price-aud">(~70,42 AUD)</span>
@@ -918,7 +1095,7 @@
                 <div class="hotel-cost-box">
                   <div class="hotel-cost-title"><i class="fa-solid fa-calculator"></i> Hotelkosten Übersicht</div>
                   <div class="hotel-price-group">
-                    <i class="fa-solid fa-users"></i> Gesamtkosten (Gruppe): <strong>468 €</strong> <span class="hotel-price-aud">(~780 AUD)</span>
+                    <i class="fa-solid fa-users"></i> Gesamtkosten (4 Pers. Gruppe): <strong>468 €</strong> <span class="hotel-price-aud">(~780 AUD)</span>
                   </div>
                   <div class="hotel-price-person">
                     <i class="fa-solid fa-user"></i> Pro Person: <strong>117 €</strong> <span class="hotel-price-aud">(~195 AUD)</span>
@@ -1013,7 +1190,7 @@
                 <div class="hotel-cost-box">
                   <div class="hotel-cost-title"><i class="fa-solid fa-calculator"></i> Hotelkosten Übersicht</div>
                   <div class="hotel-price-group">
-                    <i class="fa-solid fa-users"></i> Gesamtkosten (Gruppe): <strong>643 €</strong> <span class="hotel-price-aud">(~1071,67 AUD)</span>
+                    <i class="fa-solid fa-users"></i> Gesamtkosten (4 Pers. Gruppe): <strong>643 €</strong> <span class="hotel-price-aud">(~1071,67 AUD)</span>
                   </div>
                   <div class="hotel-price-person">
                     <i class="fa-solid fa-user"></i> Pro Person: <strong>160,75 €</strong> <span class="hotel-price-aud">(~267,92 AUD)</span>
@@ -1118,7 +1295,7 @@
               <div class="day-subcard budget">
                 <div class="subcard-title"><i class="fa-solid fa-wallet"></i> Rückflug Kosten</div>
                 <ul class="sub-item-list">
-                  <li><span>Langstreckenflug Melbourne → Wien (p.P. Anteil):</span> <strong>451 €</strong> <span class="status-pill paid">Bezahlt</span></li>
+                  <li><span>Langstreckenflug Melbourne → Wien (p.P.):</span> <strong>451 €</strong> <span class="status-pill paid">Bezahlt</span></li>
                 </ul>
               </div>
             </div>
@@ -1129,13 +1306,13 @@
     </section>
 
     <section id="budget" style="margin-top: 5rem;">
-      <h2 class="section-title">Kosten- & Budgetübersicht</h2>
+      <h2 class="section-title">Kosten- & Budgetübersicht (4 Personen)</h2>
       <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
-        Transparente Aufschlüsselung aller echten Reisekosten mit Gruppen- & Einzelanzeige sowie dynamischer Verpflegungskalkulation.
+        Transparente Aufschlüsselung aller echten Reisekosten für die gesamte 4-köpfige Gruppe oder pro Person.
       </p>
 
       <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-bottom: 2.5rem;">
-        <span style="font-weight: 700; color: var(--text-main);">Gesamtkosten (Gruppe - 2 Pers.)</span>
+        <span style="font-weight: 700; color: var(--text-main);">Gesamtkosten (4 Pers. Gruppe)</span>
         <label style="position: relative; display: inline-block; width: 60px; height: 32px;">
           <input type="checkbox" id="person-toggle" onchange="updateBudgetCalculations()" style="opacity: 0; width: 0; height: 0;" checked>
           <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--primary); transition: .4s; border-radius: 34px;"></span>
@@ -1243,13 +1420,13 @@
             <h3 style="margin:0;"><i class="fa-solid fa-car"></i> Mietwagen & Transport</h3>
             <span class="status-pill open">Offen</span>
           </div>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Fahrzeuge, Bus & Sprit</p>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Fahrzeuge, Bus & Sprit (aufgeteilt durch 4)</p>
           <ul class="sub-item-list">
-            <li class="sub-price-item" data-eur="200" data-paid="false">
-              <span>East Coast Mietwagen (Anteil):</span> <strong class="sub-price-val">200 €</strong>
+            <li class="sub-price-item" data-eur="150" data-paid="false">
+              <span>East Coast Mietwagen (Anteil p.P.):</span> <strong class="sub-price-val">150 €</strong>
             </li>
-            <li class="sub-price-item" data-eur="100" data-paid="false">
-              <span>Sprit, Maut & Parken (Anteil):</span> <strong class="sub-price-val">100 €</strong>
+            <li class="sub-price-item" data-eur="75" data-paid="false">
+              <span>Sprit, Maut & Parken (Anteil p.P.):</span> <strong class="sub-price-val">75 €</strong>
             </li>
             <li class="sub-price-item" data-eur="90" data-paid="false">
               <span>Greyhound Nachtbus Ticket:</span> <strong class="sub-price-val">90 €</strong>
@@ -1300,32 +1477,214 @@
     </section>
 
     <section id="hub" style="margin-top: 5rem;">
-      <h2 class="section-title">Vorbereitung & Dokumente</h2>
+      <h2 class="section-title">Reise-Tools & Interaktive Packliste</h2>
       
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.8rem;">
+        
+        <div class="hub-card" style="grid-column: span 2;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <h3 style="margin:0;"><i class="fa-solid fa-suitcase"></i> Interaktive Roadtrip Packliste</h3>
+            <span id="pack-status-text" style="font-size: 0.85rem; font-weight: 700; color: var(--primary);">0 von 15 gepackt</span>
+          </div>
+          
+          <div class="progress-bar-container">
+            <div id="pack-progress" class="progress-bar-fill"></div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+            <div>
+              <h4 style="color: var(--primary); font-size: 0.95rem; margin-bottom: 0.6rem;"><i class="fa-solid fa-passport"></i> Dokumente & Finanzen</h4>
+              <ul class="checklist">
+                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Reisepass (Gültig > 6 Mon.)</li>
+                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Visum (eVisitor 651 / ETA)</li>
+                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Int. Führerschein + Scheckkarte</li>
+                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> 2x Kreditkarte (ohne Gebühr)</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 style="color: var(--primary); font-size: 0.95rem; margin-bottom: 0.6rem;"><i class="fa-solid fa-plug"></i> Elektronik & Gadgets</h4>
+              <ul class="checklist">
+                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> AUS Reisestecker / Adapter</li>
+                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Powerbank (für lange Fahrten)</li>
+                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Ladekabel & Kamera</li>
+                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Drohne + Ersatzakkus</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 style="color: var(--primary); font-size: 0.95rem; margin-bottom: 0.6rem;"><i class="fa-solid fa-sun"></i> Strand & Gesundheit</h4>
+              <ul class="checklist">
+                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Riff-freundliche Sonnencreme</li>
+                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Mückenspray mit DEET / Icaridin</li>
+                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Mikrofaser-Handtuch</li>
+                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Sonnenbrille & Cappy</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
         <div class="hub-card">
-          <h3><i class="fa-solid fa-passport"></i> Essentials Checkliste</h3>
+          <h3><i class="fa-solid fa-sun"></i> Sonnen-Kompass</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Die magischsten Lichteinflüsse für Fotos:</p>
           <ul class="checklist">
-            <li class="checklist-item"><input type="checkbox"> Reisepass (Mind. 6 Monate gültig)</li>
-            <li class="checklist-item"><input type="checkbox"> Visum (eVisitor Subclass 651 / ETA)</li>
-            <li class="checklist-item"><input type="checkbox"> Internationaler Führerschein</li>
-            <li class="checklist-item"><input type="checkbox"> Kreditkarte ohne Fremdwährungsgebühr</li>
-            <li class="checklist-item"><input type="checkbox"> Reiseversicherung abgeschlossen</li>
+            <li class="checklist-item"><i class="fa-solid fa-cloud-sun" style="color: var(--secondary);"></i> <strong>Cape Byron:</strong> 05:45 Uhr Sunrise</li>
+            <li class="checklist-item"><i class="fa-solid fa-sun" style="color: var(--accent-gold);"></i> <strong>Carlo Sand Blow:</strong> 17:50 Uhr Sunset</li>
+            <li class="checklist-item"><i class="fa-solid fa-kiwi-bird" style="color: var(--primary);"></i> <strong>Hillsborough:</strong> 05:15 Kängurus</li>
+          </ul>
+        </div>
+
+        <div class="hub-card" style="grid-column: 1 / -1;">
+          <h3><i class="fa-solid fa-plane-arrival"></i> Singapur Stopover Quick Guide (7 Std. Aufenthalt)</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 0.8rem; font-size: 0.9rem;">
+            <div style="background: var(--primary-light); padding: 0.9rem; border-radius: 10px;">
+              <strong>1. Changi Jewel:</strong> Riesiger Indoor-Wasserfall (Rain Vortex) direkt im Terminal.
+            </div>
+            <div style="background: var(--primary-light); padding: 0.9rem; border-radius: 10px;">
+              <strong>2. Gardens by the Bay:</strong> Supertree Grove erkunden & Fotos schießen.
+            </div>
+            <div style="background: var(--primary-light); padding: 0.9rem; border-radius: 10px;">
+              <strong>3. Lau Pa Sat:</strong> Saté-Spieße am berühmten Streetfood-Markt probieren.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="bucketlist" style="margin-top: 5rem;">
+      <h2 class="section-title">Aussie Bucket List & Culture 🦘</h2>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem;">
+        
+        <div class="hub-card">
+          <h3><i class="fa-solid fa-paw"></i> Wildlife-Erlebnis Tracker</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Abhaken sobald in freier Wildbahn gesehen!</p>
+          <ul class="checklist">
+            <li class="checklist-item"><input type="checkbox"> Wilde Koalas (Noosa / Great Ocean Road)</li>
+            <li class="checklist-item"><input type="checkbox"> Kängurus am Strand (Cape Hillsborough)</li>
+            <li class="checklist-item"><input type="checkbox"> Zwergpinguine (St. Kilda Pier, Melbourne)</li>
+            <li class="checklist-item"><input type="checkbox"> Wilde Dingos (K’gari Fraser Island)</li>
+            <li class="checklist-item"><input type="checkbox"> Delfine / Schildkröten (Cape Byron)</li>
           </ul>
         </div>
 
         <div class="hub-card">
-          <h3><i class="fa-solid fa-ticket"></i> Buchungs-Status</h3>
+          <h3><i class="fa-solid fa-utensils"></i> Aussie Taste Challenge</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Kulinarische Highlights auf dem Trip:</p>
           <ul class="checklist">
-            <li class="checklist-item"><input type="checkbox" checked> Langstreckenflüge (VIE - SYD / MEL - VIE)</li>
-            <li class="checklist-item"><input type="checkbox"> Inlandsflug SYD → Ballina</li>
-            <li class="checklist-item"><input type="checkbox"> Inlandsflug PPP → Melbourne</li>
-            <li class="checklist-item"><input type="checkbox"> Mietwagen East Coast</li>
-            <li class="checklist-item"><input type="checkbox"> K'gari 4WD Tagestour</li>
-            <li class="checklist-item"><input type="checkbox"> Greyhound Nachtbus</li>
-            <li class="checklist-item"><input type="checkbox"> Whitsundays Katamaran-Tour</li>
+            <li class="checklist-item"><input type="checkbox"> Flat White Kaffee (Melbourne Café)</li>
+            <li class="checklist-item"><input type="checkbox"> Tim Tam Slam (Keks-Mitmach-Ritual)</li>
+            <li class="checklist-item"><input type="checkbox"> Australien Meat Pie probieren</li>
+            <li class="checklist-item"><input type="checkbox"> Bundaberg Ginger Beer trinken</li>
+            <li class="checklist-item"><input type="checkbox"> Vegemite Toast-Test (Dünn bestreichen!)</li>
           </ul>
         </div>
+
+        <div class="hub-card" style="grid-column: 1 / -1;">
+          <h3><i class="fa-solid fa-comments"></i> Aussie Slang Cheat Sheet 🇦🇺</h3>
+          <div class="slang-grid" style="margin-top: 1rem;">
+            <div class="slang-card"><div class="slang-word">G'day</div><div class="slang-meaning">Hallo / Guten Tag</div></div>
+            <div class="slang-card"><div class="slang-word">Brekkie</div><div class="slang-meaning">Frühstück (Breakfast)</div></div>
+            <div class="slang-card"><div class="slang-word">Arvo</div><div class="slang-meaning">Nachmittag (Afternoon)</div></div>
+            <div class="slang-card"><div class="slang-word">Thongs</div><div class="slang-meaning">Flip-Flops Badeschuhe</div></div>
+            <div class="slang-card"><div class="slang-word">Macca's</div><div class="slang-meaning">McDonald's</div></div>
+            <div class="slang-card"><div class="slang-word">No worries</div><div class="slang-meaning">Kein Problem / Gerne</div></div>
+            <div class="slang-card"><div class="slang-word">Chockers</div><div class="slang-meaning">Rappelvoll / Ausgebucht</div></div>
+            <div class="slang-card"><div class="slang-word">Servo</div><div class="slang-meaning">Tankstelle (Service Station)</div></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="emergency" style="margin-top: 5rem;">
+      <h2 class="section-title">Notfall, Admin & Regeln 🚨</h2>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem;">
+        
+        <div class="hub-card" style="border-left: 4px solid #e53e3e;">
+          <h3 style="color: #c53030;"><i class="fa-solid fa-phone-volume"></i> Notruf & Wichtige Nummern</h3>
+          <ul class="sub-item-list">
+            <li><span>Notruf Australien (Polizei, Rettung, Feuerwehr):</span> <strong>000</strong></li>
+            <li><span>Kreditkarten Sperrnotruf:</span> <strong>+49 116 116 / +43 1 2048800</strong></li>
+            <li><span>Österreichische Botschaft Canberra:</span> <strong>+61 2 6295 1533</strong></li>
+            <li><span>Auslandsreisekrankenversicherung:</span> <strong>Polizzen-Nr. bereithalten</strong></li>
+          </ul>
+        </div>
+
+        <div class="hub-card">
+          <h3><i class="fa-solid fa-helicopter"></i> Drohnen- & Nationalparkregeln</h3>
+          <ul class="checklist">
+            <li class="checklist-item"><i class="fa-solid fa-ban" style="color: #e53e3e;"></i> Strenges Drohnenverbot in Nationalparks (z.B. K'gari)</li>
+            <li class="checklist-item"><i class="fa-solid fa-up-long" style="color: var(--primary);"></i> Maximale Flughöhe: 120 Meter (CASA Regel)</li>
+            <li class="checklist-item"><i class="fa-solid fa-plane-slash" style="color: var(--primary);"></i> Mind. 5,5 km Abstand zu Flugplätzen</li>
+          </ul>
+        </div>
+
+        <div class="hub-card">
+          <h3><i class="fa-solid fa-car-side"></i> Verkehrs- & Bezahltipps</h3>
+          <ul class="checklist">
+            <li class="checklist-item"><i class="fa-solid fa-road" style="color: var(--secondary);"></i> Linksverkehr & Anschnallpflicht auf allen Sitzen</li>
+            <li class="checklist-item"><i class="fa-solid fa-credit-card" style="color: var(--primary);"></i> Mautstraßen (Toll Roads): Werden elektronisch erfasst</li>
+            <li class="checklist-item"><i class="fa-solid fa-coins" style="color: var(--primary);"></i> Trinkgeld: In Australien unüblich / nicht erwartet</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="diary" style="margin-top: 5rem;">
+      <h2 class="section-title">Wetter & Live-Tagebuch ☀️</h2>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem;">
+        
+        <div class="hub-card">
+          <h3><i class="fa-solid fa-temperature-high"></i> Klimatabelle (März / April)</h3>
+          <table class="weather-table">
+            <thead>
+              <tr>
+                <th>Region</th>
+                <th>Temp. Ø</th>
+                <th>Wetter-Vibe</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Sydney</td>
+                <td>23°C / 16°C</td>
+                <td>Angenehm & sonnig</td>
+              </tr>
+              <tr>
+                <td>Byron / Gold Coast</td>
+                <td>26°C / 18°C</td>
+                <td>Warmes Badewetter</td>
+              </tr>
+              <tr>
+                <td>Whitsundays</td>
+                <td>28°C / 22°C</td>
+                <td>Tropisch & warm</td>
+              </tr>
+              <tr>
+                <td>Melbourne</td>
+                <td>20°C / 11°C</td>
+                <td>Wechselhaft (4 Jahreszeiten)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="hub-card">
+          <h3><i class="fa-solid fa-camera"></i> Live Foto-Raster (Unterwegs)</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Platzhalter für eure besten Tages-Momente:</p>
+          <div class="photo-grid">
+            <div class="photo-placeholder"><i class="fa-solid fa-plus"></i> Tag 1-5</div>
+            <div class="photo-placeholder"><i class="fa-solid fa-plus"></i> Tag 6-10</div>
+            <div class="photo-placeholder"><i class="fa-solid fa-plus"></i> Tag 11-15</div>
+            <div class="photo-placeholder"><i class="fa-solid fa-plus"></i> Tag 16-20</div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -1367,7 +1726,7 @@
   </div>
 
   <footer>
-    <p>Gute Reise! 🦘🇦🇺 Erstellt für den Australien Roadtrip 2027.</p>
+    <p>Gute Reise! 🦘🇦🇺 Erstellt für den 4-Personen Australien Roadtrip 2027.</p>
   </footer>
 
   <script>
@@ -1419,8 +1778,8 @@
       }
     }
 
-    // 3. BUDGET & KOSTEN CALCULATOR LOGIK (REPARIERT)
-    const GROUP_SIZE = 2; // Gruppen-Größe (2 Personen)
+    // 3. BUDGET & KOSTEN CALCULATOR LOGIK (4 PERSONEN)
+    const GROUP_SIZE = 4; // Gruppen-Größe: 4 Personen!
     const TRIP_DAYS = 19;  // Reisetage
     const AUD_RATE = 0.60; // 1 AUD = 0.60 EUR
 
@@ -1448,7 +1807,7 @@
         `${displayFoodEur.toLocaleString('de-DE')} € <small style="font-size: 0.9rem; color: var(--text-muted); font-weight: 500;">(~${displayFoodAud.toLocaleString('de-DE')} AUD)</small>`;
 
       let paidSumEur = 0;
-      let openSumEur = displayFoodEur; // Verpflegung ist immer vor Ort (offen)
+      let openSumEur = displayFoodEur;
 
       // Alle Kategorie-Karten durchgehen
       const categoryCards = document.querySelectorAll('.budget-category-card');
@@ -1471,14 +1830,12 @@
             openSumEur += currentEur;
           }
 
-          // Sub-item Anzeige aktualisieren
           const priceSpan = sub.querySelector('.sub-price-val');
           if (priceSpan) {
             priceSpan.innerText = `${currentEur.toLocaleString('de-DE', {minimumFractionDigits: 0, maximumFractionDigits: 2})} €`;
           }
         });
 
-        // Gesamtsumme der Kategoriekarte aktualisieren
         const cardTotalDisplay = card.querySelector('.card-total-price');
         if (cardTotalDisplay) {
           const cardAud = Math.round(cardTotalEur / AUD_RATE);
@@ -1494,10 +1851,21 @@
       document.getElementById('open-amount').innerText = `${openSumEur.toLocaleString('de-DE', {minimumFractionDigits: 0, maximumFractionDigits: 2})} €`;
 
       const paidPercent = totalSumEur > 0 ? Math.round((paidSumEur / totalSumEur) * 100) : 0;
-      const openPercent = 100 - paidPercent;
 
       document.getElementById('progress-paid').style.width = paidPercent + '%';
-      document.getElementById('progress-open').style.width = openPercent + '%';
+      document.getElementById('progress-open').style.width = (100 - paidPercent) + '%';
+    }
+
+    // 4. PACKLISTE PROGRESS LOGIK
+    function updatePackingProgress() {
+      const checkboxes = document.querySelectorAll('.pack-checkbox');
+      const checkedCount = document.querySelectorAll('.pack-checkbox:checked').length;
+      const totalCount = checkboxes.length;
+
+      const percentage = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
+
+      document.getElementById('pack-progress').style.width = percentage + '%';
+      document.getElementById('pack-status-text').innerText = `${checkedCount} von ${totalCount} gepackt (${percentage}%)`;
     }
 
     // Beim Laden der Seite initialisieren
@@ -1505,6 +1873,7 @@
       if (document.getElementById('budget')) {
         updateBudgetCalculations();
       }
+      updatePackingProgress();
     });
   </script>
 </body>
