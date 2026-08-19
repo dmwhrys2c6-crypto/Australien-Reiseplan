@@ -355,6 +355,54 @@
     .section-spaced { margin-top: 5rem; }
     .section-lead { text-align: center; color: var(--text-muted); margin-bottom: 2rem; }
 
+    /* Budget Switch Fix */
+    .budget-toggle-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .budget-toggle-label {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      user-select: none;
+    }
+    .budget-switch {
+      position: relative;
+      display: inline-block;
+      width: 54px;
+      height: 30px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .budget-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+    .budget-slider {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: var(--primary);
+      transition: background-color .3s;
+      border-radius: 30px;
+    }
+    .budget-slider-dot {
+      position: absolute;
+      height: 22px;
+      width: 22px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      border-radius: 50%;
+      transition: transform .3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+      pointer-events: none;
+    }
+
     /* Timeline & Itinerary */
     .timeline-wrapper {
       position: relative;
@@ -723,22 +771,22 @@
     }
     .grocery-btn-add:hover { background: var(--primary-dark); }
 
-    .grocery-list {
+    .grocery-list, .fuel-list {
       list-style: none;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-      max-height: 420px;
+      max-height: 380px;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       padding: 0.2rem 0;
     }
-    .grocery-item {
+    .grocery-item, .fuel-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
       background: #f8fafc;
-      padding: 0.8rem 1rem;
+      padding: 0.75rem 0.9rem;
       border-radius: 12px;
       border: 1px solid var(--border-color);
       min-height: 48px;
@@ -768,7 +816,7 @@
       cursor: pointer;
       pointer-events: none;
     }
-    .grocery-del-btn {
+    .grocery-del-btn, .fuel-del-btn {
       background: none;
       border: none;
       color: #ef4444;
@@ -783,7 +831,42 @@
       align-items: center;
       justify-content: center;
     }
-    .grocery-del-btn:hover, .grocery-del-btn:active { opacity: 1; }
+    .grocery-del-btn:hover, .fuel-del-btn:hover { opacity: 1; }
+
+    /* Tank-Manager Styles */
+    .payer-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      background: #dbeafe;
+      color: #1e40af;
+      margin-right: 0.4rem;
+    }
+    .payer-badge.tobi { background: #e0e7ff; color: #4338ca; }
+    .payer-badge.lara { background: #fce7f3; color: #be185d; }
+    .payer-badge.ker  { background: #fef3c7; color: #b45309; }
+    .payer-badge.flo  { background: #dcfce7; color: #15803d; }
+
+    .fuel-breakdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.4rem;
+      margin-top: 0.6rem;
+      text-align: center;
+    }
+    .fuel-breakdown-cell {
+      background: #f1f5f9;
+      padding: 0.4rem 0.2rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+    }
+    .fuel-breakdown-cell strong {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-main);
+    }
 
     /* Tool Buttons */
     .tool-btn-row {
@@ -809,8 +892,6 @@
     }
     .btn-tool.splitwise { background: #e9f8f2; color: #1b8a5a; border-color: #b8e6d0; }
     .btn-tool.splitwise:hover { background: #1b8a5a; color: white; }
-    .btn-tool.splid { background: var(--primary-light); color: var(--primary-dark); border-color: #b2dfdb; }
-    .btn-tool.splid:hover { background: var(--primary); color: white; }
     .btn-tool.photos { background: var(--secondary-light); color: var(--secondary); border-color: #fbd5c0; }
     .btn-tool.photos:hover { background: var(--secondary); color: white; }
     .btn-tool.casa { background: #f0f4f8; color: #1e3a8a; border-color: #bfdbfe; }
@@ -1012,6 +1093,9 @@
         padding-bottom: 0.4rem;
       }
       .chip-btn { flex-shrink: 0; }
+      .budget-toggle-wrapper { gap: 0.6rem; }
+      .budget-toggle-label { font-size: 0.82rem; }
+      .fuel-breakdown-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
     }
   </style>
 </head>
@@ -1757,14 +1841,15 @@
         Transparente Aufschlüsselung aller Reisekosten für die gesamte 4-köpfige Gruppe oder pro Person.
       </p>
 
-      <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-bottom: 2.5rem;">
-        <span style="font-weight: 700; color: var(--text-main);">Gesamtkosten (4 Pers. Gruppe)</span>
-        <label style="position: relative; display: inline-block; width: 60px; height: 32px;">
-          <input type="checkbox" id="person-toggle" onchange="updateBudgetCalculations()" style="opacity: 0; width: 0; height: 0;" checked>
-          <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--primary); transition: .4s; border-radius: 34px;"></span>
-          <span id="toggle-dot" style="position: absolute; content: ''; height: 24px; width: 24px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+      <!-- Umschalter (Repariert) -->
+      <div class="budget-toggle-wrapper">
+        <span class="budget-toggle-label">Gesamtkosten (4 Pers.)</span>
+        <label class="budget-switch">
+          <input type="checkbox" id="person-toggle" onchange="updateBudgetCalculations()" checked>
+          <span class="budget-slider"></span>
+          <span id="toggle-dot" class="budget-slider-dot"></span>
         </label>
-        <span style="font-weight: 700; color: var(--text-main);">Kosten pro Person</span>
+        <span class="budget-toggle-label">Kosten pro Person</span>
       </div>
 
       <div class="hub-card" style="margin-bottom: 2.5rem; padding: 1.8rem;">
@@ -1984,7 +2069,7 @@
           </div>
         </div>
 
-        <!-- 2-Spalten-Reihe -->
+        <!-- 2-Spalten-Reihe: Strand-BBQ & Tank-Manager -->
         <div class="hub-row-2col">
           
           <div class="hub-card">
@@ -2011,25 +2096,61 @@
             </div>
           </div>
 
+          <!-- NEU: Tankrechner & Rechnungs-Manager (AUD, EUR, Sync & Wer hat gezahlt) -->
           <div class="hub-card">
-            <h3><i class="fa-solid fa-gas-pump" style="color: var(--primary);"></i> Tank- & Spritrechner</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.4rem;">
+              <h3 style="margin: 0;"><i class="fa-solid fa-gas-pump" style="color: var(--primary);"></i> Tank-Rechner & Manager</h3>
+              <span class="sync-badge"><span class="sync-dot"></span> Live Sync</span>
+            </div>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">
-              Spritkosten berechnen und direkt durch alle 4 Mitreisenden teilen:
+              Tankrechnungen in AUD eintragen, in EUR umrechnen & durch 4 teilen:
             </p>
-            <div style="display: flex; flex-direction: column; gap: 0.6rem;">
-              <div style="display: flex; gap: 0.6rem;">
-                <input type="number" id="fuel-liters" class="grocery-input" style="padding: 0.55rem 0.8rem; font-size: 16px;" placeholder="Liter (z.B. 50)" oninput="calculateFuelCost()">
-                <input type="number" id="fuel-price" class="grocery-input" style="padding: 0.55rem 0.8rem; font-size: 16px;" placeholder="AUD/L (z.B. 1.95)" value="1.95" step="0.01" oninput="calculateFuelCost()">
+
+            <!-- Eingabemaske -->
+            <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1rem;">
+              <div style="display: flex; gap: 0.5rem;">
+                <input type="number" id="fuel-amount-aud" class="grocery-input" style="padding: 0.6rem 0.8rem; font-size: 16px; flex: 1;" placeholder="Betrag in AUD (z.B. 95.50)" step="0.01">
+                <select id="fuel-payer" class="grocery-input" style="padding: 0.6rem 0.8rem; font-size: 16px; width: 110px; flex: none; font-weight: 700; background: #ffffff;">
+                  <option value="Tobi">Tobi</option>
+                  <option value="Lara">Lara</option>
+                  <option value="Ker">Ker</option>
+                  <option value="Flo">Flo</option>
+                </select>
               </div>
-              <div style="background: var(--primary-light); padding: 0.6rem 0.9rem; border-radius: 10px; font-size: 0.85rem; font-weight: 700; color: var(--primary-dark); display: flex; justify-content: space-between;">
-                <span>Gesamt: <strong id="fuel-total-aud">0.00 AUD</strong></span>
-                <span>(<strong id="fuel-total-eur">0.00 €</strong>)</span>
-              </div>
-              <div style="background: #e8f5e9; color: #166534; padding: 0.6rem 0.9rem; border-radius: 10px; font-size: 0.85rem; font-weight: 800; display: flex; justify-content: space-between;">
-                <span>Anteil pro Person (1/4):</span>
-                <span id="fuel-per-person">0.00 €</span>
+
+              <div style="display: flex; gap: 0.5rem;">
+                <input type="text" id="fuel-note" class="grocery-input" style="padding: 0.6rem 0.8rem; font-size: 16px; flex: 1;" placeholder="Ort / Notiz (z.B. BP Brisbane)" onkeypress="if(event.key === 'Enter') addFuelEntry()">
+                <button class="grocery-btn-add" onclick="addFuelEntry()" style="padding: 0.6rem 1rem;">
+                  <i class="fa-solid fa-plus"></i> Hinzufügen
+                </button>
               </div>
             </div>
+
+            <!-- Gesamtsummen Box -->
+            <div style="background: var(--primary-light); padding: 0.75rem 1rem; border-radius: 12px; font-size: 0.85rem; font-weight: 700; color: var(--primary-dark); display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+              <span>Gesamt Tankkosten:</span>
+              <span id="fuel-total-summary">0.00 AUD (0.00 €)</span>
+            </div>
+
+            <div style="background: #e8f5e9; color: #166534; padding: 0.65rem 1rem; border-radius: 12px; font-size: 0.85rem; font-weight: 800; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
+              <span>Anteil pro Person (1/4):</span>
+              <span id="fuel-per-person-summary">0.00 €</span>
+            </div>
+
+            <!-- Wer hat bezahlt Aufschlüsselung -->
+            <div class="fuel-breakdown-grid">
+              <div class="fuel-breakdown-cell">Tobi: <strong id="payer-tobi-sum">0 €</strong></div>
+              <div class="fuel-breakdown-cell">Lara: <strong id="payer-lara-sum">0 €</strong></div>
+              <div class="fuel-breakdown-cell">Ker: <strong id="payer-ker-sum">0 €</strong></div>
+              <div class="fuel-breakdown-cell">Flo: <strong id="payer-flo-sum">0 €</strong></div>
+            </div>
+
+            <!-- Liste der Tankquittungen -->
+            <div style="margin-top: 1rem; border-top: 1px dashed var(--border-color); padding-top: 0.8rem;">
+              <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Eingetragene Tankungen:</span>
+              <ul id="fuel-list-container" class="fuel-list" style="margin-top: 0.5rem;"></ul>
+            </div>
+
           </div>
 
         </div>
@@ -2452,9 +2573,11 @@
 
     const GROCERY_STORAGE_KEY = 'aus_roadtrip_groceries_2027';
     const CHECKBOX_STORAGE_KEY = 'aus_roadtrip_checkboxes_2027';
+    const FUEL_STORAGE_KEY = 'aus_roadtrip_fuel_entries_2027';
 
     let groceries = [];
     let checkboxStates = {};
+    let fuelEntries = [];
     let currentSelectedTz = 'Australia/Sydney';
     let syncSocket = null;
     let isApplyingRemote = false;
@@ -2491,7 +2614,7 @@
 
         syncSocket.onclose = () => {
           setSyncBadge(false);
-          setTimeout(initCloudSync, 3500); // Automatischer Reconnect
+          setTimeout(initCloudSync, 3500);
         };
 
         syncSocket.onerror = () => {
@@ -2501,7 +2624,6 @@
         setSyncBadge(false);
       }
 
-      // Initialen Zustand aus der Cloud abrufen
       fetch(`${NTFY_API_URL}/json?poll=1&since=all`)
         .then(res => res.text())
         .then(text => {
@@ -2533,6 +2655,12 @@
         renderGroceries();
       }
 
+      if (payload.fuelEntries) {
+        fuelEntries = payload.fuelEntries;
+        localStorage.setItem(FUEL_STORAGE_KEY, JSON.stringify(fuelEntries));
+        renderFuelList();
+      }
+
       if (payload.checkboxStates) {
         checkboxStates = payload.checkboxStates;
         localStorage.setItem(CHECKBOX_STORAGE_KEY, JSON.stringify(checkboxStates));
@@ -2553,17 +2681,17 @@
 
       const payload = {
         groceries: groceries,
+        fuelEntries: fuelEntries,
         checkboxStates: checkboxStates,
         tz: currentSelectedTz,
         timestamp: Date.now()
       };
 
-      // 1. Lokale Speicherung
       localStorage.setItem(GROCERY_STORAGE_KEY, JSON.stringify(groceries));
+      localStorage.setItem(FUEL_STORAGE_KEY, JSON.stringify(fuelEntries));
       localStorage.setItem(CHECKBOX_STORAGE_KEY, JSON.stringify(checkboxStates));
       localStorage.setItem('aus_roadtrip_tz_2027', currentSelectedTz);
 
-      // 2. An alle anderen Smartphones über Cloud-Relay senden
       fetch(NTFY_API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -2573,7 +2701,7 @@
       });
     }
 
-    // 1. COUNTDOWN LOGIK (21. MÄRZ 2027)
+    // 1. COUNTDOWN LOGIK
     const targetDate = new Date("March 21, 2027 10:00:00").getTime();
 
     function updateCountdown() {
@@ -2644,20 +2772,95 @@
 
     setInterval(updateDualClocks, 1000);
 
-    // 3. TANK- & SPRITRECHNER LOGIK
+    // 3. TANK- & RECHNUNGS-MANAGER LOGIK (AUD -> EUR, WER HAT GEZAHLT, SYNC)
     const AUD_TO_EUR_RATE = 0.60;
 
-    function calculateFuelCost() {
-      const liters = parseFloat(document.getElementById('fuel-liters').value) || 0;
-      const priceAud = parseFloat(document.getElementById('fuel-price').value) || 0;
+    function addFuelEntry() {
+      const amountInput = document.getElementById('fuel-amount-aud');
+      const noteInput = document.getElementById('fuel-note');
+      const payerSelect = document.getElementById('fuel-payer');
 
-      const totalAud = liters * priceAud;
-      const totalEur = totalAud * AUD_TO_EUR_RATE;
+      const amountAud = parseFloat(amountInput.value);
+      if (isNaN(amountAud) || amountAud <= 0) {
+        amountInput.focus();
+        return;
+      }
+
+      const note = noteInput.value.trim() || 'Tankrechnung';
+      const payer = payerSelect.value || 'Tobi';
+      const dateStr = new Date().toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+
+      fuelEntries.unshift({
+        id: Date.now(),
+        amountAud: amountAud,
+        amountEur: amountAud * AUD_TO_EUR_RATE,
+        payer: payer,
+        note: note,
+        date: dateStr
+      });
+
+      amountInput.value = '';
+      noteInput.value = '';
+      renderFuelList();
+      broadcastState();
+    }
+
+    function deleteFuelEntry(index) {
+      fuelEntries.splice(index, 1);
+      renderFuelList();
+      broadcastState();
+    }
+
+    function renderFuelList() {
+      const container = document.getElementById('fuel-list-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      let totalAud = 0;
+      let totalEur = 0;
+      let payerTotals = { Tobi: 0, Lara: 0, Ker: 0, Flo: 0 };
+
+      if (fuelEntries.length === 0) {
+        container.innerHTML = `<li style="text-align:center; color: var(--text-muted); font-size: 0.85rem; padding: 1rem 0;">⛽ Noch keine Rechnungen eingetragen.</li>`;
+      } else {
+        fuelEntries.forEach((item, index) => {
+          const eurVal = item.amountEur || (item.amountAud * AUD_TO_EUR_RATE);
+          totalAud += item.amountAud;
+          totalEur += eurVal;
+
+          if (payerTotals.hasOwnProperty(item.payer)) {
+            payerTotals[item.payer] += eurVal;
+          }
+
+          const li = document.createElement('li');
+          li.className = 'fuel-item';
+          const payerClass = item.payer ? item.payer.toLowerCase() : 'tobi';
+          li.innerHTML = `
+            <div style="flex: 1; min-width: 0;">
+              <div>
+                <span class="payer-badge ${payerClass}">${item.payer}</span>
+                <strong style="font-size: 0.95rem;">${item.amountAud.toFixed(2)} AUD</strong>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">(~${eurVal.toFixed(2)} €)</span>
+              </div>
+              <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;">
+                ${item.note} · ${item.date || ''}
+              </div>
+            </div>
+            <button class="fuel-del-btn" onclick="deleteFuelEntry(${index})" title="Löschen"><i class="fa-solid fa-trash-can"></i></button>
+          `;
+          container.appendChild(li);
+        });
+      }
+
+      // Summary Update
       const perPersonEur = totalEur / 4;
+      document.getElementById('fuel-total-summary').innerText = `${totalAud.toFixed(2)} AUD (${totalEur.toFixed(2)} €)`;
+      document.getElementById('fuel-per-person-summary').innerText = `${perPersonEur.toFixed(2)} € p.P.`;
 
-      document.getElementById('fuel-total-aud').innerText = totalAud.toFixed(2) + ' AUD';
-      document.getElementById('fuel-total-eur').innerText = totalEur.toFixed(2) + ' €';
-      document.getElementById('fuel-per-person').innerText = perPersonEur.toFixed(2) + ' € p.P.';
+      document.getElementById('payer-tobi-sum').innerText = `${payerTotals.Tobi.toFixed(2)} €`;
+      document.getElementById('payer-lara-sum').innerText = `${payerTotals.Lara.toFixed(2)} €`;
+      document.getElementById('payer-ker-sum').innerText = `${payerTotals.Ker.toFixed(2)} €`;
+      document.getElementById('payer-flo-sum').innerText = `${payerTotals.Flo.toFixed(2)} €`;
     }
 
     // 4. WÄHRUNGSRECHNER LOGIK
@@ -2682,7 +2885,7 @@
       const dailyAud = parseInt(document.getElementById('daily-slider').value);
       
       document.getElementById('slider-val').innerText = dailyAud;
-      document.getElementById('toggle-dot').style.transform = isPerPerson ? 'translateX(28px)' : 'translateX(0px)';
+      document.getElementById('toggle-dot').style.transform = isPerPerson ? 'translateX(24px)' : 'translateX(0px)';
 
       const foodTotalEurPerson = Math.round(dailyAud * TRIP_DAYS * AUD_RATE);
       const displayFoodEur = isPerPerson ? foodTotalEurPerson : (foodTotalEurPerson * GROUP_SIZE);
@@ -2816,7 +3019,7 @@
       }
     }
 
-    // 9. EINKAUFSZETTEL & CHECKBOXEN LOGIK
+    // 9. EINKAUFSZETTEL LOGIK
     function renderGroceries() {
       const container = document.getElementById('grocery-list-container');
       if (!container) return;
@@ -2853,6 +3056,13 @@
         ];
       }
 
+      const savedFuel = localStorage.getItem(FUEL_STORAGE_KEY);
+      if (savedFuel) {
+        try { fuelEntries = JSON.parse(savedFuel); } catch (e) { fuelEntries = []; }
+      } else {
+        fuelEntries = [];
+      }
+
       const savedCheckboxes = localStorage.getItem(CHECKBOX_STORAGE_KEY);
       if (savedCheckboxes) {
         try { checkboxStates = JSON.parse(savedCheckboxes); } catch (e) { checkboxStates = {}; }
@@ -2867,6 +3077,7 @@
 
       applyCheckboxStatesToUI();
       renderGroceries();
+      renderFuelList();
       updatePackingProgress();
     }
 
@@ -2949,7 +3160,6 @@
       loadLocalCache();
       updateTripStatusBanner();
       updateDualClocks();
-      calculateFuelCost();
       initCloudSync();
     });
 
