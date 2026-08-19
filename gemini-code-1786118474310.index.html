@@ -61,7 +61,7 @@
       top: 0;
       z-index: 1000;
       box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-      padding: 0.8rem 2rem;
+      padding: 0.8rem 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -78,7 +78,7 @@
 
     .nav-links {
       display: flex;
-      gap: 1rem;
+      gap: 0.9rem;
       list-style: none;
       align-items: center;
     }
@@ -87,7 +87,7 @@
       text-decoration: none;
       color: var(--text-main);
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       transition: color 0.2s;
     }
 
@@ -124,6 +124,44 @@
       color: white !important;
     }
 
+    /* Live Sync Status Indicator */
+    .sync-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 0.25rem 0.65rem;
+      border-radius: 20px;
+      border: 1px solid #c8e6c9;
+    }
+    .sync-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #2e7d32;
+      display: inline-block;
+      box-shadow: 0 0 6px rgba(46, 125, 50, 0.6);
+    }
+
+    /* Trip Status Banner */
+    .trip-status-banner {
+      display: none;
+      background: var(--accent-gold);
+      color: #4a2e00;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-align: center;
+      padding: 0.7rem 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 1001;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .trip-status-banner.is-visible { display: block; }
+
     /* Hero Section */
     .hero {
       background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.65)), 
@@ -142,7 +180,7 @@
     }
 
     .hero p {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       margin-bottom: 1.8rem;
       opacity: 0.95;
       max-width: 750px;
@@ -218,6 +256,9 @@
       border-radius: 4px;
     }
 
+    .section-spaced { margin-top: 5rem; }
+    .section-lead { text-align: center; color: var(--text-muted); margin-bottom: 2rem; }
+
     /* Timeline & Itinerary */
     .timeline-wrapper {
       position: relative;
@@ -277,7 +318,6 @@
       cursor: pointer;
       outline: none;
     }
-
     summary.timeline-summary::-webkit-details-marker { display: none; }
 
     .summary-header-row {
@@ -328,6 +368,7 @@
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
+      transition: all 0.2s;
     }
 
     details[open] .expand-trigger i { transform: rotate(180deg); }
@@ -425,6 +466,9 @@
       border-radius: 18px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.04);
       border: 1px solid var(--border-color);
+      overflow: hidden;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
 
     .hub-card h3 {
@@ -463,12 +507,18 @@
       gap: 0.8rem;
       margin-bottom: 0.8rem;
       font-size: 0.92rem;
+      cursor: pointer;
+      user-select: none;
     }
     .checklist-item input[type="checkbox"] {
       width: 18px;
       height: 18px;
       accent-color: var(--primary);
       cursor: pointer;
+    }
+    .checklist-item.is-done {
+      text-decoration: line-through;
+      color: var(--text-muted);
     }
 
     .progress-bar-container {
@@ -567,7 +617,40 @@
     }
     .grocery-del-btn:hover { opacity: 1; }
 
-    /* Slang & Climate */
+    /* Tool Buttons */
+    .tool-btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-top: 0.8rem;
+    }
+    .btn-tool {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 0.75rem 1.1rem;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+      flex: 1;
+      min-width: 180px;
+      justify-content: center;
+      border: 1px solid var(--border-color);
+    }
+    .btn-tool.splitwise { background: #e9f8f2; color: #1b8a5a; border-color: #b8e6d0; }
+    .btn-tool.splitwise:hover { background: #1b8a5a; color: white; }
+    .btn-tool.splid { background: var(--primary-light); color: var(--primary-dark); border-color: #b2dfdb; }
+    .btn-tool.splid:hover { background: var(--primary); color: white; }
+    .btn-tool.photos { background: var(--secondary-light); color: var(--secondary); border-color: #fbd5c0; }
+    .btn-tool.photos:hover { background: var(--secondary); color: white; }
+    .btn-tool.casa { background: #f0f4f8; color: #1e3a8a; border-color: #bfdbfe; }
+    .btn-tool.casa:hover { background: #1e3a8a; color: white; }
+    .btn-tool.dronemap { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+    .btn-tool.dronemap:hover { background: #b91c1c; color: white; }
+
+    /* Slang & Live Weather Cards */
     .slang-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -582,23 +665,41 @@
     .slang-word { font-weight: 800; color: var(--primary-dark); font-size: 1rem; }
     .slang-meaning { font-size: 0.85rem; color: var(--text-main); }
 
-    .weather-table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; }
-    .weather-table th, .weather-table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border-color); }
-    .weather-table th { background-color: var(--primary-light); color: var(--primary-dark); font-weight: 700; }
-
-    .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; margin-top: 1rem; }
-    .photo-placeholder {
-      aspect-ratio: 1;
-      background: #e2e8f0;
-      border-radius: 12px;
+    /* Live Wetter Widget Cards */
+    .weather-widget-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1rem;
+    }
+    .weather-widget-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
+    }
+    .weather-header {
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
+      margin-bottom: 0.8rem;
+    }
+    .weather-city {
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--primary-dark);
+    }
+    .weather-state {
+      font-size: 0.75rem;
+      font-weight: 700;
       color: var(--text-muted);
-      font-size: 0.8rem;
-      border: 2px dashed #cbd5e0;
-      cursor: pointer;
+      background: var(--bg-main);
+      padding: 0.2rem 0.5rem;
+      border-radius: 8px;
     }
 
     /* Modal Styling */
@@ -623,16 +724,56 @@
       box-shadow: 0 20px 40px rgba(0,0,0,0.2);
     }
 
+    /* Check-in Info Cards */
+    details.checkin-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    }
+    details.checkin-card summary {
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    details.checkin-card summary::-webkit-details-marker { display: none; }
+    details.checkin-card summary i.fa-chevron-down { transition: transform 0.2s; color: var(--primary); }
+    details.checkin-card[open] summary i.fa-chevron-down { transform: rotate(180deg); }
+    .checkin-grid {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--border-color);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.9rem;
+      font-size: 0.85rem;
+    }
+    .checkin-grid .label {
+      display: block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+
     /* Print Stylesheet */
     @media print {
-      nav, .hero, .btn-action, button, #daily-slider, .countdown-container, .photo-grid, .quick-add-chips, .grocery-input-group, .grocery-del-btn {
+      nav, .hero, .btn-action, button, #daily-slider, .countdown-container, .quick-add-chips, .grocery-input-group, .grocery-del-btn, #trip-status-banner, .tool-btn-row {
         display: none !important;
       }
       body { background: white; color: black; }
       .container { max-width: 100%; margin: 0; padding: 0; }
-      details.timeline-item { border: 1px solid #ccc !important; break-inside: avoid; margin-bottom: 1rem; }
-      details.timeline-item[open] { box-shadow: none !important; }
-      details.timeline-item summary { pointer-events: none; }
+      details.timeline-item, details.checkin-card { border: 1px solid #ccc !important; break-inside: avoid; margin-bottom: 1rem; }
+      details.timeline-item[open], details.checkin-card[open] { box-shadow: none !important; }
+      details.timeline-item summary, details.checkin-card summary { pointer-events: none; }
       .timeline::before { display: none; }
     }
 
@@ -659,6 +800,8 @@
       <li><a href="#hub">Tools & Einkaufen</a></li>
       <li><a href="#bucketlist">Bucket List</a></li>
       <li><a href="#emergency">Notfall & Admin</a></li>
+      <li><a href="#weather">Live-Wetter</a></li>
+      <li><a href="#playlist">Playlist</a></li>
       <li>
         <button onclick="triggerPwaPrompt()" class="btn-nav-action btn-pwa-nav" title="Als Handy-App installieren">
           <i class="fa-solid fa-mobile-screen-button"></i> App
@@ -672,11 +815,13 @@
     </ul>
   </nav>
 
+  <div id="trip-status-banner" class="trip-status-banner"></div>
+
   <!-- Hero Section -->
   <section class="hero">
     <span class="group-badge-hero"><i class="fa-solid fa-users"></i> 4-Personen Roadtrip Edition</span>
     <h1>AUSTRALIEN ROADTRIP 2027</h1>
-    <p>Von Wien über Sydney, Byron Bay, K’gari & Whitsundays nach Melbourne</p>
+    <p>Von Wien über Sydney, Byron Bay, Noosa, K’gari & Whitsundays nach Melbourne</p>
     
     <div class="countdown-container">
       <div class="time-box"><span id="days">00</span><label>Tage</label></div>
@@ -717,7 +862,7 @@
         </div>
 
         <div style="border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); height: 350px;">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13543883.350392357!2d141.22909477042572!3d-29.6200293121516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b129838f39a743f%3A0x3017d681632a850!2sSydney%20NSW%2C%20Australien!5e0!3m2!1sde!2sat!4v1710000000000!5m2!1sde!2sat" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <iframe src="https://www.google.com/maps/d/embed?mid=1bQnd7JNv226yMUhHPim8YmA1f9XvKwI&ehbc=2E312F&noprof=1" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
       </div>
     </section>
@@ -773,12 +918,12 @@
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Ankunft am Abend in Sydney, Hotel-Check-in & entspanntes Abendessen am Darling Harbour / Barangaroo.</p>
+                <p>Ankunft am Abend in Sydney, Hotel-Check-in & entspanntes Abendessen am Darling Harbour & Barangaroo Promenade.</p>
               </div>
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
-                <p><strong>Darling Harbour & Barangaroo:</strong> Beleuchtete Promenade am Hafen.</p>
-                <a href="https://www.google.com/maps/place/Sydney+New+South+Wales,+Australien/@-33.8472349,150.6023282,98796m/data=!3m2!1e3!4b1!4m6!3m5!1s0x6b129838f39a743f:0x3017d681632a850!8m2!3d-33.8622503!4d151.207684!16zL20vMDZ5NTc?entry=ttu&g_ep=EgoyMDI2MDgwNS4xIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
+                <p><strong>Darling Harbour & Barangaroo:</strong> Beleuchtete Hafenpromenade, erstklassige Dining-Spots und erste Blicke auf Sydneys Skyline.</p>
+                <a href="https://www.google.com/maps/place/Darling+Harbour/@-33.87488,151.1987174,16z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> In Maps öffnen</a>
               </div>
               <div class="day-subcard hotel">
                 <div class="subcard-title"><i class="fa-solid fa-hotel"></i> Unterkunft Sydney</div>
@@ -809,17 +954,18 @@
                 </div>
                 <span class="expand-trigger"><i class="fa-solid fa-chevron-down"></i> Details & Spots</span>
               </div>
-              <h3 class="timeline-title">Sydney – Klassiker am Hafen</h3>
+              <h3 class="timeline-title">Sydney – Klassiker am Hafen & Manly Ferry</h3>
             </summary>
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Circular Quay, Sydney Opera House, Royal Botanic Garden, Mrs Macquarie’s Chair, The Rocks, Harbour Bridge Walk & Nachmittags-Fähre nach Manly Beach.</p>
+                <p>Vormittags: Circular Quay, Sydney Opera House, Royal Botanic Garden & Mrs Macquarie’s Chair (bester Fotospot). Mittags: Historisches Viertel The Rocks und zu Fuß über die Sydney Harbour Bridge. Nachmittags: Ikonische Fährfahrt nach Manly Beach & Sunset.</p>
               </div>
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
-                <p><strong>Sydney Opera House & Circular Quay:</strong> Das ikonische Wahrzeichen Australiens.</p>
-                <a href="https://www.google.com/maps/place/Sydney+New+South+Wales,+Australien/@-33.8472349,150.6023282,98796m/data=!3m2!1e3!4b1!4m6!3m5!1s0x6b129838f39a743f:0x3017d681632a850!8m2!3d-33.8622503!4d151.207684!16zL20vMDZ5NTc?entry=ttu&g_ep=EgoyMDI2MDgwNS4xIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Sydney Opera House</a>
+                <p><strong>Sydney Opera House, The Rocks & Manly Beach:</strong> Das weltberühmte Bauwerk, Sydneys ältestes Viertel und der entspannte Küstenort Manly.</p>
+                <a href="https://www.google.com/maps/place/Sydney+Opera+House/@-33.8567844,151.2152967,17z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Opera House</a>
+                <a href="https://www.google.com/maps/place/Manly+Beach/@-33.7972744,151.2869595,16z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Manly Beach</a>
               </div>
             </div>
           </details>
@@ -829,21 +975,21 @@
               <div class="summary-header-row">
                 <div class="timeline-header-badges">
                   <span class="date-badge">24.03. (Mi)</span>
-                  <span class="drive-badge"><i class="fa-solid fa-bus"></i> Bus & Wandern</span>
+                  <span class="drive-badge"><i class="fa-solid fa-bus"></i> Bus & Küstenwanderung</span>
                 </div>
                 <span class="expand-trigger"><i class="fa-solid fa-chevron-down"></i> Details & Spots</span>
               </div>
-              <h3 class="timeline-title">Sydney – Küste & Viertel</h3>
+              <h3 class="timeline-title">Sydney – Coastal Walk & Trendviertel</h3>
             </summary>
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Bondi Beach & Bondi to Coogee Coastal Walk. Nachmittags Café-Kultur in Surry Hills oder Paddington.</p>
+                <p>Vormittags: Bondi Beach & spektakulärer Bondi to Coogee Coastal Walk (vorbei an Tamarama, Bronte & Clovelly). Nachmittags: Café-Kultur, Boutiquen & Street-Art in Surry Hills und Paddington.</p>
               </div>
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
-                <p><strong>Bondi to Coogee Coastal Walk:</strong> Spektakulärer Klippenweg am Ozean.</p>
-                <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Bondi Beach</a>
+                <p><strong>Bondi to Coogee Walk & Surry Hills:</strong> Klippenpfad am Pazifik, Bondi Icebergs Pool und Sydneys beste Cafés.</p>
+                <a href="https://www.google.com/maps/place/Bondi+to+Coogee+Walk/@-33.9015965,151.2644265,15z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Bondi to Coogee Walk</a>
               </div>
             </div>
           </details>
@@ -862,17 +1008,17 @@
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Spätnachmittag: Sonnenuntergang am Cape Byron Lighthouse.</p>
+                <p>Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Fahrt nach Byron Bay, Check-in und Spätnachmittag am Cape Byron Lighthouse (östlichster Punkt des australischen Festlands).</p>
               </div>
               <div class="day-subcard hotel">
                 <div class="subcard-title"><i class="fa-solid fa-plane"></i> Fluginformationen</div>
                 <p><strong>Jetstar - Economy Class - Airbus A320 - JQ 458 / Abflug um 10:25 Uhr</strong></p>
-                <a href="https://www.google.com/travel/flights/booking?tfs=CBwQAhpEEgoyMDI3LTAzLTI1Ih8KA1NZRBIKMjAyNy0wMy0yNRoDQk5LKgJKUTIDNDU4agwIAxIIL20vMDZ5NTdyBwgBEgNCTktAAUgBcAGCAQsI____________AZgBAg&tfu=CmhDalJJTkdkcFRuVjZOR05wZDNkQlVuVTRhR2RDUnkwdExTMHRMUzB0TFMwdGQyWjFOMEZCUVVGQlIzQTFaM2RaU0ZGQ1dUQkJFZ1ZLVVRRMU9Cb0tDUFVwRUFJYUEwVlZVamdjY0xjdxICCAAiAA&hl=de&gl=AT" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-plane"></i> Flug Verwalten</a>
+                <a href="https://www.google.com/travel/flights/booking?tfs=CBwQAhpEEgoyMDI3LTAzLTI1Ih8KA1NZRBIKMjAyNy0wMy0yNRoDQk5LKgJKUTIDNDU4agwIAxIIL20vMDZ5NTdyBwgBEgNCTktAAUgBcAGCAQsI____________AZgBAg&tfu=CmhDalJJTkdkcFRuVjZOR05wZDNkQlVuVTRhR2RDUnkwdExTMHRMUzB0TFMwdGQyWjFOMEZCUVVGQlIzQTFaM2RaU0ZGQ1dUQkJFZ1ZLVVRRMU9Cb0tDUFVwRUFJYUEwVlZVamdjY0xjdxICCAAiAA&hl=de&gl=AT" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-plane"></i> Flug Buchen / Verwalten</a>
               </div>
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
-                <p><strong>Cape Byron Lighthouse:</strong> Östlichster Punkt des australischen Festlands.</p>
-                <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Cape Byron Lighthouse</a>
+                <p><strong>Cape Byron Lighthouse & Wategos Beach:</strong> Ikonischer Leuchtturm, Lookout auf den Pazifik & Sonnenuntergang.</p>
+                <a href="https://www.google.com/maps/place/Cape+Byron+Lighthouse/@-28.6381643,153.6362483,17z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Cape Byron Lighthouse</a>
               </div>
               <div class="day-subcard hotel">
                 <div class="subcard-title"><i class="fa-solid fa-hotel"></i> Unterkunft Byron Bay</div>
@@ -898,21 +1044,21 @@
               <div class="summary-header-row">
                 <div class="timeline-header-badges">
                   <span class="date-badge">26.03. (Fr)</span>
-                  <span class="drive-badge"><i class="fa-solid fa-ship"></i> Kajak / Bootstour</span>
+                  <span class="drive-badge"><i class="fa-solid fa-ship"></i> Kajak- oder Bootstour</span>
                 </div>
                 <span class="expand-trigger"><i class="fa-solid fa-chevron-down"></i> Details & Spots</span>
               </div>
-              <h3 class="timeline-title">Byron Bay & Erlebnisse</h3>
+              <h3 class="timeline-title">Byron Bay & Erlebnisse am Ozean</h3>
             </summary>
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Cape Byron Lighthouse Walk (Delfine & Schildkröten beobachten!), Brunch und Ausflug: Kajak- oder Bootstour.</p>
+                <p>Vormittags: Geführte Seekajak-Tour (Delfine, Rochen & Meeresschildkröten beobachten!). Nachmittags: Strand-Relaxen am Tallow Beach, Bummel durch die Surfer-Boutiquen und Craft-Bier zum Sonnenuntergang.</p>
               </div>
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
-                <p><strong>Main Beach:</strong> Start der Touren.</p>
-                <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Main Beach</a>
+                <p><strong>Main Beach & Tallow Beach:</strong> Perfekter Sandstrand, Julian Rocks Marine Reserve & entspannte Surfer-Vibes.</p>
+                <a href="https://www.google.com/maps/place/Main+Beach+Byron+Bay/@-28.6417725,153.6128087,16z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Main Beach</a>
               </div>
             </div>
           </details>
@@ -931,12 +1077,12 @@
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Fahrt in den Norden. Zwischenstopp Gold Coast (SkyPoint Q1 Tower oder Burleigh Heads). Abends: Howard Smith Wharves in Brisbane.</p>
+                <p>Fahrt gen Norden. Zwischenstopp an der Gold Coast: Aussichtspunkt Burleigh Heads oder SkyPoint Q1 Tower. Weiterfahrt nach Brisbane, Check-in und Abend an den belebten Howard Smith Wharves unter der Story Bridge.</p>
               </div>
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
-                <p><strong>Howard Smith Wharves:</strong> Geniale Brauereien & Bars direkt unter der Story Bridge.</p>
-                <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Howard Smith Wharves</a>
+                <p><strong>Burleigh Heads & Howard Smith Wharves:</strong> Skyline-Aussicht auf Surfers Paradise & Brauereien direkt am Brisbane River.</p>
+                <a href="https://www.google.com/maps/place/Howard+Smith+Wharves/@-27.4616223,153.0337894,17z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Howard Smith Wharves</a>
               </div>
               <div class="day-subcard hotel">
                 <div class="subcard-title"><i class="fa-solid fa-hotel"></i> Unterkunft Brisbane</div>
@@ -971,12 +1117,13 @@
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>South Bank Parklands, QAGOMA Kunstgalerie, CityCat-Fähre auf dem Fluss, James Street & Sonnenuntergang vom Mt. Coot-tha.</p>
+                <p>South Bank Parklands (inkl. Streets Beach Lagune), moderne Kunst in der QAGOMA Galerie, Katamaran-Fahrt mit der CityCat-Fähre, Kangaroo Point Cliffs und Panoramablick zum Sonnenuntergang vom Mount Coot-tha.</p>
               </div>
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
-                <p><strong>South Bank & QAGOMA:</strong> Tropischer Stadtpark & Moderne Kunst.</p>
-                <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> South Bank</a>
+                <p><strong>South Bank & Mount Coot-tha Lookout:</strong> Stadtstrand mitten in der City & Panoramablick über ganz Brisbane.</p>
+                <a href="https://www.google.com/maps/place/South+Bank+Parklands/@-27.4795326,153.018933,16z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> South Bank</a>
+                <a href="https://www.google.com/maps/place/Mount+Coot-Tha+Lookout/@-27.4772186,152.9515286,16z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Mt Coot-tha</a>
               </div>
             </div>
           </details>
@@ -990,12 +1137,12 @@
                 </div>
                 <span class="expand-trigger"><i class="fa-solid fa-chevron-down"></i> Details</span>
               </div>
-              <h3 class="timeline-title">Brisbane – Entspannter Stadt-Tag</h3>
+              <h3 class="timeline-title">Brisbane – Riverwalk & Urban Lifestyle</h3>
             </summary>
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Brisbane Riverwalk, gemütlicher Kaffeestopp in Fortitude Valley und individuelle Entdeckungen.</p>
+                <p>Spaziergang über den Brisbane Riverwalk, Kaffeepause in Fortitude Valley & James Street, Besuch des New Farm Park & Brisbane Powerhouse.</p>
               </div>
             </div>
           </details>
@@ -1005,21 +1152,21 @@
               <div class="summary-header-row">
                 <div class="timeline-header-badges">
                   <span class="date-badge">30.03. (Di)</span>
-                  <span class="drive-badge"><i class="fa-solid fa-car"></i> Panoramaroute → Noosa: ca. 2,5 - 3 Std.</span>
+                  <span class="drive-badge"><i class="fa-solid fa-car"></i> Panoramaroute → Noosa: ca. 2,5 Std.</span>
                 </div>
                 <span class="expand-trigger"><i class="fa-solid fa-chevron-down"></i> Details & Hotel</span>
               </div>
-              <h3 class="timeline-title">Brisbane → Panoramaroute → Noosa</h3>
+              <h3 class="timeline-title">Brisbane → Glass House Mountains → Noosa</h3>
             </summary>
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Fahrt über Glass House Mountains & Bergdorf Montville nach Noosa. Nachmittags: Küstenweg im Noosa National Park (Koala-Suche!).</p>
+                <p>Fahrt über die Panoramaroute der Glass House Mountains (Mt. Ngungun Wanderung) & Bergdorf Montville nach Noosa Heads. Nachmittags: Küstenwanderung im Noosa National Park (Fairy Pools, Tea Tree Bay & Koala-Spotting!).</p>
               </div>
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
-                <p><strong>Glass House Mountains & Noosa National Park:</strong> Vulkankegel & Wilde Koalas.</p>
-                <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Mt. Ngungun</a>
+                <p><strong>Glass House Mountains & Noosa National Park:</strong> Spektakuläre Vulkankegel, Eukalyptuswälder mit wilden Koalas & türkisblaue Buchten.</p>
+                <a href="https://www.google.com/maps/place/Noosa+National+Park/@-26.3869274,153.1118182,15z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Noosa National Park</a>
               </div>
               <div class="day-subcard hotel">
                 <div class="subcard-title"><i class="fa-solid fa-hotel"></i> Unterkunft Noosa</div>
@@ -1045,21 +1192,21 @@
               <div class="summary-header-row">
                 <div class="timeline-header-badges">
                   <span class="date-badge">31.03. (Mi)</span>
-                  <span class="drive-badge"><i class="fa-solid fa-car"></i> Noosa → Rainbow: ca. 1,5 Std.</span>
+                  <span class="drive-badge"><i class="fa-solid fa-car"></i> Noosa → Rainbow → Hervey: ca. 2,5 Std.</span>
                 </div>
                 <span class="expand-trigger"><i class="fa-solid fa-chevron-down"></i> Details & Hotel</span>
               </div>
-              <h3 class="timeline-title">Noosa → Rainbow Beach → Hervey Bay</h3>
+              <h3 class="timeline-title">Noosa (Kängurus am Morgen) → Carlo Sand Blow → Hervey Bay</h3>
             </summary>
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Entspannte Fahrt nach Rainbow Beach. Spätnachmittag: Riesige Sanddüne <i>Carlo Sand Blow</i> zum Sonnenuntergang.</p>
+                <p>Frühmorgens: Wilde Kängurus in den Parks und Graslandschaften rund um Noosa beobachten. Anschließend Fahrt nach Rainbow Beach, Erklimmen der riesigen Sanddüne <i>Carlo Sand Blow</i> zum Sonnenuntergang und Weiterfahrt nach Hervey Bay.</p>
               </div>
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
-                <p><strong>Carlo Sand Blow:</strong> Imposante Sanddüne für magische Sonnenuntergänge.</p>
-                <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Carlo Sand Blow</a>
+                <p><strong>Carlo Sand Blow & Kängurus:</strong> Gigantische Wanderdüne mit Traumblick über den Ozean & australische Tierwelt in freier Wildbahn.</p>
+                <a href="https://www.google.com/maps/place/Carlo+Sand+Blow/@-25.9084803,153.0945934,16z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Carlo Sand Blow</a>
               </div>
               <div class="day-subcard hotel">
                 <div class="subcard-title"><i class="fa-solid fa-hotel"></i> Unterkunft Hervey Bay</div>
@@ -1087,17 +1234,17 @@
                 </div>
                 <span class="expand-trigger"><i class="fa-solid fa-chevron-down"></i> Details & Ausflug</span>
               </div>
-              <h3 class="timeline-title">K’gari (Fraser Island) & Nachtbus</h3>
+              <h3 class="timeline-title">K’gari (Fraser Island) & Nachtbus nach Norden</h3>
             </summary>
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Geführte 4WD-Tagestour auf K’gari (Lake McKenzie, 75 Mile Beach, Shipwreck). Abends Mietwagenabgabe & Einstieg in den Greyhound-Nachtbus nach Airlie Beach.</p>
+                <p>Ganztägige geführte 4WD-Tour auf K’gari: Lake McKenzie (glasklarer Süßwassersee), 75 Mile Beach Sand-Highway, Maheno Shipwreck & Eli Creek. Abends Mietwagenabgabe in Hervey Bay und Greyhound-Nachtbus nach Airlie Beach.</p>
               </div>
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
-                <p><strong>75 Mile Beach & Maheno Shipwreck:</strong> Die Sandautobahn auf K'gari.</p>
-                <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Maheno Shipwreck</a>
+                <p><strong>Lake McKenzie & Maheno Shipwreck:</strong> Die größte Sandinsel der Welt, historische Schiffswracks und wilde Dingos.</p>
+                <a href="https://www.google.com/maps/place/Lake+McKenzie/@-25.4497672,153.0543632,15z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Lake McKenzie</a>
               </div>
               <div class="day-subcard budget">
                 <div class="subcard-title"><i class="fa-solid fa-wallet"></i> Ausflug & Transfer Kosten</div>
@@ -1114,16 +1261,16 @@
               <div class="summary-header-row">
                 <div class="timeline-header-badges">
                   <span class="date-badge">02.04. (Fr)</span>
-                  <span class="drive-badge"><i class="fa-solid fa-plane"></i> Vor Ort in Airlie Beach</span>
+                  <span class="drive-badge"><i class="fa-solid fa-helicopter"></i> Helikopter / Rundflug</span>
                 </div>
                 <span class="expand-trigger"><i class="fa-solid fa-chevron-down"></i> Details & Hotel</span>
               </div>
-              <h3 class="timeline-title">Ankunft Airlie Beach & Rundflug</h3>
+              <h3 class="timeline-title">Ankunft Airlie Beach & Whitsundays Helikopter-Rundflug</h3>
             </summary>
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Morgens Ankunft mit dem Bus in Airlie Beach. Einchecken, Schlaf nachholen & Strandpromenade erkunden. Am Nachmittag optionaler Rundflug über das Heart Reef.</p>
+                <p>Morgens Ankunft mit dem Bus in Airlie Beach. Check-in in den Apartments, Schlaf nachholen & Strandlagune erkunden. Am Nachmittag: Spektakulärer Helikopter- / Rundflug über das berühmte Heart Reef & Whitehaven Beach.</p>
               </div>
               <div class="day-subcard hotel">
                 <div class="subcard-title"><i class="fa-solid fa-hotel"></i> Unterkunft Airlie Beach</div>
@@ -1143,7 +1290,7 @@
               <div class="day-subcard budget">
                 <div class="subcard-title"><i class="fa-solid fa-wallet"></i> Whitsundays Rundflug</div>
                 <ul class="sub-item-list">
-                  <li><span>Rundflug Heart Reef & Whitsundays (p.P.):</span> <strong>183 €</strong> <span class="status-pill open">Offen</span></li>
+                  <li><span>Helikopter- / Rundflug Heart Reef (p.P.):</span> <strong>214 €</strong> <span class="status-pill open">Offen</span></li>
                 </ul>
               </div>
             </div>
@@ -1163,12 +1310,12 @@
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Ganztägige Katamaran-Tour zu den Whitsunday Islands: Traumstrand Whitehaven Beach, Hill Inlet Lookout & Schnorcheln am Reef.</p>
+                <p>Ganztägige Katamaran-Tour zu den Whitsunday Islands: Traumstrand Whitehaven Beach, Hill Inlet Lookout (Sandwirbel) & Schnorcheln am Great Barrier Reef.</p>
               </div>
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
-                <p><strong>Whitehaven Beach & Hill Inlet:</strong> Einer der schönsten Strände der Welt.</p>
-                <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Whitehaven Beach</a>
+                <p><strong>Whitehaven Beach & Hill Inlet:</strong> Einer der weißesten und schönsten Quarzsand-Strände der Welt.</p>
+                <a href="https://www.google.com/maps/place/Whitehaven+Beach/@-20.282506,149.0345094,15z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Whitehaven Beach</a>
               </div>
               <div class="day-subcard budget">
                 <div class="subcard-title"><i class="fa-solid fa-wallet"></i> Whitsundays Tour Kosten</div>
@@ -1184,16 +1331,21 @@
               <div class="summary-header-row">
                 <div class="timeline-header-badges">
                   <span class="date-badge">04.04. (So)</span>
-                  <span class="drive-badge"><i class="fa-solid fa-car"></i> Cape Hillsborough Option</span>
+                  <span class="drive-badge"><i class="fa-solid fa-car"></i> Entspannte Tagesausflüge</span>
                 </div>
                 <span class="expand-trigger"><i class="fa-solid fa-chevron-down"></i> Details</span>
               </div>
-              <h3 class="timeline-title">Airlie Beach & Umgebung</h3>
+              <h3 class="timeline-title">Airlie Beach & Umgebung (Cedar Creek Falls / Boardwalk)</h3>
             </summary>
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Entspannter Tag in Airlie Beach oder Frühmorgens-Ausflug nach Cape Hillsborough für Kängurus am Strand bei Sonnenaufgang.</p>
+                <p>Entspannter Tag in Airlie Beach: Ausflug zu den natürlichen Rockpools der <i>Cedar Creek Falls</i> im Regenwald, Spaziergang auf dem Bicentennial Boardwalk & Sundowner am Yachthafen.</p>
+              </div>
+              <div class="day-subcard sight">
+                <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
+                <p><strong>Cedar Creek Falls & Airlie Lagoon:</strong> Erfrischendes Süßwasser-Baden im Dschungel & Meerespromenade.</p>
+                <a href="https://www.google.com/maps/place/Cedar+Creek+Falls/@-20.3703978,148.694663,15z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Cedar Creek Falls</a>
               </div>
             </div>
           </details>
@@ -1212,7 +1364,7 @@
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Flug von Proserpine (PPP) nach Melbourne (MEL). Erster Abend am Yarra River & Southbank.</p>
+                <p>Flug von Proserpine (PPP) nach Melbourne (MEL). Check-in in den Docklands und erster Abend am beleuchteten Yarra River, Federation Square & Southbank.</p>
               </div>
               <div class="day-subcard hotel">
                 <div class="subcard-title"><i class="fa-solid fa-plane"></i> Fluginformationen</div>
@@ -1247,17 +1399,18 @@
                 </div>
                 <span class="expand-trigger"><i class="fa-solid fa-chevron-down"></i> Details & Spots</span>
               </div>
-              <h3 class="timeline-title">Melbourne – Stadt, Kultur & Pinguine</h3>
+              <h3 class="timeline-title">Melbourne – Laneways, Street Art & Pinguine</h3>
             </summary>
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Graffiti-Laneways (Hosier Lane), Café-Kultur, Queen Victoria Market. Abends: Zwergpinguine am St. Kilda Pier.</p>
+                <p>Graffiti-Laneways (Hosier Lane, AC/DC Lane), weltberühmte Café-Kultur, Queen Victoria Market, Royal Botanic Gardens. Abends: Sonnenuntergang & Zwergpinguine am St. Kilda Pier.</p>
               </div>
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
-                <p><strong>Hosier Lane & St. Kilda Pier:</strong> Street Art & Zwergpinguine.</p>
-                <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Hosier Lane</a>
+                <p><strong>Hosier Lane & St. Kilda Pier:</strong> Melbournes ikonische Street-Art-Gassen & freilebende Pinguine am Strandpier.</p>
+                <a href="https://www.google.com/maps/place/Hosier+Lane/@-37.8164057,144.9691456,17z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Hosier Lane</a>
+                <a href="https://www.google.com/maps/place/St+Kilda+Pier/@-37.863777,144.9664687,16z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> St Kilda Pier</a>
               </div>
             </div>
           </details>
@@ -1276,17 +1429,17 @@
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Spektakuläre Küstenstraße, Twelve Apostles, Loch Ard Gorge und wilde Koalas in freier Wildbahn.</p>
+                <p>Fahrt entlang einer der spektakulärsten Küstenstraßen der Welt: Bells Beach, Memorial Arch, Koalas in Kennett River, Twelve Apostles, Loch Ard Gorge und Gibson Steps.</p>
               </div>
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
-                <p><strong>Twelve Apostles & Loch Ard Gorge:</strong> Das Roadtrip-Icon Australiens.</p>
-                <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Twelve Apostles</a>
+                <p><strong>Twelve Apostles & Loch Ard Gorge:</strong> Majestätische Kalksteinfelsen im Ozean.</p>
+                <a href="https://www.google.com/maps/place/Twelve+Apostles/@-38.6648766,143.1040529,15z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Twelve Apostles</a>
               </div>
               <div class="day-subcard budget">
                 <div class="subcard-title"><i class="fa-solid fa-wallet"></i> Ausflug Kosten</div>
                 <ul class="sub-item-list">
-                  <li><span>Great Ocean Road Ausflug / Mietwagen (p.P.):</span> <strong>50 €</strong> <span class="status-pill open">Offen</span></li>
+                  <li><span>Great Ocean Road Mietwagen / Sprit (p.P.):</span> <strong>50 €</strong> <span class="status-pill open">Offen</span></li>
                 </ul>
               </div>
             </div>
@@ -1297,16 +1450,21 @@
               <div class="summary-header-row">
                 <div class="timeline-header-badges">
                   <span class="date-badge">08.04. (Do)</span>
-                  <span class="drive-badge"><i class="fa-solid fa-car"></i> Umland / Stadt</span>
+                  <span class="drive-badge"><i class="fa-solid fa-train"></i> Kultur / Stadt</span>
                 </div>
                 <span class="expand-trigger"><i class="fa-solid fa-chevron-down"></i> Details</span>
               </div>
-              <h3 class="timeline-title">Phillip Island ODER Stadt-Ausklang</h3>
+              <h3 class="timeline-title">Melbourne – Brighton Boxes & Fitzroy / Ausklang</h3>
             </summary>
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Option A: Pinguin-Parade Phillip Island / Yarra Valley. Option B: Gemütlicher Tag in Melbourne (NGV Galerie, Rooftop-Bars).</p>
+                <p>Bunte Brighton Bathing Boxes am Strand, Vintage-Bummel im Trendviertel Fitzroy & Brunswick, National Gallery of Victoria (NGV) und Abschieds-Dinner auf einer Rooftop-Bar.</p>
+              </div>
+              <div class="day-subcard sight">
+                <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
+                <p><strong>Brighton Beach Boxes & Fitzroy:</strong> Farbenfrohe Strandhäuschen & Melbournes alternative Kulturhochburg.</p>
+                <a href="https://www.google.com/maps/place/Brighton+Bathing+Boxes/@-37.917833,144.987747,16z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Brighton Boxes</a>
               </div>
             </div>
           </details>
@@ -1325,7 +1483,7 @@
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Heimflug ab Melbourne (MEL). Ende einer unvergesslichen Reise!</p>
+                <p>Letzter Aussie-Flat-White am Morgen, Transfer zum Flughafen Melbourne Tullamarine (MEL) und Rückflug nach Wien. Ende eines unvergesslichen Abenteuers!</p>
               </div>
               <div class="day-subcard budget">
                 <div class="subcard-title"><i class="fa-solid fa-wallet"></i> Rückflug Kosten</div>
@@ -1341,9 +1499,9 @@
     </section>
 
     <!-- 3. Budgetübersicht -->
-    <section id="budget" style="margin-top: 5rem;">
+    <section id="budget" class="section-spaced">
       <h2 class="section-title">Kosten- & Budgetübersicht (4 Personen)</h2>
-      <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
+      <p class="section-lead">
         Transparente Aufschlüsselung aller Reisekosten für die gesamte 4-köpfige Gruppe oder pro Person.
       </p>
 
@@ -1456,10 +1614,10 @@
             <h3 style="margin:0;"><i class="fa-solid fa-car"></i> Mietwagen & Transport</h3>
             <span class="status-pill open">Offen</span>
           </div>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Fahrzeuge, Bus & Sprit (geteilt durch 4)</p>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Fahrzeuge, Bus & Sprit (aufgeteilt durch 4)</p>
           <ul class="sub-item-list">
-            <li class="sub-price-item" data-eur="150" data-paid="false">
-              <span>East Coast Mietwagen (Anteil p.P.):</span> <strong class="sub-price-val">150 €</strong>
+            <li class="sub-price-item" data-eur="155" data-paid="false">
+              <span>East Coast Mietwagen (Anteil p.P.):</span> <strong class="sub-price-val">155 €</strong>
             </li>
             <li class="sub-price-item" data-eur="75" data-paid="false">
               <span>Sprit, Maut & Parken (Anteil p.P.):</span> <strong class="sub-price-val">75 €</strong>
@@ -1486,8 +1644,8 @@
             <li class="sub-price-item" data-eur="150" data-paid="false">
               <span>Whitsundays Katamaran Tour:</span> <strong class="sub-price-val">150 €</strong>
             </li>
-            <li class="sub-price-item" data-eur="183" data-paid="false">
-              <span>Whitsundays Rundflug:</span> <strong class="sub-price-val">183 €</strong>
+            <li class="sub-price-item" data-eur="214" data-paid="false">
+              <span>Whitsundays Helikopter Flug:</span> <strong class="sub-price-val">214 €</strong>
             </li>
             <li class="sub-price-item" data-eur="50" data-paid="false">
               <span>Great Ocean Road Ausflug:</span> <strong class="sub-price-val">50 €</strong>
@@ -1503,7 +1661,7 @@
             <h3 style="margin:0;"><i class="fa-solid fa-utensils"></i> Verpflegung & Taschengeld (Dynamisch)</h3>
             <span class="status-pill open">Vor Ort</span>
           </div>
-          <p style="font-size: 0.9rem; color: var(--text-muted);">Kalkulation für 19 Tage Essen, Drinks, Supermarkt & Souvenirs.</p>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">Kalkulation für 19 Tage Essen, Drinks, Supermarkt & Souvenirs basierend auf dem Regelschieber.</p>
           <div style="font-weight: 800; font-size: 1.5rem; color: var(--primary-dark); margin-top: 1rem;" id="food-calculated-price">
             0 €
           </div>
@@ -1513,7 +1671,7 @@
     </section>
 
     <!-- 4. Tools, Live-Einkaufszettel & Packliste -->
-    <section id="hub" style="margin-top: 5rem;">
+    <section id="hub" class="section-spaced">
       <h2 class="section-title">Reise-Tools, Einkaufszettel & Packliste</h2>
       
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.8rem;">
@@ -1522,12 +1680,10 @@
         <div class="hub-card" style="grid-column: span 2;">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
             <h3 style="margin:0;"><i class="fa-solid fa-cart-shopping"></i> Supermarkt-Einkaufszettel (Coles & Woolies)</h3>
-            <span id="sync-status-badge" style="font-size: 0.75rem; font-weight: 700; background: #e8f5e9; color: #2e7d32; padding: 0.2rem 0.6rem; border-radius: 12px;">
-              🟢 Live synchronisiert
-            </span>
+            <span class="sync-badge"><span class="sync-dot"></span> Live synchronisiert</span>
           </div>
           <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-            Artikel werden auf allen 4 Smartphones in Echtzeit aktualisiert und abgehakt:
+            Artikel werden auf allen 4 Smartphones in Echtzeit aktualisiert und synchron abgehakt:
           </p>
 
           <!-- Quick Add Chips -->
@@ -1559,11 +1715,14 @@
           </div>
         </div>
 
-        <!-- Packliste Card -->
+        <!-- Packliste Card (Gruppen-Ausrüstung nahtlos integriert) -->
         <div class="hub-card" style="grid-column: span 2;">
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
             <h3 style="margin:0;"><i class="fa-solid fa-suitcase"></i> Interaktive Roadtrip Packliste</h3>
-            <span id="pack-status-text" style="font-size: 0.85rem; font-weight: 700; color: var(--primary);">0 von 12 gepackt</span>
+            <div style="display:flex; align-items:center; gap:0.6rem;">
+              <span class="sync-badge"><span class="sync-dot"></span> Live Sync</span>
+              <span id="pack-status-text" style="font-size: 0.85rem; font-weight: 700; color: var(--primary);">0 gepackt</span>
+            </div>
           </div>
           
           <div class="progress-bar-container">
@@ -1574,45 +1733,146 @@
             <div>
               <h4 style="color: var(--primary); font-size: 0.95rem; margin-bottom: 0.6rem;"><i class="fa-solid fa-passport"></i> Dokumente & Finanzen</h4>
               <ul class="checklist">
-                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Reisepass (Gültig > 6 Mon.)</li>
-                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Visum (eVisitor 651 / ETA)</li>
-                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Int. Führerschein + Scheckkarte</li>
-                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> 2x Kreditkarte (ohne Gebühr)</li>
+                <li class="checklist-item"><input type="checkbox" class="sync-checkbox pack-checkbox" id="pack_passport"> Reisepass (Gültig > 6 Mon.)</li>
+                <li class="checklist-item"><input type="checkbox" class="sync-checkbox pack-checkbox" id="pack_visa"> Visum (eVisitor 651 / ETA)</li>
+                <li class="checklist-item"><input type="checkbox" class="sync-checkbox pack-checkbox" id="pack_license"> Int. Führerschein + Scheckkarte</li>
+                <li class="checklist-item"><input type="checkbox" class="sync-checkbox pack-checkbox" id="pack_card"> 2x Kreditkarte (ohne Gebühr)</li>
               </ul>
             </div>
 
             <div>
               <h4 style="color: var(--primary); font-size: 0.95rem; margin-bottom: 0.6rem;"><i class="fa-solid fa-plug"></i> Elektronik & Gadgets</h4>
               <ul class="checklist">
-                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> AUS Reisestecker / Adapter</li>
-                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Powerbank (für lange Fahrten)</li>
-                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Ladekabel & Kamera</li>
-                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Drohne + Ersatzakkus</li>
+                <li class="checklist-item"><input type="checkbox" class="sync-checkbox pack-checkbox" id="pack_adapter"> AUS Reisestecker / Adapter</li>
+                <li class="checklist-item"><input type="checkbox" class="sync-checkbox pack-checkbox" id="pack_multiplug"> Mehrfachstecker / Steckdosenleiste</li>
+                <li class="checklist-item"><input type="checkbox" class="sync-checkbox pack-checkbox" id="pack_powerbank"> Powerbank (für lange Fahrten)</li>
+                <li class="checklist-item"><input type="checkbox" class="sync-checkbox pack-checkbox" id="pack_cables"> Ladekabel & Kamera</li>
+                <li class="checklist-item"><input type="checkbox" class="sync-checkbox pack-checkbox" id="pack_drone"> Drohne + Ersatzakkus</li>
               </ul>
             </div>
 
             <div>
-              <h4 style="color: var(--primary); font-size: 0.95rem; margin-bottom: 0.6rem;"><i class="fa-solid fa-sun"></i> Strand & Gesundheit</h4>
+              <h4 style="color: var(--primary); font-size: 0.95rem; margin-bottom: 0.6rem;"><i class="fa-solid fa-sun"></i> Strand, Gesundheit & Outdoor</h4>
               <ul class="checklist">
-                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Riff-freundliche Sonnencreme</li>
-                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Mückenspray mit DEET</li>
-                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Mikrofaser-Handtuch</li>
-                <li class="checklist-item"><input type="checkbox" class="pack-checkbox" onchange="updatePackingProgress()"> Sonnenbrille & Cappy</li>
+                <li class="checklist-item"><input type="checkbox" class="sync-checkbox pack-checkbox" id="pack_sunscreen"> Riff-freundliche Sonnencreme</li>
+                <li class="checklist-item"><input type="checkbox" class="sync-checkbox pack-checkbox" id="pack_moskito"> Mückenspray mit DEET / Icaridin</li>
+                <li class="checklist-item"><input type="checkbox" class="sync-checkbox pack-checkbox" id="pack_towel"> Mikrofaser-Handtuch</li>
+                <li class="checklist-item"><input type="checkbox" class="sync-checkbox pack-checkbox" id="pack_glasses"> Sonnenbrille & Cappy</li>
+                <li class="checklist-item"><input type="checkbox" class="sync-checkbox pack-checkbox" id="pack_shelter"> Sonnensegel / Strandmuschel</li>
+                <li class="checklist-item"><input type="checkbox" class="sync-checkbox pack-checkbox" id="pack_firstaid"> Erste-Hilfe-Set & Reiseapotheke</li>
               </ul>
             </div>
           </div>
         </div>
 
+        <!-- Splitwise & Gruppenkasse Card -->
         <div class="hub-card">
-          <h3><i class="fa-solid fa-sun"></i> Sonnen-Kompass</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Die magischsten Lichteinflüsse für Fotos:</p>
-          <ul class="checklist">
-            <li class="checklist-item"><i class="fa-solid fa-cloud-sun" style="color: var(--secondary);"></i> <strong>Cape Byron:</strong> 05:45 Uhr Sunrise</li>
-            <li class="checklist-item"><i class="fa-solid fa-sun" style="color: var(--accent-gold);"></i> <strong>Carlo Sand Blow:</strong> 17:50 Uhr Sunset</li>
-            <li class="checklist-item"><i class="fa-solid fa-kiwi-bird" style="color: var(--primary);"></i> <strong>Hillsborough:</strong> 05:15 Kängurus</li>
-          </ul>
+          <h3><i class="fa-solid fa-sack-dollar"></i> Gemeinsame Reisekasse</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+            Ausgaben unterwegs sofort für alle 4 eintragen – ein Klick öffnet direkt eure gemeinsame Gruppe:
+          </p>
+          <div class="tool-btn-row">
+            <a href="https://secure.splitwise.com/#/groups/101615495" target="_blank" class="btn-tool splitwise">
+              <i class="fa-solid fa-arrow-right-arrow-left"></i> Splitwise Gruppe öffnen
+            </a>
+            <a href="https://www.splid.app" target="_blank" class="btn-tool splid">
+              <i class="fa-solid fa-receipt"></i> Splid App öffnen
+            </a>
+          </div>
         </div>
 
+        <!-- Google Live-Fotoalbum Card -->
+        <div class="hub-card">
+          <h3><i class="fa-solid fa-camera"></i> Unser Live-Fotoalbum</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+            Alle 4 laden ihre Schnappschüsse und Videos direkt unterwegs ins gemeinsame Album:
+          </p>
+          <div class="tool-btn-row">
+            <a href="https://photos.app.goo.gl/c8Bkr97b1hc8QrKP7" target="_blank" class="btn-tool photos">
+              <i class="fa-solid fa-images"></i> 📸 Google Live-Fotoalbum öffnen
+            </a>
+          </div>
+        </div>
+
+        <!-- Check-in Info Cards -->
+        <div class="hub-card" style="grid-column: 1 / -1;">
+          <h3><i class="fa-solid fa-hotel"></i> Check-in Info Cards — Alle Unterkünfte</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+            Adressen und Check-in-Zeiten pro Hotel auf einen Blick:
+          </p>
+
+          <details class="checkin-card">
+            <summary>The Ultimo, Sydney (22.03. – 25.03.) <i class="fa-solid fa-chevron-down"></i></summary>
+            <div class="checkin-grid">
+              <div><span class="label">Adresse</span>50 Jones St, Ultimo NSW 2007</div>
+              <div><span class="label">Buchungsnummer</span>Vorhanden</div>
+              <div><span class="label">Check-in ab</span>14:00 Uhr</div>
+              <div><span class="label">Check-out bis</span>11:00 Uhr</div>
+            </div>
+          </details>
+
+          <details class="checkin-card">
+            <summary>AirBnB, East Ballina (25.03. – 27.03.) <i class="fa-solid fa-chevron-down"></i></summary>
+            <div class="checkin-grid">
+              <div><span class="label">Adresse</span>East Ballina, NSW</div>
+              <div><span class="label">Buchungsnummer</span>AirBnB</div>
+              <div><span class="label">Check-in ab</span>15:00 Uhr</div>
+              <div><span class="label">Check-out bis</span>10:00 Uhr</div>
+            </div>
+          </details>
+
+          <details class="checkin-card">
+            <summary>Rambla at Story House, Brisbane (27.03. – 30.03.) <i class="fa-solid fa-chevron-down"></i></summary>
+            <div class="checkin-grid">
+              <div><span class="label">Adresse</span>Brisbane City, QLD</div>
+              <div><span class="label">Buchungsnummer</span>Vorhanden</div>
+              <div><span class="label">Check-in ab</span>14:00 Uhr</div>
+              <div><span class="label">Check-out bis</span>10:00 Uhr</div>
+            </div>
+          </details>
+
+          <details class="checkin-card">
+            <summary>Villa Noosa Hotel, Noosa (30.03. – 31.03.) <i class="fa-solid fa-chevron-down"></i></summary>
+            <div class="checkin-grid">
+              <div><span class="label">Adresse</span>Noosa Heads, QLD</div>
+              <div><span class="label">Buchungsnummer</span>Vorhanden</div>
+              <div><span class="label">Check-in ab</span>14:00 Uhr</div>
+              <div><span class="label">Check-out bis</span>10:00 Uhr</div>
+            </div>
+          </details>
+
+          <details class="checkin-card">
+            <summary>Nightcap at Kondari Resort, Hervey Bay (31.03. – 01.04.) <i class="fa-solid fa-chevron-down"></i></summary>
+            <div class="checkin-grid">
+              <div><span class="label">Adresse</span>Hervey Bay, QLD</div>
+              <div><span class="label">Buchungsnummer</span>Vorhanden</div>
+              <div><span class="label">Check-in ab</span>14:00 Uhr</div>
+              <div><span class="label">Check-out bis</span>10:00 Uhr</div>
+            </div>
+          </details>
+
+          <details class="checkin-card">
+            <summary>Coral Sea Vista Apartments, Airlie Beach (02.04. – 05.04.) <i class="fa-solid fa-chevron-down"></i></summary>
+            <div class="checkin-grid">
+              <div><span class="label">Adresse</span>Airlie Beach, QLD</div>
+              <div><span class="label">Buchungsnummer</span>Booking.com</div>
+              <div><span class="label">Check-in ab</span>14:00 Uhr</div>
+              <div><span class="label">Check-out bis</span>10:00 Uhr</div>
+            </div>
+          </details>
+
+          <details class="checkin-card">
+            <summary>Vibe Hotel Docklands, Melbourne (05.04. – 09.04.) <i class="fa-solid fa-chevron-down"></i></summary>
+            <div class="checkin-grid">
+              <div><span class="label">Adresse</span>Docklands, VIC</div>
+              <div><span class="label">Buchungsnummer</span>Vorhanden</div>
+              <div><span class="label">Check-in ab</span>14:00 Uhr</div>
+              <div><span class="label">Check-out bis</span>11:00 Uhr</div>
+            </div>
+          </details>
+        </div>
+
+        <!-- Singapur Stopover Guide -->
         <div class="hub-card" style="grid-column: 1 / -1;">
           <h3><i class="fa-solid fa-plane-arrival"></i> Singapur Stopover Quick Guide (7 Std. Aufenthalt)</h3>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 0.8rem; font-size: 0.9rem;">
@@ -1632,32 +1892,38 @@
     </section>
 
     <!-- 5. Bucket List & Slang -->
-    <section id="bucketlist" style="margin-top: 5rem;">
+    <section id="bucketlist" class="section-spaced">
       <h2 class="section-title">Aussie Bucket List & Culture 🦘</h2>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.8rem;">
         
         <div class="hub-card">
-          <h3><i class="fa-solid fa-paw"></i> Wildlife-Erlebnis Tracker</h3>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.6rem;">
+            <h3 style="margin:0;"><i class="fa-solid fa-paw"></i> Wildlife Tracker</h3>
+            <span class="sync-badge"><span class="sync-dot"></span> Live</span>
+          </div>
           <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Abhaken sobald in freier Wildbahn gesehen!</p>
           <ul class="checklist">
-            <li class="checklist-item"><input type="checkbox"> Wilde Koalas (Noosa / Great Ocean Road)</li>
-            <li class="checklist-item"><input type="checkbox"> Kängurus am Strand (Cape Hillsborough)</li>
-            <li class="checklist-item"><input type="checkbox"> Zwergpinguine (St. Kilda Pier, Melbourne)</li>
-            <li class="checklist-item"><input type="checkbox"> Wilde Dingos (K’gari Fraser Island)</li>
-            <li class="checklist-item"><input type="checkbox"> Delfine / Schildkröten (Cape Byron)</li>
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="wild_koala"> Wilde Koalas (Noosa / Great Ocean Road)</li>
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="wild_kangaroo"> Wilde Kängurus am Morgen (Noosa)</li>
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="wild_penguin"> Zwergpinguine (St. Kilda Pier, Melbourne)</li>
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="wild_dingo"> Wilde Dingos (K’gari Fraser Island)</li>
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="wild_dolphin"> Delfine / Schildkröten (Cape Byron & Whitsundays)</li>
           </ul>
         </div>
 
         <div class="hub-card">
-          <h3><i class="fa-solid fa-utensils"></i> Aussie Taste Challenge</h3>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.6rem;">
+            <h3 style="margin:0;"><i class="fa-solid fa-utensils"></i> Aussie Taste Challenge</h3>
+            <span class="sync-badge"><span class="sync-dot"></span> Live</span>
+          </div>
           <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Kulinarische Highlights auf dem Trip:</p>
           <ul class="checklist">
-            <li class="checklist-item"><input type="checkbox"> Flat White Kaffee (Melbourne Café)</li>
-            <li class="checklist-item"><input type="checkbox"> Tim Tam Slam (Keks-Mitmach-Ritual)</li>
-            <li class="checklist-item"><input type="checkbox"> Australien Meat Pie probieren</li>
-            <li class="checklist-item"><input type="checkbox"> Bundaberg Ginger Beer trinken</li>
-            <li class="checklist-item"><input type="checkbox"> Vegemite Toast-Test (Dünn bestreichen!)</li>
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="taste_coffee"> Flat White Kaffee (Melbourne Café)</li>
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="taste_timtam"> Tim Tam Slam (Keks-Mitmach-Ritual)</li>
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="taste_pie"> Australien Meat Pie probieren</li>
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="taste_bundaberg"> Bundaberg Ginger Beer trinken</li>
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="taste_vegemite"> Vegemite Toast-Test (Dünn bestreichen!)</li>
           </ul>
         </div>
 
@@ -1678,32 +1944,42 @@
       </div>
     </section>
 
-    <!-- 6. Notfall, Admin & vCard-Download -->
-    <section id="emergency" style="margin-top: 5rem;">
+    <!-- 6. Notfall, Admin & Regeln (Sauber formatiert & responsiv) -->
+    <section id="emergency" class="section-spaced">
       <h2 class="section-title">Notfall, Admin & Regeln 🚨</h2>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.8rem;">
         
         <div class="hub-card" style="border-left: 4px solid #c53030;">
           <h3 style="color: #c53030;"><i class="fa-solid fa-phone-volume"></i> Notruf & Wichtige Kontakte</h3>
           <ul class="sub-item-list">
-            <li><span>Notruf vor Ort (Polizei, Rettung, Feuerwehr):</span> <strong>000</strong></li>
+            <li><span>Notruf Australien (Polizei, Rettung, Feuerwehr):</span> <strong>000</strong></li>
             <li><span>Österreichische Botschaft Canberra:</span> <strong>+61 2 6295 1533</strong></li>
-            <li><span>Australischer Automobilclub / Pannenhilfe (RACQ):</span> <strong>13 11 11</strong></li>
+            <li><span>Pannenhilfe / RACQ Notruf:</span> <strong>13 11 11</strong></li>
+            <li><span>Auslandsversicherung:</span> <strong>Polizzen-Nr. griffbereit</strong></li>
           </ul>
 
-          <button onclick="downloadEmergencyVCard()" class="btn-action" style="background: #c53030; color: white; border: none; padding: 0.65rem 1.1rem; border-radius: 10px; cursor: pointer; font-size: 0.85rem; margin-top: 1.2rem; width: 100%; justify-content: center;">
+          <button onclick="downloadEmergencyVCard()" class="btn-action" style="background: #c53030; color: white; border: none; padding: 0.75rem 1.1rem; border-radius: 10px; cursor: pointer; font-size: 0.85rem; margin-top: 1.2rem; width: 100%; justify-content: center;">
             <i class="fa-solid fa-address-card"></i> Notfall-Kontakte ins Adressbuch (.vcf)
           </button>
         </div>
 
         <div class="hub-card">
-          <h3><i class="fa-solid fa-helicopter"></i> Drohnen- & Parkregeln</h3>
-          <ul class="checklist">
-            <li class="checklist-item"><i class="fa-solid fa-ban" style="color: #e53e3e;"></i> Strenges Drohnenverbot in Nationalparks (z.B. K'gari)</li>
-            <li class="checklist-item"><i class="fa-solid fa-up-long" style="color: var(--primary);"></i> Maximale Flughöhe: 120 Meter (CASA Regel)</li>
+          <h3><i class="fa-solid fa-helicopter"></i> Drohnen- & Luftraumregeln</h3>
+          <ul class="checklist" style="margin-bottom: 1rem;">
+            <li class="checklist-item"><i class="fa-solid fa-ban" style="color: #e53e3e;"></i> Strenges Drohnenverbot in Nationalparks (K'gari, Noosa)</li>
+            <li class="checklist-item"><i class="fa-solid fa-up-long" style="color: var(--primary);"></i> Maximale Flughöhe: 120 Meter (CASA)</li>
             <li class="checklist-item"><i class="fa-solid fa-plane-slash" style="color: var(--primary);"></i> Mind. 5,5 km Abstand zu Flugplätzen</li>
           </ul>
+          
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <a href="https://www.casa.gov.au/drones" target="_blank" class="btn-tool casa">
+              <i class="fa-solid fa-shield-halved"></i> Offizielle CASA Drohnen-Regeln
+            </a>
+            <a href="https://www.spheredrones.com.au/resources/tools/airspace-advisory" target="_blank" class="btn-tool dronemap">
+              <i class="fa-solid fa-map-location-dot"></i> Interaktive Drohnen-Luftraumkarte
+            </a>
+          </div>
         </div>
 
         <div class="hub-card">
@@ -1718,74 +1994,85 @@
       </div>
     </section>
 
-    <!-- 7. Wetter & Live-Tagebuch -->
-    <section id="diary" style="margin-top: 5rem;">
-      <h2 class="section-title">Wetter & Live-Tagebuch ☀️</h2>
+    <!-- 7. Live Wetter (Wetter.com Einbettung) -->
+    <section id="weather" class="section-spaced">
+      <h2 class="section-title">Live-Wetter an unseren Stopps ☀️</h2>
+      <p class="section-lead">Echtzeit-Wetterberichte & Vorhersagen direkt von wetter.com für unsere Reiseroute:</p>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem;">
+      <div class="weather-widget-grid">
         
-        <div class="hub-card">
-          <h3><i class="fa-solid fa-temperature-high"></i> Klimatabelle (März / April)</h3>
-          <table class="weather-table">
-            <thead>
-              <tr>
-                <th>Region</th>
-                <th>Temp. Ø</th>
-                <th>Wetter-Vibe</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Sydney</td>
-                <td>23°C / 16°C</td>
-                <td>Angenehm & sonnig</td>
-              </tr>
-              <tr>
-                <td>Byron / Gold Coast</td>
-                <td>26°C / 18°C</td>
-                <td>Warmes Badewetter</td>
-              </tr>
-              <tr>
-                <td>Whitsundays</td>
-                <td>28°C / 22°C</td>
-                <td>Tropisch & warm</td>
-              </tr>
-              <tr>
-                <td>Melbourne</td>
-                <td>20°C / 11°C</td>
-                <td>Wechselhaft (4 Jahreszeiten)</td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- Sydney -->
+        <div class="weather-widget-card">
+          <div>
+            <div class="weather-header">
+              <span class="weather-city"><i class="fa-solid fa-location-dot"></i> Sydney</span>
+              <span class="weather-state">NSW</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">März/April: Angenehme 23°C – perfekt für Stadt & Küste.</p>
+          </div>
+          <a href="https://www.wetter.com/australien/sydney/AU0NS0034.html" target="_blank" class="btn-tool splitwise" style="padding: 0.6rem 0.9rem; font-size: 0.82rem;">
+            <i class="fa-solid fa-cloud-sun"></i> wetter.com Sydney öffnen
+          </a>
         </div>
 
-        <div class="hub-card">
-          <h3><i class="fa-solid fa-camera"></i> Live Foto-Raster (Unterwegs)</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Platzhalter für eure besten Tages-Momente:</p>
-          <div class="photo-grid">
-            <div class="photo-placeholder"><i class="fa-solid fa-plus"></i> Tag 1-5</div>
-            <div class="photo-placeholder"><i class="fa-solid fa-plus"></i> Tag 6-10</div>
-            <div class="photo-placeholder"><i class="fa-solid fa-plus"></i> Tag 11-15</div>
-            <div class="photo-placeholder"><i class="fa-solid fa-plus"></i> Tag 16-20</div>
+        <!-- Byron Bay / Gold Coast -->
+        <div class="weather-widget-card">
+          <div>
+            <div class="weather-header">
+              <span class="weather-city"><i class="fa-solid fa-location-dot"></i> Byron Bay</span>
+              <span class="weather-state">NSW / QLD</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">März/April: Warme 26°C – herrliches Badewetter am Ozean.</p>
           </div>
+          <a href="https://www.wetter.com/australien/byron_bay/AU0NS0195.html" target="_blank" class="btn-tool splitwise" style="padding: 0.6rem 0.9rem; font-size: 0.82rem;">
+            <i class="fa-solid fa-cloud-sun"></i> wetter.com Byron Bay öffnen
+          </a>
+        </div>
+
+        <!-- Whitsundays / Airlie Beach -->
+        <div class="weather-widget-card">
+          <div>
+            <div class="weather-header">
+              <span class="weather-city"><i class="fa-solid fa-location-dot"></i> Whitsundays</span>
+              <span class="weather-state">QLD (Tropen)</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">März/April: Tropische 28°C – ideal zum Segeln & Schnorcheln.</p>
+          </div>
+          <a href="https://www.wetter.com/australien/airlie_beach/AU0QL0430.html" target="_blank" class="btn-tool splitwise" style="padding: 0.6rem 0.9rem; font-size: 0.82rem;">
+            <i class="fa-solid fa-cloud-sun"></i> wetter.com Whitsundays öffnen
+          </a>
+        </div>
+
+        <!-- Melbourne -->
+        <div class="weather-widget-card">
+          <div>
+            <div class="weather-header">
+              <span class="weather-city"><i class="fa-solid fa-location-dot"></i> Melbourne</span>
+              <span class="weather-state">VIC</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">März/April: Milde 20°C – 4 Jahreszeiten an einem Tag.</p>
+          </div>
+          <a href="https://www.wetter.com/australien/melbourne/AU0VI0032.html" target="_blank" class="btn-tool splitwise" style="padding: 0.6rem 0.9rem; font-size: 0.82rem;">
+            <i class="fa-solid fa-cloud-sun"></i> wetter.com Melbourne öffnen
+          </a>
         </div>
 
       </div>
     </section>
 
     <!-- 8. Spotify Playlist -->
-    <section id="playlist" style="margin-top: 5rem;">
+    <section id="playlist" class="section-spaced">
       <h2 class="section-title">Roadtrip Playlist 🎵</h2>
-      <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Der perfekte Sound für euren Australia East Coast Roadtrip!</p>
+      <p class="section-lead">Der perfekte Soundtrack für euren Australia East Coast Roadtrip!</p>
       <div class="hub-card" style="max-width: 650px; margin: 0 auto; padding: 1rem;">
         <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/7qhWRytqvcU5rjD9p6vNRH?utm_source=generator&si=2679d41a6e3c416b" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
       </div>
     </section>
 
     <!-- 9. Währungsrechner -->
-    <section id="calculator" style="margin-top: 5rem;">
+    <section id="calculator" class="section-spaced">
       <h2 class="section-title">Währungsrechner (AUD ↔ EUR) 💳</h2>
-      <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Schnelle Umrechnung für die Urlaubskasse vor Ort:</p>
+      <p class="section-lead">Schnelle Umrechnung für die Urlaubskasse vor Ort:</p>
 
       <div class="hub-card" style="max-width: 480px; margin: 0 auto;">
         <div style="display: flex; flex-direction: column; gap: 1rem;">
@@ -1812,7 +2099,7 @@
 
   </div>
 
-  <!-- PWA Guide Modal für iOS & Desktop -->
+  <!-- PWA Guide Modal -->
   <div id="pwa-modal" class="modal-overlay" onclick="closePwaModal()">
     <div class="modal-card" onclick="event.stopPropagation()">
       <div style="font-size: 2.2rem; color: var(--primary); margin-bottom: 0.6rem;">📱</div>
@@ -1938,18 +2225,7 @@
       document.getElementById('progress-open').style.width = (100 - paidPercent) + '%';
     }
 
-    // 4. PACKLISTE PROGRESS LOGIK
-    function updatePackingProgress() {
-      const checkboxes = document.querySelectorAll('.pack-checkbox');
-      const checkedCount = document.querySelectorAll('.pack-checkbox:checked').length;
-      const totalCount = checkboxes.length;
-      const percentage = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
-
-      document.getElementById('pack-progress').style.width = percentage + '%';
-      document.getElementById('pack-status-text').innerText = `${checkedCount} von ${totalCount} gepackt (${percentage}%)`;
-    }
-
-    // 5. NOTFALL-KONTAKTE ONE-CLICK DOWNLOAD (.VCF / VCARD)
+    // 4. NOTFALL-KONTAKTE ONE-CLICK DOWNLOAD (.VCF / VCARD)
     function downloadEmergencyVCard() {
       const vcardData = [
         'BEGIN:VCARD',
@@ -1974,7 +2250,7 @@
       URL.revokeObjectURL(url);
     }
 
-    // 6. PWA PROMPT LOGIK
+    // 5. PWA PROMPT LOGIK
     let deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
@@ -1984,7 +2260,7 @@
     function triggerPwaPrompt() {
       if (deferredPrompt) {
         deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
+        deferredPrompt.userChoice.then(() => {
           deferredPrompt = null;
         });
       } else {
@@ -1995,13 +2271,55 @@
       document.getElementById('pwa-modal').style.display = 'none';
     }
 
-    // 7. LIVE-SYNCHRONISIERTER EINKAUFSZETTEL (MIT KV CLOUD SYNC & LOCALSTORAGE FALLBACK)
+    // 6. DYNAMISCHER REISE-STATUS BANNER
+    const TRIP_SCHEDULE = [
+      { day: 1,  date: "2027-03-21", location: "im Flug Richtung Sydney" },
+      { day: 2,  date: "2027-03-22", location: "Sydney" },
+      { day: 3,  date: "2027-03-23", location: "Sydney" },
+      { day: 4,  date: "2027-03-24", location: "Sydney" },
+      { day: 5,  date: "2027-03-25", location: "Byron Bay" },
+      { day: 6,  date: "2027-03-26", location: "Byron Bay" },
+      { day: 7,  date: "2027-03-27", location: "auf dem Weg nach Brisbane" },
+      { day: 8,  date: "2027-03-28", location: "Brisbane" },
+      { day: 9,  date: "2027-03-29", location: "Brisbane" },
+      { day: 10, date: "2027-03-30", location: "Noosa" },
+      { day: 11, date: "2027-03-31", location: "Hervey Bay" },
+      { day: 12, date: "2027-04-01", location: "K'gari (Fraser Island) & Nachtbus" },
+      { day: 13, date: "2027-04-02", location: "Airlie Beach" },
+      { day: 14, date: "2027-04-03", location: "Whitsundays" },
+      { day: 15, date: "2027-04-04", location: "Airlie Beach" },
+      { day: 16, date: "2027-04-05", location: "auf dem Weg nach Melbourne" },
+      { day: 17, date: "2027-04-06", location: "Melbourne" },
+      { day: 18, date: "2027-04-07", location: "Great Ocean Road" },
+      { day: 19, date: "2027-04-08", location: "Melbourne" },
+      { day: 20, date: "2027-04-09", location: "im Rückflug nach Wien" }
+    ];
+
+    function updateTripStatusBanner() {
+      const banner = document.getElementById('trip-status-banner');
+      if (!banner) return;
+      const todayStr = new Date().toISOString().slice(0, 10);
+      const todayEntry = TRIP_SCHEDULE.find(entry => entry.date === todayStr);
+
+      if (todayEntry) {
+        banner.innerHTML = `📌 Heute ist Tag ${todayEntry.day}: Wir sind gerade in <strong>${todayEntry.location}</strong>!`;
+        banner.classList.add('is-visible');
+      } else {
+        banner.classList.remove('is-visible');
+      }
+    }
+
+    // 7. ECHTZEIT-SYNCHRONISATION: EINKAUFSZETTEL & CHECKBOXEN (LOCALSTORAGE + BROADCASTCHANNEL)
     const GROCERY_STORAGE_KEY = 'aus_roadtrip_groceries_2027';
-    const SYNC_API_ENDPOINT = 'https://api.jsonbin.io/v3/b/66bc7520e41b4d34e4210e5b'; // Resilient Fallback Sync Hub
+    const CHECKBOX_STORAGE_KEY = 'aus_roadtrip_checkboxes_2027';
+    const syncChannel = new BroadcastChannel('aus_trip_sync_channel');
+
     let groceries = [];
+    let checkboxStates = {};
 
     function renderGroceries() {
       const container = document.getElementById('grocery-list-container');
+      if (!container) return;
       container.innerHTML = '';
 
       if (groceries.length === 0) {
@@ -2023,27 +2341,44 @@
       });
     }
 
-    function saveGroceriesLocally() {
+    function saveAllState() {
       localStorage.setItem(GROCERY_STORAGE_KEY, JSON.stringify(groceries));
+      localStorage.setItem(CHECKBOX_STORAGE_KEY, JSON.stringify(checkboxStates));
+      syncChannel.postMessage({ type: 'SYNC_UPDATE', groceries, checkboxStates });
     }
 
-    function loadGroceries() {
-      const saved = localStorage.getItem(GROCERY_STORAGE_KEY);
-      if (saved) {
-        try {
-          groceries = JSON.parse(saved);
-        } catch (e) {
-          groceries = [];
-        }
+    function loadAllState() {
+      const savedGroceries = localStorage.getItem(GROCERY_STORAGE_KEY);
+      if (savedGroceries) {
+        try { groceries = JSON.parse(savedGroceries); } catch (e) { groceries = []; }
       } else {
-        // Initiale Standard-Items
         groceries = [
           { text: '24er Pack Trinkwasser', done: false },
           { text: 'Eisbeutel für Kühlbox (Esky)', done: false },
           { text: 'Tim Tams Double Coat', done: true }
         ];
       }
+
+      const savedCheckboxes = localStorage.getItem(CHECKBOX_STORAGE_KEY);
+      if (savedCheckboxes) {
+        try { checkboxStates = JSON.parse(savedCheckboxes); } catch (e) { checkboxStates = {}; }
+      }
+
+      applyCheckboxStatesToUI();
       renderGroceries();
+      updatePackingProgress();
+    }
+
+    function applyCheckboxStatesToUI() {
+      document.querySelectorAll('.sync-checkbox').forEach(cb => {
+        if (cb.id) {
+          cb.checked = !!checkboxStates[cb.id];
+          const parent = cb.closest('.checklist-item');
+          if (parent) {
+            parent.classList.toggle('is-done', cb.checked);
+          }
+        }
+      });
     }
 
     function addGroceryItem() {
@@ -2052,14 +2387,14 @@
       if (!text) return;
       groceries.unshift({ text: text, done: false });
       input.value = '';
-      saveGroceriesLocally();
+      saveAllState();
       renderGroceries();
     }
 
     function quickAddGrocery(itemText) {
       if (!groceries.some(g => g.text.toLowerCase() === itemText.toLowerCase())) {
         groceries.unshift({ text: itemText, done: false });
-        saveGroceriesLocally();
+        saveAllState();
         renderGroceries();
       }
     }
@@ -2067,28 +2402,75 @@
     function toggleGrocery(index) {
       if (groceries[index]) {
         groceries[index].done = !groceries[index].done;
-        saveGroceriesLocally();
+        saveAllState();
         renderGroceries();
       }
     }
 
     function deleteGrocery(index) {
       groceries.splice(index, 1);
-      saveGroceriesLocally();
+      saveAllState();
       renderGroceries();
     }
 
     function clearCompletedGroceries() {
       groceries = groceries.filter(item => !item.done);
-      saveGroceriesLocally();
+      saveAllState();
       renderGroceries();
     }
 
-    // Beim Laden initialisieren
+    function updatePackingProgress() {
+      const checkboxes = document.querySelectorAll('.pack-checkbox');
+      const checkedCount = document.querySelectorAll('.pack-checkbox:checked').length;
+      const totalCount = checkboxes.length;
+      const percentage = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
+
+      const bar = document.getElementById('pack-progress');
+      const text = document.getElementById('pack-status-text');
+      if (bar) bar.style.width = percentage + '%';
+      if (text) text.innerText = `${checkedCount} von ${totalCount} gepackt (${percentage}%)`;
+    }
+
+    // Checkbox Change Event Listener
+    document.addEventListener('change', (e) => {
+      if (e.target.classList.contains('sync-checkbox') && e.target.id) {
+        checkboxStates[e.target.id] = e.target.checked;
+        const parent = e.target.closest('.checklist-item');
+        if (parent) parent.classList.toggle('is-done', e.target.checked);
+        saveAllState();
+        updatePackingProgress();
+      }
+    });
+
+    // Empfang von Live-Sync Nachrichten von anderen Tabs / Fenstern
+    syncChannel.onmessage = (event) => {
+      if (event.data && event.data.type === 'SYNC_UPDATE') {
+        groceries = event.data.groceries || [];
+        checkboxStates = event.data.checkboxStates || {};
+        applyCheckboxStatesToUI();
+        renderGroceries();
+        updatePackingProgress();
+      }
+    };
+
+    // Initialisierung beim Laden
     window.addEventListener('DOMContentLoaded', () => {
       if (document.getElementById('budget')) updateBudgetCalculations();
-      updatePackingProgress();
-      loadGroceries();
+      loadAllState();
+      updateTripStatusBanner();
+    });
+
+    // Druckansicht: Automatisch alle Klappmenüs öffnen
+    let detailsStateBeforePrint = [];
+    window.addEventListener('beforeprint', () => {
+      detailsStateBeforePrint = [];
+      document.querySelectorAll('details').forEach(d => {
+        detailsStateBeforePrint.push({ el: d, wasOpen: d.open });
+        d.open = true;
+      });
+    });
+    window.addEventListener('afterprint', () => {
+      detailsStateBeforePrint.forEach(({ el, wasOpen }) => { el.open = wasOpen; });
     });
   </script>
 </body>
