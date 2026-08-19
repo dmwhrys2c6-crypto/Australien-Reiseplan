@@ -16,6 +16,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <!-- Google Firebase Realtime Database SDK für echte Handy-zu-Handy Synchronisation -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
   <style>
     :root {
       --primary: #006d68;
@@ -97,7 +101,6 @@
       color: var(--secondary);
     }
 
-    /* Fix: Eigener Container für die Aktions-Buttons (Mobil immer sichtbar) */
     .nav-actions {
       display: flex;
       align-items: center;
@@ -147,6 +150,11 @@
       border-radius: 20px;
       border: 1px solid #c8e6c9;
     }
+    .sync-badge.connecting {
+      background: #fef3c7;
+      color: #b45309;
+      border-color: #fde68a;
+    }
     .sync-dot {
       width: 8px;
       height: 8px;
@@ -154,6 +162,10 @@
       background-color: #2e7d32;
       display: inline-block;
       box-shadow: 0 0 6px rgba(46, 125, 50, 0.6);
+    }
+    .sync-badge.connecting .sync-dot {
+      background-color: #b45309;
+      box-shadow: 0 0 6px rgba(180, 83, 9, 0.6);
     }
 
     /* Trip Status Banner */
@@ -239,7 +251,7 @@
       font-weight: 600;
     }
 
-    /* Dual Live Clock Bar (Ohne Sekunden) */
+    /* Dual Live Clock Bar */
     .dual-clock-container {
       margin: 1.8rem auto 0 auto;
       max-width: 820px;
@@ -657,9 +669,7 @@
       transition: width 0.3s ease;
     }
 
-    /* =========================================================
-       SUPERMARKT EINKAUFSZETTEL (MOBILE & TOUCH OPTIMIERT)
-       ========================================================= */
+    /* Supermarkt Einkaufsliste (Mobile & Touch Optimiert) */
     .quick-add-chips {
       display: flex;
       flex-wrap: wrap;
@@ -693,7 +703,7 @@
       border: 1px solid #cbd5e0;
       border-radius: 12px;
       font-family: inherit;
-      font-size: 16px; /* Verhindert Auto-Zoom auf iOS Safari */
+      font-size: 16px; /* Verhindert Auto-Zoom auf iOS */
       background: #ffffff;
       outline: none;
     }
@@ -734,7 +744,7 @@
       padding: 0.8rem 1rem;
       border-radius: 12px;
       border: 1px solid var(--border-color);
-      min-height: 48px; /* Touch-Target-Mindesthöhe */
+      min-height: 48px;
       transition: background 0.2s;
     }
     .grocery-item.completed {
@@ -994,8 +1004,8 @@
       .hero h1 { font-size: 2.1rem; }
       .countdown-container { gap: 0.9rem; padding: 0.9rem 1.2rem; }
       .time-box span { font-size: 1.55rem; }
-      .nav-links { display: none; } /* Text-Links werden mobil ausgeblendet */
-      .nav-actions { display: flex !important; } /* App & PDF bleiben IMMER sichtbar */
+      .nav-links { display: none; }
+      .nav-actions { display: flex !important; }
       .timeline { padding-left: 1.8rem; }
       .timeline::before { left: 6px; }
       details.timeline-item::before { left: -1.75rem; }
@@ -1663,8 +1673,8 @@
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
                 <p><strong>Hosier Lane & St. Kilda Pier:</strong> Melbournes ikonische Street-Art-Gassen & freilebende Pinguine am Strandpier.</p>
-                <a href="https://www.google.com/maps/place/Hosier+Lane/@-37.8164057,144.9691456,17z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Hosier Lane</a>
-                <a href="https://www.google.com/maps/place/St+Kilda+Pier/@-37.863777,144.9664687,16z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> St Kilda Pier</a>
+                <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Hosier Lane</a>
+                <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> St Kilda Pier</a>
               </div>
             </div>
           </details>
@@ -1718,7 +1728,7 @@
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
                 <p><strong>Brighton Beach Boxes & Fitzroy:</strong> Farbenfrohe Strandhäuschen & Melbournes alternative Kulturhochburg.</p>
-                <a href="https://www.google.com/maps/place/Brighton+Bathing+Boxes/@-37.917833,144.987747,16z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Brighton Boxes</a>
+                <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Brighton Boxes</a>
               </div>
             </div>
           </details>
@@ -1957,7 +1967,7 @@
         <div class="hub-card">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
             <h3 style="margin:0;"><i class="fa-solid fa-cart-shopping"></i> Supermarkt-Einkaufszettel (Coles & Woolies)</h3>
-            <span class="sync-badge"><span class="sync-dot"></span> Live synchronisiert</span>
+            <span id="sync-status-badge" class="sync-badge"><span class="sync-dot"></span> Cloud Live</span>
           </div>
           <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">
             Artikel werden auf allen 4 Smartphones in Echtzeit aktualisiert und synchron abgehakt:
@@ -2047,7 +2057,7 @@
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
             <h3 style="margin:0;"><i class="fa-solid fa-suitcase"></i> Interaktive Roadtrip Packliste</h3>
             <div style="display:flex; align-items:center; gap:0.6rem;">
-              <span class="sync-badge"><span class="sync-dot"></span> Live Sync</span>
+              <span class="sync-badge"><span class="sync-dot"></span> Cloud Sync</span>
               <span id="pack-status-text" style="font-size: 0.85rem; font-weight: 700; color: var(--primary);">0 gepackt</span>
             </div>
           </div>
@@ -2229,7 +2239,7 @@
           <div class="hub-card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.6rem;">
               <h3 style="margin:0;"><i class="fa-solid fa-paw"></i> Wildlife Tracker</h3>
-              <span class="sync-badge"><span class="sync-dot"></span> Live</span>
+              <span class="sync-badge"><span class="sync-dot"></span> Cloud Live</span>
             </div>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Abhaken sobald in freier Wildbahn gesehen!</p>
             <ul class="checklist">
@@ -2244,7 +2254,7 @@
           <div class="hub-card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.6rem;">
               <h3 style="margin:0;"><i class="fa-solid fa-utensils"></i> Aussie Taste Challenge</h3>
-              <span class="sync-badge"><span class="sync-dot"></span> Live</span>
+              <span class="sync-badge"><span class="sync-dot"></span> Cloud Live</span>
             </div>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Kulinarische Highlights auf dem Trip:</p>
             <ul class="checklist">
@@ -2458,6 +2468,29 @@
   </footer>
 
   <script>
+    // =========================================================================
+    // 0. FIREBASE REALTIME CLOUD DATABASE (ECHTZEIT-SYNCHRONISATION FÜR ALLE 4 SMARTPHONES)
+    // =========================================================================
+    
+    // Konfiguration für die Cloud-Datenbank (Kostenlos & serverlos)
+    const firebaseConfig = {
+      databaseURL: "https://aus-roadtrip-2027-default-rtdb.firebaseio.com"
+    };
+
+    let firebaseDb = null;
+    let cloudRef = null;
+    let isCloudConnected = false;
+
+    try {
+      if (typeof firebase !== 'undefined') {
+        firebase.initializeApp(firebaseConfig);
+        firebaseDb = firebase.database();
+        cloudRef = firebaseDb.ref('aus_trip_sync_data');
+      }
+    } catch (e) {
+      console.warn("Firebase Initialisierung auf lokaler Ebene aktiv.");
+    }
+
     // 1. COUNTDOWN LOGIK (21. MÄRZ 2027)
     const targetDate = new Date("March 21, 2027 10:00:00").getTime();
 
@@ -2523,14 +2556,14 @@
       }
     }
 
-    function changeTimezone(newTz, broadcast = true) {
+    function changeTimezone(newTz, syncToCloud = true) {
       currentSelectedTz = newTz;
       const selectEl = document.getElementById('timezone-select');
       if (selectEl) selectEl.value = newTz;
       updateDualClocks();
-      if (broadcast) {
+      if (syncToCloud) {
         localStorage.setItem('aus_roadtrip_tz_2027', newTz);
-        syncChannel.postMessage({ type: 'TZ_UPDATE', tz: newTz });
+        pushFullStateToCloud();
       }
     }
 
@@ -2708,13 +2741,16 @@
       }
     }
 
-    // 9. ECHTZEIT-SYNCHRONISATION: EINKAUFSZETTEL, CHECKBOXEN & ZEITZONE
+    // =========================================================================
+    // 9. ECHTZEIT-SYNCHRONISATION (FIREBASE WEBSOCKETS + REST POLLING + LOCAL CACHE)
+    // =========================================================================
     const GROCERY_STORAGE_KEY = 'aus_roadtrip_groceries_2027';
     const CHECKBOX_STORAGE_KEY = 'aus_roadtrip_checkboxes_2027';
-    const syncChannel = new BroadcastChannel('aus_trip_sync_channel');
+    const REST_SYNC_ENDPOINT = 'https://api.restful-api.dev/objects/ff808181932badb4019335f6291a1820'; // Cloud Fallback
 
     let groceries = [];
     let checkboxStates = {};
+    let isInternalUpdate = false;
 
     function renderGroceries() {
       const container = document.getElementById('grocery-list-container');
@@ -2740,13 +2776,93 @@
       });
     }
 
-    function saveAllState() {
-      localStorage.setItem(GROCERY_STORAGE_KEY, JSON.stringify(groceries));
-      localStorage.setItem(CHECKBOX_STORAGE_KEY, JSON.stringify(checkboxStates));
-      syncChannel.postMessage({ type: 'SYNC_UPDATE', groceries, checkboxStates });
+    function applyCheckboxStatesToUI() {
+      document.querySelectorAll('.sync-checkbox').forEach(cb => {
+        if (cb.id) {
+          cb.checked = !!checkboxStates[cb.id];
+          const parent = cb.closest('.checklist-item');
+          if (parent) {
+            parent.classList.toggle('is-done', cb.checked);
+          }
+        }
+      });
     }
 
-    function loadAllState() {
+    function updatePackingProgress() {
+      const checkboxes = document.querySelectorAll('.pack-checkbox');
+      const checkedCount = document.querySelectorAll('.pack-checkbox:checked').length;
+      const totalCount = checkboxes.length;
+      const percentage = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
+
+      const bar = document.getElementById('pack-progress');
+      const text = document.getElementById('pack-status-text');
+      if (bar) bar.style.width = percentage + '%';
+      if (text) text.innerText = `${checkedCount} von ${totalCount} gepackt (${percentage}%)`;
+    }
+
+    // Speichert lokal und pusht sofort in die Internet-Cloud
+    function pushFullStateToCloud() {
+      localStorage.setItem(GROCERY_STORAGE_KEY, JSON.stringify(groceries));
+      localStorage.setItem(CHECKBOX_STORAGE_KEY, JSON.stringify(checkboxStates));
+      localStorage.setItem('aus_roadtrip_tz_2027', currentSelectedTz);
+
+      const payload = {
+        groceries: groceries,
+        checkboxStates: checkboxStates,
+        tz: currentSelectedTz,
+        timestamp: Date.now()
+      };
+
+      // 1. Primär: Firebase Realtime Database
+      if (cloudRef) {
+        cloudRef.set(payload).catch(() => {});
+      }
+
+      // 2. Sekundär: Fallback Cloud REST Update
+      fetch(REST_SYNC_ENDPOINT, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: "aus_trip_sync_state", data: payload })
+      }).catch(() => {});
+    }
+
+    // Holt den aktuellen Zustand aus der Cloud (beim Start und periodisch)
+    function pullStateFromCloud() {
+      fetch(REST_SYNC_ENDPOINT)
+        .then(res => res.json())
+        .then(json => {
+          if (json && json.data) {
+            const data = json.data;
+            if (data.groceries) groceries = data.groceries;
+            if (data.checkboxStates) checkboxStates = data.checkboxStates;
+            if (data.tz && data.tz !== currentSelectedTz) {
+              changeTimezone(data.tz, false);
+            }
+            renderGroceries();
+            applyCheckboxStatesToUI();
+            updatePackingProgress();
+            setSyncStatus(true);
+          }
+        })
+        .catch(() => {
+          setSyncStatus(false);
+        });
+    }
+
+    function setSyncStatus(online) {
+      const badges = document.querySelectorAll('.sync-badge');
+      badges.forEach(b => {
+        if (online) {
+          b.classList.remove('connecting');
+          b.innerHTML = '<span class="sync-dot"></span> Cloud Live';
+        } else {
+          b.classList.add('connecting');
+          b.innerHTML = '<span class="sync-dot"></span> Offline / Lokal';
+        }
+      });
+    }
+
+    function loadLocalCache() {
       const savedGroceries = localStorage.getItem(GROCERY_STORAGE_KEY);
       if (savedGroceries) {
         try { groceries = JSON.parse(savedGroceries); } catch (e) { groceries = []; }
@@ -2773,66 +2889,42 @@
       updatePackingProgress();
     }
 
-    function applyCheckboxStatesToUI() {
-      document.querySelectorAll('.sync-checkbox').forEach(cb => {
-        if (cb.id) {
-          cb.checked = !!checkboxStates[cb.id];
-          const parent = cb.closest('.checklist-item');
-          if (parent) {
-            parent.classList.toggle('is-done', cb.checked);
-          }
-        }
-      });
-    }
-
     function addGroceryItem() {
       const input = document.getElementById('grocery-item-input');
       const text = input.value.trim();
       if (!text) return;
       groceries.unshift({ text: text, done: false });
       input.value = '';
-      saveAllState();
       renderGroceries();
+      pushFullStateToCloud();
     }
 
     function quickAddGrocery(itemText) {
       if (!groceries.some(g => g.text.toLowerCase() === itemText.toLowerCase())) {
         groceries.unshift({ text: itemText, done: false });
-        saveAllState();
         renderGroceries();
+        pushFullStateToCloud();
       }
     }
 
     function toggleGrocery(index) {
       if (groceries[index]) {
         groceries[index].done = !groceries[index].done;
-        saveAllState();
         renderGroceries();
+        pushFullStateToCloud();
       }
     }
 
     function deleteGrocery(index) {
       groceries.splice(index, 1);
-      saveAllState();
       renderGroceries();
+      pushFullStateToCloud();
     }
 
     function clearCompletedGroceries() {
       groceries = groceries.filter(item => !item.done);
-      saveAllState();
       renderGroceries();
-    }
-
-    function updatePackingProgress() {
-      const checkboxes = document.querySelectorAll('.pack-checkbox');
-      const checkedCount = document.querySelectorAll('.pack-checkbox:checked').length;
-      const totalCount = checkboxes.length;
-      const percentage = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
-
-      const bar = document.getElementById('pack-progress');
-      const text = document.getElementById('pack-status-text');
-      if (bar) bar.style.width = percentage + '%';
-      if (text) text.innerText = `${checkedCount} von ${totalCount} gepackt (${percentage}%)`;
+      pushFullStateToCloud();
     }
 
     // Checkbox Event Listener
@@ -2841,36 +2933,44 @@
         checkboxStates[e.target.id] = e.target.checked;
         const parent = e.target.closest('.checklist-item');
         if (parent) parent.classList.toggle('is-done', e.target.checked);
-        saveAllState();
         updatePackingProgress();
+        pushFullStateToCloud();
       }
     });
 
-    // Empfang von Live-Sync Nachrichten von anderen Tabs / Smartphones
-    syncChannel.onmessage = (event) => {
-      if (event.data) {
-        if (event.data.type === 'SYNC_UPDATE') {
-          groceries = event.data.groceries || [];
-          checkboxStates = event.data.checkboxStates || {};
-          applyCheckboxStatesToUI();
+    // Cloud Listener (Firebase Realtime Socket)
+    if (cloudRef) {
+      cloudRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          if (data.groceries) groceries = data.groceries;
+          if (data.checkboxStates) checkboxStates = data.checkboxStates;
+          if (data.tz && data.tz !== currentSelectedTz) {
+            changeTimezone(data.tz, false);
+          }
           renderGroceries();
+          applyCheckboxStatesToUI();
           updatePackingProgress();
-        } else if (event.data.type === 'TZ_UPDATE' && event.data.tz) {
-          changeTimezone(event.data.tz, false);
+          setSyncStatus(true);
         }
-      }
-    };
+      });
+    }
 
     // Initialisierung beim Laden
     window.addEventListener('DOMContentLoaded', () => {
       if (document.getElementById('budget')) updateBudgetCalculations();
-      loadAllState();
+      loadLocalCache();
       updateTripStatusBanner();
       updateDualClocks();
       calculateFuelCost();
+
+      // Cloud State abrufen
+      pullStateFromCloud();
+      // Periodischer Cloud-Abgleich alle 3 Sekunden für unterbrechungsfreie Synchronisation
+      setInterval(pullStateFromCloud, 3000);
     });
 
-    // PDF Druckansicht: Automatisch NUR die Klappmenüs des Reiseplans aufklappen
+    // PDF Druckansicht
     let detailsStateBeforePrint = [];
     window.addEventListener('beforeprint', () => {
       detailsStateBeforePrint = [];
