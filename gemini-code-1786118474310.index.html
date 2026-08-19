@@ -16,10 +16,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- Google Firebase Realtime Database SDK für echte Handy-zu-Handy Synchronisation -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
   <style>
     :root {
       --primary: #006d68;
@@ -149,6 +145,7 @@
       padding: 0.25rem 0.65rem;
       border-radius: 20px;
       border: 1px solid #c8e6c9;
+      transition: all 0.3s ease;
     }
     .sync-badge.connecting {
       background: #fef3c7;
@@ -558,7 +555,7 @@
     .btn-booking { background: #fff3ec; color: var(--secondary); border: 1px solid #fbd5c0; }
     .btn-booking:hover { background: var(--secondary); color: white; }
 
-    /* Hub Cards & Compact Layout */
+    /* Hub Cards & Layout */
     .hub-card {
       background: white;
       padding: 1.8rem;
@@ -594,7 +591,7 @@
       .hub-row-2col { grid-template-columns: 1fr; }
     }
 
-    /* Budget Grid (2x2 Gleichmäßig) */
+    /* Budget Grid (2x2) */
     .budget-grid-2x2 {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -669,7 +666,7 @@
       transition: width 0.3s ease;
     }
 
-    /* Supermarkt Einkaufsliste (Mobile & Touch Optimiert) */
+    /* Supermarkt Einkaufsliste */
     .quick-add-chips {
       display: flex;
       flex-wrap: wrap;
@@ -703,7 +700,7 @@
       border: 1px solid #cbd5e0;
       border-radius: 12px;
       font-family: inherit;
-      font-size: 16px; /* Verhindert Auto-Zoom auf iOS */
+      font-size: 16px;
       background: #ffffff;
       outline: none;
     }
@@ -945,9 +942,7 @@
       margin-bottom: 0.2rem;
     }
 
-    /* =========================================================
-       PRINT STYLESHEET (NUR REISEPLAN ALS PDF EXPORTIEREN)
-       ========================================================= */
+    /* Print Stylesheet */
     @media print {
       nav, .hero, #map, #budget, #hub, #bucketlist, #emergency, #weather, #playlist, #calculator,
       footer, #trip-status-banner, .modal-overlay, iframe, button, .btn-action, .expand-trigger,
@@ -999,7 +994,7 @@
       }
     }
 
-    /* Mobile Responsive Optimierung für iPhone / Smartphones */
+    /* Mobile Responsive Optimierung */
     @media (max-width: 768px) {
       .hero h1 { font-size: 2.1rem; }
       .countdown-container { gap: 0.9rem; padding: 0.9rem 1.2rem; }
@@ -1022,11 +1017,10 @@
 </head>
 <body>
 
-  <!-- Navigation (App & PDF immer sichtbar) -->
+  <!-- Navigation -->
   <nav>
     <div class="logo"><i class="fa-solid fa-plane-departure"></i> AUS 2027</div>
     
-    <!-- Text-Links (Desktop) -->
     <ul class="nav-links">
       <li><a href="#map">Route</a></li>
       <li><a href="#route">Reiseplan</a></li>
@@ -1038,7 +1032,6 @@
       <li><a href="#playlist">Playlist</a></li>
     </ul>
 
-    <!-- Quick Action Buttons (Auf Desktop & iPhone immer sichtbar) -->
     <div class="nav-actions">
       <button onclick="triggerPwaPrompt()" class="btn-nav-action btn-pwa-nav" title="Als Handy-App installieren">
         <i class="fa-solid fa-mobile-screen-button"></i> App
@@ -1051,13 +1044,12 @@
 
   <div id="trip-status-banner" class="trip-status-banner"></div>
 
-  <!-- Hero Section mit Countdown & Dual-Uhr (Ohne Sekunden) -->
+  <!-- Hero Section -->
   <section class="hero">
     <span class="group-badge-hero"><i class="fa-solid fa-users"></i> 4-Personen Roadtrip Edition</span>
     <h1>AUSTRALIEN ROADTRIP 2027</h1>
     <p>Von Wien über Sydney, Byron Bay, Noosa, K’gari & Whitsundays nach Melbourne</p>
     
-    <!-- Countdown Widget -->
     <div class="countdown-container">
       <div class="time-box"><span id="days">00</span><label>Tage</label></div>
       <div class="time-box"><span id="hours">00</span><label>Stunden</label></div>
@@ -1065,10 +1057,8 @@
       <div class="time-box"><span id="seconds">00</span><label>Sekunden</label></div>
     </div>
 
-    <!-- Dual Live Clock Bar (Ohne Sekundenanzeige) -->
+    <!-- Dual Live Clock Bar -->
     <div class="dual-clock-container">
-      
-      <!-- Australien Uhr -->
       <div class="clock-card-hero aussie-clock">
         <div class="clock-header-row">
           <span><i class="fa-solid fa-location-dot"></i> Vor Ort:</span>
@@ -1082,7 +1072,6 @@
         <div class="clock-sub-text" id="aussie-tz-label">AEST / AEDT · Live</div>
       </div>
 
-      <!-- Wien Uhr -->
       <div class="clock-card-hero vienna-clock">
         <div class="clock-header-row">
           <span><i class="fa-solid fa-house"></i> Wien (Zuhause):</span>
@@ -1091,7 +1080,6 @@
         <div class="clock-time-display" id="vienna-time">--:--</div>
         <div class="clock-sub-text">Heimatzeit (MEZ / MESZ)</div>
       </div>
-
     </div>
   </section>
 
@@ -1223,7 +1211,7 @@
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Vormittags: Circular Quay, Sydney Opera House, Royal Botanic Garden & Mrs Macquarie’s Chair (bester Fotospot). Mittags: Historisches Viertel The Rocks und zu Fuß über die Sydney Harbour Bridge. Nachmittags: Ikonische Fährfahrt nach Manly Beach & Sunset.</p>
+                <p>Vormittags: Circular Quay, Sydney Opera House, Royal Botanic Garden & Mrs Macquarie’s Chair. Mittags: Historisches Viertel The Rocks und zu Fuß über die Sydney Harbour Bridge. Nachmittags: Fährfahrt nach Manly Beach & Sunset.</p>
               </div>
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
@@ -1248,7 +1236,7 @@
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Vormittags: Bondi Beach & spektakulärer Bondi to Coogee Coastal Walk (vorbei an Tamarama, Bronte & Clovelly). Nachmittags: Café-Kultur, Boutiquen & Street-Art in Surry Hills und Paddington.</p>
+                <p>Vormittags: Bondi Beach & spektakulärer Bondi to Coogee Coastal Walk. Nachmittags: Café-Kultur, Boutiquen & Street-Art in Surry Hills und Paddington.</p>
               </div>
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
@@ -1272,12 +1260,12 @@
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Fahrt nach Byron Bay, Check-in und Spätnachmittag am Cape Byron Lighthouse (östlichster Punkt des australischen Festlands).</p>
+                <p>Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Fahrt nach Byron Bay, Check-in und Spätnachmittag am Cape Byron Lighthouse.</p>
               </div>
               <div class="day-subcard hotel">
                 <div class="subcard-title"><i class="fa-solid fa-plane"></i> Fluginformationen</div>
                 <p><strong>Jetstar - Economy Class - Airbus A320 - JQ 458 / Abflug um 10:25 Uhr</strong></p>
-                <a href="https://www.google.com/travel/flights/booking?tfs=CBwQAhpEEgoyMDI3LTAzLTI1Ih8KA1NZRBIKMjAyNy0wMy0yNRoDQk5LKgJKUTIDNDU4agwIAxIIL20vMDZ5NTdyBwgBEgNCTktAAUgBcAGCAQsI____________AZgBAg&tfu=CmhDalJJTkdkcFRuVjZOR05wZDNkQlVuVTRhR2RDUnkwdExTMHRMUzB0TFMwdGQyWjFOMEZCUVVGQlIzQTFaM2RaU0ZGQ1dUQkJFZ1ZLVVRRMU9Cb0tDUFVwRUFJYUEwVlZVamdjY0xjdxICCAAiAA&hl=de&gl=AT" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-plane"></i> Flug Buchen / Verwalten</a>
+                <a href="https://www.google.com/travel/flights" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-plane"></i> Flug Buchen / Verwalten</a>
               </div>
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
@@ -1425,7 +1413,7 @@
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Fahrt über die Panoramaroute der Glass House Mountains (Mt. Ngungun Wanderung) & Bergdorf Montville nach Noosa Heads. Nachmittags: Küstenwanderung im Noosa National Park (Fairy Pools, Tea Tree Bay & Koala-Spotting!).</p>
+                <p>Fahrt über die Panoramaroute der Glass House Mountains (Mt. Ngungun Wanderung) & Bergdorf Montville nach Noosa Heads. Nachmittags: Küstenwanderung im Noosa National Park.</p>
               </div>
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
@@ -1503,7 +1491,7 @@
             <div class="timeline-body">
               <div class="day-subcard">
                 <div class="subcard-title"><i class="fa-solid fa-circle-info"></i> Tagesprogramm</div>
-                <p>Ganztägige geführte 4WD-Tour auf K’gari: Lake McKenzie (glasklarer Süßwassersee), 75 Mile Beach Sand-Highway, Maheno Shipwreck & Eli Creek. Abends Mietwagenabgabe in Hervey Bay und Greyhound-Nachtbus nach Airlie Beach.</p>
+                <p>Ganztägige geführte 4WD-Tour auf K’gari: Lake McKenzie, 75 Mile Beach Sand-Highway, Maheno Shipwreck & Eli Creek. Abends Mietwagenabgabe in Hervey Bay und Greyhound-Nachtbus nach Airlie Beach.</p>
               </div>
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
@@ -1762,7 +1750,7 @@
       </div>
     </section>
 
-    <!-- 3. Budgetübersicht (Sauber formatiert als 2x2 Grid) -->
+    <!-- 3. Budgetübersicht -->
     <section id="budget" class="section-spaced">
       <h2 class="section-title">Kosten- & Budgetübersicht (4 Personen)</h2>
       <p class="section-lead">
@@ -1809,7 +1797,7 @@
         </div>
       </div>
 
-      <!-- 2x2 Grid für die 4 Hauptkategorien -->
+      <!-- 2x2 Grid -->
       <div class="budget-grid-2x2">
         
         <div class="hub-card budget-category-card">
@@ -1931,7 +1919,6 @@
 
       </div>
 
-      <!-- Vollbreite Verpflegungs-Box -->
       <div class="hub-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
           <h3 style="margin:0;"><i class="fa-solid fa-utensils"></i> Verpflegung & Taschengeld (Dynamisch kalkuliert)</h3>
@@ -1951,7 +1938,7 @@
       
       <div class="hub-layout-stack">
         
-        <!-- Großes Live Regenradar (Vollbreite) -->
+        <!-- Großes Live Regenradar -->
         <div class="hub-card">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
             <h3 style="margin:0;"><i class="fa-solid fa-cloud-bolt" style="color: #0284c7;"></i> Live-Regenradar (Australien Ostküste)</h3>
@@ -1963,17 +1950,16 @@
           <iframe class="radar-frame-large" src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=mm&metricTemp=°C&metricWind=km/h&zoom=5&overlay=radar&product=radar&level=surface&lat=-28.5&lon=153.0" frameborder="0"></iframe>
         </div>
 
-        <!-- Live-Einkaufszettel Card (Mobile & Touch Optimiert) -->
+        <!-- Live-Einkaufszettel Card -->
         <div class="hub-card">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
             <h3 style="margin:0;"><i class="fa-solid fa-cart-shopping"></i> Supermarkt-Einkaufszettel (Coles & Woolies)</h3>
-            <span id="sync-status-badge" class="sync-badge"><span class="sync-dot"></span> Cloud Live</span>
+            <span id="sync-status-badge" class="sync-badge"><span class="sync-dot"></span> Live verbunden</span>
           </div>
           <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">
             Artikel werden auf allen 4 Smartphones in Echtzeit aktualisiert und synchron abgehakt:
           </p>
 
-          <!-- Quick Add Chips -->
           <div class="quick-add-chips">
             <button class="chip-btn" onclick="quickAddGrocery('24er Pack Trinkwasser')">+ 24er Trinkwasser</button>
             <button class="chip-btn" onclick="quickAddGrocery('Eisbeutel für Esky/Kühlbox')">+ Eisbeutel (Esky)</button>
@@ -1984,13 +1970,11 @@
             <button class="chip-btn" onclick="quickAddGrocery('Bundaberg Ginger Beer 4er')">+ Bundaberg 4er</button>
           </div>
 
-          <!-- Input Group -->
           <div class="grocery-input-group">
             <input type="text" id="grocery-item-input" class="grocery-input" placeholder="Artikel eingeben (z. B. Bananen, Eis)..." onkeypress="if(event.key === 'Enter') addGroceryItem()">
             <button class="grocery-btn-add" onclick="addGroceryItem()"><i class="fa-solid fa-plus"></i> Hinzufügen</button>
           </div>
 
-          <!-- Items List -->
           <ul id="grocery-list-container" class="grocery-list"></ul>
 
           <div style="display: flex; justify-content: flex-end; margin-top: 0.8rem;">
@@ -2000,10 +1984,9 @@
           </div>
         </div>
 
-        <!-- 2-Spalten-Reihe: Strand-BBQ & Duschen Guide & Tankrechner -->
+        <!-- 2-Spalten-Reihe -->
         <div class="hub-row-2col">
           
-          <!-- Strand-BBQ, Trinkwasser & Duschen Guide -->
           <div class="hub-card">
             <h3><i class="fa-solid fa-fire-burner" style="color: var(--secondary);"></i> Strand-BBQ, Trinkwasser & Duschen Guide</h3>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">
@@ -2028,7 +2011,6 @@
             </div>
           </div>
 
-          <!-- Tank- & Spritrechner -->
           <div class="hub-card">
             <h3><i class="fa-solid fa-gas-pump" style="color: var(--primary);"></i> Tank- & Spritrechner</h3>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">
@@ -2057,7 +2039,7 @@
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
             <h3 style="margin:0;"><i class="fa-solid fa-suitcase"></i> Interaktive Roadtrip Packliste</h3>
             <div style="display:flex; align-items:center; gap:0.6rem;">
-              <span class="sync-badge"><span class="sync-dot"></span> Cloud Sync</span>
+              <span class="sync-badge"><span class="sync-dot"></span> Live Sync</span>
               <span id="pack-status-text" style="font-size: 0.85rem; font-weight: 700; color: var(--primary);">0 gepackt</span>
             </div>
           </div>
@@ -2102,7 +2084,7 @@
           </div>
         </div>
 
-        <!-- 2-Spalten-Reihe: Reisekasse (Splitwise) & Google Live-Fotoalbum -->
+        <!-- 2-Spalten-Reihe: Splitwise & Google Photos -->
         <div class="hub-row-2col">
           <div class="hub-card">
             <h3><i class="fa-solid fa-sack-dollar"></i> Gemeinsame Reisekasse</h3>
@@ -2239,7 +2221,7 @@
           <div class="hub-card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.6rem;">
               <h3 style="margin:0;"><i class="fa-solid fa-paw"></i> Wildlife Tracker</h3>
-              <span class="sync-badge"><span class="sync-dot"></span> Cloud Live</span>
+              <span class="sync-badge"><span class="sync-dot"></span> Live Sync</span>
             </div>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Abhaken sobald in freier Wildbahn gesehen!</p>
             <ul class="checklist">
@@ -2254,7 +2236,7 @@
           <div class="hub-card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.6rem;">
               <h3 style="margin:0;"><i class="fa-solid fa-utensils"></i> Aussie Taste Challenge</h3>
-              <span class="sync-badge"><span class="sync-dot"></span> Cloud Live</span>
+              <span class="sync-badge"><span class="sync-dot"></span> Live Sync</span>
             </div>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Kulinarische Highlights auf dem Trip:</p>
             <ul class="checklist">
@@ -2341,7 +2323,6 @@
 
       <div class="weather-widget-grid">
         
-        <!-- Sydney -->
         <div class="weather-widget-card">
           <div>
             <div class="weather-header">
@@ -2355,7 +2336,6 @@
           </a>
         </div>
 
-        <!-- Byron Bay / Gold Coast -->
         <div class="weather-widget-card">
           <div>
             <div class="weather-header">
@@ -2369,7 +2349,6 @@
           </a>
         </div>
 
-        <!-- Whitsundays / Airlie Beach -->
         <div class="weather-widget-card">
           <div>
             <div class="weather-header">
@@ -2383,7 +2362,6 @@
           </a>
         </div>
 
-        <!-- Melbourne -->
         <div class="weather-widget-card">
           <div>
             <div class="weather-header">
@@ -2469,26 +2447,133 @@
 
   <script>
     // =========================================================================
-    // 0. FIREBASE REALTIME CLOUD DATABASE (ECHTZEIT-SYNCHRONISATION FÜR ALLE 4 SMARTPHONES)
+    // 0. UNIVERSAL CLOUD REALTIME SYNC ENGINE (GERÄTEÜBERGREIFEND LIVE)
     // =========================================================================
-    
-    // Konfiguration für die Cloud-Datenbank (Kostenlos & serverlos)
-    const firebaseConfig = {
-      databaseURL: "https://aus-roadtrip-2027-default-rtdb.firebaseio.com"
-    };
+    const SYNC_TOPIC = 'aus_roadtrip_2027_sync_hub_secure_v1';
+    const NTFY_WS_URL = `wss://ntfy.sh/${SYNC_TOPIC}/ws`;
+    const NTFY_API_URL = `https://ntfy.sh/${SYNC_TOPIC}`;
 
-    let firebaseDb = null;
-    let cloudRef = null;
-    let isCloudConnected = false;
+    const GROCERY_STORAGE_KEY = 'aus_roadtrip_groceries_2027';
+    const CHECKBOX_STORAGE_KEY = 'aus_roadtrip_checkboxes_2027';
 
-    try {
-      if (typeof firebase !== 'undefined') {
-        firebase.initializeApp(firebaseConfig);
-        firebaseDb = firebase.database();
-        cloudRef = firebaseDb.ref('aus_trip_sync_data');
+    let groceries = [];
+    let checkboxStates = {};
+    let currentSelectedTz = 'Australia/Sydney';
+    let syncSocket = null;
+    let isApplyingRemote = false;
+
+    function setSyncBadge(online) {
+      document.querySelectorAll('.sync-badge').forEach(b => {
+        if (online) {
+          b.classList.remove('connecting');
+          b.innerHTML = '<span class="sync-dot"></span> Live Sync';
+        } else {
+          b.classList.add('connecting');
+          b.innerHTML = '<span class="sync-dot"></span> Offline / Lokal';
+        }
+      });
+    }
+
+    function initCloudSync() {
+      try {
+        syncSocket = new WebSocket(NTFY_WS_URL);
+        
+        syncSocket.onopen = () => {
+          setSyncBadge(true);
+        };
+
+        syncSocket.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            if (data.event === 'message' && data.message) {
+              const payload = JSON.parse(data.message);
+              handleRemoteUpdate(payload);
+            }
+          } catch (e) {}
+        };
+
+        syncSocket.onclose = () => {
+          setSyncBadge(false);
+          setTimeout(initCloudSync, 3500); // Automatischer Reconnect
+        };
+
+        syncSocket.onerror = () => {
+          setSyncBadge(false);
+        };
+      } catch (e) {
+        setSyncBadge(false);
       }
-    } catch (e) {
-      console.warn("Firebase Initialisierung auf lokaler Ebene aktiv.");
+
+      // Initialen Zustand aus der Cloud abrufen
+      fetch(`${NTFY_API_URL}/json?poll=1&since=all`)
+        .then(res => res.text())
+        .then(text => {
+          if (!text) return;
+          const lines = text.trim().split('\n');
+          for (let i = lines.length - 1; i >= 0; i--) {
+            try {
+              const parsed = JSON.parse(lines[i]);
+              if (parsed.event === 'message' && parsed.message) {
+                const payload = JSON.parse(parsed.message);
+                if (payload && payload.timestamp) {
+                  handleRemoteUpdate(payload);
+                  break;
+                }
+              }
+            } catch (e) {}
+          }
+        })
+        .catch(() => {});
+    }
+
+    function handleRemoteUpdate(payload) {
+      if (!payload) return;
+      isApplyingRemote = true;
+
+      if (payload.groceries) {
+        groceries = payload.groceries;
+        localStorage.setItem(GROCERY_STORAGE_KEY, JSON.stringify(groceries));
+        renderGroceries();
+      }
+
+      if (payload.checkboxStates) {
+        checkboxStates = payload.checkboxStates;
+        localStorage.setItem(CHECKBOX_STORAGE_KEY, JSON.stringify(checkboxStates));
+        applyCheckboxStatesToUI();
+        updatePackingProgress();
+      }
+
+      if (payload.tz && payload.tz !== currentSelectedTz) {
+        changeTimezone(payload.tz, false);
+      }
+
+      isApplyingRemote = false;
+      setSyncBadge(true);
+    }
+
+    function broadcastState() {
+      if (isApplyingRemote) return;
+
+      const payload = {
+        groceries: groceries,
+        checkboxStates: checkboxStates,
+        tz: currentSelectedTz,
+        timestamp: Date.now()
+      };
+
+      // 1. Lokale Speicherung
+      localStorage.setItem(GROCERY_STORAGE_KEY, JSON.stringify(groceries));
+      localStorage.setItem(CHECKBOX_STORAGE_KEY, JSON.stringify(checkboxStates));
+      localStorage.setItem('aus_roadtrip_tz_2027', currentSelectedTz);
+
+      // 2. An alle anderen Smartphones über Cloud-Relay senden
+      fetch(NTFY_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(() => {
+        setSyncBadge(false);
+      });
     }
 
     // 1. COUNTDOWN LOGIK (21. MÄRZ 2027)
@@ -2515,23 +2600,18 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // 2. DUAL-UHR MIT SYNCHRONISIERTEM DROPDOWN (OHNE SEKUNDEN)
-    let currentSelectedTz = 'Australia/Sydney';
-
+    // 2. DUAL-UHR MIT SYNCHRONISIERTEM DROPDOWN
     function updateDualClocks() {
       const now = new Date();
       const tzSelect = document.getElementById('timezone-select');
       const selectedTz = tzSelect ? tzSelect.value : currentSelectedTz;
 
-      // Australien Zeit (Format HH:MM)
       const aussieTimeStr = now.toLocaleTimeString('de-DE', { timeZone: selectedTz, hour: '2-digit', minute: '2-digit' });
       document.getElementById('aussie-time').innerText = aussieTimeStr + ' Uhr';
 
-      // Wien Zeit (Format HH:MM)
       const viennaTimeStr = now.toLocaleTimeString('de-DE', { timeZone: 'Europe/Vienna', hour: '2-digit', minute: '2-digit' });
       document.getElementById('vienna-time').innerText = viennaTimeStr + ' Uhr';
 
-      // Zeitzonen-Label & Zeitversatz
       const aussieDate = new Date(now.toLocaleString('en-US', { timeZone: selectedTz }));
       const viennaDate = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Vienna' }));
       const diffHours = Math.round((aussieDate - viennaDate) / (1000 * 60 * 60));
@@ -2543,7 +2623,6 @@
       }
       document.getElementById('aussie-tz-label').innerText = `${tzName} · ${diffSign}${diffHours}h zu Wien`;
 
-      // Status in Wien: Schlafen (23:00 - 07:00) vs Erreichbar
       const viennaHour = parseInt(now.toLocaleTimeString('en-US', { timeZone: 'Europe/Vienna', hour12: false, hour: 'numeric' }));
       const isSleeping = viennaHour >= 23 || viennaHour < 7;
       const statusBadge = document.getElementById('vienna-status-badge');
@@ -2556,14 +2635,13 @@
       }
     }
 
-    function changeTimezone(newTz, syncToCloud = true) {
+    function changeTimezone(newTz, shouldBroadcast = true) {
       currentSelectedTz = newTz;
       const selectEl = document.getElementById('timezone-select');
       if (selectEl) selectEl.value = newTz;
       updateDualClocks();
-      if (syncToCloud) {
-        localStorage.setItem('aus_roadtrip_tz_2027', newTz);
-        pushFullStateToCloud();
+      if (shouldBroadcast) {
+        broadcastState();
       }
     }
 
@@ -2741,17 +2819,7 @@
       }
     }
 
-    // =========================================================================
-    // 9. ECHTZEIT-SYNCHRONISATION (FIREBASE WEBSOCKETS + REST POLLING + LOCAL CACHE)
-    // =========================================================================
-    const GROCERY_STORAGE_KEY = 'aus_roadtrip_groceries_2027';
-    const CHECKBOX_STORAGE_KEY = 'aus_roadtrip_checkboxes_2027';
-    const REST_SYNC_ENDPOINT = 'https://api.restful-api.dev/objects/ff808181932badb4019335f6291a1820'; // Cloud Fallback
-
-    let groceries = [];
-    let checkboxStates = {};
-    let isInternalUpdate = false;
-
+    // 9. EINKAUFSZETTEL & CHECKBOXEN LOGIK
     function renderGroceries() {
       const container = document.getElementById('grocery-list-container');
       if (!container) return;
@@ -2776,92 +2844,6 @@
       });
     }
 
-    function applyCheckboxStatesToUI() {
-      document.querySelectorAll('.sync-checkbox').forEach(cb => {
-        if (cb.id) {
-          cb.checked = !!checkboxStates[cb.id];
-          const parent = cb.closest('.checklist-item');
-          if (parent) {
-            parent.classList.toggle('is-done', cb.checked);
-          }
-        }
-      });
-    }
-
-    function updatePackingProgress() {
-      const checkboxes = document.querySelectorAll('.pack-checkbox');
-      const checkedCount = document.querySelectorAll('.pack-checkbox:checked').length;
-      const totalCount = checkboxes.length;
-      const percentage = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
-
-      const bar = document.getElementById('pack-progress');
-      const text = document.getElementById('pack-status-text');
-      if (bar) bar.style.width = percentage + '%';
-      if (text) text.innerText = `${checkedCount} von ${totalCount} gepackt (${percentage}%)`;
-    }
-
-    // Speichert lokal und pusht sofort in die Internet-Cloud
-    function pushFullStateToCloud() {
-      localStorage.setItem(GROCERY_STORAGE_KEY, JSON.stringify(groceries));
-      localStorage.setItem(CHECKBOX_STORAGE_KEY, JSON.stringify(checkboxStates));
-      localStorage.setItem('aus_roadtrip_tz_2027', currentSelectedTz);
-
-      const payload = {
-        groceries: groceries,
-        checkboxStates: checkboxStates,
-        tz: currentSelectedTz,
-        timestamp: Date.now()
-      };
-
-      // 1. Primär: Firebase Realtime Database
-      if (cloudRef) {
-        cloudRef.set(payload).catch(() => {});
-      }
-
-      // 2. Sekundär: Fallback Cloud REST Update
-      fetch(REST_SYNC_ENDPOINT, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: "aus_trip_sync_state", data: payload })
-      }).catch(() => {});
-    }
-
-    // Holt den aktuellen Zustand aus der Cloud (beim Start und periodisch)
-    function pullStateFromCloud() {
-      fetch(REST_SYNC_ENDPOINT)
-        .then(res => res.json())
-        .then(json => {
-          if (json && json.data) {
-            const data = json.data;
-            if (data.groceries) groceries = data.groceries;
-            if (data.checkboxStates) checkboxStates = data.checkboxStates;
-            if (data.tz && data.tz !== currentSelectedTz) {
-              changeTimezone(data.tz, false);
-            }
-            renderGroceries();
-            applyCheckboxStatesToUI();
-            updatePackingProgress();
-            setSyncStatus(true);
-          }
-        })
-        .catch(() => {
-          setSyncStatus(false);
-        });
-    }
-
-    function setSyncStatus(online) {
-      const badges = document.querySelectorAll('.sync-badge');
-      badges.forEach(b => {
-        if (online) {
-          b.classList.remove('connecting');
-          b.innerHTML = '<span class="sync-dot"></span> Cloud Live';
-        } else {
-          b.classList.add('connecting');
-          b.innerHTML = '<span class="sync-dot"></span> Offline / Lokal';
-        }
-      });
-    }
-
     function loadLocalCache() {
       const savedGroceries = localStorage.getItem(GROCERY_STORAGE_KEY);
       if (savedGroceries) {
@@ -2881,12 +2863,26 @@
 
       const savedTz = localStorage.getItem('aus_roadtrip_tz_2027');
       if (savedTz) {
-        changeTimezone(savedTz, false);
+        currentSelectedTz = savedTz;
+        const selectEl = document.getElementById('timezone-select');
+        if (selectEl) selectEl.value = savedTz;
       }
 
       applyCheckboxStatesToUI();
       renderGroceries();
       updatePackingProgress();
+    }
+
+    function applyCheckboxStatesToUI() {
+      document.querySelectorAll('.sync-checkbox').forEach(cb => {
+        if (cb.id) {
+          cb.checked = !!checkboxStates[cb.id];
+          const parent = cb.closest('.checklist-item');
+          if (parent) {
+            parent.classList.toggle('is-done', cb.checked);
+          }
+        }
+      });
     }
 
     function addGroceryItem() {
@@ -2896,14 +2892,14 @@
       groceries.unshift({ text: text, done: false });
       input.value = '';
       renderGroceries();
-      pushFullStateToCloud();
+      broadcastState();
     }
 
     function quickAddGrocery(itemText) {
       if (!groceries.some(g => g.text.toLowerCase() === itemText.toLowerCase())) {
         groceries.unshift({ text: itemText, done: false });
         renderGroceries();
-        pushFullStateToCloud();
+        broadcastState();
       }
     }
 
@@ -2911,20 +2907,32 @@
       if (groceries[index]) {
         groceries[index].done = !groceries[index].done;
         renderGroceries();
-        pushFullStateToCloud();
+        broadcastState();
       }
     }
 
     function deleteGrocery(index) {
       groceries.splice(index, 1);
       renderGroceries();
-      pushFullStateToCloud();
+      broadcastState();
     }
 
     function clearCompletedGroceries() {
       groceries = groceries.filter(item => !item.done);
       renderGroceries();
-      pushFullStateToCloud();
+      broadcastState();
+    }
+
+    function updatePackingProgress() {
+      const checkboxes = document.querySelectorAll('.pack-checkbox');
+      const checkedCount = document.querySelectorAll('.pack-checkbox:checked').length;
+      const totalCount = checkboxes.length;
+      const percentage = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
+
+      const bar = document.getElementById('pack-progress');
+      const text = document.getElementById('pack-status-text');
+      if (bar) bar.style.width = percentage + '%';
+      if (text) text.innerText = `${checkedCount} von ${totalCount} gepackt (${percentage}%)`;
     }
 
     // Checkbox Event Listener
@@ -2934,27 +2942,9 @@
         const parent = e.target.closest('.checklist-item');
         if (parent) parent.classList.toggle('is-done', e.target.checked);
         updatePackingProgress();
-        pushFullStateToCloud();
+        broadcastState();
       }
     });
-
-    // Cloud Listener (Firebase Realtime Socket)
-    if (cloudRef) {
-      cloudRef.on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          if (data.groceries) groceries = data.groceries;
-          if (data.checkboxStates) checkboxStates = data.checkboxStates;
-          if (data.tz && data.tz !== currentSelectedTz) {
-            changeTimezone(data.tz, false);
-          }
-          renderGroceries();
-          applyCheckboxStatesToUI();
-          updatePackingProgress();
-          setSyncStatus(true);
-        }
-      });
-    }
 
     // Initialisierung beim Laden
     window.addEventListener('DOMContentLoaded', () => {
@@ -2963,11 +2953,7 @@
       updateTripStatusBanner();
       updateDualClocks();
       calculateFuelCost();
-
-      // Cloud State abrufen
-      pullStateFromCloud();
-      // Periodischer Cloud-Abgleich alle 3 Sekunden für unterbrechungsfreie Synchronisation
-      setInterval(pullStateFromCloud, 3000);
+      initCloudSync();
     });
 
     // PDF Druckansicht
