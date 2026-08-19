@@ -714,7 +714,7 @@
       transition: width 0.3s ease;
     }
 
-    /* Supermarkt Einkaufsliste */
+    /* Schnell-Chips */
     .quick-add-chips {
       display: flex;
       flex-wrap: wrap;
@@ -737,12 +737,13 @@
 
     .grocery-input-group {
       display: flex;
+      flex-direction: column;
       gap: 0.5rem;
       margin-bottom: 1rem;
       width: 100%;
     }
     .grocery-input {
-      flex: 1;
+      width: 100%;
       min-width: 0;
       padding: 0.75rem 1rem;
       border: 1px solid #cbd5e0;
@@ -765,6 +766,7 @@
       cursor: pointer;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 0.4rem;
       white-space: nowrap;
       touch-action: manipulation;
@@ -833,15 +835,13 @@
     }
     .grocery-del-btn:hover, .fuel-del-btn:hover { opacity: 1; }
 
-    /* Tank-Manager Styles */
+    /* Zahler Badges */
     .payer-badge {
       display: inline-block;
       font-size: 0.75rem;
       font-weight: 800;
-      padding: 0.2rem 0.6rem;
-      border-radius: 12px;
-      background: #dbeafe;
-      color: #1e40af;
+      padding: 0.15rem 0.55rem;
+      border-radius: 10px;
       margin-right: 0.4rem;
     }
     .payer-badge.tobi { background: #e0e7ff; color: #4338ca; }
@@ -849,20 +849,20 @@
     .payer-badge.ker  { background: #fef3c7; color: #b45309; }
     .payer-badge.flo  { background: #dcfce7; color: #15803d; }
 
-    .fuel-breakdown-grid {
+    .breakdown-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 0.4rem;
       margin-top: 0.6rem;
       text-align: center;
     }
-    .fuel-breakdown-cell {
+    .breakdown-cell {
       background: #f1f5f9;
       padding: 0.4rem 0.2rem;
       border-radius: 8px;
       font-size: 0.75rem;
     }
-    .fuel-breakdown-cell strong {
+    .breakdown-cell strong {
       display: block;
       font-size: 0.85rem;
       color: var(--text-main);
@@ -1095,7 +1095,7 @@
       .chip-btn { flex-shrink: 0; }
       .budget-toggle-wrapper { gap: 0.6rem; }
       .budget-toggle-label { font-size: 0.82rem; }
-      .fuel-breakdown-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+      .breakdown-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
     }
   </style>
 </head>
@@ -1841,7 +1841,7 @@
         Transparente Aufschlüsselung aller Reisekosten für die gesamte 4-köpfige Gruppe oder pro Person.
       </p>
 
-      <!-- Umschalter (Repariert) -->
+      <!-- Umschalter -->
       <div class="budget-toggle-wrapper">
         <span class="budget-toggle-label">Gesamtkosten (4 Pers.)</span>
         <label class="budget-switch">
@@ -1957,16 +1957,18 @@
               <h3 style="margin:0;"><i class="fa-solid fa-car"></i> Mietwagen & Transport</h3>
               <span class="status-pill open">Offen</span>
             </div>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Fahrzeuge, Bus & Sprit (aufgeteilt durch 4)</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Fahrzeuge, Bus & Live-Tankrechnungen</p>
             <ul class="sub-item-list">
               <li class="sub-price-item" data-eur="155" data-paid="false">
                 <span>East Coast Mietwagen (Anteil p.P.):</span> <strong class="sub-price-val">155 €</strong>
               </li>
-              <li class="sub-price-item" data-eur="75" data-paid="false">
-                <span>Sprit, Maut & Parken (Anteil p.P.):</span> <strong class="sub-price-val">75 €</strong>
-              </li>
               <li class="sub-price-item" data-eur="90" data-paid="false">
                 <span>Greyhound Nachtbus Ticket:</span> <strong class="sub-price-val">90 €</strong>
+              </li>
+              <!-- Dynamische Live Tankkosten -->
+              <li class="sub-price-item" id="budget-fuel-item" data-eur="0" data-paid="true">
+                <span>Getankter Sprit (Live Rechnungen):</span> 
+                <div><strong class="sub-price-val" id="budget-fuel-val">0 €</strong> <span class="status-pill paid">Bezahlt</span></div>
               </li>
             </ul>
           </div>
@@ -2006,12 +2008,21 @@
 
       <div class="hub-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
-          <h3 style="margin:0;"><i class="fa-solid fa-utensils"></i> Verpflegung & Taschengeld (Dynamisch kalkuliert)</h3>
+          <h3 style="margin:0;"><i class="fa-solid fa-utensils"></i> Verpflegung & Einkäufe (Dynamisch verrechnet)</h3>
           <span class="status-pill open">Vor Ort</span>
         </div>
-        <p style="font-size: 0.9rem; color: var(--text-muted);">Kalkulation für 19 Tage Verpflegung, Einkäufe, Drinks & Souvenirs.</p>
-        <div style="font-weight: 800; font-size: 1.5rem; color: var(--primary-dark); margin-top: 0.8rem;" id="food-calculated-price">
-          0 €
+        <p style="font-size: 0.9rem; color: var(--text-muted);">
+          19 Tage Verpflegung. Eingetragene Supermarkteinkäufe werden automatisch als <strong style="color: var(--status-paid);">bereits bezahlt</strong> angerechnet!
+        </p>
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 0.8rem; margin-top: 0.8rem;">
+          <div>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Verbleibendes offenes Restbudget:</span>
+            <div style="font-weight: 800; font-size: 1.5rem; color: var(--primary-dark);" id="food-calculated-price">0 €</div>
+          </div>
+          <div style="text-align: right;">
+            <span style="font-size: 0.85rem; color: var(--status-paid); font-weight: 700;">Davon bereits im Supermarkt bezahlt:</span>
+            <div style="font-weight: 800; font-size: 1.15rem; color: var(--status-paid);" id="food-spent-summary">0 €</div>
+          </div>
         </div>
       </div>
 
@@ -2035,20 +2046,20 @@
           <iframe class="radar-frame-large" src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=mm&metricTemp=°C&metricWind=km/h&zoom=5&overlay=radar&product=radar&level=surface&lat=-28.5&lon=153.0" frameborder="0"></iframe>
         </div>
 
-        <!-- Live-Einkaufszettel Card -->
+        <!-- Live-Einkaufszettel mit Kosten & Zahler -->
         <div class="hub-card">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
             <h3 style="margin:0;"><i class="fa-solid fa-cart-shopping"></i> Supermarkt-Einkaufszettel (Coles & Woolies)</h3>
             <span id="sync-status-badge" class="sync-badge"><span class="sync-dot"></span> Live verbunden</span>
           </div>
           <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">
-            Artikel werden auf allen 4 Smartphones in Echtzeit aktualisiert und synchron abgehakt:
+            Artikel abhaken oder direkt mit Betrag eintragen (wird ins Verpflegungsbudget gebucht):
           </p>
 
           <div class="quick-add-chips">
             <button class="chip-btn" onclick="quickAddGrocery('24er Pack Trinkwasser')">+ 24er Trinkwasser</button>
             <button class="chip-btn" onclick="quickAddGrocery('Eisbeutel für Esky/Kühlbox')">+ Eisbeutel (Esky)</button>
-            <button class="chip-btn" onclick="quickAddGrocery('Toastbrot & Aufstrich')">+ Toast & Butter</button>
+            <button class="chip-btn" onclick="quickAddGrocery('Toastbrot & Butter')">+ Toast & Butter</button>
             <button class="chip-btn" onclick="quickAddGrocery('BBQ Fleisch / Würstel')">+ BBQ Fleisch</button>
             <button class="chip-btn" onclick="quickAddGrocery('Bushman Mückenspray')">+ Mückenspray</button>
             <button class="chip-btn" onclick="quickAddGrocery('Tim Tams Double Coat')">+ Tim Tams</button>
@@ -2056,8 +2067,32 @@
           </div>
 
           <div class="grocery-input-group">
-            <input type="text" id="grocery-item-input" class="grocery-input" placeholder="Artikel eingeben (z. B. Bananen, Eis)..." onkeypress="if(event.key === 'Enter') addGroceryItem()">
-            <button class="grocery-btn-add" onclick="addGroceryItem()"><i class="fa-solid fa-plus"></i> Hinzufügen</button>
+            <div style="display: flex; gap: 0.5rem; width: 100%;">
+              <input type="text" id="grocery-item-input" class="grocery-input" placeholder="Artikel (z. B. Bananen, Toast)..." onkeypress="if(event.key === 'Enter') addGroceryItem()">
+            </div>
+            <div style="display: flex; gap: 0.5rem; width: 100%;">
+              <input type="number" id="grocery-price-aud" class="grocery-input" style="flex: 1;" placeholder="Betrag in AUD (optional)" step="0.01">
+              <select id="grocery-payer" class="grocery-input" style="width: 110px; flex: none; font-weight: 700;">
+                <option value="Tobi">Tobi</option>
+                <option value="Lara">Lara</option>
+                <option value="Ker">Ker</option>
+                <option value="Flo">Flo</option>
+              </select>
+              <button class="grocery-btn-add" onclick="addGroceryItem()"><i class="fa-solid fa-plus"></i></button>
+            </div>
+          </div>
+
+          <!-- Einkaufs-Gesamtsumme Box -->
+          <div style="background: var(--primary-light); padding: 0.65rem 1rem; border-radius: 12px; font-size: 0.85rem; font-weight: 700; color: var(--primary-dark); display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <span>Einkäufe Gesamtwert:</span>
+            <span id="grocery-total-summary">0.00 AUD (0.00 €)</span>
+          </div>
+
+          <div class="breakdown-grid" style="margin-bottom: 0.8rem;">
+            <div class="breakdown-cell">Tobi: <strong id="grocery-tobi-sum">0 €</strong></div>
+            <div class="breakdown-cell">Lara: <strong id="grocery-lara-sum">0 €</strong></div>
+            <div class="breakdown-cell">Ker: <strong id="grocery-ker-sum">0 €</strong></div>
+            <div class="breakdown-cell">Flo: <strong id="grocery-flo-sum">0 €</strong></div>
           </div>
 
           <ul id="grocery-list-container" class="grocery-list"></ul>
@@ -2096,14 +2131,14 @@
             </div>
           </div>
 
-          <!-- NEU: Tankrechner & Rechnungs-Manager (AUD, EUR, Sync & Wer hat gezahlt) -->
+          <!-- Tankrechner & Manager mit Budget-Anbindung -->
           <div class="hub-card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.4rem;">
               <h3 style="margin: 0;"><i class="fa-solid fa-gas-pump" style="color: var(--primary);"></i> Tank-Rechner & Manager</h3>
               <span class="sync-badge"><span class="sync-dot"></span> Live Sync</span>
             </div>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">
-              Tankrechnungen in AUD eintragen, in EUR umrechnen & durch 4 teilen:
+              Rechnungen eintragen – fließt automatisch live ins Gesamtbudget:
             </p>
 
             <!-- Eingabemaske -->
@@ -2138,11 +2173,11 @@
             </div>
 
             <!-- Wer hat bezahlt Aufschlüsselung -->
-            <div class="fuel-breakdown-grid">
-              <div class="fuel-breakdown-cell">Tobi: <strong id="payer-tobi-sum">0 €</strong></div>
-              <div class="fuel-breakdown-cell">Lara: <strong id="payer-lara-sum">0 €</strong></div>
-              <div class="fuel-breakdown-cell">Ker: <strong id="payer-ker-sum">0 €</strong></div>
-              <div class="fuel-breakdown-cell">Flo: <strong id="payer-flo-sum">0 €</strong></div>
+            <div class="breakdown-grid">
+              <div class="breakdown-cell">Tobi: <strong id="payer-tobi-sum">0 €</strong></div>
+              <div class="breakdown-cell">Lara: <strong id="payer-lara-sum">0 €</strong></div>
+              <div class="breakdown-cell">Ker: <strong id="payer-ker-sum">0 €</strong></div>
+              <div class="breakdown-cell">Flo: <strong id="payer-flo-sum">0 €</strong></div>
             </div>
 
             <!-- Liste der Tankquittungen -->
@@ -2434,7 +2469,7 @@
       </div>
     </section>
 
-    <!-- 7. Live Wetter (wetter.com) -->
+    <!-- 7. Live Wetter -->
     <section id="weather" class="section-spaced">
       <h2 class="section-title">Live-Wetter an unseren Stopps ☀️</h2>
       <p class="section-lead">Echtzeit-Wetterberichte & Vorhersagen direkt auf wetter.com für alle Stationen der Tour:</p>
@@ -2598,9 +2633,7 @@
       try {
         syncSocket = new WebSocket(NTFY_WS_URL);
         
-        syncSocket.onopen = () => {
-          setSyncBadge(true);
-        };
+        syncSocket.onopen = () => { setSyncBadge(true); };
 
         syncSocket.onmessage = (event) => {
           try {
@@ -2617,9 +2650,7 @@
           setTimeout(initCloudSync, 3500);
         };
 
-        syncSocket.onerror = () => {
-          setSyncBadge(false);
-        };
+        syncSocket.onerror = () => { setSyncBadge(false); };
       } catch (e) {
         setSyncBadge(false);
       }
@@ -2674,6 +2705,7 @@
 
       isApplyingRemote = false;
       setSyncBadge(true);
+      updateBudgetCalculations();
     }
 
     function broadcastState() {
@@ -2699,6 +2731,8 @@
       }).catch(() => {
         setSyncBadge(false);
       });
+
+      updateBudgetCalculations();
     }
 
     // 1. COUNTDOWN LOGIK
@@ -2725,7 +2759,7 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // 2. DUAL-UHR MIT SYNCHRONISIERTEM DROPDOWN
+    // 2. DUAL-UHR MIT DROPDOWN
     function updateDualClocks() {
       const now = new Date();
       const tzSelect = document.getElementById('timezone-select');
@@ -2772,7 +2806,7 @@
 
     setInterval(updateDualClocks, 1000);
 
-    // 3. TANK- & RECHNUNGS-MANAGER LOGIK (AUD -> EUR, WER HAT GEZAHLT, SYNC)
+    // 3. TANK- & RECHNUNGS-MANAGER
     const AUD_TO_EUR_RATE = 0.60;
 
     function addFuelEntry() {
@@ -2852,7 +2886,6 @@
         });
       }
 
-      // Summary Update
       const perPersonEur = totalEur / 4;
       document.getElementById('fuel-total-summary').innerText = `${totalAud.toFixed(2)} AUD (${totalEur.toFixed(2)} €)`;
       document.getElementById('fuel-per-person-summary').innerText = `${perPersonEur.toFixed(2)} € p.P.`;
@@ -2863,19 +2896,131 @@
       document.getElementById('payer-flo-sum').innerText = `${payerTotals.Flo.toFixed(2)} €`;
     }
 
-    // 4. WÄHRUNGSRECHNER LOGIK
-    function convertAudToEur() {
-      const aud = parseFloat(document.getElementById('aud-input').value);
-      const eurInput = document.getElementById('eur-input');
-      eurInput.value = !isNaN(aud) ? (aud * AUD_TO_EUR_RATE).toFixed(2) : '';
-    }
-    function convertEurToAud() {
-      const eur = parseFloat(document.getElementById('eur-input').value);
-      const audInput = document.getElementById('aud-input');
-      audInput.value = !isNaN(eur) ? (eur / AUD_TO_EUR_RATE).toFixed(2) : '';
+    // 4. EINKAUFSZETTEL MIT KOSTEN, ZAHLER & SYNC
+    function addGroceryItem() {
+      const input = document.getElementById('grocery-item-input');
+      const priceInput = document.getElementById('grocery-price-aud');
+      const payerSelect = document.getElementById('grocery-payer');
+
+      const text = input.value.trim();
+      if (!text) return;
+
+      const priceAud = parseFloat(priceInput.value) || 0;
+      const payer = payerSelect.value || 'Tobi';
+      const dateStr = new Date().toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+
+      groceries.unshift({
+        id: Date.now(),
+        text: text,
+        priceAud: priceAud,
+        priceEur: priceAud * AUD_TO_EUR_RATE,
+        payer: priceAud > 0 ? payer : null,
+        date: dateStr,
+        done: false
+      });
+
+      input.value = '';
+      priceInput.value = '';
+      renderGroceries();
+      broadcastState();
     }
 
-    // 5. BUDGET CALCULATOR LOGIK (4 PERSONEN)
+    function quickAddGrocery(itemText) {
+      if (!groceries.some(g => g.text.toLowerCase() === itemText.toLowerCase())) {
+        groceries.unshift({
+          id: Date.now(),
+          text: itemText,
+          priceAud: 0,
+          priceEur: 0,
+          payer: null,
+          date: new Date().toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' }),
+          done: false
+        });
+        renderGroceries();
+        broadcastState();
+      }
+    }
+
+    function toggleGrocery(index) {
+      if (groceries[index]) {
+        groceries[index].done = !groceries[index].done;
+        renderGroceries();
+        broadcastState();
+      }
+    }
+
+    function deleteGrocery(index) {
+      groceries.splice(index, 1);
+      renderGroceries();
+      broadcastState();
+    }
+
+    function clearCompletedGroceries() {
+      groceries = groceries.filter(item => !item.done);
+      renderGroceries();
+      broadcastState();
+    }
+
+    function renderGroceries() {
+      const container = document.getElementById('grocery-list-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      let totalAud = 0;
+      let totalEur = 0;
+      let payerTotals = { Tobi: 0, Lara: 0, Ker: 0, Flo: 0 };
+
+      if (groceries.length === 0) {
+        container.innerHTML = `<li style="text-align:center; color: var(--text-muted); font-size: 0.85rem; padding: 1.5rem 0;">🛒 Liste ist leer. Tippe oben auf einen Schnell-Button oder trage etwas ein!</li>`;
+      } else {
+        groceries.forEach((item, index) => {
+          const priceAud = item.priceAud || 0;
+          const priceEur = item.priceEur || (priceAud * AUD_TO_EUR_RATE);
+
+          if (priceAud > 0) {
+            totalAud += priceAud;
+            totalEur += priceEur;
+            if (item.payer && payerTotals.hasOwnProperty(item.payer)) {
+              payerTotals[item.payer] += priceEur;
+            }
+          }
+
+          const li = document.createElement('li');
+          li.className = `grocery-item ${item.done ? 'completed' : ''}`;
+          
+          let costBadgeHtml = '';
+          if (priceAud > 0) {
+            const payerClass = item.payer ? item.payer.toLowerCase() : 'tobi';
+            costBadgeHtml = `
+              <div style="font-size: 0.8rem; margin-top: 0.15rem;">
+                <span class="payer-badge ${payerClass}">${item.payer}</span>
+                <strong>${priceAud.toFixed(2)} AUD</strong> <span style="color: var(--text-muted);">(~${priceEur.toFixed(2)} €)</span>
+              </div>
+            `;
+          }
+
+          li.innerHTML = `
+            <div class="grocery-item-left" onclick="toggleGrocery(${index})">
+              <input type="checkbox" ${item.done ? 'checked' : ''}>
+              <div>
+                <span>${item.text}</span>
+                ${costBadgeHtml}
+              </div>
+            </div>
+            <button class="grocery-del-btn" onclick="deleteGrocery(${index})" title="Löschen"><i class="fa-solid fa-trash-can"></i></button>
+          `;
+          container.appendChild(li);
+        });
+      }
+
+      document.getElementById('grocery-total-summary').innerText = `${totalAud.toFixed(2)} AUD (${totalEur.toFixed(2)} €)`;
+      document.getElementById('grocery-tobi-sum').innerText = `${payerTotals.Tobi.toFixed(2)} €`;
+      document.getElementById('grocery-lara-sum').innerText = `${payerTotals.Lara.toFixed(2)} €`;
+      document.getElementById('grocery-ker-sum').innerText = `${payerTotals.Ker.toFixed(2)} €`;
+      document.getElementById('grocery-flo-sum').innerText = `${payerTotals.Flo.toFixed(2)} €`;
+    }
+
+    // 5. BUDGET CALCULATOR LOGIK (DYNAMISCH MIT TANKEN & SUPERMARKT)
     const GROUP_SIZE = 4;
     const TRIP_DAYS = 19;
     const AUD_RATE = 0.60;
@@ -2887,15 +3032,48 @@
       document.getElementById('slider-val').innerText = dailyAud;
       document.getElementById('toggle-dot').style.transform = isPerPerson ? 'translateX(24px)' : 'translateX(0px)';
 
-      const foodTotalEurPerson = Math.round(dailyAud * TRIP_DAYS * AUD_RATE);
-      const displayFoodEur = isPerPerson ? foodTotalEurPerson : (foodTotalEurPerson * GROUP_SIZE);
-      const displayFoodAud = Math.round(displayFoodEur / AUD_RATE);
+      // 1. Tankkosten berechnen (100% als bezahlt verbuchen)
+      let totalFuelGroupEur = 0;
+      fuelEntries.forEach(e => {
+        totalFuelGroupEur += (e.amountEur || (e.amountAud * AUD_TO_EUR_RATE));
+      });
+      const fuelPerPersonEur = totalFuelGroupEur / GROUP_SIZE;
+      const fuelDisplayEur = isPerPerson ? fuelPerPersonEur : totalFuelGroupEur;
+      
+      const budgetFuelItem = document.getElementById('budget-fuel-item');
+      if (budgetFuelItem) {
+        budgetFuelItem.setAttribute('data-eur', (fuelPerPersonEur).toString());
+        document.getElementById('budget-fuel-val').innerText = `${fuelDisplayEur.toLocaleString('de-DE', {minimumFractionDigits: 0, maximumFractionDigits: 2})} €`;
+      }
+
+      // 2. Supermarktkosten berechnen
+      let totalGroceryGroupEur = 0;
+      groceries.forEach(g => {
+        if (g.priceAud > 0) {
+          totalGroceryGroupEur += (g.priceEur || (g.priceAud * AUD_TO_EUR_RATE));
+        }
+      });
+      const groceryPerPersonEur = totalGroceryGroupEur / GROUP_SIZE;
+      const groceryDisplayEur = isPerPerson ? groceryPerPersonEur : totalGroceryGroupEur;
+
+      // 3. Verpflegungs-Kalkulation (Gesamter Rahmen minus bereits im Supermarkt bezahlt)
+      const foodFrameGroupEur = Math.round(dailyAud * TRIP_DAYS * AUD_RATE * GROUP_SIZE);
+      const foodFramePersonEur = Math.round(dailyAud * TRIP_DAYS * AUD_RATE);
+      const foodFrameDisplayEur = isPerPerson ? foodFramePersonEur : foodFrameGroupEur;
+
+      // Verbleibendes offenes Geld
+      const openFoodEur = Math.max(0, foodFrameDisplayEur - groceryDisplayEur);
+      const openFoodAud = Math.round(openFoodEur / AUD_RATE);
 
       document.getElementById('food-calculated-price').innerHTML = 
-        `${displayFoodEur.toLocaleString('de-DE')} € <small style="font-size: 0.9rem; color: var(--text-muted); font-weight: 500;">(~${displayFoodAud.toLocaleString('de-DE')} AUD)</small>`;
+        `${openFoodEur.toLocaleString('de-DE')} € <small style="font-size: 0.9rem; color: var(--text-muted); font-weight: 500;">(~${openFoodAud.toLocaleString('de-DE')} AUD)</small>`;
+      
+      document.getElementById('food-spent-summary').innerText = 
+        `${groceryDisplayEur.toLocaleString('de-DE', {minimumFractionDigits: 0, maximumFractionDigits: 2})} €`;
 
-      let paidSumEur = 0;
-      let openSumEur = displayFoodEur;
+      // 4. Summen für alle Karten bilden
+      let paidSumEur = groceryDisplayEur; // Supermarkt ist bereits bezahlt
+      let openSumEur = openFoodEur;        // Offenes Rest-Essensgeld
 
       const categoryCards = document.querySelectorAll('.budget-category-card');
       categoryCards.forEach(card => {
@@ -2913,7 +3091,7 @@
           else openSumEur += currentEur;
 
           const priceSpan = sub.querySelector('.sub-price-val');
-          if (priceSpan) {
+          if (priceSpan && sub.id !== 'budget-fuel-item') {
             priceSpan.innerText = `${currentEur.toLocaleString('de-DE', {minimumFractionDigits: 0, maximumFractionDigits: 2})} €`;
           }
         });
@@ -2935,7 +3113,19 @@
       document.getElementById('progress-open').style.width = (100 - paidPercent) + '%';
     }
 
-    // 6. NOTFALL-KONTAKTE ONE-CLICK DOWNLOAD (.VCF / VCARD)
+    // 6. WÄHRUNGSRECHNER LOGIK
+    function convertAudToEur() {
+      const aud = parseFloat(document.getElementById('aud-input').value);
+      const eurInput = document.getElementById('eur-input');
+      eurInput.value = !isNaN(aud) ? (aud * AUD_TO_EUR_RATE).toFixed(2) : '';
+    }
+    function convertEurToAud() {
+      const eur = parseFloat(document.getElementById('eur-input').value);
+      const audInput = document.getElementById('aud-input');
+      audInput.value = !isNaN(eur) ? (eur / AUD_TO_EUR_RATE).toFixed(2) : '';
+    }
+
+    // 7. NOTFALL-KONTAKTE ONE-CLICK DOWNLOAD (.VCF / VCARD)
     function downloadEmergencyVCard() {
       const vcardData = [
         'BEGIN:VCARD',
@@ -2945,7 +3135,7 @@
         'TEL;TYPE=CELL,VOICE:000',
         'TEL;TYPE=WORK,VOICE:+61262951533',
         'TEL;TYPE=WORK,VOICE:131111',
-        'NOTE:000: Notruf Australien (Polizei/Rettung/Feuerwehr)\\n+61 2 6295 1533: Österr. Botschaft Canberra (12 Talbot St, Forrest ACT 2603)\\n13 11 11: Pannenhilfe RACQ / NRMA',
+        'NOTE:000: Notruf Australien (Polizei/Rettung/Feuerwehr)\\n+61 2 6295 1533: Österr. Botschaft Canberra\\n13 11 11: Pannenhilfe RACQ / NRMA',
         'END:VCARD'
       ].join('\r\n');
 
@@ -2960,7 +3150,7 @@
       URL.revokeObjectURL(url);
     }
 
-    // 7. PWA PROMPT LOGIK
+    // 8. PWA PROMPT LOGIK
     let deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
@@ -2981,7 +3171,7 @@
       document.getElementById('pwa-modal').style.display = 'none';
     }
 
-    // 8. DYNAMISCHER REISE-STATUS BANNER
+    // 9. DYNAMISCHER REISE-STATUS BANNER
     const TRIP_SCHEDULE = [
       { day: 1,  date: "2027-03-21", location: "im Flug Richtung Sydney" },
       { day: 2,  date: "2027-03-22", location: "Sydney" },
@@ -3019,40 +3209,16 @@
       }
     }
 
-    // 9. EINKAUFSZETTEL LOGIK
-    function renderGroceries() {
-      const container = document.getElementById('grocery-list-container');
-      if (!container) return;
-      container.innerHTML = '';
-
-      if (groceries.length === 0) {
-        container.innerHTML = `<li style="text-align:center; color: var(--text-muted); font-size: 0.85rem; padding: 1.5rem 0;">🛒 Liste ist leer. Tippe oben auf einen Schnell-Button oder trage etwas ein!</li>`;
-        return;
-      }
-
-      groceries.forEach((item, index) => {
-        const li = document.createElement('li');
-        li.className = `grocery-item ${item.done ? 'completed' : ''}`;
-        li.innerHTML = `
-          <div class="grocery-item-left" onclick="toggleGrocery(${index})">
-            <input type="checkbox" ${item.done ? 'checked' : ''}>
-            <span>${item.text}</span>
-          </div>
-          <button class="grocery-del-btn" onclick="deleteGrocery(${index})" title="Löschen"><i class="fa-solid fa-trash-can"></i></button>
-        `;
-        container.appendChild(li);
-      });
-    }
-
+    // 10. LOCAL CACHE & INITIALISIERUNG
     function loadLocalCache() {
       const savedGroceries = localStorage.getItem(GROCERY_STORAGE_KEY);
       if (savedGroceries) {
         try { groceries = JSON.parse(savedGroceries); } catch (e) { groceries = []; }
       } else {
         groceries = [
-          { text: '24er Pack Trinkwasser', done: false },
-          { text: 'Eisbeutel für Kühlbox (Esky)', done: false },
-          { text: 'Tim Tams Double Coat', done: true }
+          { id: 1, text: '24er Pack Trinkwasser', priceAud: 12.50, priceEur: 7.50, payer: 'Tobi', date: '21.03.', done: false },
+          { id: 2, text: 'Eisbeutel für Kühlbox (Esky)', priceAud: 6.00, priceEur: 3.60, payer: 'Flo', date: '21.03.', done: false },
+          { id: 3, text: 'Tim Tams Double Coat', priceAud: 4.50, priceEur: 2.70, payer: 'Lara', date: '21.03.', done: true }
         ];
       }
 
@@ -3093,44 +3259,6 @@
       });
     }
 
-    function addGroceryItem() {
-      const input = document.getElementById('grocery-item-input');
-      const text = input.value.trim();
-      if (!text) return;
-      groceries.unshift({ text: text, done: false });
-      input.value = '';
-      renderGroceries();
-      broadcastState();
-    }
-
-    function quickAddGrocery(itemText) {
-      if (!groceries.some(g => g.text.toLowerCase() === itemText.toLowerCase())) {
-        groceries.unshift({ text: itemText, done: false });
-        renderGroceries();
-        broadcastState();
-      }
-    }
-
-    function toggleGrocery(index) {
-      if (groceries[index]) {
-        groceries[index].done = !groceries[index].done;
-        renderGroceries();
-        broadcastState();
-      }
-    }
-
-    function deleteGrocery(index) {
-      groceries.splice(index, 1);
-      renderGroceries();
-      broadcastState();
-    }
-
-    function clearCompletedGroceries() {
-      groceries = groceries.filter(item => !item.done);
-      renderGroceries();
-      broadcastState();
-    }
-
     function updatePackingProgress() {
       const checkboxes = document.querySelectorAll('.pack-checkbox');
       const checkedCount = document.querySelectorAll('.pack-checkbox:checked').length;
@@ -3143,7 +3271,6 @@
       if (text) text.innerText = `${checkedCount} von ${totalCount} gepackt (${percentage}%)`;
     }
 
-    // Checkbox Event Listener
     document.addEventListener('change', (e) => {
       if (e.target.classList.contains('sync-checkbox') && e.target.id) {
         checkboxStates[e.target.id] = e.target.checked;
@@ -3154,13 +3281,12 @@
       }
     });
 
-    // Initialisierung beim Laden
     window.addEventListener('DOMContentLoaded', () => {
-      if (document.getElementById('budget')) updateBudgetCalculations();
       loadLocalCache();
       updateTripStatusBanner();
       updateDualClocks();
       initCloudSync();
+      updateBudgetCalculations();
     });
 
     // PDF Druckansicht
