@@ -124,7 +124,7 @@
       color: white !important;
     }
 
-    /* Live Sync Status Indicator */
+    /* Live Sync Badge */
     .sync-badge {
       display: inline-flex;
       align-items: center;
@@ -459,7 +459,7 @@
     .btn-booking { background: #fff3ec; color: var(--secondary); border: 1px solid #fbd5c0; }
     .btn-booking:hover { background: var(--secondary); color: white; }
 
-    /* Hub Cards & Grid */
+    /* Hub Cards & Layout */
     .hub-card {
       background: white;
       padding: 1.8rem;
@@ -477,6 +477,25 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+    }
+
+    /* Strukturierter Container für Hub (Kein Leerraum) */
+    .hub-layout-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
+    .hub-row-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.8rem;
+    }
+
+    @media (max-width: 800px) {
+      .hub-row-2col {
+        grid-template-columns: 1fr;
+      }
     }
 
     .sub-item-list { list-style: none; margin-top: 0.8rem; font-size: 0.9rem; }
@@ -730,9 +749,10 @@
       border: 1px solid var(--border-color);
       border-radius: 14px;
       padding: 1rem 1.3rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.8rem;
       box-shadow: 0 2px 10px rgba(0,0,0,0.03);
     }
+    details.checkin-card:last-child { margin-bottom: 0; }
     details.checkin-card summary {
       cursor: pointer;
       list-style: none;
@@ -764,17 +784,113 @@
       margin-bottom: 0.2rem;
     }
 
-    /* Print Stylesheet */
+    /* =========================================================
+       PRINT STYLESHEET (NUR REISEPLAN FÜR DIE PDF EXPORTIEREN)
+       ========================================================= */
     @media print {
-      nav, .hero, .btn-action, button, #daily-slider, .countdown-container, .quick-add-chips, .grocery-input-group, .grocery-del-btn, #trip-status-banner, .tool-btn-row {
+      /* Blendet ausnahmslos alle anderen Sektionen, Widgets und Navigation aus */
+      nav,
+      .hero,
+      #map,
+      #budget,
+      #hub,
+      #bucketlist,
+      #emergency,
+      #weather,
+      #playlist,
+      #calculator,
+      footer,
+      #trip-status-banner,
+      .modal-overlay,
+      iframe,
+      button,
+      .btn-action,
+      .expand-trigger,
+      .countdown-container {
         display: none !important;
       }
-      body { background: white; color: black; }
-      .container { max-width: 100%; margin: 0; padding: 0; }
-      details.timeline-item, details.checkin-card { border: 1px solid #ccc !important; break-inside: avoid; margin-bottom: 1rem; }
-      details.timeline-item[open], details.checkin-card[open] { box-shadow: none !important; }
-      details.timeline-item summary, details.checkin-card summary { pointer-events: none; }
-      .timeline::before { display: none; }
+
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 10.5pt !important;
+      }
+
+      .container {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      /* Reiseplan für den Druck aufbereiten */
+      #route {
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      #route .section-title {
+        font-size: 1.8rem !important;
+        margin-bottom: 1.2rem !important;
+        color: #000000 !important;
+        text-align: center !important;
+      }
+
+      #route .section-title::after {
+        background: #333333 !important;
+      }
+
+      .timeline {
+        padding-left: 0 !important;
+      }
+
+      .timeline::before {
+        display: none !important;
+      }
+
+      details.timeline-item {
+        display: block !important;
+        border: 1px solid #cccccc !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+        margin-bottom: 1.2rem !important;
+        padding: 1rem !important;
+        background: #ffffff !important;
+        border-radius: 8px !important;
+      }
+
+      details.timeline-item::before {
+        display: none !important;
+      }
+
+      details.timeline-item summary {
+        pointer-events: none;
+        cursor: default;
+      }
+
+      .timeline-body {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.8rem !important;
+        margin-top: 0.8rem !important;
+        padding-top: 0.8rem !important;
+        border-top: 1px solid #e2e8f0 !important;
+      }
+
+      .day-subcard {
+        background: #f9fbfb !important;
+        border: 1px solid #e2e8f0 !important;
+        border-left: 4px solid #006d68 !important;
+        padding: 0.8rem !important;
+        break-inside: avoid;
+      }
+
+      .hotel-cost-box {
+        border: 1px solid #e2e8f0 !important;
+        background: #ffffff !important;
+        padding: 0.6rem !important;
+      }
     }
 
     @media (max-width: 768px) {
@@ -808,8 +924,8 @@
         </button>
       </li>
       <li>
-        <button onclick="window.print()" class="btn-nav-action btn-print-nav">
-          <i class="fa-solid fa-print"></i> PDF
+        <button onclick="window.print()" class="btn-nav-action btn-print-nav" title="Nur Reiseplan als PDF drucken">
+          <i class="fa-solid fa-file-pdf"></i> PDF
         </button>
       </li>
     </ul>
@@ -1670,14 +1786,14 @@
       </div>
     </section>
 
-    <!-- 4. Tools, Live-Einkaufszettel & Packliste -->
+    <!-- 4. Tools, Live-Einkaufszettel & Packliste (KOMPAKT & OHNE LEERE FLÄCHEN GESTALTET) -->
     <section id="hub" class="section-spaced">
       <h2 class="section-title">Reise-Tools, Einkaufszettel & Packliste</h2>
       
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.8rem;">
+      <div class="hub-layout-stack">
         
-        <!-- Live-Einkaufszettel Card -->
-        <div class="hub-card" style="grid-column: span 2;">
+        <!-- Live-Einkaufszettel Card (Vollbreite) -->
+        <div class="hub-card">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
             <h3 style="margin:0;"><i class="fa-solid fa-cart-shopping"></i> Supermarkt-Einkaufszettel (Coles & Woolies)</h3>
             <span class="sync-badge"><span class="sync-dot"></span> Live synchronisiert</span>
@@ -1715,8 +1831,8 @@
           </div>
         </div>
 
-        <!-- Packliste Card (Gruppen-Ausrüstung nahtlos integriert) -->
-        <div class="hub-card" style="grid-column: span 2;">
+        <!-- Packliste Card (Vollbreite, saubere 3-Spalten) -->
+        <div class="hub-card">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
             <h3 style="margin:0;"><i class="fa-solid fa-suitcase"></i> Interaktive Roadtrip Packliste</h3>
             <div style="display:flex; align-items:center; gap:0.6rem;">
@@ -1729,7 +1845,7 @@
             <div id="pack-progress" class="progress-bar-fill"></div>
           </div>
 
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
             <div>
               <h4 style="color: var(--primary); font-size: 0.95rem; margin-bottom: 0.6rem;"><i class="fa-solid fa-passport"></i> Dokumente & Finanzen</h4>
               <ul class="checklist">
@@ -1765,37 +1881,40 @@
           </div>
         </div>
 
-        <!-- Splitwise & Gruppenkasse Card -->
-        <div class="hub-card">
-          <h3><i class="fa-solid fa-sack-dollar"></i> Gemeinsame Reisekasse</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">
-            Ausgaben unterwegs sofort für alle 4 eintragen – ein Klick öffnet direkt eure gemeinsame Gruppe:
-          </p>
-          <div class="tool-btn-row">
-            <a href="https://secure.splitwise.com/#/groups/101615495" target="_blank" class="btn-tool splitwise">
-              <i class="fa-solid fa-arrow-right-arrow-left"></i> Splitwise Gruppe öffnen
-            </a>
-            <a href="https://www.splid.app" target="_blank" class="btn-tool splid">
-              <i class="fa-solid fa-receipt"></i> Splid App öffnen
-            </a>
+        <!-- 2-Spalten-Reihe: Reisekasse (Splitwise) & Google Live-Fotoalbum nebeneinander -->
+        <div class="hub-row-2col">
+          <!-- Splitwise & Gruppenkasse Card -->
+          <div class="hub-card">
+            <h3><i class="fa-solid fa-sack-dollar"></i> Gemeinsame Reisekasse</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+              Ausgaben unterwegs sofort für alle 4 eintragen – ein Klick öffnet direkt eure gemeinsame Gruppe:
+            </p>
+            <div class="tool-btn-row">
+              <a href="https://secure.splitwise.com/#/groups/101615495" target="_blank" class="btn-tool splitwise">
+                <i class="fa-solid fa-arrow-right-arrow-left"></i> Splitwise Gruppe öffnen
+              </a>
+              <a href="https://www.splid.app" target="_blank" class="btn-tool splid">
+                <i class="fa-solid fa-receipt"></i> Splid App öffnen
+              </a>
+            </div>
+          </div>
+
+          <!-- Google Live-Fotoalbum Card -->
+          <div class="hub-card">
+            <h3><i class="fa-solid fa-camera"></i> Unser Live-Fotoalbum</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+              Alle 4 laden ihre Schnappschüsse und Videos direkt unterwegs ins gemeinsame Album:
+            </p>
+            <div class="tool-btn-row">
+              <a href="https://photos.app.goo.gl/c8Bkr97b1hc8QrKP7" target="_blank" class="btn-tool photos">
+                <i class="fa-solid fa-images"></i> 📸 Google Live-Fotoalbum öffnen
+              </a>
+            </div>
           </div>
         </div>
 
-        <!-- Google Live-Fotoalbum Card -->
+        <!-- Check-in Info Cards (Vollbreite) -->
         <div class="hub-card">
-          <h3><i class="fa-solid fa-camera"></i> Unser Live-Fotoalbum</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">
-            Alle 4 laden ihre Schnappschüsse und Videos direkt unterwegs ins gemeinsame Album:
-          </p>
-          <div class="tool-btn-row">
-            <a href="https://photos.app.goo.gl/c8Bkr97b1hc8QrKP7" target="_blank" class="btn-tool photos">
-              <i class="fa-solid fa-images"></i> 📸 Google Live-Fotoalbum öffnen
-            </a>
-          </div>
-        </div>
-
-        <!-- Check-in Info Cards -->
-        <div class="hub-card" style="grid-column: 1 / -1;">
           <h3><i class="fa-solid fa-hotel"></i> Check-in Info Cards — Alle Unterkünfte</h3>
           <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
             Adressen und Check-in-Zeiten pro Hotel auf einen Blick:
@@ -1872,8 +1991,8 @@
           </details>
         </div>
 
-        <!-- Singapur Stopover Guide -->
-        <div class="hub-card" style="grid-column: 1 / -1;">
+        <!-- Singapur Stopover Guide (Vollbreite) -->
+        <div class="hub-card">
           <h3><i class="fa-solid fa-plane-arrival"></i> Singapur Stopover Quick Guide (7 Std. Aufenthalt)</h3>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 0.8rem; font-size: 0.9rem;">
             <div style="background: var(--primary-light); padding: 0.9rem; border-radius: 10px;">
@@ -1944,7 +2063,7 @@
       </div>
     </section>
 
-    <!-- 6. Notfall, Admin & Regeln (Sauber formatiert & responsiv) -->
+    <!-- 6. Notfall, Admin & Regeln -->
     <section id="emergency" class="section-spaced">
       <h2 class="section-title">Notfall, Admin & Regeln 🚨</h2>
 
@@ -2431,7 +2550,7 @@
       if (text) text.innerText = `${checkedCount} von ${totalCount} gepackt (${percentage}%)`;
     }
 
-    // Checkbox Change Event Listener
+    // Checkbox Event Listener
     document.addEventListener('change', (e) => {
       if (e.target.classList.contains('sync-checkbox') && e.target.id) {
         checkboxStates[e.target.id] = e.target.checked;
@@ -2460,11 +2579,11 @@
       updateTripStatusBanner();
     });
 
-    // Druckansicht: Automatisch alle Klappmenüs öffnen
+    // PDF Druckansicht: Automatisch NUR die Klappmenüs des Reiseplans aufklappen
     let detailsStateBeforePrint = [];
     window.addEventListener('beforeprint', () => {
       detailsStateBeforePrint = [];
-      document.querySelectorAll('details').forEach(d => {
+      document.querySelectorAll('#route details').forEach(d => {
         detailsStateBeforePrint.push({ el: d, wasOpen: d.open });
         d.open = true;
       });
