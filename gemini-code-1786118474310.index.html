@@ -61,19 +61,21 @@
       top: 0;
       z-index: 1000;
       box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-      padding: 0.8rem 1.5rem;
+      padding: 0.75rem 1.2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 0.8rem;
     }
 
     .logo {
-      font-size: 1.35rem;
+      font-size: 1.25rem;
       font-weight: 800;
       color: var(--primary);
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
+      white-space: nowrap;
     }
 
     .nav-links {
@@ -95,8 +97,15 @@
       color: var(--secondary);
     }
 
+    /* Fix: Eigener Container für die Aktions-Buttons (Mobil immer sichtbar) */
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
     .btn-nav-action {
-      padding: 0.4rem 0.85rem;
+      padding: 0.45rem 0.85rem;
       border-radius: 20px;
       cursor: pointer;
       font-weight: 700;
@@ -106,6 +115,7 @@
       gap: 0.4rem;
       border: none;
       transition: background 0.2s, transform 0.1s;
+      white-space: nowrap;
     }
 
     .btn-print-nav {
@@ -246,7 +256,7 @@
       padding: 0.8rem 1.4rem;
       border-radius: 16px;
       flex: 1;
-      min-width: 280px;
+      min-width: 260px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -572,7 +582,7 @@
       .hub-row-2col { grid-template-columns: 1fr; }
     }
 
-    /* Budget Grid (2x2 Gleichmäßig formatiert) */
+    /* Budget Grid (2x2 Gleichmäßig) */
     .budget-grid-2x2 {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -622,8 +632,8 @@
       user-select: none;
     }
     .checklist-item input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       accent-color: var(--primary);
       cursor: pointer;
     }
@@ -647,84 +657,126 @@
       transition: width 0.3s ease;
     }
 
-    /* Live Shopping List */
+    /* =========================================================
+       SUPERMARKT EINKAUFSZETTEL (MOBILE & TOUCH OPTIMIERT)
+       ========================================================= */
     .quick-add-chips {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1.2rem;
+      gap: 0.45rem;
+      margin-bottom: 1rem;
     }
     .chip-btn {
       background: var(--primary-light);
       color: var(--primary-dark);
       border: 1px solid #b2dfdb;
-      padding: 0.35rem 0.75rem;
+      padding: 0.45rem 0.8rem;
       border-radius: 20px;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s ease;
+      touch-action: manipulation;
     }
-    .chip-btn:hover { background: var(--primary); color: white; }
+    .chip-btn:hover, .chip-btn:active { background: var(--primary); color: white; }
 
     .grocery-input-group {
       display: flex;
       gap: 0.5rem;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1rem;
+      width: 100%;
     }
     .grocery-input {
       flex: 1;
+      min-width: 0;
       padding: 0.75rem 1rem;
       border: 1px solid #cbd5e0;
-      border-radius: 10px;
+      border-radius: 12px;
       font-family: inherit;
-      font-size: 0.95rem;
+      font-size: 16px; /* Verhindert Auto-Zoom auf iOS Safari */
+      background: #ffffff;
+      outline: none;
     }
+    .grocery-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
+
     .grocery-btn-add {
       background: var(--primary);
       color: white;
       border: none;
-      padding: 0.75rem 1.4rem;
-      border-radius: 10px;
+      padding: 0.75rem 1.2rem;
+      border-radius: 12px;
       font-weight: 700;
+      font-size: 0.95rem;
       cursor: pointer;
-      transition: background 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+      touch-action: manipulation;
     }
     .grocery-btn-add:hover { background: var(--primary-dark); }
-    .grocery-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; max-height: 380px; overflow-y: auto; }
+
+    .grocery-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      max-height: 420px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 0.2rem 0;
+    }
     .grocery-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
       background: #f8fafc;
-      padding: 0.65rem 0.9rem;
-      border-radius: 10px;
+      padding: 0.8rem 1rem;
+      border-radius: 12px;
       border: 1px solid var(--border-color);
+      min-height: 48px; /* Touch-Target-Mindesthöhe */
       transition: background 0.2s;
     }
     .grocery-item.completed {
-      background: #eef2f6;
+      background: #f1f5f9;
       text-decoration: line-through;
       color: var(--text-muted);
     }
     .grocery-item-left {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.85rem;
       cursor: pointer;
       flex: 1;
+      min-width: 0;
+      word-break: break-word;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+    .grocery-item-left input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
+      min-width: 22px;
+      accent-color: var(--primary);
+      cursor: pointer;
+      pointer-events: none;
     }
     .grocery-del-btn {
       background: none;
       border: none;
       color: #ef4444;
       cursor: pointer;
-      padding: 0.3rem 0.5rem;
-      font-size: 0.9rem;
-      opacity: 0.7;
-      transition: opacity 0.2s;
+      padding: 0.5rem 0.7rem;
+      font-size: 1.05rem;
+      opacity: 0.75;
+      touch-action: manipulation;
+      min-height: 44px;
+      min-width: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .grocery-del-btn:hover { opacity: 1; }
+    .grocery-del-btn:hover, .grocery-del-btn:active { opacity: 1; }
 
     /* Tool Buttons */
     .tool-btn-row {
@@ -937,22 +989,34 @@
       }
     }
 
+    /* Mobile Responsive Optimierung für iPhone / Smartphones */
     @media (max-width: 768px) {
-      .hero h1 { font-size: 2.2rem; }
-      .countdown-container { gap: 1rem; padding: 1rem; }
-      .time-box span { font-size: 1.6rem; }
-      .nav-links { display: none; }
-      .timeline { padding-left: 2rem; }
-      .timeline::before { left: 7px; }
-      details.timeline-item::before { left: -1.9rem; }
+      .hero h1 { font-size: 2.1rem; }
+      .countdown-container { gap: 0.9rem; padding: 0.9rem 1.2rem; }
+      .time-box span { font-size: 1.55rem; }
+      .nav-links { display: none; } /* Text-Links werden mobil ausgeblendet */
+      .nav-actions { display: flex !important; } /* App & PDF bleiben IMMER sichtbar */
+      .timeline { padding-left: 1.8rem; }
+      .timeline::before { left: 6px; }
+      details.timeline-item::before { left: -1.75rem; }
+      .hub-card { padding: 1.2rem; }
+      .quick-add-chips {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 0.4rem;
+      }
+      .chip-btn { flex-shrink: 0; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Navigation -->
+  <!-- Navigation (App & PDF immer sichtbar) -->
   <nav>
     <div class="logo"><i class="fa-solid fa-plane-departure"></i> AUS 2027</div>
+    
+    <!-- Text-Links (Desktop) -->
     <ul class="nav-links">
       <li><a href="#map">Route</a></li>
       <li><a href="#route">Reiseplan</a></li>
@@ -962,17 +1026,17 @@
       <li><a href="#emergency">Notfall & Admin</a></li>
       <li><a href="#weather">Live-Wetter</a></li>
       <li><a href="#playlist">Playlist</a></li>
-      <li>
-        <button onclick="triggerPwaPrompt()" class="btn-nav-action btn-pwa-nav" title="Als Handy-App installieren">
-          <i class="fa-solid fa-mobile-screen-button"></i> App
-        </button>
-      </li>
-      <li>
-        <button onclick="window.print()" class="btn-nav-action btn-print-nav" title="Nur Reiseplan als PDF drucken">
-          <i class="fa-solid fa-file-pdf"></i> PDF
-        </button>
-      </li>
     </ul>
+
+    <!-- Quick Action Buttons (Auf Desktop & iPhone immer sichtbar) -->
+    <div class="nav-actions">
+      <button onclick="triggerPwaPrompt()" class="btn-nav-action btn-pwa-nav" title="Als Handy-App installieren">
+        <i class="fa-solid fa-mobile-screen-button"></i> App
+      </button>
+      <button onclick="window.print()" class="btn-nav-action btn-print-nav" title="Nur Reiseplan als PDF drucken">
+        <i class="fa-solid fa-file-pdf"></i> PDF
+      </button>
+    </div>
   </nav>
 
   <div id="trip-status-banner" class="trip-status-banner"></div>
@@ -1624,7 +1688,7 @@
               <div class="day-subcard sight">
                 <div class="subcard-title"><i class="fa-solid fa-map-pin"></i> Highlights & Spots</div>
                 <p><strong>Twelve Apostles & Loch Ard Gorge:</strong> Majestätische Kalksteinfelsen im Ozean.</p>
-                <a href="https://www.google.com/maps/place/Twelve+Apostles/@-38.6648766,143.1040529,15z" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Twelve Apostles</a>
+                <a href="https://maps.google.com" target="_blank" class="btn-action btn-maps"><i class="fa-solid fa-map-location-dot"></i> Twelve Apostles</a>
               </div>
               <div class="day-subcard budget">
                 <div class="subcard-title"><i class="fa-solid fa-wallet"></i> Ausflug Kosten</div>
@@ -1735,7 +1799,7 @@
         </div>
       </div>
 
-      <!-- 2x2 Grid für die 4 Hauptkategorien (Kein Leerraum mehr) -->
+      <!-- 2x2 Grid für die 4 Hauptkategorien -->
       <div class="budget-grid-2x2">
         
         <div class="hub-card budget-category-card">
@@ -1877,7 +1941,7 @@
       
       <div class="hub-layout-stack">
         
-        <!-- Großes Live Regenradar (Vollbreite wie Google Maps) -->
+        <!-- Großes Live Regenradar (Vollbreite) -->
         <div class="hub-card">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
             <h3 style="margin:0;"><i class="fa-solid fa-cloud-bolt" style="color: #0284c7;"></i> Live-Regenradar (Australien Ostküste)</h3>
@@ -1889,16 +1953,17 @@
           <iframe class="radar-frame-large" src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=mm&metricTemp=°C&metricWind=km/h&zoom=5&overlay=radar&product=radar&level=surface&lat=-28.5&lon=153.0" frameborder="0"></iframe>
         </div>
 
-        <!-- Live-Einkaufszettel Card -->
+        <!-- Live-Einkaufszettel Card (Mobile & Touch Optimiert) -->
         <div class="hub-card">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
             <h3 style="margin:0;"><i class="fa-solid fa-cart-shopping"></i> Supermarkt-Einkaufszettel (Coles & Woolies)</h3>
             <span class="sync-badge"><span class="sync-dot"></span> Live synchronisiert</span>
           </div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">
             Artikel werden auf allen 4 Smartphones in Echtzeit aktualisiert und synchron abgehakt:
           </p>
 
+          <!-- Quick Add Chips -->
           <div class="quick-add-chips">
             <button class="chip-btn" onclick="quickAddGrocery('24er Pack Trinkwasser')">+ 24er Trinkwasser</button>
             <button class="chip-btn" onclick="quickAddGrocery('Eisbeutel für Esky/Kühlbox')">+ Eisbeutel (Esky)</button>
@@ -1909,15 +1974,17 @@
             <button class="chip-btn" onclick="quickAddGrocery('Bundaberg Ginger Beer 4er')">+ Bundaberg 4er</button>
           </div>
 
+          <!-- Input Group -->
           <div class="grocery-input-group">
-            <input type="text" id="grocery-item-input" class="grocery-input" placeholder="Artikel eingeben (z. B. Bananen, Sonnencreme)..." onkeypress="if(event.key === 'Enter') addGroceryItem()">
+            <input type="text" id="grocery-item-input" class="grocery-input" placeholder="Artikel eingeben (z. B. Bananen, Eis)..." onkeypress="if(event.key === 'Enter') addGroceryItem()">
             <button class="grocery-btn-add" onclick="addGroceryItem()"><i class="fa-solid fa-plus"></i> Hinzufügen</button>
           </div>
 
+          <!-- Items List -->
           <ul id="grocery-list-container" class="grocery-list"></ul>
 
-          <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
-            <button onclick="clearCompletedGroceries()" style="background: none; border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; padding: 0.4rem 0.8rem; border-radius: 8px; cursor: pointer;">
+          <div style="display: flex; justify-content: flex-end; margin-top: 0.8rem;">
+            <button onclick="clearCompletedGroceries()" style="background: none; border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.82rem; padding: 0.45rem 0.85rem; border-radius: 8px; cursor: pointer;">
               <i class="fa-solid fa-broom"></i> Erledigte entfernen
             </button>
           </div>
@@ -1959,8 +2026,8 @@
             </p>
             <div style="display: flex; flex-direction: column; gap: 0.6rem;">
               <div style="display: flex; gap: 0.6rem;">
-                <input type="number" id="fuel-liters" class="grocery-input" style="padding: 0.55rem 0.8rem; font-size: 0.88rem;" placeholder="Liter (z.B. 50)" oninput="calculateFuelCost()">
-                <input type="number" id="fuel-price" class="grocery-input" style="padding: 0.55rem 0.8rem; font-size: 0.88rem;" placeholder="AUD/L (z.B. 1.95)" value="1.95" step="0.01" oninput="calculateFuelCost()">
+                <input type="number" id="fuel-liters" class="grocery-input" style="padding: 0.55rem 0.8rem; font-size: 16px;" placeholder="Liter (z.B. 50)" oninput="calculateFuelCost()">
+                <input type="number" id="fuel-price" class="grocery-input" style="padding: 0.55rem 0.8rem; font-size: 16px;" placeholder="AUD/L (z.B. 1.95)" value="1.95" step="0.01" oninput="calculateFuelCost()">
               </div>
               <div style="background: var(--primary-light); padding: 0.6rem 0.9rem; border-radius: 10px; font-size: 0.85rem; font-weight: 700; color: var(--primary-dark); display: flex; justify-content: space-between;">
                 <span>Gesamt: <strong id="fuel-total-aud">0.00 AUD</strong></span>
@@ -2035,6 +2102,9 @@
             <div class="tool-btn-row">
               <a href="https://secure.splitwise.com/#/groups/101615495" target="_blank" class="btn-tool splitwise">
                 <i class="fa-solid fa-arrow-right-arrow-left"></i> Splitwise Gruppe öffnen
+              </a>
+              <a href="https://www.splid.app" target="_blank" class="btn-tool splid">
+                <i class="fa-solid fa-receipt"></i> Splid App öffnen
               </a>
             </div>
           </div>
@@ -2149,7 +2219,7 @@
       </div>
     </section>
 
-    <!-- 5. Bucket List & Slang (Kompakt & ausgewogen formatiert) -->
+    <!-- 5. Bucket List & Slang -->
     <section id="bucketlist" class="section-spaced">
       <h2 class="section-title">Aussie Bucket List & Culture 🦘</h2>
 
@@ -2254,7 +2324,7 @@
       </div>
     </section>
 
-    <!-- 7. Live Wetter (Reparierte Links zu wetter.com) -->
+    <!-- 7. Live Wetter (wetter.com) -->
     <section id="weather" class="section-spaced">
       <h2 class="section-title">Live-Wetter an unseren Stopps ☀️</h2>
       <p class="section-lead">Echtzeit-Wetterberichte & Vorhersagen direkt auf wetter.com für alle Stationen der Tour:</p>
@@ -2270,7 +2340,7 @@
             </div>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">März/April: Angenehme 23°C – ideal für Hafen & Küste.</p>
           </div>
-          <a href="https://www.wetter.com/australien/sydney/AU0NS0062.html" target="_blank" class="btn-tool splitwise" style="padding: 0.6rem 0.9rem; font-size: 0.82rem;">
+          <a href="https://www.wetter.com/suche/?q=Sydney" target="_blank" class="btn-tool splitwise" style="padding: 0.6rem 0.9rem; font-size: 0.82rem;">
             <i class="fa-solid fa-cloud-sun"></i> wetter.com Sydney öffnen
           </a>
         </div>
@@ -2284,7 +2354,7 @@
             </div>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">März/April: Warme 26°C – herrliches Badewetter am Ozean.</p>
           </div>
-          <a href="https://www.wetter.com/australien/byron-bay/AU0NS0015.html" target="_blank" class="btn-tool splitwise" style="padding: 0.6rem 0.9rem; font-size: 0.82rem;">
+          <a href="https://www.wetter.com/suche/?q=Byron+Bay" target="_blank" class="btn-tool splitwise" style="padding: 0.6rem 0.9rem; font-size: 0.82rem;">
             <i class="fa-solid fa-cloud-sun"></i> wetter.com Byron Bay öffnen
           </a>
         </div>
@@ -2298,7 +2368,7 @@
             </div>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">März/April: Tropische 28°C – perfekt zum Segeln & Schnorcheln.</p>
           </div>
-          <a href="https://www.wetter.com/australien/airlie-beach/AU6354936.html" target="_blank" class="btn-tool splitwise" style="padding: 0.6rem 0.9rem; font-size: 0.82rem;">
+          <a href="https://www.wetter.com/suche/?q=Airlie+Beach" target="_blank" class="btn-tool splitwise" style="padding: 0.6rem 0.9rem; font-size: 0.82rem;">
             <i class="fa-solid fa-cloud-sun"></i> wetter.com Whitsundays öffnen
           </a>
         </div>
@@ -2312,7 +2382,7 @@
             </div>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">März/April: Milde 20°C – 4 Jahreszeiten an einem Tag.</p>
           </div>
-          <a href="https://www.wetter.com/australien/melbourne/AU0VI0027.html" target="_blank" class="btn-tool splitwise" style="padding: 0.6rem 0.9rem; font-size: 0.82rem;">
+          <a href="https://www.wetter.com/suche/?q=Melbourne" target="_blank" class="btn-tool splitwise" style="padding: 0.6rem 0.9rem; font-size: 0.82rem;">
             <i class="fa-solid fa-cloud-sun"></i> wetter.com Melbourne öffnen
           </a>
         </div>
@@ -2338,7 +2408,7 @@
         <div style="display: flex; flex-direction: column; gap: 1rem;">
           <div>
             <label for="aud-input" style="display: block; font-weight: 600; margin-bottom: 0.4rem;">Australische Dollar (AUD $):</label>
-            <input type="number" id="aud-input" placeholder="z. B. 100" oninput="convertAudToEur()" style="width: 100%; padding: 0.8rem; border: 1px solid #cbd5e0; border-radius: 8px; font-family: inherit; font-size: 1rem;">
+            <input type="number" id="aud-input" placeholder="z. B. 100" oninput="convertAudToEur()" style="width: 100%; padding: 0.8rem; border: 1px solid #cbd5e0; border-radius: 8px; font-family: inherit; font-size: 16px;">
           </div>
           
           <div style="text-align: center; font-size: 1.2rem; color: var(--primary);">
@@ -2347,7 +2417,7 @@
 
           <div>
             <label for="eur-input" style="display: block; font-weight: 600; margin-bottom: 0.4rem;">Euro (EUR €):</label>
-            <input type="number" id="eur-input" placeholder="z. B. 60" oninput="convertEurToAud()" style="width: 100%; padding: 0.8rem; border: 1px solid #cbd5e0; border-radius: 8px; font-family: inherit; font-size: 1rem;">
+            <input type="number" id="eur-input" placeholder="z. B. 60" oninput="convertEurToAud()" style="width: 100%; padding: 0.8rem; border: 1px solid #cbd5e0; border-radius: 8px; font-family: inherit; font-size: 16px;">
           </div>
 
           <small style="color: var(--text-muted); text-align: center; margin-top: 0.5rem; display: block;">
@@ -2652,7 +2722,7 @@
       container.innerHTML = '';
 
       if (groceries.length === 0) {
-        container.innerHTML = `<li style="text-align:center; color: var(--text-muted); font-size: 0.85rem; padding: 1.5rem 0;">🛒 Liste ist leer. Füge oben Artikel hinzu!</li>`;
+        container.innerHTML = `<li style="text-align:center; color: var(--text-muted); font-size: 0.85rem; padding: 1.5rem 0;">🛒 Liste ist leer. Tippe oben auf einen Schnell-Button oder trage etwas ein!</li>`;
         return;
       }
 
@@ -2661,7 +2731,7 @@
         li.className = `grocery-item ${item.done ? 'completed' : ''}`;
         li.innerHTML = `
           <div class="grocery-item-left" onclick="toggleGrocery(${index})">
-            <input type="checkbox" ${item.done ? 'checked' : ''} style="width: 17px; height: 17px; accent-color: var(--primary); pointer-events: none;">
+            <input type="checkbox" ${item.done ? 'checked' : ''}>
             <span>${item.text}</span>
           </div>
           <button class="grocery-del-btn" onclick="deleteGrocery(${index})" title="Löschen"><i class="fa-solid fa-trash-can"></i></button>
