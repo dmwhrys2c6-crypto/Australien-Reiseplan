@@ -168,7 +168,7 @@
                   url('https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
       color: white;
       text-align: center;
-      padding: 5rem 1rem 4.5rem 1rem;
+      padding: 4.5rem 1rem 4rem 1rem;
     }
 
     .hero h1 {
@@ -181,7 +181,7 @@
 
     .hero p {
       font-size: 1.15rem;
-      margin-bottom: 1.8rem;
+      margin-bottom: 1.5rem;
       opacity: 0.95;
       max-width: 750px;
       margin-left: auto;
@@ -208,9 +208,8 @@
       border: 1px solid rgba(255, 255, 255, 0.25);
       display: inline-flex;
       gap: 1.8rem;
-      padding: 1.2rem 2.2rem;
+      padding: 1.1rem 2.2rem;
       border-radius: 20px;
-      margin-top: 0.5rem;
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     }
 
@@ -229,6 +228,84 @@
       opacity: 0.85;
       font-weight: 600;
     }
+
+    /* Dual Live Clock Bar */
+    .dual-clock-container {
+      margin: 1.8rem auto 0 auto;
+      max-width: 820px;
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .clock-card-hero {
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 0.8rem 1.4rem;
+      border-radius: 16px;
+      flex: 1;
+      min-width: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    .clock-card-hero.aussie-clock { border-top: 3px solid var(--accent-gold); }
+    .clock-card-hero.vienna-clock { border-top: 3px solid #60a5fa; }
+
+    .clock-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      gap: 0.5rem;
+      margin-bottom: 0.2rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .tz-select-hero {
+      background: rgba(0, 0, 0, 0.4);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 0.2rem 0.5rem;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+    }
+    .tz-select-hero option {
+      background: #1e293b;
+      color: #ffffff;
+    }
+
+    .clock-time-display {
+      font-size: 1.9rem;
+      font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      line-height: 1.2;
+      letter-spacing: 0.5px;
+    }
+
+    .clock-sub-text {
+      font-size: 0.78rem;
+      opacity: 0.9;
+      font-weight: 600;
+    }
+
+    .vienna-badge {
+      font-size: 0.72rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 10px;
+      font-weight: 800;
+    }
+    .vienna-badge.awake { background: #dcfce7; color: #15803d; }
+    .vienna-badge.sleeping { background: #fee2e2; color: #b91c1c; }
 
     /* Main Container */
     .container {
@@ -459,7 +536,7 @@
     .btn-booking { background: #fff3ec; color: var(--secondary); border: 1px solid #fbd5c0; }
     .btn-booking:hover { background: var(--secondary); color: white; }
 
-    /* Hub Cards & Layout */
+    /* Hub Cards & Compact Layout */
     .hub-card {
       background: white;
       padding: 1.8rem;
@@ -479,7 +556,6 @@
       gap: 0.5rem;
     }
 
-    /* Strukturierter Container für Hub (Kein Leerraum) */
     .hub-layout-stack {
       display: flex;
       flex-direction: column;
@@ -493,9 +569,7 @@
     }
 
     @media (max-width: 800px) {
-      .hub-row-2col {
-        grid-template-columns: 1fr;
-      }
+      .hub-row-2col { grid-template-columns: 1fr; }
     }
 
     .sub-item-list { list-style: none; margin-top: 0.8rem; font-size: 0.9rem; }
@@ -555,7 +629,7 @@
       transition: width 0.3s ease;
     }
 
-    /* Live Shopping List Specifics */
+    /* Live Shopping List */
     .quick-add-chips {
       display: flex;
       flex-wrap: wrap;
@@ -573,10 +647,8 @@
       cursor: pointer;
       transition: all 0.2s ease;
     }
-    .chip-btn:hover {
-      background: var(--primary);
-      color: white;
-    }
+    .chip-btn:hover { background: var(--primary); color: white; }
+
     .grocery-input-group {
       display: flex;
       gap: 0.5rem;
@@ -669,7 +741,67 @@
     .btn-tool.dronemap { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
     .btn-tool.dronemap:hover { background: #b91c1c; color: white; }
 
-    /* Slang & Live Weather Cards */
+    /* Aussie In-Page Tools Specifics */
+    .aussie-tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 0.8rem;
+    }
+
+    .tool-subcard {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .tool-subcard h4 {
+      color: var(--primary-dark);
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .radar-frame {
+      width: 100%;
+      height: 220px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      margin-top: 0.6rem;
+    }
+
+    .fuel-calc-box {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-top: 0.6rem;
+    }
+    .fuel-calc-input {
+      width: 100%;
+      padding: 0.5rem 0.8rem;
+      border: 1px solid #cbd5e0;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+    .fuel-result-row {
+      background: var(--primary-light);
+      padding: 0.6rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Slang Grid */
     .slang-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -684,7 +816,7 @@
     .slang-word { font-weight: 800; color: var(--primary-dark); font-size: 1rem; }
     .slang-meaning { font-size: 0.85rem; color: var(--text-main); }
 
-    /* Live Wetter Widget Cards */
+    /* Live Wetter Widgets */
     .weather-widget-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -785,68 +917,22 @@
     }
 
     /* =========================================================
-       PRINT STYLESHEET (NUR REISEPLAN FÜR DIE PDF EXPORTIEREN)
+       PRINT STYLESHEET (NUR REISEPLAN ALS PDF EXPORTIEREN)
        ========================================================= */
     @media print {
-      /* Blendet ausnahmslos alle anderen Sektionen, Widgets und Navigation aus */
-      nav,
-      .hero,
-      #map,
-      #budget,
-      #hub,
-      #bucketlist,
-      #emergency,
-      #weather,
-      #playlist,
-      #calculator,
-      footer,
-      #trip-status-banner,
-      .modal-overlay,
-      iframe,
-      button,
-      .btn-action,
-      .expand-trigger,
-      .countdown-container {
+      nav, .hero, #map, #budget, #hub, #bucketlist, #emergency, #weather, #playlist, #calculator,
+      footer, #trip-status-banner, .modal-overlay, iframe, button, .btn-action, .expand-trigger,
+      .countdown-container, .dual-clock-container {
         display: none !important;
       }
 
-      body {
-        background: #ffffff !important;
-        color: #000000 !important;
-        font-size: 10.5pt !important;
-      }
-
-      .container {
-        max-width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-      }
-
-      /* Reiseplan für den Druck aufbereiten */
-      #route {
-        display: block !important;
-        margin: 0 !important;
-        padding: 0 !important;
-      }
-
-      #route .section-title {
-        font-size: 1.8rem !important;
-        margin-bottom: 1.2rem !important;
-        color: #000000 !important;
-        text-align: center !important;
-      }
-
-      #route .section-title::after {
-        background: #333333 !important;
-      }
-
-      .timeline {
-        padding-left: 0 !important;
-      }
-
-      .timeline::before {
-        display: none !important;
-      }
+      body { background: #ffffff !important; color: #000000 !important; font-size: 10.5pt !important; }
+      .container { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
+      #route { display: block !important; margin: 0 !important; padding: 0 !important; }
+      #route .section-title { font-size: 1.8rem !important; margin-bottom: 1.2rem !important; color: #000000 !important; text-align: center !important; }
+      #route .section-title::after { background: #333333 !important; }
+      .timeline { padding-left: 0 !important; }
+      .timeline::before { display: none !important; }
 
       details.timeline-item {
         display: block !important;
@@ -859,15 +945,8 @@
         background: #ffffff !important;
         border-radius: 8px !important;
       }
-
-      details.timeline-item::before {
-        display: none !important;
-      }
-
-      details.timeline-item summary {
-        pointer-events: none;
-        cursor: default;
-      }
+      details.timeline-item::before { display: none !important; }
+      details.timeline-item summary { pointer-events: none; cursor: default; }
 
       .timeline-body {
         display: flex !important;
@@ -877,7 +956,6 @@
         padding-top: 0.8rem !important;
         border-top: 1px solid #e2e8f0 !important;
       }
-
       .day-subcard {
         background: #f9fbfb !important;
         border: 1px solid #e2e8f0 !important;
@@ -885,7 +963,6 @@
         padding: 0.8rem !important;
         break-inside: avoid;
       }
-
       .hotel-cost-box {
         border: 1px solid #e2e8f0 !important;
         background: #ffffff !important;
@@ -933,17 +1010,47 @@
 
   <div id="trip-status-banner" class="trip-status-banner"></div>
 
-  <!-- Hero Section -->
+  <!-- Hero Section mit Countdown & Dual-Uhr -->
   <section class="hero">
     <span class="group-badge-hero"><i class="fa-solid fa-users"></i> 4-Personen Roadtrip Edition</span>
     <h1>AUSTRALIEN ROADTRIP 2027</h1>
     <p>Von Wien über Sydney, Byron Bay, Noosa, K’gari & Whitsundays nach Melbourne</p>
     
+    <!-- Countdown Widget -->
     <div class="countdown-container">
       <div class="time-box"><span id="days">00</span><label>Tage</label></div>
       <div class="time-box"><span id="hours">00</span><label>Stunden</label></div>
       <div class="time-box"><span id="minutes">00</span><label>Minuten</label></div>
       <div class="time-box"><span id="seconds">00</span><label>Sekunden</label></div>
+    </div>
+
+    <!-- Dual Live Clock Bar (Synchronisiert) -->
+    <div class="dual-clock-container">
+      
+      <!-- Australien Uhr -->
+      <div class="clock-card-hero aussie-clock">
+        <div class="clock-header-row">
+          <span><i class="fa-solid fa-location-dot"></i> Vor Ort:</span>
+          <select id="timezone-select" class="tz-select-hero" onchange="changeTimezone(this.value)">
+            <option value="Australia/Sydney">📍 Sydney & Byron Bay (NSW)</option>
+            <option value="Australia/Brisbane">📍 Brisbane, Noosa, Airlie (QLD)</option>
+            <option value="Australia/Melbourne">📍 Melbourne (VIC)</option>
+          </select>
+        </div>
+        <div class="clock-time-display" id="aussie-time">--:--:--</div>
+        <div class="clock-sub-text" id="aussie-tz-label">AEST / AEDT · Live</div>
+      </div>
+
+      <!-- Wien Uhr -->
+      <div class="clock-card-hero vienna-clock">
+        <div class="clock-header-row">
+          <span><i class="fa-solid fa-house"></i> Wien (Zuhause):</span>
+          <span id="vienna-status-badge" class="vienna-badge awake">☀️ Erreichbar</span>
+        </div>
+        <div class="clock-time-display" id="vienna-time">--:--:--</div>
+        <div class="clock-sub-text">Heimatzeit (MEZ / MESZ)</div>
+      </div>
+
     </div>
   </section>
 
@@ -1786,13 +1893,13 @@
       </div>
     </section>
 
-    <!-- 4. Tools, Live-Einkaufszettel & Packliste (KOMPAKT & OHNE LEERE FLÄCHEN GESTALTET) -->
+    <!-- 4. Tools, Live-Einkaufszettel & 4 Aussie-Tools (In-Page) -->
     <section id="hub" class="section-spaced">
-      <h2 class="section-title">Reise-Tools, Einkaufszettel & Packliste</h2>
+      <h2 class="section-title">Reise-Tools, Einkaufszettel & Aussie-Helfer</h2>
       
       <div class="hub-layout-stack">
         
-        <!-- Live-Einkaufszettel Card (Vollbreite) -->
+        <!-- Live-Einkaufszettel Card -->
         <div class="hub-card">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
             <h3 style="margin:0;"><i class="fa-solid fa-cart-shopping"></i> Supermarkt-Einkaufszettel (Coles & Woolies)</h3>
@@ -1831,7 +1938,89 @@
           </div>
         </div>
 
-        <!-- Packliste Card (Vollbreite, saubere 3-Spalten) -->
+        <!-- 4 Aussie In-Page Tools (Direkt in der Website integriert) -->
+        <div class="hub-card">
+          <h3><i class="fa-solid fa-toolbox"></i> 4 Aussie Roadtrip Helfer (Direkt auf der Website)</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem;">
+            Praktische Helfer für die Route – live nutzbar ohne externe Webseiten aufrufen zu müssen:
+          </p>
+
+          <div class="aussie-tools-grid">
+            
+            <!-- Tool 1: Live Regenradar (In-Page) -->
+            <div class="tool-subcard">
+              <div>
+                <h4><i class="fa-solid fa-cloud-bolt" style="color: #0284c7;"></i> Live-Regenradar (Ostküste)</h4>
+                <p style="font-size: 0.82rem; color: var(--text-muted);">
+                  Echtzeit-Wetter- und Regenradar für die aktuelle Route (Sydney bis Airlie Beach):
+                </p>
+                <iframe class="radar-frame" src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=mm&metricTemp=°C&metricWind=km/h&zoom=5&overlay=radar&product=radar&level=surface&lat=-28.5&lon=153.0" frameborder="0"></iframe>
+              </div>
+            </div>
+
+            <!-- Tool 2: Tank- & Spritrechner (In-Page) -->
+            <div class="tool-subcard">
+              <div>
+                <h4><i class="fa-solid fa-gas-pump" style="color: var(--secondary);"></i> Tank- & Spritrechner</h4>
+                <p style="font-size: 0.82rem; color: var(--text-muted);">
+                  Spritkosten sofort in EUR und durch alle 4 teilen:
+                </p>
+                <div class="fuel-calc-box">
+                  <input type="number" id="fuel-liters" class="fuel-calc-input" placeholder="Getankte Liter (z. B. 45)" oninput="calculateFuelCost()">
+                  <input type="number" id="fuel-price" class="fuel-calc-input" placeholder="Preis pro Liter in AUD (z. B. 1.95)" value="1.95" step="0.01" oninput="calculateFuelCost()">
+                  <div class="fuel-result-row">
+                    <span>Gesamt: <strong id="fuel-total-aud">0.00 AUD</strong></span>
+                    <span>(<strong id="fuel-total-eur">0.00 €</strong>)</span>
+                  </div>
+                  <div class="fuel-result-row" style="background: #e8f5e9; color: #166534;">
+                    <span>Pro Person (1/4):</span>
+                    <strong id="fuel-per-person">0.00 €</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tool 3: Public BBQ Finder (In-Page) -->
+            <div class="tool-subcard">
+              <div>
+                <h4><i class="fa-solid fa-fire-burner" style="color: #dc2626;"></i> Strand- & Park-Grill Finder</h4>
+                <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.6rem;">
+                  Kostenlose Elektro-BBQs an unseren Stopps:
+                </p>
+                <ul class="sub-item-list" style="font-size: 0.8rem; margin-top: 0;">
+                  <li><span>Byron Bay:</span> <strong>Main Beach Foreshore</strong></li>
+                  <li><span>Brisbane:</span> <strong>South Bank Picnic Area</strong></li>
+                  <li><span>Noosa:</span> <strong>Noosa Spit Recreation Reserve</strong></li>
+                  <li><span>Airlie Beach:</span> <strong>Foreshore & Lagoon Park</strong></li>
+                </ul>
+              </div>
+              <small style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.5rem; display:block;">
+                💡 <i>Tipp: Knopf 5 Sek. gedrückt halten, um die Grillplatte zu starten (schaltet nach 20 Min. automatisch ab).</i>
+              </small>
+            </div>
+
+            <!-- Tool 4: Free Water & Beach Showers -->
+            <div class="tool-subcard">
+              <div>
+                <h4><i class="fa-solid fa-shower" style="color: #0d9488;"></i> Free Water & Strandduschen</h4>
+                <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.6rem;">
+                  Kostenlose Trinkwasserstationen & Außenduschen:
+                </p>
+                <ul class="sub-item-list" style="font-size: 0.8rem; margin-top: 0;">
+                  <li><span>Trinkwasser:</span> <strong>Überall an Surf-Lifesaving Clubs</strong></li>
+                  <li><span>Strandduschen:</span> <strong>Kostenlos an allen Hauptstränden</strong></li>
+                  <li><span>Öffentl. Toiletten:</span> <strong>National Public Toilet Map</strong></li>
+                </ul>
+              </div>
+              <small style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.5rem; display:block;">
+                💡 <i>Leitungswasser (Tap Water) in Australien hat höchste Trinkwasserqualität.</i>
+              </small>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Packliste Card -->
         <div class="hub-card">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
             <h3 style="margin:0;"><i class="fa-solid fa-suitcase"></i> Interaktive Roadtrip Packliste</h3>
@@ -1881,9 +2070,8 @@
           </div>
         </div>
 
-        <!-- 2-Spalten-Reihe: Reisekasse (Splitwise) & Google Live-Fotoalbum nebeneinander -->
+        <!-- 2-Spalten-Reihe: Reisekasse (Splitwise) & Google Live-Fotoalbum -->
         <div class="hub-row-2col">
-          <!-- Splitwise & Gruppenkasse Card -->
           <div class="hub-card">
             <h3><i class="fa-solid fa-sack-dollar"></i> Gemeinsame Reisekasse</h3>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">
@@ -1899,7 +2087,6 @@
             </div>
           </div>
 
-          <!-- Google Live-Fotoalbum Card -->
           <div class="hub-card">
             <h3><i class="fa-solid fa-camera"></i> Unser Live-Fotoalbum</h3>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">
@@ -1913,7 +2100,7 @@
           </div>
         </div>
 
-        <!-- Check-in Info Cards (Vollbreite) -->
+        <!-- Check-in Info Cards -->
         <div class="hub-card">
           <h3><i class="fa-solid fa-hotel"></i> Check-in Info Cards — Alle Unterkünfte</h3>
           <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
@@ -1991,7 +2178,7 @@
           </details>
         </div>
 
-        <!-- Singapur Stopover Guide (Vollbreite) -->
+        <!-- Singapur Stopover Guide -->
         <div class="hub-card">
           <h3><i class="fa-solid fa-plane-arrival"></i> Singapur Stopover Quick Guide (7 Std. Aufenthalt)</h3>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 0.8rem; font-size: 0.9rem;">
@@ -2271,8 +2458,77 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // 2. WÄHRUNGSRECHNER LOGIK
+    // 2. DUAL-UHR MIT SYNCHRONISIERTEM DROPDOWN
+    let currentSelectedTz = 'Australia/Sydney';
+
+    function updateDualClocks() {
+      const now = new Date();
+      const tzSelect = document.getElementById('timezone-select');
+      const selectedTz = tzSelect ? tzSelect.value : currentSelectedTz;
+
+      // Australien Zeit
+      const aussieTimeStr = now.toLocaleTimeString('de-DE', { timeZone: selectedTz, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      document.getElementById('aussie-time').innerText = aussieTimeStr + ' Uhr';
+
+      // Wien Zeit
+      const viennaTimeStr = now.toLocaleTimeString('de-DE', { timeZone: 'Europe/Vienna', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      document.getElementById('vienna-time').innerText = viennaTimeStr + ' Uhr';
+
+      // Zeitzonen-Label & Offset
+      const aussieDate = new Date(now.toLocaleString('en-US', { timeZone: selectedTz }));
+      const viennaDate = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Vienna' }));
+      const diffHours = Math.round((aussieDate - viennaDate) / (1000 * 60 * 60));
+      const diffSign = diffHours >= 0 ? '+' : '';
+
+      let tzName = 'AEDT (Sommerzeit)';
+      if (selectedTz.includes('Brisbane')) {
+        tzName = 'AEST (Keine Sommerzeit)';
+      }
+      document.getElementById('aussie-tz-label').innerText = `${tzName} · ${diffSign}${diffHours}h zu Wien`;
+
+      // Status in Wien: Schlafen (23:00 - 07:00) vs Erreichbar
+      const viennaHour = parseInt(now.toLocaleTimeString('en-US', { timeZone: 'Europe/Vienna', hour12: false, hour: 'numeric' }));
+      const isSleeping = viennaHour >= 23 || viennaHour < 7;
+      const statusBadge = document.getElementById('vienna-status-badge');
+      if (isSleeping) {
+        statusBadge.innerText = '💤 Schlafen noch';
+        statusBadge.className = 'vienna-badge sleeping';
+      } else {
+        statusBadge.innerText = '☀️ Erreichbar';
+        statusBadge.className = 'vienna-badge awake';
+      }
+    }
+
+    function changeTimezone(newTz, broadcast = true) {
+      currentSelectedTz = newTz;
+      const selectEl = document.getElementById('timezone-select');
+      if (selectEl) selectEl.value = newTz;
+      updateDualClocks();
+      if (broadcast) {
+        localStorage.setItem('aus_roadtrip_tz_2027', newTz);
+        syncChannel.postMessage({ type: 'TZ_UPDATE', tz: newTz });
+      }
+    }
+
+    setInterval(updateDualClocks, 1000);
+
+    // 3. TANK- & SPRITRECHNER LOGIK
     const AUD_TO_EUR_RATE = 0.60;
+
+    function calculateFuelCost() {
+      const liters = parseFloat(document.getElementById('fuel-liters').value) || 0;
+      const priceAud = parseFloat(document.getElementById('fuel-price').value) || 0;
+
+      const totalAud = liters * priceAud;
+      const totalEur = totalAud * AUD_TO_EUR_RATE;
+      const perPersonEur = totalEur / 4;
+
+      document.getElementById('fuel-total-aud').innerText = totalAud.toFixed(2) + ' AUD';
+      document.getElementById('fuel-total-eur').innerText = totalEur.toFixed(2) + ' €';
+      document.getElementById('fuel-per-person').innerText = perPersonEur.toFixed(2) + ' € p.P.';
+    }
+
+    // 4. WÄHRUNGSRECHNER LOGIK
     function convertAudToEur() {
       const aud = parseFloat(document.getElementById('aud-input').value);
       const eurInput = document.getElementById('eur-input');
@@ -2284,7 +2540,7 @@
       audInput.value = !isNaN(eur) ? (eur / AUD_TO_EUR_RATE).toFixed(2) : '';
     }
 
-    // 3. BUDGET CALCULATOR LOGIK (4 PERSONEN)
+    // 5. BUDGET CALCULATOR LOGIK (4 PERSONEN)
     const GROUP_SIZE = 4;
     const TRIP_DAYS = 19;
     const AUD_RATE = 0.60;
@@ -2344,7 +2600,7 @@
       document.getElementById('progress-open').style.width = (100 - paidPercent) + '%';
     }
 
-    // 4. NOTFALL-KONTAKTE ONE-CLICK DOWNLOAD (.VCF / VCARD)
+    // 6. NOTFALL-KONTAKTE ONE-CLICK DOWNLOAD (.VCF / VCARD)
     function downloadEmergencyVCard() {
       const vcardData = [
         'BEGIN:VCARD',
@@ -2369,7 +2625,7 @@
       URL.revokeObjectURL(url);
     }
 
-    // 5. PWA PROMPT LOGIK
+    // 7. PWA PROMPT LOGIK
     let deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
@@ -2390,7 +2646,7 @@
       document.getElementById('pwa-modal').style.display = 'none';
     }
 
-    // 6. DYNAMISCHER REISE-STATUS BANNER
+    // 8. DYNAMISCHER REISE-STATUS BANNER
     const TRIP_SCHEDULE = [
       { day: 1,  date: "2027-03-21", location: "im Flug Richtung Sydney" },
       { day: 2,  date: "2027-03-22", location: "Sydney" },
@@ -2428,7 +2684,7 @@
       }
     }
 
-    // 7. ECHTZEIT-SYNCHRONISATION: EINKAUFSZETTEL & CHECKBOXEN (LOCALSTORAGE + BROADCASTCHANNEL)
+    // 9. ECHTZEIT-SYNCHRONISATION: EINKAUFSZETTEL, CHECKBOXEN & ZEITZONE
     const GROCERY_STORAGE_KEY = 'aus_roadtrip_groceries_2027';
     const CHECKBOX_STORAGE_KEY = 'aus_roadtrip_checkboxes_2027';
     const syncChannel = new BroadcastChannel('aus_trip_sync_channel');
@@ -2481,6 +2737,11 @@
       const savedCheckboxes = localStorage.getItem(CHECKBOX_STORAGE_KEY);
       if (savedCheckboxes) {
         try { checkboxStates = JSON.parse(savedCheckboxes); } catch (e) { checkboxStates = {}; }
+      }
+
+      const savedTz = localStorage.getItem('aus_roadtrip_tz_2027');
+      if (savedTz) {
+        changeTimezone(savedTz, false);
       }
 
       applyCheckboxStatesToUI();
@@ -2561,14 +2822,18 @@
       }
     });
 
-    // Empfang von Live-Sync Nachrichten von anderen Tabs / Fenstern
+    // Empfang von Live-Sync Nachrichten von anderen Tabs / Smartphones
     syncChannel.onmessage = (event) => {
-      if (event.data && event.data.type === 'SYNC_UPDATE') {
-        groceries = event.data.groceries || [];
-        checkboxStates = event.data.checkboxStates || {};
-        applyCheckboxStatesToUI();
-        renderGroceries();
-        updatePackingProgress();
+      if (event.data) {
+        if (event.data.type === 'SYNC_UPDATE') {
+          groceries = event.data.groceries || [];
+          checkboxStates = event.data.checkboxStates || {};
+          applyCheckboxStatesToUI();
+          renderGroceries();
+          updatePackingProgress();
+        } else if (event.data.type === 'TZ_UPDATE' && event.data.tz) {
+          changeTimezone(event.data.tz, false);
+        }
       }
     };
 
@@ -2577,6 +2842,8 @@
       if (document.getElementById('budget')) updateBudgetCalculations();
       loadAllState();
       updateTripStatusBanner();
+      updateDualClocks();
+      calculateFuelCost();
     });
 
     // PDF Druckansicht: Automatisch NUR die Klappmenüs des Reiseplans aufklappen
