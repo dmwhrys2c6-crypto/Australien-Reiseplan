@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Australien Roadtrip 2027 | Wien bis Melbourne (4 Personen)</title>
+  <meta name="description" content="Interaktiver Reiseplan, Budgetkalkulation und Vorbereitung für den Australien Roadtrip 2027 von Wien bis Melbourne.">
+  <meta property="og:title" content="Australien Roadtrip 2027 | Wien bis Melbourne (4 Personen)">
+  <meta property="og:description" content="Interaktiver Reiseplan, Budgetkalkulation und Vorbereitung für den Australien Roadtrip 2027 von Wien bis Melbourne.">
 
   <!-- PWA & Mobile Web App Meta Tags -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -834,6 +837,74 @@
     }
     .status-pill.paid { background: var(--status-paid-bg); color: var(--status-paid); }
     .status-pill.open { background: var(--status-open-bg); color: var(--status-open); }
+
+    /* Currency Converter Card */
+    .currency-converter-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 1.4rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 2rem;
+      transition: all 0.2s ease;
+    }
+    .converter-inputs-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0.85rem;
+      align-items: center;
+    }
+    .conv-input-wrap {
+      position: relative;
+    }
+    .conv-currency-badge {
+      position: absolute;
+      right: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+    .conv-swap-btn {
+      background: var(--card-sub-bg);
+      border: 1px solid var(--border-color);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--primary);
+      transition: all 0.2s ease;
+      font-size: 1rem;
+    }
+    .conv-swap-btn:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      transform: scale(1.06);
+    }
+    @media (max-width: 650px) {
+      .converter-inputs-grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+      .conv-swap-cell {
+        display: flex;
+        justify-content: center;
+        padding: 0.2rem 0 !important;
+      }
+      .conv-swap-btn {
+        transform: rotate(90deg);
+        width: 36px;
+        height: 36px;
+      }
+      .conv-swap-btn:hover {
+        transform: rotate(90deg) scale(1.06);
+      }
+    }
 
     /* Checklists */
     .checklist { list-style: none; }
@@ -2099,93 +2170,175 @@
     <section id="budget" class="section-spaced">
       <h2 class="section-title">Kosten- & Budgetübersicht (4 Personen)</h2>
       
-      <div class="budget-toggle-wrapper">
-        <span class="budget-toggle-label">Gesamtkosten (4 Pers.)</span>
-        <label class="budget-switch">
-          <input type="checkbox" id="person-toggle" onchange="updateBudgetCalculations()" checked>
-          <span class="budget-slider"></span>
-          <span id="toggle-dot" class="budget-slider-dot"></span>
-        </label>
-        <span class="budget-toggle-label">Kosten pro Person</span>
-      </div>
-
-      <div class="hub-card" style="margin-bottom: 2.5rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem;">
-          <h3 style="margin: 0; color: var(--primary);"><i class="fa-solid fa-chart-pie"></i> Zahlungsfortschritt</h3>
-          <span id="total-sum-badge" style="font-weight: 800; font-size: 1.25rem; color: var(--primary);">Gesamt: 0 €</span>
-        </div>
-        
-        <div style="width: 100%; background-color: var(--border-color); height: 22px; border-radius: 12px; overflow: hidden; display: flex; margin-bottom: 1rem;">
-          <div id="progress-paid" style="width: 45%; background: var(--status-paid); height: 100%; transition: width 0.4s ease;"></div>
-          <div id="progress-open" style="width: 55%; background: var(--secondary); height: 100%; transition: width 0.4s ease;"></div>
-        </div>
-
-        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; flex-wrap: wrap; gap: 1rem;">
-          <span style="color: var(--status-paid);"><i class="fa-solid fa-circle-check"></i> Bereits bezahlt: <strong id="paid-amount">0 €</strong></span>
-          <span style="color: var(--secondary);"><i class="fa-solid fa-wallet"></i> Offen vor Ort: <strong id="open-amount">0 €</strong></span>
-        </div>
-      </div>
-
-      <!-- 2x2 Grid -->
-      <div class="budget-grid-2x2">
-        <div class="hub-card budget-category-card">
-          <div>
-            <h3 style="margin:0;"><i class="fa-solid fa-plane"></i> Flüge</h3>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Alle Flugverbindungen (Gebucht)</p>
-            <ul class="sub-item-list">
-              <li class="sub-price-item" data-eur="453" data-paid="true"><span>Wien → Sydney:</span> <div><strong class="sub-price-val">453 €</strong> <span class="status-pill paid">Bezahlt</span></div></li>
-              <li class="sub-price-item" data-eur="54" data-paid="true"><span>Sydney → Ballina:</span> <div><strong class="sub-price-val">54 €</strong> <span class="status-pill paid">Bezahlt</span></div></li>
-              <li class="sub-price-item" data-eur="135" data-paid="true"><span>Proserpine → Melbourne:</span> <div><strong class="sub-price-val">135 €</strong> <span class="status-pill paid">Bezahlt</span></div></li>
-              <li class="sub-price-item" data-eur="451" data-paid="true"><span>Melbourne → Wien:</span> <div><strong class="sub-price-val">451 €</strong> <span class="status-pill paid">Bezahlt</span></div></li>
-            </ul>
+      <details class="clean-slide" id="budget-details-slide">
+        <summary>
+          <div class="slide-icon-title">
+            <i class="fa-solid fa-coins" style="color: var(--primary);"></i>
+            <span>Details</span>
           </div>
-          <div style="margin-top: 1rem; font-weight: 800; font-size: 1.15rem; text-align: right; color: var(--primary);" class="card-total-price">0 €</div>
-        </div>
-
-        <div class="hub-card budget-category-card">
-          <div>
-            <h3 style="margin:0;"><i class="fa-solid fa-hotel"></i> Unterkünfte</h3>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Hotels an allen Stopps</p>
-            <ul class="sub-item-list">
-              <li class="sub-price-item" data-eur="119" data-paid="false"><span>Sydney:</span> <strong class="sub-price-val">119 €</strong></li>
-              <li class="sub-price-item" data-eur="75" data-paid="false"><span>Byron Bay:</span> <strong class="sub-price-val">75 €</strong></li>
-              <li class="sub-price-item" data-eur="119" data-paid="false"><span>Brisbane:</span> <strong class="sub-price-val">119 €</strong></li>
-              <li class="sub-price-item" data-eur="33.5" data-paid="false"><span>Noosa:</span> <strong class="sub-price-val">33,50 €</strong></li>
-              <li class="sub-price-item" data-eur="42.25" data-paid="false"><span>Hervey Bay:</span> <strong class="sub-price-val">42,25 €</strong></li>
-              <li class="sub-price-item" data-eur="117" data-paid="false"><span>Airlie Beach:</span> <strong class="sub-price-val">117 €</strong></li>
-              <li class="sub-price-item" data-eur="160.75" data-paid="false"><span>Melbourne:</span> <strong class="sub-price-val">160,75 €</strong></li>
-            </ul>
+          <i class="fa-solid fa-chevron-down chevron-rot"></i>
+        </summary>
+        <div class="slide-content" style="padding: 1.5rem 1.4rem;">
+          
+          <div class="budget-toggle-wrapper">
+            <span class="budget-toggle-label">Gesamtkosten (4 Pers.)</span>
+            <label class="budget-switch">
+              <input type="checkbox" id="person-toggle" onchange="updateBudgetCalculations()" checked>
+              <span class="budget-slider"></span>
+              <span id="toggle-dot" class="budget-slider-dot"></span>
+            </label>
+            <span class="budget-toggle-label">Kosten pro Person</span>
           </div>
-          <div style="margin-top: 1rem; font-weight: 800; font-size: 1.15rem; text-align: right; color: var(--primary);" class="card-total-price">0 €</div>
-        </div>
 
-        <div class="hub-card budget-category-card">
-          <div>
-            <h3 style="margin:0;"><i class="fa-solid fa-car"></i> Mietwagen & Sprit</h3>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Mietwagen, Bus & Live-Tanken</p>
-            <ul class="sub-item-list">
-              <li class="sub-price-item" data-eur="155" data-paid="false"><span>East Coast Mietwagen:</span> <strong class="sub-price-val">155 €</strong></li>
-              <li class="sub-price-item" data-eur="90" data-paid="false"><span>Greyhound Nachtbus:</span> <strong class="sub-price-val">90 €</strong></li>
-              <li class="sub-price-item" id="budget-fuel-item" data-eur="0" data-paid="true"><span>Getankter Sprit:</span> <div><strong class="sub-price-val" id="budget-fuel-val">0 €</strong> <span class="status-pill paid">Bezahlt</span></div></li>
-            </ul>
-          </div>
-          <div style="margin-top: 1rem; font-weight: 800; font-size: 1.15rem; text-align: right; color: var(--primary);" class="card-total-price">0 €</div>
-        </div>
+          <div class="hub-card" style="margin-bottom: 2.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem;">
+              <h3 style="margin: 0; color: var(--primary);"><i class="fa-solid fa-chart-pie"></i> Zahlungsfortschritt</h3>
+              <span id="total-sum-badge" style="font-weight: 800; font-size: 1.25rem; color: var(--primary);">Gesamt: 0 €</span>
+            </div>
+            
+            <div style="width: 100%; background-color: var(--border-color); height: 22px; border-radius: 12px; overflow: hidden; display: flex; margin-bottom: 1rem;">
+              <div id="progress-paid" style="width: 45%; background: var(--status-paid); height: 100%; transition: width 0.4s ease;"></div>
+              <div id="progress-open" style="width: 55%; background: var(--secondary); height: 100%; transition: width 0.4s ease;"></div>
+            </div>
 
-        <div class="hub-card budget-category-card">
-          <div>
-            <h3 style="margin:0;"><i class="fa-solid fa-ticket"></i> Touren & Ausflüge</h3>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Geführte Erlebnisse</p>
-            <ul class="sub-item-list">
-              <li class="sub-price-item" data-eur="189" data-paid="false"><span>K'gari 4WD Tagestour:</span> <strong class="sub-price-val">189 €</strong></li>
-              <li class="sub-price-item" data-eur="150" data-paid="false"><span>Whitsundays Katamaran:</span> <strong class="sub-price-val">150 €</strong></li>
-              <li class="sub-price-item" data-eur="214" data-paid="false"><span>Whitsundays Rundflug:</span> <strong class="sub-price-val">214 €</strong></li>
-              <li class="sub-price-item" data-eur="50" data-paid="false"><span>Great Ocean Road:</span> <strong class="sub-price-val">50 €</strong></li>
-            </ul>
+            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; flex-wrap: wrap; gap: 1rem;">
+              <span style="color: var(--status-paid);"><i class="fa-solid fa-circle-check"></i> Bereits bezahlt: <strong id="paid-amount">0 €</strong></span>
+              <span style="color: var(--secondary);"><i class="fa-solid fa-wallet"></i> Offen vor Ort: <strong id="open-amount">0 €</strong></span>
+            </div>
           </div>
-          <div style="margin-top: 1rem; font-weight: 800; font-size: 1.15rem; text-align: right; color: var(--primary);" class="card-total-price">0 €</div>
+
+          <!-- Live Währungsrechner (AUD ↔ EUR) -->
+          <div class="hub-card currency-converter-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+              <h3 style="margin: 0; color: var(--primary); font-size: 1.1rem; display: flex; align-items: center; gap: 0.55rem;">
+                <i class="fa-solid fa-calculator" style="color: var(--secondary);"></i>
+                Währungsrechner (AUD ↔ EUR)
+              </h3>
+              <div id="currency-rate-badge" style="display: flex; align-items: center; gap: 0.45rem; font-size: 0.78rem; font-weight: 700; color: var(--text-muted); background: var(--card-sub-bg); border: 1px solid var(--border-color); padding: 0.25rem 0.65rem; border-radius: 999px;">
+                <span class="sync-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #16a34a; display: inline-block;"></span>
+                <span id="currency-rate-text">1 AUD ≈ 0,621 EUR</span>
+              </div>
+            </div>
+
+            <!-- Inputs row -->
+            <div class="converter-inputs-grid">
+              
+              <!-- AUD Input -->
+              <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                <label for="conv-aud-input" style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: flex; justify-content: space-between;">
+                  <span>Australischer Dollar (AUD)</span>
+                  <span style="color: var(--secondary); font-weight: 800;">🇦🇺 A$</span>
+                </label>
+                <div class="conv-input-wrap">
+                  <input type="number" id="conv-aud-input" class="grocery-input" style="width: 100%; font-size: 1.15rem; font-weight: 700; padding: 0.7rem 2.8rem 0.7rem 0.9rem;" placeholder="0.00" step="any" value="100">
+                  <span class="conv-currency-badge">AUD</span>
+                </div>
+              </div>
+
+              <!-- Swap Button -->
+              <div class="conv-swap-cell" style="display: flex; justify-content: center; align-items: flex-end; padding-top: 1.25rem;">
+                <button type="button" id="conv-swap-btn" class="conv-swap-btn" title="Richtung wechseln" onclick="swapCurrencies()">
+                  <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                </button>
+              </div>
+
+              <!-- EUR Input -->
+              <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                <label for="conv-eur-input" style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: flex; justify-content: space-between;">
+                  <span>Euro (EUR)</span>
+                  <span style="color: var(--primary); font-weight: 800;">🇪🇺 €</span>
+                </label>
+                <div class="conv-input-wrap">
+                  <input type="number" id="conv-eur-input" class="grocery-input" style="width: 100%; font-size: 1.15rem; font-weight: 700; padding: 0.7rem 2.8rem 0.7rem 0.9rem;" placeholder="0.00" step="any" value="62.09">
+                  <span class="conv-currency-badge">EUR</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Quick presets & Market rate info -->
+            <div style="margin-top: 1rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; border-top: 1px dashed var(--border-color); padding-top: 0.85rem;">
+              <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;">
+                <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); margin-right: 0.2rem;">Schnellwahl:</span>
+                <button type="button" class="chip-btn" onclick="setCalcAud(5)">5 AUD (Kaffee)</button>
+                <button type="button" class="chip-btn" onclick="setCalcAud(25)">25 AUD (Lunch)</button>
+                <button type="button" class="chip-btn" onclick="setCalcAud(50)">50 AUD (Einkauf)</button>
+                <button type="button" class="chip-btn" onclick="setCalcAud(100)">100 AUD (Tanken)</button>
+                <button type="button" class="chip-btn" onclick="setCalcAud(250)">250 AUD (Tour)</button>
+              </div>
+
+              <div style="font-size: 0.76rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.45rem;">
+                <span id="currency-update-time">Marktkurs live</span>
+                <button type="button" onclick="fetchExchangeRates(true)" title="Kurs jetzt aktualisieren" style="background: none; border: none; color: var(--primary); cursor: pointer; font-size: 0.85rem; padding: 0.2rem;">
+                  <i class="fa-solid fa-arrows-rotate" id="currency-refresh-icon"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 2x2 Grid -->
+          <div class="budget-grid-2x2">
+            <div class="hub-card budget-category-card">
+              <div>
+                <h3 style="margin:0;"><i class="fa-solid fa-plane"></i> Flüge</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">Alle Flugverbindungen (Gebucht)</p>
+                <ul class="sub-item-list">
+                  <li class="sub-price-item" data-eur="453" data-paid="true"><span>Wien → Sydney:</span> <div><strong class="sub-price-val">453 €</strong> <span class="status-pill paid">Bezahlt</span></div></li>
+                  <li class="sub-price-item" data-eur="54" data-paid="true"><span>Sydney → Ballina:</span> <div><strong class="sub-price-val">54 €</strong> <span class="status-pill paid">Bezahlt</span></div></li>
+                  <li class="sub-price-item" data-eur="135" data-paid="true"><span>Proserpine → Melbourne:</span> <div><strong class="sub-price-val">135 €</strong> <span class="status-pill paid">Bezahlt</span></div></li>
+                  <li class="sub-price-item" data-eur="451" data-paid="true"><span>Melbourne → Wien:</span> <div><strong class="sub-price-val">451 €</strong> <span class="status-pill paid">Bezahlt</span></div></li>
+                </ul>
+              </div>
+              <div style="margin-top: 1rem; font-weight: 800; font-size: 1.15rem; text-align: right; color: var(--primary);" class="card-total-price">0 €</div>
+            </div>
+
+            <div class="hub-card budget-category-card">
+              <div>
+                <h3 style="margin:0;"><i class="fa-solid fa-hotel"></i> Unterkünfte</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">Hotels an allen Stopps</p>
+                <ul class="sub-item-list">
+                  <li class="sub-price-item" data-eur="119" data-paid="false"><span>Sydney:</span> <strong class="sub-price-val">119 €</strong></li>
+                  <li class="sub-price-item" data-eur="75" data-paid="false"><span>Byron Bay:</span> <strong class="sub-price-val">75 €</strong></li>
+                  <li class="sub-price-item" data-eur="119" data-paid="false"><span>Brisbane:</span> <strong class="sub-price-val">119 €</strong></li>
+                  <li class="sub-price-item" data-eur="33.5" data-paid="false"><span>Noosa:</span> <strong class="sub-price-val">33,50 €</strong></li>
+                  <li class="sub-price-item" data-eur="42.25" data-paid="false"><span>Hervey Bay:</span> <strong class="sub-price-val">42,25 €</strong></li>
+                  <li class="sub-price-item" data-eur="117" data-paid="false"><span>Airlie Beach:</span> <strong class="sub-price-val">117 €</strong></li>
+                  <li class="sub-price-item" data-eur="160.75" data-paid="false"><span>Melbourne:</span> <strong class="sub-price-val">160,75 €</strong></li>
+                </ul>
+              </div>
+              <div style="margin-top: 1rem; font-weight: 800; font-size: 1.15rem; text-align: right; color: var(--primary);" class="card-total-price">0 €</div>
+            </div>
+
+            <div class="hub-card budget-category-card">
+              <div>
+                <h3 style="margin:0;"><i class="fa-solid fa-car"></i> Mietwagen & Sprit</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">Mietwagen, Bus & Live-Tanken</p>
+                <ul class="sub-item-list">
+                  <li class="sub-price-item" data-eur="155" data-paid="false"><span>East Coast Mietwagen:</span> <strong class="sub-price-val">155 €</strong></li>
+                  <li class="sub-price-item" data-eur="90" data-paid="false"><span>Greyhound Nachtbus:</span> <strong class="sub-price-val">90 €</strong></li>
+                  <li class="sub-price-item" id="budget-fuel-item" data-eur="0" data-paid="true"><span>Getankter Sprit:</span> <div><strong class="sub-price-val" id="budget-fuel-val">0 €</strong> <span class="status-pill paid">Bezahlt</span></div></li>
+                </ul>
+              </div>
+              <div style="margin-top: 1rem; font-weight: 800; font-size: 1.15rem; text-align: right; color: var(--primary);" class="card-total-price">0 €</div>
+            </div>
+
+            <div class="hub-card budget-category-card">
+              <div>
+                <h3 style="margin:0;"><i class="fa-solid fa-ticket"></i> Touren & Ausflüge</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">Geführte Erlebnisse</p>
+                <ul class="sub-item-list">
+                  <li class="sub-price-item" data-eur="189" data-paid="false"><span>K'gari 4WD Tagestour:</span> <strong class="sub-price-val">189 €</strong></li>
+                  <li class="sub-price-item" data-eur="150" data-paid="false"><span>Whitsundays Katamaran:</span> <strong class="sub-price-val">150 €</strong></li>
+                  <li class="sub-price-item" data-eur="214" data-paid="false"><span>Whitsundays Rundflug:</span> <strong class="sub-price-val">214 €</strong></li>
+                  <li class="sub-price-item" data-eur="50" data-paid="false"><span>Great Ocean Road:</span> <strong class="sub-price-val">50 €</strong></li>
+                </ul>
+              </div>
+              <div style="margin-top: 1rem; font-weight: 800; font-size: 1.15rem; text-align: right; color: var(--primary);" class="card-total-price">0 €</div>
+            </div>
+          </div>
         </div>
-      </div>
+      </details>
     </section>
 
     <!-- 4. Tools, Einkaufszettel & Private Links -->
@@ -2841,8 +2994,124 @@
 
     function triggerPwaPrompt() { alert('Tippe im Browser auf Teilen -> Zum Home-Bildschirm hinzufügen!'); }
 
+    // =========================================================================
+    // WÄHRUNGSRECHNER (LIVE AUD ↔ EUR)
+    // =========================================================================
+    let currentAudToEurRate = 0.6209;
+    let isUpdatingConv = false;
+
+    async function fetchExchangeRates(isManual = false) {
+      const refreshIcon = document.getElementById('currency-refresh-icon');
+      if (refreshIcon) refreshIcon.classList.add('fa-spin');
+
+      try {
+        let data = null;
+        try {
+          const res = await fetch('/api/rates');
+          if (res.ok) data = await res.json();
+        } catch (e) {}
+
+        if (!data || !data.rate) {
+          const directRes = await fetch('https://open.er-api.com/v6/latest/AUD');
+          if (directRes.ok) {
+            const raw = await directRes.json();
+            if (raw && raw.rates && raw.rates.EUR) {
+              data = { rate: Number(raw.rates.EUR), updatedAt: raw.time_last_update_utc };
+            }
+          }
+        }
+
+        if (data && data.rate) {
+          currentAudToEurRate = Number(data.rate);
+          const eurRateFormatted = currentAudToEurRate.toFixed(4).replace('.', ',');
+          const invRate = (1 / currentAudToEurRate).toFixed(4).replace('.', ',');
+          
+          const rateText = document.getElementById('currency-rate-text');
+          if (rateText) {
+            rateText.innerText = `1 AUD ≈ ${eurRateFormatted} EUR (1 EUR ≈ ${invRate} AUD)`;
+          }
+          
+          const updateTime = document.getElementById('currency-update-time');
+          if (updateTime && data.updatedAt) {
+            const dateStr = String(data.updatedAt).split(' ').slice(0, 4).join(' ');
+            updateTime.innerText = `Marktkurs live (${dateStr || 'Aktuell'})`;
+          }
+        }
+      } catch (err) {
+        console.warn('Could not update live currency rates:', err);
+      } finally {
+        if (refreshIcon) refreshIcon.classList.remove('fa-spin');
+        recalcEurFromAud();
+      }
+    }
+
+    function recalcEurFromAud() {
+      if (isUpdatingConv) return;
+      isUpdatingConv = true;
+      const audInput = document.getElementById('conv-aud-input');
+      const eurInput = document.getElementById('conv-eur-input');
+      if (audInput && eurInput) {
+        const audVal = parseFloat(audInput.value);
+        if (!isNaN(audVal)) {
+          eurInput.value = (audVal * currentAudToEurRate).toFixed(2);
+        } else {
+          eurInput.value = '';
+        }
+      }
+      isUpdatingConv = false;
+    }
+
+    function recalcAudFromEur() {
+      if (isUpdatingConv) return;
+      isUpdatingConv = true;
+      const audInput = document.getElementById('conv-aud-input');
+      const eurInput = document.getElementById('conv-eur-input');
+      if (audInput && eurInput) {
+        const eurVal = parseFloat(eurInput.value);
+        if (!isNaN(eurVal) && currentAudToEurRate > 0) {
+          audInput.value = (eurVal / currentAudToEurRate).toFixed(2);
+        } else {
+          audInput.value = '';
+        }
+      }
+      isUpdatingConv = false;
+    }
+
+    function setCalcAud(amount) {
+      const audInput = document.getElementById('conv-aud-input');
+      if (audInput) {
+        audInput.value = amount;
+        recalcEurFromAud();
+      }
+    }
+
+    function swapCurrencies() {
+      const audInput = document.getElementById('conv-aud-input');
+      const eurInput = document.getElementById('conv-eur-input');
+      if (!audInput || !eurInput) return;
+      
+      const currentAud = audInput.value;
+      const currentEur = eurInput.value;
+      
+      audInput.value = currentEur;
+      recalcEurFromAud();
+    }
+
+    function initCurrencyConverter() {
+      const audInput = document.getElementById('conv-aud-input');
+      const eurInput = document.getElementById('conv-eur-input');
+      if (audInput) {
+        audInput.addEventListener('input', recalcEurFromAud);
+      }
+      if (eurInput) {
+        eurInput.addEventListener('input', recalcAudFromEur);
+      }
+      fetchExchangeRates();
+    }
+
     window.addEventListener('DOMContentLoaded', async () => {
       initTheme();
+      initCurrencyConverter();
       try { groceries = JSON.parse(localStorage.getItem(GROCERY_STORAGE_KEY)) || []; } catch(e){}
       try { daySuggestions = JSON.parse(localStorage.getItem(SUGGESTIONS_STORAGE_KEY)) || {}; } catch(e){}
       try { checkboxStates = JSON.parse(localStorage.getItem(CHECKBOX_STORAGE_KEY)) || {}; } catch(e){}
@@ -2851,6 +3120,21 @@
       renderAllSuggestions();
       applyCheckboxStatesToUI();
       updateBudgetCalculations();
+
+      const openBudgetIfTargeted = () => {
+        if (window.location.hash === '#budget') {
+          const budgetSlide = document.getElementById('budget-details-slide');
+          if (budgetSlide) budgetSlide.open = true;
+        }
+      };
+      window.addEventListener('hashchange', openBudgetIfTargeted);
+      openBudgetIfTargeted();
+      document.querySelectorAll('a[href="#budget"]').forEach(link => {
+        link.addEventListener('click', () => {
+          const budgetSlide = document.getElementById('budget-details-slide');
+          if (budgetSlide) budgetSlide.open = true;
+        });
+      });
 
       const savedToken = localStorage.getItem('aus_auth_token');
       if (savedToken) {

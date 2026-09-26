@@ -1,0 +1,8 @@
+{
+  "name": "Australien Roadtrip 2027",
+  "description": "Interaktiver Reiseplan, Budgetkalkulation und Vorbereitung für den Australien Roadtrip 2027 von Wien bis Melbourne.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

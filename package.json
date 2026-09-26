@@ -1,0 +1,14 @@
+{
+  "name": "australien-roadtrip-2027",
+  "version": "1.2.0",
+  "description": "Interaktiver Reiseplan, Budgetkalkulation und Vorbereitung für den Australien Roadtrip 2027 von Wien bis Melbourne.",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node -e \"console.log('Build completed')\""
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
