@@ -183,31 +183,32 @@
       opacity: 0;
       will-change: opacity, transform;
       pointer-events: none;
-      transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+      /* Exakt gleiche, gleichmäßige Animationsdauer (0.42s) und Easing für ausnahmslos alle Elemente */
+      transition: opacity 0.42s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.42s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
-    /* Scrollen nach UNTEN: Elemente kommen sanft von unten (translateY: +36px) */
+    /* Scrollen nach UNTEN: Elemente kommen gleichmäßig von unten (translateY: 32px) */
     .scroll-reveal.from-bottom,
     .scroll-tab.from-bottom,
     .scroll-reveal:not(.from-top),
     .scroll-tab:not(.from-top) {
-      transform: translateY(36px) scale(0.985);
+      transform: translateY(32px);
     }
 
-    /* Scrollen nach OBEN: Elemente kommen sanft von oben (translateY: -36px) */
+    /* Scrollen nach OBEN: Elemente kommen gleichmäßig von oben (translateY: -32px) */
     .scroll-reveal.from-top,
     .scroll-tab.from-top {
-      transform: translateY(-36px) scale(0.985);
+      transform: translateY(-32px);
     }
 
-    /* Vollständig sichtbar im Viewport: Langsam und edel einblenden */
+    /* Vollständig sichtbar im Viewport: Jedes Element animiert exakt gleich schnell (0.42s, keine willkürlichen Delays) */
     .scroll-reveal.revealed,
     .scroll-tab.revealed {
       opacity: 1 !important;
-      transform: translateY(0) scale(1) !important;
+      transform: translateY(0) !important;
       pointer-events: auto;
-      transition: opacity 0.78s cubic-bezier(0.16, 1, 0.3, 1), transform 0.78s cubic-bezier(0.16, 1, 0.3, 1);
-      transition-delay: calc(var(--stagger, 0) * 0.075s);
+      transition: opacity 0.42s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.42s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transition-delay: 0s !important;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -223,7 +224,7 @@
       }
     }
 
-    /* Navigation - Erst schwebend beim Scrollen sichtbar */
+    /* Navigation - Immer oben sichtbar */
     nav {
       background: var(--nav-bg);
       backdrop-filter: blur(16px);
@@ -237,35 +238,11 @@
       justify-content: space-between;
       align-items: center;
       gap: 0.8rem;
-      transform: translateY(-110%);
-      opacity: 0;
-      pointer-events: none;
-      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, box-shadow 0.3s ease;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
-    nav.nav-visible {
-      transform: translateY(0);
+    nav .nav-links li {
       opacity: 1;
-      pointer-events: auto;
-    }
-    nav.nav-visible .nav-links li {
-      opacity: 0;
-      transform: translateY(-10px);
-      animation: navTabFloatIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-    nav.nav-visible .nav-links li:nth-child(1) { animation-delay: 0.04s; }
-    nav.nav-visible .nav-links li:nth-child(2) { animation-delay: 0.08s; }
-    nav.nav-visible .nav-links li:nth-child(3) { animation-delay: 0.12s; }
-    nav.nav-visible .nav-links li:nth-child(4) { animation-delay: 0.16s; }
-    nav.nav-visible .nav-links li:nth-child(5) { animation-delay: 0.20s; }
-    nav.nav-visible .nav-links li:nth-child(6) { animation-delay: 0.24s; }
-    nav.nav-visible .nav-links li:nth-child(7) { animation-delay: 0.28s; }
-    nav.nav-visible .nav-links li:nth-child(8) { animation-delay: 0.32s; }
-
-    @keyframes navTabFloatIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      transform: none;
     }
 
     .mobile-tab-bar {
@@ -1702,30 +1679,30 @@
     <section id="map" style="margin-bottom: 4rem;">
       <h2 class="section-title scroll-tab">Interaktive Routenkarte & Eckdaten</h2>
       
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; text-align: center;">
-        <div class="scroll-tab" style="--stagger: 0; background: var(--card-bg); padding: 1.2rem; border-radius: 14px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+      <div class="overview-stat-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; text-align: center;">
+        <div class="scroll-tab overview-stat-tab" style="background: var(--card-bg); padding: 1.2rem; border-radius: 14px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
           <i class="fa-solid fa-road" style="font-size: 1.5rem; color: var(--primary);"></i>
           <div style="font-weight: 800; font-size: 1.2rem; margin-top: 0.3rem;">ca. 2.100 km</div>
           <div style="font-size: 0.8rem; color: var(--text-muted);">Mietwagen-Strecke</div>
         </div>
-        <div class="scroll-tab" style="--stagger: 1; background: var(--card-bg); padding: 1.2rem; border-radius: 14px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+        <div class="scroll-tab overview-stat-tab" style="background: var(--card-bg); padding: 1.2rem; border-radius: 14px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
           <i class="fa-solid fa-plane" style="font-size: 1.5rem; color: var(--secondary);"></i>
           <div style="font-weight: 800; font-size: 1.2rem; margin-top: 0.3rem;">2 Inlandsflüge</div>
           <div style="font-size: 0.8rem; color: var(--text-muted);">SYD → BNK & PPP → MEL (Gebucht)</div>
         </div>
-        <div class="scroll-tab" style="--stagger: 2; background: var(--card-bg); padding: 1.2rem; border-radius: 14px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+        <div class="scroll-tab overview-stat-tab" style="background: var(--card-bg); padding: 1.2rem; border-radius: 14px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
           <i class="fa-solid fa-calendar-days" style="font-size: 1.5rem; color: var(--primary);"></i>
           <div style="font-weight: 800; font-size: 1.2rem; margin-top: 0.3rem;">20 Reisetage</div>
           <div style="font-size: 0.8rem; color: var(--text-muted);">21. März – 09. April 2027</div>
         </div>
-        <div class="scroll-tab" style="--stagger: 3; background: var(--card-bg); padding: 1.2rem; border-radius: 14px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+        <div class="scroll-tab overview-stat-tab" style="background: var(--card-bg); padding: 1.2rem; border-radius: 14px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
           <i class="fa-solid fa-users" style="font-size: 1.5rem; color: var(--secondary);"></i>
           <div style="font-weight: 800; font-size: 1.2rem; margin-top: 0.3rem;">4 Personen</div>
           <div style="font-size: 0.8rem; color: var(--text-muted);">Gruppe & Kostenteilung</div>
         </div>
       </div>
 
-      <details class="clean-slide scroll-tab" style="--stagger: 4;">
+      <details class="clean-slide scroll-tab">
         <summary>
           <div class="slide-icon-title">
             <i class="fa-solid fa-map-location-dot" style="color: var(--primary);"></i>
@@ -3406,43 +3383,35 @@
       location.reload();
     }
 
-    // Scroll-Verhalten: Wiederholtes, richtungsabhängiges Einblenden beim Scrollen
+    // =========================================================================
+    // SCROLL-ENGINE: GLEICHMÄSSIG, SEQUENTIELL & RICHTUNGSABHÄNGIG
+    // =========================================================================
     function initScrollAnimations() {
-      const navEl = document.querySelector('nav');
       let lastScrollY = window.scrollY;
       let scrollDirection = 'down';
+      let isRafQueued = false;
+      let timelineTimer = null;
+      let statTimer = null;
 
-      function checkNavScroll() {
-        if (window.scrollY > 60) {
-          navEl?.classList.add('nav-visible');
-        } else {
-          navEl?.classList.remove('nav-visible');
-        }
-      }
-      window.addEventListener('scroll', checkNavScroll, { passive: true });
-      checkNavScroll();
+      // Schwellenwert: Weiter hinunterscrollen (180px), damit Tabs/Karten erst später erscheinen
+      const TRIGGER_OFFSET_BOTTOM = 180;
+      const TRIGGER_OFFSET_TOP = 65;
 
-      // Scroll-Richtung mit Schwellwert detektieren
-      window.addEventListener('scroll', () => {
-        const curY = window.scrollY;
-        if (curY > lastScrollY + 3) {
-          scrollDirection = 'down';
-        } else if (curY < lastScrollY - 3) {
-          scrollDirection = 'up';
-        }
-        lastScrollY = curY;
-      }, { passive: true });
+      // Elemente sammeln
+      const timelineDays = Array.from(document.querySelectorAll('.timeline details.timeline-item'));
+      timelineDays.forEach((day, idx) => {
+        day.classList.add('scroll-tab');
+        day.setAttribute('data-day-idx', idx);
+      });
 
-      const selectors = [
+      const statTabs = Array.from(document.querySelectorAll('.overview-stat-tab'));
+
+      const generalSelectors = [
         '.section-title',
         '.section-lead',
         '.countdown-container',
         '.dual-clock-container',
-        '.scroll-tab',
-        '.scroll-reveal',
-        '.overview-stat-tab',
         'details.clean-slide',
-        'details.timeline-item',
         'details.checkin-card',
         '.hub-card',
         '.weather-widget-card',
@@ -3450,86 +3419,177 @@
         '.emergency-grid > div',
         '.trip-status-banner'
       ];
-      const scrollElements = Array.from(document.querySelectorAll(selectors.join(', ')));
+      const generalElements = Array.from(document.querySelectorAll(generalSelectors.join(', ')))
+        .filter(el => !el.classList.contains('timeline-item') && !el.classList.contains('overview-stat-tab'));
 
-      if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            const el = entry.target;
-            if (entry.isIntersecting) {
-              // Element tritt in den sichtbaren Bereich ein
-              if (!el.classList.contains('revealed')) {
+      generalElements.forEach(el => {
+        el.classList.add('scroll-reveal');
+      });
+
+      // 1. Sequentieller Engine für die Reiseplan-Tage:
+      // Der nächste Tag darf erst geladen werden, wenn der vorherige geladen wurde!
+      // Alle Tage animieren exakt gleich schnell (0.42s).
+      function updateTimelineSequence() {
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        const triggerBottom = vh - TRIGGER_OFFSET_BOTTOM;
+
+        for (let i = 0; i < timelineDays.length; i++) {
+          const day = timelineDays[i];
+          const rect = day.getBoundingClientRect();
+
+          if (rect.bottom < TRIGGER_OFFSET_TOP) {
+            // Bereits nach oben aus dem Viewport gescrollt
+            if (!day.classList.contains('revealed')) {
+              day.classList.add('revealed');
+              day.classList.remove('from-bottom', 'from-top');
+            }
+          } else if (rect.top <= triggerBottom && rect.bottom >= TRIGGER_OFFSET_TOP) {
+            // Im sichtbaren Trigger-Bereich
+            // WICHTIG: Nächster Tag kann erst laden, wenn der vorherige bereits geladen wurde!
+            const isPrevLoaded = (i === 0) || timelineDays[i - 1].classList.contains('revealed');
+
+            if (isPrevLoaded) {
+              if (!day.classList.contains('revealed')) {
                 if (scrollDirection === 'up') {
-                  el.classList.add('from-top');
-                  el.classList.remove('from-bottom');
+                  day.classList.add('from-top');
+                  day.classList.remove('from-bottom');
                 } else {
-                  el.classList.add('from-bottom');
-                  el.classList.remove('from-top');
+                  day.classList.add('from-bottom');
+                  day.classList.remove('from-top');
                 }
+                day.classList.add('revealed');
+
+                // Nächster Tag folgt im gleichmäßigen, präzisen 130ms Takt
+                clearTimeout(timelineTimer);
+                timelineTimer = setTimeout(() => {
+                  updateTimelineSequence();
+                }, 130);
+                return; // Nachfolgende Tage müssen zwingend auf diesen Tag warten!
               }
-              // Flüssiges Einblenden im nächsten Frame
-              requestAnimationFrame(() => {
-                el.classList.add('revealed');
-              });
             } else {
-              // Element verlässt den Viewport: Zustand zurücksetzen für endloses Wiedererscheinen
-              el.classList.remove('revealed');
-              // Richtung für das nächste Hineinscrollen speichern
-              if (entry.boundingClientRect.top < 0) {
-                // Nach oben aus dem Viewport gescrollt
+              // Vorheriger Tag noch nicht geladen -> dieser Tag KANN noch nicht geladen werden!
+              day.classList.remove('revealed');
+              if (scrollDirection === 'up') {
+                day.classList.add('from-top');
+                day.classList.remove('from-bottom');
+              } else {
+                day.classList.add('from-bottom');
+                day.classList.remove('from-top');
+              }
+            }
+          } else if (rect.top > triggerBottom) {
+            // Noch unterhalb des Trigger-Bereichs: Tag bleibt oder wird unsichtbar
+            day.classList.remove('revealed');
+            day.classList.add('from-bottom');
+            day.classList.remove('from-top');
+          }
+        }
+      }
+
+      // 2. Sequentieller Engine für die 4 Eckdaten-Tabs
+      function updateStatTabsSequence() {
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        const triggerBottom = vh - TRIGGER_OFFSET_BOTTOM;
+
+        for (let i = 0; i < statTabs.length; i++) {
+          const tab = statTabs[i];
+          const rect = tab.getBoundingClientRect();
+
+          if (rect.bottom < TRIGGER_OFFSET_TOP) {
+            if (!tab.classList.contains('revealed')) {
+              tab.classList.add('revealed');
+              tab.classList.remove('from-bottom', 'from-top');
+            }
+          } else if (rect.top <= triggerBottom && rect.bottom >= TRIGGER_OFFSET_TOP) {
+            const isPrevLoaded = (i === 0) || statTabs[i - 1].classList.contains('revealed');
+            if (isPrevLoaded) {
+              if (!tab.classList.contains('revealed')) {
+                if (scrollDirection === 'up') {
+                  tab.classList.add('from-top');
+                  tab.classList.remove('from-bottom');
+                } else {
+                  tab.classList.add('from-bottom');
+                  tab.classList.remove('from-top');
+                }
+                tab.classList.add('revealed');
+
+                clearTimeout(statTimer);
+                statTimer = setTimeout(() => {
+                  updateStatTabsSequence();
+                }, 110);
+                return;
+              }
+            } else {
+              tab.classList.remove('revealed');
+            }
+          } else if (rect.top > triggerBottom) {
+            tab.classList.remove('revealed');
+            tab.classList.add('from-bottom');
+            tab.classList.remove('from-top');
+          }
+        }
+      }
+
+      // 3. Allgemeine Karten & Infoboxen (gleichmäßige 0.42s Animation)
+      function updateGeneralElements() {
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        const triggerBottom = vh - TRIGGER_OFFSET_BOTTOM;
+
+        generalElements.forEach(el => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= triggerBottom && rect.bottom >= TRIGGER_OFFSET_TOP) {
+            if (!el.classList.contains('revealed')) {
+              if (scrollDirection === 'up') {
                 el.classList.add('from-top');
                 el.classList.remove('from-bottom');
               } else {
-                // Nach unten aus dem Viewport gescrollt
                 el.classList.add('from-bottom');
                 el.classList.remove('from-top');
               }
+              el.classList.add('revealed');
             }
-          });
-        }, {
-          root: null,
-          rootMargin: '0px 0px 0px 0px',
-          threshold: 0.04
-        });
-
-        const vh = window.innerHeight || document.documentElement.clientHeight;
-
-        scrollElements.forEach(el => {
-          if (!el.classList.contains('scroll-reveal')) {
-            el.classList.add('scroll-reveal');
-          }
-          if (!el.style.getPropertyValue('--stagger') && el.parentElement) {
-            const siblings = Array.from(el.parentElement.children).filter(c => 
-              c.classList.contains('scroll-reveal') || 
-              c.classList.contains('scroll-tab') || 
-              c.tagName === 'DETAILS' ||
-              c.classList.contains('hub-card') ||
-              c.classList.contains('weather-widget-card') ||
-              c.classList.contains('budget-category-card')
-            );
-            const idx = siblings.indexOf(el);
-            if (idx >= 0 && idx < 8) {
-              el.style.setProperty('--stagger', idx);
-            }
-          }
-
-          // Initialer Zustand abhängig von der aktuellen Scrollposition
-          const rect = el.getBoundingClientRect();
-          if (rect.top < vh && rect.bottom > 0) {
-            el.classList.add('revealed');
-          } else if (rect.top >= vh) {
+          } else if (rect.top > triggerBottom) {
+            el.classList.remove('revealed');
             el.classList.add('from-bottom');
+            el.classList.remove('from-top');
+          } else if (rect.bottom < TRIGGER_OFFSET_TOP) {
             el.classList.remove('revealed');
-          } else {
             el.classList.add('from-top');
-            el.classList.remove('revealed');
+            el.classList.remove('from-bottom');
           }
-
-          observer.observe(el);
         });
-      } else {
-        scrollElements.forEach(el => el.classList.add('revealed'));
       }
+
+      function runScrollCheck() {
+        updateTimelineSequence();
+        updateStatTabsSequence();
+        updateGeneralElements();
+        isRafQueued = false;
+      }
+
+      function requestScrollCheck() {
+        if (!isRafQueued) {
+          isRafQueued = true;
+          requestAnimationFrame(runScrollCheck);
+        }
+      }
+
+      // Scroll-Listener mit Richtungserkennung
+      window.addEventListener('scroll', () => {
+        const curY = window.scrollY;
+        if (curY > lastScrollY + 2) {
+          scrollDirection = 'down';
+        } else if (curY < lastScrollY - 2) {
+          scrollDirection = 'up';
+        }
+        lastScrollY = curY;
+        requestScrollCheck();
+      }, { passive: true });
+
+      window.addEventListener('resize', requestScrollCheck, { passive: true });
+
+      // Initialer Check beim Start
+      runScrollCheck();
     }
 
     // =========================================================================
