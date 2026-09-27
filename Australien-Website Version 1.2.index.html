@@ -18,6 +18,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 
   <style>
     :root {
@@ -81,6 +82,14 @@
 
     body.is-locked {
       overflow: hidden;
+      height: 100vh;
+    }
+    body.is-locked > *:not(#security-gate) {
+      filter: blur(25px);
+      opacity: 0.12;
+      pointer-events: none;
+      user-select: none;
+      transition: filter 0.4s ease, opacity 0.4s ease;
     }
 
     h1, h2, h3, h4 {
@@ -157,24 +166,145 @@
     .security-error {
       color: #ef4444;
       font-size: 0.85rem;
-      font-weight: 600;
+      font-weight: 700;
       min-height: 20px;
-      margin-top: 0.4rem;
+      margin-top: 0.5rem;
     }
 
-    /* Navigation */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    /* SCHWEBENDE BIDIREKTIONALE SCROLL-ANIMATIONEN FÜR TABS & INFOCARDS */
+    .scroll-reveal,
+    .scroll-tab {
+      opacity: 0;
+      will-change: opacity, transform;
+      pointer-events: none;
+      transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+    }
+
+    /* Scrollen nach UNTEN: Elemente kommen sanft von unten (translateY: +36px) */
+    .scroll-reveal.from-bottom,
+    .scroll-tab.from-bottom,
+    .scroll-reveal:not(.from-top),
+    .scroll-tab:not(.from-top) {
+      transform: translateY(36px) scale(0.985);
+    }
+
+    /* Scrollen nach OBEN: Elemente kommen sanft von oben (translateY: -36px) */
+    .scroll-reveal.from-top,
+    .scroll-tab.from-top {
+      transform: translateY(-36px) scale(0.985);
+    }
+
+    /* Vollständig sichtbar im Viewport: Langsam und edel einblenden */
+    .scroll-reveal.revealed,
+    .scroll-tab.revealed {
+      opacity: 1 !important;
+      transform: translateY(0) scale(1) !important;
+      pointer-events: auto;
+      transition: opacity 0.78s cubic-bezier(0.16, 1, 0.3, 1), transform 0.78s cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: calc(var(--stagger, 0) * 0.075s);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .scroll-reveal,
+      .scroll-tab,
+      nav,
+      nav .nav-links li,
+      .mobile-tab-pill {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+
+    /* Navigation - Erst schwebend beim Scrollen sichtbar */
     nav {
       background: var(--nav-bg);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       position: sticky;
       top: 0;
       z-index: 1000;
-      box-shadow: 0 2px 14px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
       padding: 0.75rem 1.2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 0.8rem;
+      transform: translateY(-110%);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, box-shadow 0.3s ease;
+    }
+    nav.nav-visible {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    nav.nav-visible .nav-links li {
+      opacity: 0;
+      transform: translateY(-10px);
+      animation: navTabFloatIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    nav.nav-visible .nav-links li:nth-child(1) { animation-delay: 0.04s; }
+    nav.nav-visible .nav-links li:nth-child(2) { animation-delay: 0.08s; }
+    nav.nav-visible .nav-links li:nth-child(3) { animation-delay: 0.12s; }
+    nav.nav-visible .nav-links li:nth-child(4) { animation-delay: 0.16s; }
+    nav.nav-visible .nav-links li:nth-child(5) { animation-delay: 0.20s; }
+    nav.nav-visible .nav-links li:nth-child(6) { animation-delay: 0.24s; }
+    nav.nav-visible .nav-links li:nth-child(7) { animation-delay: 0.28s; }
+    nav.nav-visible .nav-links li:nth-child(8) { animation-delay: 0.32s; }
+
+    @keyframes navTabFloatIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .mobile-tab-bar {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .mobile-tab-bar {
+        display: flex;
+        overflow-x: auto;
+        gap: 0.45rem;
+        padding: 0.3rem 0;
+        white-space: nowrap;
+        scrollbar-width: none;
+      }
+      .mobile-tab-bar::-webkit-scrollbar { display: none; }
+      .mobile-tab-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.32rem 0.7rem;
+        border-radius: 14px;
+        background: var(--card-sub-bg);
+        border: 1px solid var(--border-color);
+        font-size: 0.76rem;
+        font-weight: 700;
+        color: var(--text-main);
+        text-decoration: none;
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+      nav.nav-visible .mobile-tab-pill {
+        animation: navTabFloatIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      nav.nav-visible .mobile-tab-pill:nth-child(1) { animation-delay: 0.05s; }
+      nav.nav-visible .mobile-tab-pill:nth-child(2) { animation-delay: 0.10s; }
+      nav.nav-visible .mobile-tab-pill:nth-child(3) { animation-delay: 0.15s; }
+      nav.nav-visible .mobile-tab-pill:nth-child(4) { animation-delay: 0.20s; }
+      nav.nav-visible .mobile-tab-pill:nth-child(5) { animation-delay: 0.25s; }
+      nav.nav-visible .mobile-tab-pill:nth-child(6) { animation-delay: 0.30s; }
     }
 
     .logo {
@@ -473,7 +603,7 @@
       overflow: hidden;
       box-shadow: var(--shadow-sm);
       margin-bottom: 1.5rem;
-      transition: all 0.25s ease;
+      transition: border-color 0.35s ease, box-shadow 0.35s ease;
     }
     details.clean-slide[open] {
       box-shadow: var(--shadow-md);
@@ -499,7 +629,7 @@
       gap: 0.75rem;
     }
     details.clean-slide summary .chevron-rot {
-      transition: transform 0.25s ease;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       color: var(--primary);
       font-size: 0.95rem;
     }
@@ -510,6 +640,20 @@
       padding: 1.3rem 1.4rem;
       border-top: 1px solid var(--border-color);
       background: var(--card-sub-bg);
+    }
+    details.clean-slide[open] .slide-content {
+      animation: slideContentCascade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: 0.08s;
+    }
+    @keyframes slideContentCascade {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* Timeline & Itinerary */
@@ -540,13 +684,21 @@
       border-radius: 16px;
       padding: 1.2rem 1.5rem;
       box-shadow: var(--shadow-sm);
-      transition: all 0.25s ease;
+      transition: border-color 0.35s ease, box-shadow 0.35s ease;
       border: 1px solid var(--border-color);
       z-index: 2;
     }
     details.timeline-item[open] {
       border-color: var(--primary);
       box-shadow: var(--shadow-md);
+    }
+    details.timeline-item.is-expanding,
+    details.timeline-item.is-collapsing,
+    details.clean-slide.is-expanding,
+    details.clean-slide.is-collapsing,
+    details.checkin-card.is-expanding,
+    details.checkin-card.is-collapsing {
+      overflow: hidden !important;
     }
     details.timeline-item::before {
       content: '';
@@ -615,7 +767,10 @@
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      transition: all 0.2s;
+      transition: background-color 0.25s, color 0.25s;
+    }
+    .expand-trigger i {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
     details[open] .expand-trigger i { transform: rotate(180deg); }
 
@@ -633,12 +788,20 @@
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      animation: fadeIn 0.3s ease-in-out;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-4px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* Subcard cascading float-in with slight delay when expanding days */
+    details.timeline-item[open] .day-subcard {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: subcardCascade 0.48s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: calc(0.12s + var(--item-idx, 0) * 0.08s);
+    }
+    @keyframes subcardCascade {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .day-subcard {
@@ -906,6 +1069,163 @@
       }
     }
 
+    /* D3 Doughnut Chart & Budget Breakdown */
+    .budget-chart-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 1.4rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 2rem;
+      transition: all 0.2s ease;
+    }
+    .doughnut-container-grid {
+      display: grid;
+      grid-template-columns: 290px 1fr;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .doughnut-container-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+      }
+    }
+    .doughnut-center-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      pointer-events: none;
+      width: 140px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .doughnut-legend-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+    .doughnut-legend-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 0.9rem;
+      border-radius: 12px;
+      background: var(--card-sub-bg);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .doughnut-legend-item:hover,
+    .doughnut-legend-item.highlighted {
+      border-color: var(--primary);
+      transform: translateX(4px);
+      box-shadow: var(--shadow-sm);
+    }
+    .legend-item-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .legend-color-dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .legend-item-title {
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--text-main);
+    }
+    .legend-item-right {
+      text-align: right;
+    }
+    .legend-item-val {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--primary);
+    }
+    .legend-item-pct {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-left: 0.35rem;
+    }
+    .chart-arc {
+      cursor: pointer;
+      transition: opacity 0.2s ease, transform 0.2s ease, filter 0.2s ease;
+    }
+    .chart-arc:hover {
+      filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.18));
+    }
+
+    /* Small Australia Onsite Spend Bar */
+    .onsite-budget-card {
+      margin-bottom: 2rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 1.3rem 1.4rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .onsite-control-row {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .budget-bar-range {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 6px;
+      background: var(--border-color);
+      outline: none;
+      transition: background .2s;
+    }
+    .budget-bar-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 2px solid white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      cursor: pointer;
+      transition: transform .15s, background .15s;
+    }
+    .budget-bar-range::-webkit-slider-thumb:hover {
+      transform: scale(1.18);
+      background: var(--primary-dark);
+    }
+    .budget-bar-range::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 2px solid white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      cursor: pointer;
+    }
+
+    /* Reisekasse in Budget */
+    .reisekasse-budget-card {
+      margin-bottom: 2rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 1.4rem;
+      box-shadow: var(--shadow-sm);
+    }
+
     /* Checklists */
     .checklist { list-style: none; }
     .checklist-item {
@@ -1118,6 +1438,34 @@
       padding: 0.2rem 0.5rem;
       border-radius: 8px;
     }
+    .weather-temp {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+    }
+    .weather-condition {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--secondary);
+      margin-top: 0.4rem;
+    }
+    .weather-details-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
+      padding-top: 0.65rem;
+      margin-top: 0.8rem;
+    }
 
     details.checkin-card {
       background: var(--card-bg);
@@ -1125,6 +1473,7 @@
       border-radius: 14px;
       padding: 1rem 1.3rem;
       margin-bottom: 0.8rem;
+      transition: border-color 0.3s ease;
     }
     details.checkin-card summary {
       cursor: pointer;
@@ -1136,7 +1485,16 @@
       color: var(--text-main);
     }
     details.checkin-card summary::-webkit-details-marker { display: none; }
-    details.checkin-card[open] summary i.fa-chevron-down { transform: rotate(180deg); }
+    details.checkin-card summary i.fa-chevron-down {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    details.checkin-card[open] summary i.fa-chevron-down {
+      transform: rotate(180deg);
+    }
+    details.checkin-card[open] .checkin-grid {
+      animation: slideContentCascade 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: 0.08s;
+    }
     .checkin-grid {
       margin-top: 1rem;
       padding-top: 1rem;
@@ -1235,17 +1593,19 @@
 </head>
 <body class="is-locked">
 
-  <!-- SICHERHEITS-PIN GATE (MODAL) -->
+  <!-- SICHERHEITS-CODE GATE (MODAL) -->
   <div id="security-gate">
     <div class="security-card">
-      <div class="security-icon"><i class="fa-solid fa-lock"></i></div>
-      <h2 style="margin-bottom: 0.4rem; color: var(--primary);">Roadtrip 2027</h2>
-      <p style="font-size: 0.85rem; color: var(--text-muted);">Reiseplan & Gruppen-Sync geschützt. Gib die 4-stellige PIN ein:</p>
+      <div class="security-icon"><i class="fa-solid fa-shield-halved"></i></div>
+      <h2 style="margin-bottom: 0.4rem; color: var(--primary);">Australien Roadtrip 2027</h2>
+      <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+        Reiseplan, Unterkünfte & Gruppen-Tools geschützt. Bitte den Sicherheitscode eingeben:
+      </p>
       
-      <input type="password" id="gate-pin-input" class="security-input" maxlength="12" placeholder="••••" autofocus onkeypress="if(event.key==='Enter') verifyPin()">
+      <input type="password" id="gate-pin-input" class="security-input" maxlength="24" placeholder="Sicherheitscode eingeben..." autocomplete="off" autofocus onkeypress="if(event.key==='Enter') verifyPin()">
       
       <button class="security-btn" onclick="verifyPin()">
-        <i class="fa-solid fa-key"></i> Entsperren
+        <i class="fa-solid fa-key"></i> Website freischalten
       </button>
       
       <div id="gate-error" class="security-error"></div>
@@ -1260,12 +1620,21 @@
       <li><a href="#map">Route</a></li>
       <li><a href="#route">Reiseplan</a></li>
       <li><a href="#budget">Budget (4 Pers.)</a></li>
-      <li><a href="#hub">Tools & Einkaufen</a></li>
+      <li><a href="#hub">Reise-Tools</a></li>
       <li><a href="#bucketlist">Bucket List</a></li>
       <li><a href="#emergency">Notfall</a></li>
       <li><a href="#weather">Live-Wetter</a></li>
       <li><a href="#playlist">Playlist</a></li>
     </ul>
+
+    <div class="mobile-tab-bar">
+      <a href="#map" class="mobile-tab-pill"><i class="fa-solid fa-map"></i> Route</a>
+      <a href="#route" class="mobile-tab-pill"><i class="fa-solid fa-route"></i> Plan</a>
+      <a href="#budget" class="mobile-tab-pill"><i class="fa-solid fa-coins"></i> Budget</a>
+      <a href="#hub" class="mobile-tab-pill"><i class="fa-solid fa-toolbox"></i> Tools</a>
+      <a href="#weather" class="mobile-tab-pill"><i class="fa-solid fa-cloud-sun"></i> Wetter</a>
+      <a href="#emergency" class="mobile-tab-pill"><i class="fa-solid fa-shield-heart"></i> Notfall</a>
+    </div>
 
     <div class="nav-actions">
       <button onclick="triggerPwaPrompt()" class="btn-nav-action btn-pwa-nav" title="Als Handy-App installieren">
@@ -1274,6 +1643,10 @@
 
       <button onclick="toggleDarkMode()" id="theme-toggle-btn" class="btn-nav-action btn-theme-nav" title="Dark/Light Mode umschalten">
         <i class="fa-solid fa-moon"></i>
+      </button>
+
+      <button onclick="lockApp()" class="btn-nav-action" title="Website wieder sperren">
+        <i class="fa-solid fa-lock"></i>
       </button>
 
       <button onclick="window.print()" class="btn-nav-action btn-print-nav" title="Nur Reiseplan als PDF drucken">
@@ -1327,32 +1700,32 @@
 
     <!-- 1. Routenkarte -->
     <section id="map" style="margin-bottom: 4rem;">
-      <h2 class="section-title">Interaktive Routenkarte & Eckdaten</h2>
+      <h2 class="section-title scroll-tab">Interaktive Routenkarte & Eckdaten</h2>
       
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; text-align: center;">
-        <div style="background: var(--card-bg); padding: 1.2rem; border-radius: 14px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+        <div class="scroll-tab" style="--stagger: 0; background: var(--card-bg); padding: 1.2rem; border-radius: 14px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
           <i class="fa-solid fa-road" style="font-size: 1.5rem; color: var(--primary);"></i>
           <div style="font-weight: 800; font-size: 1.2rem; margin-top: 0.3rem;">ca. 2.100 km</div>
           <div style="font-size: 0.8rem; color: var(--text-muted);">Mietwagen-Strecke</div>
         </div>
-        <div style="background: var(--card-bg); padding: 1.2rem; border-radius: 14px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+        <div class="scroll-tab" style="--stagger: 1; background: var(--card-bg); padding: 1.2rem; border-radius: 14px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
           <i class="fa-solid fa-plane" style="font-size: 1.5rem; color: var(--secondary);"></i>
           <div style="font-weight: 800; font-size: 1.2rem; margin-top: 0.3rem;">2 Inlandsflüge</div>
           <div style="font-size: 0.8rem; color: var(--text-muted);">SYD → BNK & PPP → MEL (Gebucht)</div>
         </div>
-        <div style="background: var(--card-bg); padding: 1.2rem; border-radius: 14px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+        <div class="scroll-tab" style="--stagger: 2; background: var(--card-bg); padding: 1.2rem; border-radius: 14px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
           <i class="fa-solid fa-calendar-days" style="font-size: 1.5rem; color: var(--primary);"></i>
           <div style="font-weight: 800; font-size: 1.2rem; margin-top: 0.3rem;">20 Reisetage</div>
           <div style="font-size: 0.8rem; color: var(--text-muted);">21. März – 09. April 2027</div>
         </div>
-        <div style="background: var(--card-bg); padding: 1.2rem; border-radius: 14px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+        <div class="scroll-tab" style="--stagger: 3; background: var(--card-bg); padding: 1.2rem; border-radius: 14px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
           <i class="fa-solid fa-users" style="font-size: 1.5rem; color: var(--secondary);"></i>
           <div style="font-weight: 800; font-size: 1.2rem; margin-top: 0.3rem;">4 Personen</div>
           <div style="font-size: 0.8rem; color: var(--text-muted);">Gruppe & Kostenteilung</div>
         </div>
       </div>
 
-      <details class="clean-slide">
+      <details class="clean-slide scroll-tab" style="--stagger: 4;">
         <summary>
           <div class="slide-icon-title">
             <i class="fa-solid fa-map-location-dot" style="color: var(--primary);"></i>
@@ -2190,21 +2563,248 @@
             <span class="budget-toggle-label">Kosten pro Person</span>
           </div>
 
-          <div class="hub-card" style="margin-bottom: 2.5rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem;">
-              <h3 style="margin: 0; color: var(--primary);"><i class="fa-solid fa-chart-pie"></i> Zahlungsfortschritt</h3>
-              <span id="total-sum-badge" style="font-weight: 800; font-size: 1.25rem; color: var(--primary);">Gesamt: 0 €</span>
-            </div>
-            
-            <div style="width: 100%; background-color: var(--border-color); height: 22px; border-radius: 12px; overflow: hidden; display: flex; margin-bottom: 1rem;">
-              <div id="progress-paid" style="width: 45%; background: var(--status-paid); height: 100%; transition: width 0.4s ease;"></div>
-              <div id="progress-open" style="width: 55%; background: var(--secondary); height: 100%; transition: width 0.4s ease;"></div>
+          <!-- 1. D3.js Doughnut Chart: Kostenverteilung nach Kategorien -->
+          <div class="hub-card budget-chart-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.1rem; flex-wrap: wrap; gap: 0.6rem;">
+              <h3 style="margin: 0; color: var(--primary); font-size: 1.15rem; display: flex; align-items: center; gap: 0.55rem;">
+                <i class="fa-solid fa-chart-pie" style="color: var(--secondary);"></i>
+                Kostenverteilung nach Kategorien
+              </h3>
+              <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                <span id="chart-sub-mode" style="font-size: 0.78rem; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 0.22rem 0.65rem; border-radius: 999px;">
+                  Kosten pro Person
+                </span>
+                <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 700; color: var(--text-muted); cursor: pointer; background: var(--card-sub-bg); padding: 0.22rem 0.65rem; border-radius: 999px; border: 1px solid var(--border-color); user-select: none;">
+                  <input type="checkbox" id="chart-include-onsite" onchange="renderBudgetDoughnutChart()">
+                  <span>+ Vor-Ort Budget</span>
+                </label>
+              </div>
             </div>
 
-            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; flex-wrap: wrap; gap: 1rem;">
-              <span style="color: var(--status-paid);"><i class="fa-solid fa-circle-check"></i> Bereits bezahlt: <strong id="paid-amount">0 €</strong></span>
-              <span style="color: var(--secondary);"><i class="fa-solid fa-wallet"></i> Offen vor Ort: <strong id="open-amount">0 €</strong></span>
+            <div class="doughnut-container-grid">
+              <div style="display: flex; justify-content: center; align-items: center;">
+                <div id="budget-doughnut-svg-wrap" style="position: relative; width: 280px; height: 280px; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+                  <div id="budget-doughnut-svg-container" style="width: 280px; height: 280px;"></div>
+                  <div id="budget-doughnut-center-content" class="doughnut-center-overlay">
+                    <div id="chart-center-sub" style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Gesamtkosten</div>
+                    <div id="chart-center-val" style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin: 0.15rem 0;">2.608 €</div>
+                    <div id="chart-center-pct" style="font-size: 0.76rem; font-weight: 700; color: var(--primary);">Kosten p.P.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="doughnut-legend-col" id="budget-doughnut-legend">
+                <!-- Dynamically generated via renderBudgetDoughnutChart -->
+              </div>
             </div>
+          </div>
+
+          <!-- 2. Vor-Ort Budget / Taschengeld-Planer (Australien) -->
+          <div class="hub-card onsite-budget-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.7rem; flex-wrap: wrap; gap: 0.5rem;">
+              <h3 style="margin: 0; color: var(--primary); font-size: 1.1rem; display: flex; align-items: center; gap: 0.55rem;">
+                <i class="fa-solid fa-sliders" style="color: var(--accent-gold);"></i>
+                Vor-Ort Budget (Taschengeld Australien)
+              </h3>
+              <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); background: var(--card-sub-bg); border: 1px solid var(--border-color); padding: 0.2rem 0.6rem; border-radius: 999px;">
+                20 Tage Roadtrip
+              </span>
+            </div>
+            <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 0.9rem;">
+              Stelle manuell ein, wie viel Geld du vor Ort in Australien ausgeben möchtest (Essen, Drinks, Snacks & Spesen):
+            </p>
+
+            <div class="onsite-control-row">
+              <!-- Compact Number Input -->
+              <div style="display: flex; align-items: center; gap: 0.4rem; background: var(--card-sub-bg); border: 1.5px solid var(--border-color); border-radius: 12px; padding: 0.4rem 0.75rem; width: fit-content;">
+                <label for="onsite-spend-input" style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-right: 0.2rem;">Budget:</label>
+                <input type="number" id="onsite-spend-input" min="0" max="10000" step="25" value="800" style="width: 80px; font-size: 1.15rem; font-weight: 800; border: none; background: transparent; color: var(--text-main); outline: none; text-align: right;" oninput="updateOnsiteSpend(this.value, 'input')">
+                <span style="font-weight: 800; color: var(--primary); font-size: 1rem;">€</span>
+              </div>
+
+              <!-- Interactive Slider Bar -->
+              <div style="flex: 1; min-width: 190px; display: flex; flex-direction: column; gap: 0.35rem;">
+                <input type="range" id="onsite-spend-slider" min="0" max="3000" step="25" value="800" class="budget-bar-range" oninput="updateOnsiteSpend(this.value, 'slider')">
+                <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">
+                  <span>0 €</span>
+                  <span>1.000 €</span>
+                  <span>2.000 €</span>
+                  <span>3.000 €</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Small Overview Metrics -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; margin-top: 1rem; padding-top: 0.85rem; border-top: 1px dashed var(--border-color);">
+              <div style="background: var(--card-sub-bg); padding: 0.6rem 0.8rem; border-radius: 10px; border: 1px solid var(--border-color);">
+                <span style="display: block; font-size: 0.72rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Tagesbudget:</span>
+                <strong id="onsite-daily-eur" style="font-size: 1rem; color: var(--primary);">40 € / Tag</strong>
+              </div>
+              <div style="background: var(--card-sub-bg); padding: 0.6rem 0.8rem; border-radius: 10px; border: 1px solid var(--border-color);">
+                <span style="display: block; font-size: 0.72rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">In AUD (vor Ort):</span>
+                <strong id="onsite-total-aud" style="font-size: 1rem; color: var(--secondary);">ca. 1.288 AUD</strong>
+              </div>
+              <div style="background: var(--card-sub-bg); padding: 0.6rem 0.8rem; border-radius: 10px; border: 1px solid var(--border-color);">
+                <span style="display: block; font-size: 0.72rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Gesamt p.P. inkl. Taschengeld:</span>
+                <strong id="onsite-total-trip" style="font-size: 1rem; color: var(--primary);">ca. 3.408 €</strong>
+              </div>
+            </div>
+
+            <!-- Quick Choice Preset Chips -->
+            <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; margin-top: 0.85rem;">
+              <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); margin-right: 0.2rem;">Schnellwahl:</span>
+              <button type="button" class="chip-btn" onclick="setOnsiteSpend(400)">400 € (Sparsam • 20€/Tag)</button>
+              <button type="button" class="chip-btn" onclick="setOnsiteSpend(800)">800 € (Klassisch • 40€/Tag)</button>
+              <button type="button" class="chip-btn" onclick="setOnsiteSpend(1200)">1.200 € (Komfort • 60€/Tag)</button>
+              <button type="button" class="chip-btn" onclick="setOnsiteSpend(1800)">1.800 € (Genießer • 90€/Tag)</button>
+            </div>
+          </div>
+
+          <!-- 3. Gemeinsame Reisekasse (Splitwise) - Minimalistischer Link-Zugang -->
+          <div class="hub-card reisekasse-budget-card" id="reisekasse-budget-card" style="margin-bottom: 2rem; padding: 1.1rem 1.3rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;">
+              <div style="display: flex; align-items: center; gap: 0.7rem;">
+                <div style="width: 42px; height: 42px; border-radius: 12px; background: rgba(30, 185, 128, 0.12); display: flex; align-items: center; justify-content: center; color: #1eb980; font-size: 1.25rem;">
+                  <i class="fa-solid fa-sack-dollar"></i>
+                </div>
+                <div>
+                  <h3 style="margin: 0; color: var(--primary); font-size: 1.05rem;">Gemeinsame Reisekasse (Splitwise)</h3>
+                  <span style="font-size: 0.78rem; color: var(--text-muted);">Gruppe für Tobi, Lara, Ker & Flo</span>
+                </div>
+              </div>
+              <a id="link-splitwise-budget" href="#" target="_blank" class="btn-tool splitwise splitwise-btn" style="text-decoration: none; padding: 0.65rem 1.25rem; font-weight: 700; border-radius: 12px; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.9rem;">
+                <i class="fa-solid fa-lock"></i> Geschützte Splitwise Gruppe
+              </a>
+            </div>
+          </div>
+
+          <!-- 4. Spritrechner & Tankbelege (Live-Sync über alle Geräte) -->
+          <div class="hub-card" id="fuel-budget-card" style="margin-bottom: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
+              <h3 style="margin: 0; color: var(--primary); font-size: 1.15rem; display: flex; align-items: center; gap: 0.55rem;">
+                <i class="fa-solid fa-gas-pump" style="color: var(--secondary);"></i>
+                Spritrechner & Tankbelege
+              </h3>
+              <span class="sync-badge"><span class="sync-dot"></span> E2EE Live-Sync</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.9rem;">
+              Kosten pro Tankfüllung eintragen, Zahler (Ker, Tobi, Flo oder Lara) auswählen und live über alle Geräte synchronisieren:
+            </p>
+
+            <!-- Quick Add Chips -->
+            <div class="quick-add-chips" style="margin-bottom: 0.85rem;">
+              <button type="button" class="chip-btn" onclick="setFuelAmount(50)">+ 50 AUD</button>
+              <button type="button" class="chip-btn" onclick="setFuelAmount(75)">+ 75 AUD</button>
+              <button type="button" class="chip-btn" onclick="setFuelAmount(90)">+ 90 AUD</button>
+              <button type="button" class="chip-btn" onclick="setFuelAmount(110)">+ 110 AUD</button>
+              <button type="button" class="chip-btn" onclick="setFuelAmount(130)">+ 130 AUD</button>
+            </div>
+
+            <div class="grocery-input-group" style="display: flex; flex-direction: column; gap: 0.55rem;">
+              <div style="display: flex; gap: 0.5rem; width: 100%;">
+                <div style="position: relative; flex: 1;">
+                  <input type="number" id="fuel-cost-aud" class="grocery-input" style="width: 100%; font-size: 1.05rem; font-weight: 700; padding-right: 3.5rem;" placeholder="Betrag in AUD..." step="0.01" oninput="updateFuelEurPreview()" onkeypress="if(event.key === 'Enter') addFuelEntry()">
+                  <span style="position: absolute; right: 0.8rem; top: 50%; transform: translateY(-50%); font-size: 0.78rem; font-weight: 800; color: var(--secondary); pointer-events: none;">AUD</span>
+                </div>
+                <select id="fuel-payer" class="grocery-input" style="width: 120px; flex: none; font-weight: 700; font-size: 0.92rem; background: var(--card-sub-bg); cursor: pointer;" title="Wer hat bezahlt?">
+                  <option value="Ker">Ker</option>
+                  <option value="Tobi" selected>Tobi</option>
+                  <option value="Flo">Flo</option>
+                  <option value="Lara">Lara</option>
+                </select>
+              </div>
+
+              <div style="display: flex; gap: 0.5rem; width: 100%;">
+                <input type="text" id="fuel-location" class="grocery-input" style="flex: 1;" placeholder="Tankstelle / Ort / Liter (optional, z.B. BP Coffs Harbour, 45L)..." onkeypress="if(event.key === 'Enter') addFuelEntry()">
+                <button type="button" class="grocery-btn-add" style="flex: none; width: auto; padding: 0 1.1rem; border-radius: 12px; font-weight: 700; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.45rem;" onclick="addFuelEntry()">
+                  <i class="fa-solid fa-plus"></i> Hinzufügen
+                </button>
+              </div>
+
+              <!-- Preview hint -->
+              <div id="fuel-eur-preview" style="font-size: 0.78rem; color: var(--text-muted); padding: 0.1rem 0.2rem;">
+                Entspricht ca. 0,00 € (Kurs: 1 AUD ≈ 0,62 EUR) • Wird fair durch 4 geteilt
+              </div>
+            </div>
+
+            <!-- Summary Totals -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-top: 1rem; margin-bottom: 0.85rem;">
+              <div style="background: var(--card-sub-bg); padding: 0.7rem 0.9rem; border-radius: 12px; border: 1px solid var(--border-color);">
+                <span style="display: block; font-size: 0.72rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Gesamtkosten Sprit:</span>
+                <strong id="fuel-total-sum" style="font-size: 1.15rem; color: var(--primary);">0,00 AUD (0 €)</strong>
+              </div>
+              <div style="background: var(--card-sub-bg); padding: 0.7rem 0.9rem; border-radius: 12px; border: 1px solid var(--border-color);">
+                <span style="display: block; font-size: 0.72rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Kosten p.P. (÷ 4):</span>
+                <strong id="fuel-per-person" style="font-size: 1.15rem; color: var(--secondary);">0,00 AUD (0 €)</strong>
+              </div>
+            </div>
+
+            <!-- Breakdown per Payer (Ker, Tobi, Flo, Lara) -->
+            <div style="margin-bottom: 0.85rem;">
+              <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 0.35rem;">Bisher bezahlt (nach Person):</span>
+              <div class="breakdown-grid">
+                <div class="breakdown-cell"><span class="payer-badge ker">Ker</span><strong id="fuel-ker-sum">0 €</strong><small id="fuel-ker-aud" style="font-size: 0.7rem; color: var(--text-muted); display: block;">0 AUD</small></div>
+                <div class="breakdown-cell"><span class="payer-badge tobi">Tobi</span><strong id="fuel-tobi-sum">0 €</strong><small id="fuel-tobi-aud" style="font-size: 0.7rem; color: var(--text-muted); display: block;">0 AUD</small></div>
+                <div class="breakdown-cell"><span class="payer-badge flo">Flo</span><strong id="fuel-flo-sum">0 €</strong><small id="fuel-flo-aud" style="font-size: 0.7rem; color: var(--text-muted); display: block;">0 AUD</small></div>
+                <div class="breakdown-cell"><span class="payer-badge lara">Lara</span><strong id="fuel-lara-sum">0 €</strong><small id="fuel-lara-aud" style="font-size: 0.7rem; color: var(--text-muted); display: block;">0 AUD</small></div>
+              </div>
+            </div>
+
+            <!-- Entries List -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; margin-bottom: 0.5rem;">
+              <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Eingetragene Tankfüllungen:</span>
+              <span id="fuel-entry-count" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">0 Einträge</span>
+            </div>
+            <div id="fuel-list-container">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- 4. Supermarkt-Einkaufszettel (Coles & Woolies) -->
+          <div class="hub-card" id="grocery-budget-card" style="margin-bottom: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
+              <h3 style="margin: 0; color: var(--primary); font-size: 1.15rem; display: flex; align-items: center; gap: 0.55rem;">
+                <i class="fa-solid fa-cart-shopping" style="color: var(--secondary);"></i>
+                Supermarkt-Einkaufszettel (Coles & Woolies)
+              </h3>
+              <span class="sync-badge"><span class="sync-dot"></span> E2EE Live</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.9rem;">
+              Einkäufe für die Gruppe eintragen, Kosten in AUD umrechnen und live auf Tobi, Lara, Ker und Flo aufteilen:
+            </p>
+
+            <div class="quick-add-chips">
+              <button type="button" class="chip-btn" onclick="quickAddGrocery('24er Pack Trinkwasser')">+ 24er Trinkwasser</button>
+              <button type="button" class="chip-btn" onclick="quickAddGrocery('Eisbeutel für Kühlbox (Esky)')">+ Eisbeutel (Esky)</button>
+              <button type="button" class="chip-btn" onclick="quickAddGrocery('Toastbrot & Butter')">+ Toast & Butter</button>
+              <button type="button" class="chip-btn" onclick="quickAddGrocery('BBQ Fleisch / Würstel')">+ BBQ Fleisch</button>
+              <button type="button" class="chip-btn" onclick="quickAddGrocery('Bushman Mückenspray')">+ Mückenspray</button>
+              <button type="button" class="chip-btn" onclick="quickAddGrocery('Tim Tams Double Coat')">+ Tim Tams</button>
+            </div>
+
+            <div class="grocery-input-group">
+              <div style="display: flex; gap: 0.5rem; width: 100%;">
+                <input type="text" id="grocery-item-input" class="grocery-input" placeholder="Artikel eingeben..." onkeypress="if(event.key === 'Enter') addGroceryItem()">
+              </div>
+              <div style="display: flex; gap: 0.5rem; width: 100%;">
+                <input type="number" id="grocery-price-aud" class="grocery-input" style="flex: 1;" placeholder="Betrag in AUD (optional)" step="0.01">
+                <select id="grocery-payer" class="grocery-input" style="width: 110px; flex: none; font-weight: 700;">
+                  <option value="Tobi">Tobi</option>
+                  <option value="Lara">Lara</option>
+                  <option value="Ker">Ker</option>
+                  <option value="Flo">Flo</option>
+                </select>
+                <button type="button" class="grocery-btn-add" onclick="addGroceryItem()"><i class="fa-solid fa-plus"></i></button>
+              </div>
+            </div>
+
+            <div class="breakdown-grid" style="margin-bottom: 0.8rem;">
+              <div class="breakdown-cell">Tobi: <strong id="grocery-tobi-sum">0 €</strong></div>
+              <div class="breakdown-cell">Lara: <strong id="grocery-lara-sum">0 €</strong></div>
+              <div class="breakdown-cell">Ker: <strong id="grocery-ker-sum">0 €</strong></div>
+              <div class="breakdown-cell">Flo: <strong id="grocery-flo-sum">0 €</strong></div>
+            </div>
+
+            <ul id="grocery-list-container" class="grocery-list"></ul>
           </div>
 
           <!-- Live Währungsrechner (AUD ↔ EUR) -->
@@ -2317,7 +2917,7 @@
                 <ul class="sub-item-list">
                   <li class="sub-price-item" data-eur="155" data-paid="false"><span>East Coast Mietwagen:</span> <strong class="sub-price-val">155 €</strong></li>
                   <li class="sub-price-item" data-eur="90" data-paid="false"><span>Greyhound Nachtbus:</span> <strong class="sub-price-val">90 €</strong></li>
-                  <li class="sub-price-item" id="budget-fuel-item" data-eur="0" data-paid="true"><span>Getankter Sprit:</span> <div><strong class="sub-price-val" id="budget-fuel-val">0 €</strong> <span class="status-pill paid">Bezahlt</span></div></li>
+                  <li class="sub-price-item" id="budget-fuel-item" data-eur="0" data-paid="true" style="cursor: pointer;" onclick="openBudgetDetails('fuel-budget-card')" title="Zum Spritrechner & Tankbelegen springen"><span><i class="fa-solid fa-gas-pump" style="color: var(--secondary); margin-right: 0.3rem;"></i> Getankter Sprit:</span> <div><strong class="sub-price-val" id="budget-fuel-val">0 €</strong> <span class="status-pill paid">Bezahlt</span></div></li>
                 </ul>
               </div>
               <div style="margin-top: 1rem; font-weight: 800; font-size: 1.15rem; text-align: right; color: var(--primary);" class="card-total-price">0 €</div>
@@ -2341,9 +2941,9 @@
       </details>
     </section>
 
-    <!-- 4. Tools, Einkaufszettel & Private Links -->
+    <!-- 4. Tools & Private Links -->
     <section id="hub" class="section-spaced">
-      <h2 class="section-title">Reise-Tools, Einkaufszettel & Aussie-Helfer</h2>
+      <h2 class="section-title">Reise-Tools & Aussie-Helfer</h2>
       
       <div class="hub-layout-stack">
         
@@ -2361,65 +2961,20 @@
           </div>
         </details>
 
-        <!-- Live Einkaufszettel mit E2EE & XSS Schutz -->
+        <!-- Maskiertes Gruppen-Tool: Live-Fotoalbum -->
         <div class="hub-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
-            <h3 style="margin:0;"><i class="fa-solid fa-cart-shopping"></i> Supermarkt-Einkaufszettel (Coles & Woolies)</h3>
-            <span class="sync-badge"><span class="sync-dot"></span> E2EE Live</span>
-          </div>
-
-          <div class="quick-add-chips">
-            <button class="chip-btn" onclick="quickAddGrocery('24er Pack Trinkwasser')">+ 24er Trinkwasser</button>
-            <button class="chip-btn" onclick="quickAddGrocery('Eisbeutel für Kühlbox (Esky)')">+ Eisbeutel (Esky)</button>
-            <button class="chip-btn" onclick="quickAddGrocery('Toastbrot & Butter')">+ Toast & Butter</button>
-            <button class="chip-btn" onclick="quickAddGrocery('BBQ Fleisch / Würstel')">+ BBQ Fleisch</button>
-            <button class="chip-btn" onclick="quickAddGrocery('Bushman Mückenspray')">+ Mückenspray</button>
-            <button class="chip-btn" onclick="quickAddGrocery('Tim Tams Double Coat')">+ Tim Tams</button>
-          </div>
-
-          <div class="grocery-input-group">
-            <div style="display: flex; gap: 0.5rem; width: 100%;">
-              <input type="text" id="grocery-item-input" class="grocery-input" placeholder="Artikel eingeben..." onkeypress="if(event.key === 'Enter') addGroceryItem()">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;">
+            <div>
+              <h3 style="margin: 0 0 0.25rem 0; display: flex; align-items: center; gap: 0.55rem;">
+                <i class="fa-solid fa-camera" style="color: var(--secondary);"></i>
+                Live-Fotoalbum
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">
+                Fotos & Videos während der Reise direkt für alle vier in voller Qualität hochladen:
+              </p>
             </div>
-            <div style="display: flex; gap: 0.5rem; width: 100%;">
-              <input type="number" id="grocery-price-aud" class="grocery-input" style="flex: 1;" placeholder="Betrag in AUD (optional)" step="0.01">
-              <select id="grocery-payer" class="grocery-input" style="width: 110px; flex: none; font-weight: 700;">
-                <option value="Tobi">Tobi</option>
-                <option value="Lara">Lara</option>
-                <option value="Ker">Ker</option>
-                <option value="Flo">Flo</option>
-              </select>
-              <button class="grocery-btn-add" onclick="addGroceryItem()"><i class="fa-solid fa-plus"></i></button>
-            </div>
-          </div>
-
-          <div class="breakdown-grid" style="margin-bottom: 0.8rem;">
-            <div class="breakdown-cell">Tobi: <strong id="grocery-tobi-sum">0 €</strong></div>
-            <div class="breakdown-cell">Lara: <strong id="grocery-lara-sum">0 €</strong></div>
-            <div class="breakdown-cell">Ker: <strong id="grocery-ker-sum">0 €</strong></div>
-            <div class="breakdown-cell">Flo: <strong id="grocery-flo-sum">0 €</strong></div>
-          </div>
-
-          <ul id="grocery-list-container" class="grocery-list"></ul>
-        </div>
-
-        <!-- Maskierte Gruppen-Tools (Splitwise & Fotos) -->
-        <div class="hub-row-2col">
-          <div class="hub-card">
-            <h3><i class="fa-solid fa-sack-dollar"></i> Gemeinsame Reisekasse</h3>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">Ausgaben für alle vier eintragen:</p>
-            <div class="tool-btn-row">
-              <a id="link-splitwise" href="#" target="_blank" class="btn-tool splitwise">
-                <i class="fa-solid fa-lock"></i> Geschützte Splitwise Gruppe
-              </a>
-            </div>
-          </div>
-
-          <div class="hub-card">
-            <h3><i class="fa-solid fa-camera"></i> Live-Fotoalbum</h3>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">Fotos direkt für alle hochladen:</p>
-            <div class="tool-btn-row">
-              <a id="link-photos" href="#" target="_blank" class="btn-tool photos">
+            <div class="tool-btn-row" style="margin-top: 0;">
+              <a id="link-photos" href="#" target="_blank" class="btn-tool photos" style="margin: 0;">
                 <i class="fa-solid fa-images"></i> Geschütztes Google Album
               </a>
             </div>
@@ -2516,7 +3071,94 @@
       </div>
     </section>
 
-    <!-- 6. Spotify Playlist Slide -->
+    <!-- 6. Live-Wetter -->
+    <section id="weather" class="section-spaced">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 1.2rem;">
+        <div>
+          <h2 class="section-title" style="margin-bottom: 0.3rem;">Live-Wetter an der Ostküste ☀️</h2>
+          <p style="color: var(--text-muted); font-size: 0.88rem; margin: 0;">
+            Aktuelle Temperaturen & Wetterbedingungen in Sydney, Brisbane & Melbourne (Live über Open-Meteo API).
+          </p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span id="weather-update-badge" style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); background: var(--card-sub-bg); border: 1px solid var(--border-color); padding: 0.25rem 0.65rem; border-radius: 999px;">
+            <i class="fa-solid fa-clock" style="margin-right: 0.25rem;"></i><span id="weather-last-updated">Lade Wetter...</span>
+          </span>
+          <button type="button" class="chip-btn" onclick="fetchLiveWeather(true)" title="Wetterdaten jetzt aktualisieren" style="background: var(--card-sub-bg); border: 1px solid var(--border-color); cursor: pointer; padding: 0.25rem 0.6rem; border-radius: 999px; font-size: 0.8rem;">
+            <i class="fa-solid fa-rotate" id="weather-refresh-icon"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="weather-widget-grid" id="weather-cards-container">
+        <!-- Sydney Card -->
+        <div class="weather-widget-card" id="weather-card-sydney">
+          <div class="weather-header">
+            <div class="weather-city"><i class="fa-solid fa-location-dot" style="color: var(--primary); margin-right: 0.35rem;"></i>Sydney</div>
+            <span class="weather-state">NSW</span>
+          </div>
+          <div style="margin: 0.8rem 0;">
+            <div class="weather-temp" id="weather-temp-sydney">--°C</div>
+            <div class="weather-condition" id="weather-cond-sydney">
+              <i class="fa-solid fa-spinner fa-spin"></i> <span>Lade Wetter...</span>
+            </div>
+          </div>
+          <div class="weather-details-row">
+            <span><i class="fa-solid fa-temperature-half"></i> Gefühlt: <strong id="weather-app-sydney">--°C</strong></span>
+            <span><i class="fa-solid fa-wind"></i> Wind: <strong id="weather-wind-sydney">-- km/h</strong></span>
+            <span><i class="fa-solid fa-droplet"></i> <strong id="weather-hum-sydney">--%</strong></span>
+          </div>
+        </div>
+
+        <!-- Brisbane Card -->
+        <div class="weather-widget-card" id="weather-card-brisbane">
+          <div class="weather-header">
+            <div class="weather-city"><i class="fa-solid fa-location-dot" style="color: var(--secondary); margin-right: 0.35rem;"></i>Brisbane</div>
+            <span class="weather-state">QLD</span>
+          </div>
+          <div style="margin: 0.8rem 0;">
+            <div class="weather-temp" id="weather-temp-brisbane">--°C</div>
+            <div class="weather-condition" id="weather-cond-brisbane">
+              <i class="fa-solid fa-spinner fa-spin"></i> <span>Lade Wetter...</span>
+            </div>
+          </div>
+          <div class="weather-details-row">
+            <span><i class="fa-solid fa-temperature-half"></i> Gefühlt: <strong id="weather-app-brisbane">--°C</strong></span>
+            <span><i class="fa-solid fa-wind"></i> Wind: <strong id="weather-wind-brisbane">-- km/h</strong></span>
+            <span><i class="fa-solid fa-droplet"></i> <strong id="weather-hum-brisbane">--%</strong></span>
+          </div>
+        </div>
+
+        <!-- Melbourne Card -->
+        <div class="weather-widget-card" id="weather-card-melbourne">
+          <div class="weather-header">
+            <div class="weather-city"><i class="fa-solid fa-location-dot" style="color: var(--accent-gold); margin-right: 0.35rem;"></i>Melbourne</div>
+            <span class="weather-state">VIC</span>
+          </div>
+          <div style="margin: 0.8rem 0;">
+            <div class="weather-temp" id="weather-temp-melbourne">--°C</div>
+            <div class="weather-condition" id="weather-cond-melbourne">
+              <i class="fa-solid fa-spinner fa-spin"></i> <span>Lade Wetter...</span>
+            </div>
+          </div>
+          <div class="weather-details-row">
+            <span><i class="fa-solid fa-temperature-half"></i> Gefühlt: <strong id="weather-app-melbourne">--°C</strong></span>
+            <span><i class="fa-solid fa-wind"></i> Wind: <strong id="weather-wind-melbourne">-- km/h</strong></span>
+            <span><i class="fa-solid fa-droplet"></i> <strong id="weather-hum-melbourne">--%</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compact Travel Climate Hint -->
+      <div style="background: var(--card-sub-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.85rem 1.1rem; margin-top: 1.2rem; display: flex; align-items: center; gap: 0.75rem; font-size: 0.85rem; color: var(--text-muted);">
+        <i class="fa-solid fa-circle-info" style="color: var(--primary); font-size: 1.1rem; flex: none;"></i>
+        <div>
+          <strong>Reiseklima März/April:</strong> In Sydney und Brisbane herrschen angenehme 23–28°C Spätsommertemperaturen. Melbourne ist im Frühherbst milder (16–22°C) – eine leichte Jacke für den Abend einpacken!
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Spotify Playlist Slide -->
     <section id="playlist" class="section-spaced">
       <h2 class="section-title">Roadtrip Playlist 🎵</h2>
       <details class="clean-slide" style="max-width: 680px; margin: 0 auto;">
@@ -2543,12 +3185,16 @@
     // =========================================================================
     // SICHERHEITSKOMPONENTEN: KRYPTOGRAFIE & XSS FILTER
     // =========================================================================
-    const DEFAULT_PIN = "2027";
     const SYNC_TOPIC = 'aus2027_vault_8f19e4c02ab9';
     const NTFY_WS_URL = `wss://ntfy.sh/${SYNC_TOPIC}/ws`;
     const NTFY_API_URL = `https://ntfy.sh/${SYNC_TOPIC}`;
 
+    // AES-256-GCM verschlüsselte vertrauliche Ressourcen (Splitwise & Google Photos)
+    // Ausschließlich entschlüsselbar mit dem Masterschlüssel "AUSROA"
+    const CIPHER_VAULT = "ThR/FNJqnlHxJA5qHW+zJb1NJ8p4bioKKh0+Sm2OM+pap2SPauSZNMWRADsI6aGmEA3tlarePe7OtB74DXc+UmTYv/CgUm4SI/EfECdfi+ZxQVkkWEnxHPYGeF4yCSKssokh3YpdcXHu4/GhXhlfTZZCTYQP97YLwjqMQuP3PnP20TAAt0JhuA+/xGCGfQpoEYwY1r4g7gDo1MzH95ja/aoEdN1A34kRpRZj5X7nyRkd";
+
     let cryptoKey = null;
+    let decryptedVault = null;
 
     function escapeHtml(str) {
       if (!str) return '';
@@ -2581,6 +3227,51 @@
         false,
         ['encrypt', 'decrypt']
       );
+    }
+
+    async function decryptVaultWithKey(passcode) {
+      if (!passcode) return null;
+      try {
+        const enc = new TextEncoder();
+        const keyMaterial = await crypto.subtle.importKey(
+          'raw',
+          enc.encode(passcode),
+          { name: 'PBKDF2' },
+          false,
+          ['deriveKey']
+        );
+        const derivedKey = await crypto.subtle.deriveKey(
+          {
+            name: 'PBKDF2',
+            salt: enc.encode('aus_roadtrip_salt_2027_secure'),
+            iterations: 100000,
+            hash: 'SHA-256'
+          },
+          keyMaterial,
+          { name: 'AES-GCM', length: 256 },
+          false,
+          ['decrypt']
+        );
+
+        const binary = atob(CIPHER_VAULT);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        const iv = bytes.slice(0, 12);
+        const ciphertext = bytes.slice(12);
+
+        const decrypted = await crypto.subtle.decrypt(
+          { name: 'AES-GCM', iv: iv },
+          derivedKey,
+          ciphertext
+        );
+        const parsed = JSON.parse(new TextDecoder().decode(decrypted));
+        if (parsed && parsed.check === 'AUSROA_VERIFIED_2027') {
+          return parsed;
+        }
+        return null;
+      } catch (err) {
+        return null;
+      }
     }
 
     async function encryptPayload(plainText) {
@@ -2620,39 +3311,329 @@
     async function verifyPin() {
       const input = document.getElementById('gate-pin-input');
       const errEl = document.getElementById('gate-error');
-      const pin = input.value.trim();
+      const enteredCode = (input.value || '').trim();
 
-      if (pin === DEFAULT_PIN || pin.length >= 4) {
+      if (!enteredCode) {
+        errEl.innerText = "Bitte den Sicherheitscode eingeben.";
+        input.focus();
+        return;
+      }
+
+      errEl.innerText = "";
+      const normalizedCode = enteredCode.toUpperCase();
+
+      // 1. Serverseitige Verifikation über die geschützte API
+      let authData = null;
+      try {
+        const response = await fetch('/api/verify-auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: normalizedCode })
+        });
+        if (response.ok) {
+          const resJson = await response.json();
+          if (resJson && resJson.success && resJson.resources) {
+            authData = resJson.resources;
+          }
+        }
+      } catch (netErr) {
+        // Fallback auf Offline / PWA AES-256-GCM Entschlüsselung
+      }
+
+      // 2. Clientseitige kryptografische Entschlüsselung
+      if (!authData) {
+        authData = await decryptVaultWithKey(normalizedCode);
+      }
+
+      // 3. Nur wer den Code "AUSROA" besitzt, erhält Zugriff
+      if (authData && normalizedCode === 'AUSROA') {
         try {
-          cryptoKey = await deriveEncryptionKey(pin);
-          localStorage.setItem('aus_auth_token', pin);
+          cryptoKey = await deriveEncryptionKey(normalizedCode);
+          decryptedVault = authData;
+          localStorage.setItem('aus_auth_token', normalizedCode);
           unlockAppUI();
         } catch (e) {
-          errEl.innerText = "Fehler bei der Schlüsselberechnung.";
+          errEl.innerText = "Fehler bei der kryptografischen Initialisierung.";
         }
       } else {
-        errEl.innerText = "Falsche PIN. Bitte erneut versuchen!";
+        errEl.innerText = "Ungültiger Sicherheitscode! Zugriff verweigert.";
         input.value = '';
         input.focus();
+        input.classList.remove('shake');
+        void input.offsetWidth;
+        input.classList.add('shake');
       }
     }
 
     function unlockAppUI() {
       document.body.classList.remove('is-locked');
-      document.getElementById('security-gate').style.display = 'none';
+      const gate = document.getElementById('security-gate');
+      if (gate) {
+        gate.style.opacity = '0';
+        gate.style.pointerEvents = 'none';
+        setTimeout(() => { gate.style.display = 'none'; }, 350);
+      }
       
-      document.getElementById('link-splitwise').href = "https://secure.splitwise.com/#/groups/101615495";
-      document.getElementById('link-splitwise').innerHTML = '<i class="fa-solid fa-arrow-right-arrow-left"></i> Splitwise Gruppe öffnen';
-      
-      document.getElementById('link-photos').href = "https://photos.app.goo.gl/c8Bkr97b1hc8QrKP7";
-      document.getElementById('link-photos').innerHTML = '<i class="fa-solid fa-images"></i> Google Photos öffnen';
+      // Kritische Links erst jetzt sicher im DOM setzen (nicht im HTML Quellcode vorhanden)
+      if (decryptedVault) {
+        const swBtn = document.getElementById('link-splitwise');
+        if (swBtn && decryptedVault.splitwise) {
+          swBtn.href = decryptedVault.splitwise;
+          swBtn.setAttribute('rel', 'noopener noreferrer');
+          swBtn.innerHTML = '<i class="fa-solid fa-arrow-right-arrow-left"></i> Splitwise Gruppe öffnen';
+        }
+        const swBtnBudget = document.getElementById('link-splitwise-budget');
+        if (swBtnBudget && decryptedVault.splitwise) {
+          swBtnBudget.href = decryptedVault.splitwise;
+          swBtnBudget.setAttribute('rel', 'noopener noreferrer');
+          swBtnBudget.innerHTML = '<i class="fa-solid fa-calculator"></i> Splitwise Gruppe öffnen';
+        }
+        const photosBtn = document.getElementById('link-photos');
+        if (photosBtn && decryptedVault.photos) {
+          photosBtn.href = decryptedVault.photos;
+          photosBtn.setAttribute('rel', 'noopener noreferrer');
+          photosBtn.innerHTML = '<i class="fa-solid fa-images"></i> Google Photos öffnen';
+        }
+      }
 
       initCloudSync();
+      initScrollAnimations();
+      initSmoothAccordions();
     }
 
     function lockApp() {
       localStorage.removeItem('aus_auth_token');
       location.reload();
+    }
+
+    // Scroll-Verhalten: Wiederholtes, richtungsabhängiges Einblenden beim Scrollen
+    function initScrollAnimations() {
+      const navEl = document.querySelector('nav');
+      let lastScrollY = window.scrollY;
+      let scrollDirection = 'down';
+
+      function checkNavScroll() {
+        if (window.scrollY > 60) {
+          navEl?.classList.add('nav-visible');
+        } else {
+          navEl?.classList.remove('nav-visible');
+        }
+      }
+      window.addEventListener('scroll', checkNavScroll, { passive: true });
+      checkNavScroll();
+
+      // Scroll-Richtung mit Schwellwert detektieren
+      window.addEventListener('scroll', () => {
+        const curY = window.scrollY;
+        if (curY > lastScrollY + 3) {
+          scrollDirection = 'down';
+        } else if (curY < lastScrollY - 3) {
+          scrollDirection = 'up';
+        }
+        lastScrollY = curY;
+      }, { passive: true });
+
+      const selectors = [
+        '.section-title',
+        '.section-lead',
+        '.countdown-container',
+        '.dual-clock-container',
+        '.scroll-tab',
+        '.scroll-reveal',
+        '.overview-stat-tab',
+        'details.clean-slide',
+        'details.timeline-item',
+        'details.checkin-card',
+        '.hub-card',
+        '.weather-widget-card',
+        '.budget-category-card',
+        '.emergency-grid > div',
+        '.trip-status-banner'
+      ];
+      const scrollElements = Array.from(document.querySelectorAll(selectors.join(', ')));
+
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            const el = entry.target;
+            if (entry.isIntersecting) {
+              // Element tritt in den sichtbaren Bereich ein
+              if (!el.classList.contains('revealed')) {
+                if (scrollDirection === 'up') {
+                  el.classList.add('from-top');
+                  el.classList.remove('from-bottom');
+                } else {
+                  el.classList.add('from-bottom');
+                  el.classList.remove('from-top');
+                }
+              }
+              // Flüssiges Einblenden im nächsten Frame
+              requestAnimationFrame(() => {
+                el.classList.add('revealed');
+              });
+            } else {
+              // Element verlässt den Viewport: Zustand zurücksetzen für endloses Wiedererscheinen
+              el.classList.remove('revealed');
+              // Richtung für das nächste Hineinscrollen speichern
+              if (entry.boundingClientRect.top < 0) {
+                // Nach oben aus dem Viewport gescrollt
+                el.classList.add('from-top');
+                el.classList.remove('from-bottom');
+              } else {
+                // Nach unten aus dem Viewport gescrollt
+                el.classList.add('from-bottom');
+                el.classList.remove('from-top');
+              }
+            }
+          });
+        }, {
+          root: null,
+          rootMargin: '0px 0px 0px 0px',
+          threshold: 0.04
+        });
+
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+
+        scrollElements.forEach(el => {
+          if (!el.classList.contains('scroll-reveal')) {
+            el.classList.add('scroll-reveal');
+          }
+          if (!el.style.getPropertyValue('--stagger') && el.parentElement) {
+            const siblings = Array.from(el.parentElement.children).filter(c => 
+              c.classList.contains('scroll-reveal') || 
+              c.classList.contains('scroll-tab') || 
+              c.tagName === 'DETAILS' ||
+              c.classList.contains('hub-card') ||
+              c.classList.contains('weather-widget-card') ||
+              c.classList.contains('budget-category-card')
+            );
+            const idx = siblings.indexOf(el);
+            if (idx >= 0 && idx < 8) {
+              el.style.setProperty('--stagger', idx);
+            }
+          }
+
+          // Initialer Zustand abhängig von der aktuellen Scrollposition
+          const rect = el.getBoundingClientRect();
+          if (rect.top < vh && rect.bottom > 0) {
+            el.classList.add('revealed');
+          } else if (rect.top >= vh) {
+            el.classList.add('from-bottom');
+            el.classList.remove('revealed');
+          } else {
+            el.classList.add('from-top');
+            el.classList.remove('revealed');
+          }
+
+          observer.observe(el);
+        });
+      } else {
+        scrollElements.forEach(el => el.classList.add('revealed'));
+      }
+    }
+
+    // =========================================================================
+    // SANFTE, VERZÖGERTE AKKORDEON-ANIMATION FÜR ALLE AUFKLAPPBAREN MENÜS
+    // =========================================================================
+    function initSmoothAccordions() {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      document.querySelectorAll('details').forEach((details) => {
+        if (details._smoothAccordionAttached) return;
+        details._smoothAccordionAttached = true;
+
+        const summary = details.querySelector('summary');
+        if (!summary) return;
+
+        let content = null;
+        for (let i = 0; i < details.children.length; i++) {
+          if (details.children[i] !== summary) {
+            content = details.children[i];
+            break;
+          }
+        }
+        if (!content) return;
+
+        let isAnimating = false;
+        let currentAnimation = null;
+
+        summary.addEventListener('click', (e) => {
+          if (prefersReduced) return;
+          e.preventDefault();
+
+          if (isAnimating && currentAnimation) {
+            currentAnimation.cancel();
+          }
+
+          if (details.open) {
+            // Zuklappen (sanft und gedämpft)
+            isAnimating = true;
+            details.classList.add('is-collapsing');
+            details.classList.remove('is-expanding');
+
+            const startHeight = details.offsetHeight;
+            const endHeight = summary.offsetHeight;
+
+            currentAnimation = details.animate(
+              [
+                { height: `${startHeight}px`, opacity: 1 },
+                { height: `${endHeight}px`, opacity: 0.96 }
+              ],
+              {
+                duration: 380,
+                easing: 'cubic-bezier(0.2, 0, 0, 1)'
+              }
+            );
+
+            currentAnimation.onfinish = () => {
+              details.open = false;
+              details.classList.remove('is-collapsing');
+              details.style.height = '';
+              isAnimating = false;
+              currentAnimation = null;
+            };
+          } else {
+            // Aufklappen (geschmeidig, leicht verzögert & nicht sofort)
+            isAnimating = true;
+            details.open = true;
+            details.classList.add('is-expanding');
+            details.classList.remove('is-collapsing');
+
+            // Stagger-Index für Unterkarten zuweisen
+            const subcards = content.querySelectorAll('.day-subcard, .checkin-grid > div');
+            subcards.forEach((sc, idx) => {
+              sc.style.setProperty('--item-idx', idx);
+            });
+
+            const startHeight = summary.offsetHeight;
+            details.style.height = 'auto';
+            const naturalHeight = details.offsetHeight;
+            details.style.height = `${startHeight}px`;
+
+            currentAnimation = details.animate(
+              [
+                { height: `${startHeight}px` },
+                { height: `${naturalHeight}px` }
+              ],
+              {
+                duration: 500, // Deutlich spürbare, edle Weichheit
+                easing: 'cubic-bezier(0.16, 1, 0.3, 1)'
+              }
+            );
+
+            currentAnimation.onfinish = () => {
+              details.style.height = '';
+              details.classList.remove('is-expanding');
+              isAnimating = false;
+              currentAnimation = null;
+
+              if (details.id === 'budget-details-slide') {
+                setTimeout(renderBudgetDoughnutChart, 60);
+              }
+            };
+          }
+        });
+      });
     }
 
     // =========================================================================
@@ -2718,6 +3699,7 @@
       if (payload.fuelEntries) {
         fuelEntries = payload.fuelEntries;
         localStorage.setItem(FUEL_STORAGE_KEY, JSON.stringify(fuelEntries));
+        renderFuel();
       }
       if (payload.checkboxStates) {
         checkboxStates = payload.checkboxStates;
@@ -2906,6 +3888,152 @@
       document.getElementById('grocery-flo-sum').innerText = `${payerTotals.Flo.toFixed(2)} €`;
     }
 
+    // =========================================================================
+    // SPRITRECHNER & TANKBELEGE (LIVE-SYNC & KOSTENTEILUNG DURCH 4)
+    // =========================================================================
+    function renderFuel() {
+      const container = document.getElementById('fuel-list-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      let payerTotalsEur = { Ker: 0, Tobi: 0, Flo: 0, Lara: 0 };
+      let payerTotalsAud = { Ker: 0, Tobi: 0, Flo: 0, Lara: 0 };
+      let totalAud = 0;
+      let totalEur = 0;
+
+      fuelEntries.forEach((entry, index) => {
+        const costAud = parseFloat(entry.costAud) || 0;
+        const costEur = parseFloat(entry.costEur) || (costAud * currentAudToEurRate);
+        totalAud += costAud;
+        totalEur += costEur;
+
+        const payer = entry.payer || 'Tobi';
+        if (payerTotalsEur[payer] !== undefined) {
+          payerTotalsEur[payer] += costEur;
+          payerTotalsAud[payer] += costAud;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'fuel-entry-card';
+        card.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 0.65rem 0.85rem; background: var(--card-sub-bg); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 0.5rem; transition: background 0.2s;';
+
+        const payerClass = payer.toLowerCase();
+        const dateStr = entry.date || new Date(entry.id || Date.now()).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+        const locationStr = entry.location ? ` • ${escapeHtml(entry.location)}` : '';
+
+        card.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 0.6rem; flex: 1; min-width: 0;">
+            <span class="payer-badge ${payerClass}">${escapeHtml(payer)}</span>
+            <div style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">
+                ${costAud.toFixed(2)} AUD <span style="font-size: 0.82rem; font-weight: 600; color: var(--text-muted);">(≈ ${costEur.toFixed(2)} €)</span>
+              </div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis;">
+                ${escapeHtml(dateStr)}${locationStr}
+              </div>
+            </div>
+          </div>
+          <button class="fuel-del-btn" style="background: none; border: none; color: #ef4444; cursor: pointer; padding: 0.4rem 0.55rem; font-size: 1rem; opacity: 0.75;" onclick="deleteFuelEntry(${index})" title="Löschen">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        `;
+        container.appendChild(card);
+      });
+
+      if (fuelEntries.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 1.2rem; color: var(--text-muted); font-size: 0.84rem; background: var(--card-sub-bg); border-radius: 12px; border: 1px dashed var(--border-color);">
+            <i class="fa-solid fa-gas-pump" style="font-size: 1.5rem; margin-bottom: 0.4rem; opacity: 0.5; display: block; color: var(--secondary);"></i>
+            Noch keine Tankfüllungen eingetragen. Tragt jede Tankung ein – sie synchronisiert sich live über alle Handys und teilt fair durch 4!
+          </div>
+        `;
+      }
+
+      // Update counters & totals
+      const countEl = document.getElementById('fuel-entry-count');
+      if (countEl) countEl.innerText = `${fuelEntries.length} ${fuelEntries.length === 1 ? 'Eintrag' : 'Einträge'}`;
+
+      const totalSumEl = document.getElementById('fuel-total-sum');
+      if (totalSumEl) totalSumEl.innerText = `${totalAud.toFixed(2)} AUD (${totalEur.toFixed(2)} €)`;
+
+      const perPersonEl = document.getElementById('fuel-per-person');
+      if (perPersonEl) perPersonEl.innerText = `${(totalAud / 4).toFixed(2)} AUD (${(totalEur / 4).toFixed(2)} €)`;
+
+      // Update individual payer sums
+      ['ker', 'tobi', 'flo', 'lara'].forEach(key => {
+        const pName = key.charAt(0).toUpperCase() + key.slice(1);
+        const sumEl = document.getElementById(`fuel-${key}-sum`);
+        if (sumEl) sumEl.innerText = `${payerTotalsEur[pName].toFixed(2)} €`;
+        const audEl = document.getElementById(`fuel-${key}-aud`);
+        if (audEl) audEl.innerText = `${payerTotalsAud[pName].toFixed(2)} AUD`;
+      });
+    }
+
+    function addFuelEntry() {
+      const costAudInput = document.getElementById('fuel-cost-aud');
+      const payerSelect = document.getElementById('fuel-payer');
+      const locationInput = document.getElementById('fuel-location');
+      if (!costAudInput) return;
+
+      const costAud = parseFloat(costAudInput.value);
+      if (isNaN(costAud) || costAud <= 0) {
+        costAudInput.focus();
+        return;
+      }
+
+      const payer = payerSelect ? payerSelect.value : 'Tobi';
+      const location = locationInput ? locationInput.value.trim() : '';
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+
+      const newEntry = {
+        id: Date.now(),
+        date: dateStr,
+        costAud: costAud,
+        costEur: costAud * currentAudToEurRate,
+        payer: payer,
+        location: location
+      };
+
+      fuelEntries.unshift(newEntry);
+      costAudInput.value = '';
+      if (locationInput) locationInput.value = '';
+      updateFuelEurPreview();
+
+      renderFuel();
+      broadcastState();
+      updateBudgetCalculations();
+    }
+
+    function setFuelAmount(val) {
+      const costAudInput = document.getElementById('fuel-cost-aud');
+      if (costAudInput) {
+        costAudInput.value = val;
+        updateFuelEurPreview();
+      }
+    }
+
+    function updateFuelEurPreview() {
+      const costAudInput = document.getElementById('fuel-cost-aud');
+      const previewEl = document.getElementById('fuel-eur-preview');
+      if (!costAudInput || !previewEl) return;
+      const val = parseFloat(costAudInput.value) || 0;
+      if (val > 0) {
+        const eur = (val * currentAudToEurRate).toFixed(2).replace('.', ',');
+        const perPerson = ((val * currentAudToEurRate) / 4).toFixed(2).replace('.', ',');
+        previewEl.innerHTML = `Entspricht ca. <strong>${eur} €</strong> (${perPerson} € p.P. • Kurs: 1 AUD ≈ ${currentAudToEurRate.toFixed(4).replace('.', ',')} €)`;
+      } else {
+        previewEl.innerHTML = `Entspricht ca. 0,00 € (Kurs: 1 AUD ≈ ${currentAudToEurRate.toFixed(4).replace('.', ',')} €) • Wird fair durch 4 geteilt`;
+      }
+    }
+
+    function deleteFuelEntry(index) {
+      fuelEntries.splice(index, 1);
+      renderFuel();
+      broadcastState();
+      updateBudgetCalculations();
+    }
+
     // THEME & CORE
     function initTheme() {
       const savedTheme = localStorage.getItem('aus_theme');
@@ -2944,9 +4072,28 @@
     updateDualClocks();
 
     function updateBudgetCalculations() {
-      const isPerPerson = document.getElementById('person-toggle').checked;
+      const personToggle = document.getElementById('person-toggle');
+      const isPerPerson = personToggle ? personToggle.checked : true;
       const multiplier = isPerPerson ? 1 : 4;
-      document.getElementById('toggle-dot').style.transform = isPerPerson ? 'translateX(24px)' : 'translateX(0px)';
+      const toggleDot = document.getElementById('toggle-dot');
+      if (toggleDot) toggleDot.style.transform = isPerPerson ? 'translateX(24px)' : 'translateX(0px)';
+
+      // Calculate total tracked fuel in EUR and set onto budget-fuel-item
+      const fuelItem = document.getElementById('budget-fuel-item');
+      if (fuelItem) {
+        let totalFuelEur = fuelEntries.reduce((sum, item) => {
+          const cEur = parseFloat(item.costEur) || ((parseFloat(item.costAud) || 0) * currentAudToEurRate);
+          return sum + cEur;
+        }, 0);
+        // data-eur is per-person (divided by 4) so multiplier applies correctly
+        const fuelPerPersonEur = totalFuelEur / 4;
+        fuelItem.setAttribute('data-eur', fuelPerPersonEur.toFixed(2));
+        const fuelVal = document.getElementById('budget-fuel-val');
+        if (fuelVal) {
+          const displayVal = isPerPerson ? fuelPerPersonEur : totalFuelEur;
+          fuelVal.innerText = `${displayVal.toFixed(0)} €`;
+        }
+      }
 
       let paidSum = 0, openSum = 0;
       document.querySelectorAll('.budget-category-card').forEach(card => {
@@ -2956,19 +4103,27 @@
           catTotal += val;
           if (sub.getAttribute('data-paid') === 'true') paidSum += val; else openSum += val;
           const span = sub.querySelector('.sub-price-val');
-          if (span) span.innerText = `${val.toFixed(0)} €`;
+          if (span && sub.id !== 'budget-fuel-item') span.innerText = `${val.toFixed(0)} €`;
         });
         const totalDisp = card.querySelector('.card-total-price');
         if (totalDisp) totalDisp.innerText = `${catTotal.toFixed(0)} €`;
       });
 
       const total = paidSum + openSum;
-      document.getElementById('total-sum-badge').innerText = `Gesamt: ${total.toFixed(0)} €`;
-      document.getElementById('paid-amount').innerText = `${paidSum.toFixed(0)} €`;
-      document.getElementById('open-amount').innerText = `${openSum.toFixed(0)} €`;
+      const totalBadge = document.getElementById('total-sum-badge');
+      if (totalBadge) totalBadge.innerText = `Gesamt: ${total.toFixed(0)} €`;
+      const paidEl = document.getElementById('paid-amount');
+      if (paidEl) paidEl.innerText = `${paidSum.toFixed(0)} €`;
+      const openEl = document.getElementById('open-amount');
+      if (openEl) openEl.innerText = `${openSum.toFixed(0)} €`;
       const pct = total > 0 ? Math.round((paidSum / total) * 100) : 0;
-      document.getElementById('progress-paid').style.width = pct + '%';
-      document.getElementById('progress-open').style.width = (100 - pct) + '%';
+      const progPaid = document.getElementById('progress-paid');
+      if (progPaid) progPaid.style.width = pct + '%';
+      const progOpen = document.getElementById('progress-open');
+      if (progOpen) progOpen.style.width = (100 - pct) + '%';
+
+      renderBudgetDoughnutChart();
+      if (typeof updateOnsiteSpendMetrics === 'function') updateOnsiteSpendMetrics();
     }
 
     function applyCheckboxStatesToUI() {
@@ -3109,22 +4264,490 @@
       fetchExchangeRates();
     }
 
+    // =========================================================================
+    // LIVE-WETTER (OPEN-METEO API FÜR SYDNEY, BRISBANE & MELBOURNE)
+    // =========================================================================
+    function getWeatherCodeInfo(code) {
+      switch (code) {
+        case 0:
+          return { text: 'Klar / Sonnig', icon: 'fa-solid fa-sun', color: '#f59e0b' };
+        case 1:
+          return { text: 'Überwiegend sonnig', icon: 'fa-solid fa-cloud-sun', color: '#f59e0b' };
+        case 2:
+          return { text: 'Teilweise bewölkt', icon: 'fa-solid fa-cloud-sun', color: '#0284c7' };
+        case 3:
+          return { text: 'Bewölkt', icon: 'fa-solid fa-cloud', color: '#64748b' };
+        case 45:
+        case 48:
+          return { text: 'Nebel / Dunst', icon: 'fa-solid fa-smog', color: '#94a3b8' };
+        case 51:
+        case 53:
+        case 55:
+          return { text: 'Leichter Nieselregen', icon: 'fa-solid fa-cloud-rain', color: '#0284c7' };
+        case 61:
+        case 63:
+        case 65:
+          return { text: 'Regen', icon: 'fa-solid fa-cloud-showers-heavy', color: '#0369a1' };
+        case 80:
+        case 81:
+        case 82:
+          return { text: 'Regenschauer', icon: 'fa-solid fa-cloud-sun-rain', color: '#0284c7' };
+        case 95:
+        case 96:
+        case 99:
+          return { text: 'Gewitter', icon: 'fa-solid fa-cloud-bolt', color: '#7c3aed' };
+        default:
+          return { text: 'Heiter', icon: 'fa-solid fa-cloud-sun', color: '#0284c7' };
+      }
+    }
+
+    async function fetchLiveWeather(isManual = false) {
+      const icon = document.getElementById('weather-refresh-icon');
+      if (icon) icon.classList.add('fa-spin');
+
+      try {
+        let weatherData = null;
+        // First try backend proxy
+        try {
+          const res = await fetch('/api/weather');
+          if (res.ok) weatherData = await res.json();
+        } catch (e) {}
+
+        // Fallback directly to Open-Meteo API
+        if (!weatherData || !weatherData.sydney) {
+          const directUrl = 'https://api.open-meteo.com/v1/forecast?latitude=-33.8688,-27.4698,-37.8136&longitude=151.2093,153.0251,144.9631&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,relative_humidity_2m&timezone=auto';
+          const directRes = await fetch(directUrl);
+          if (directRes.ok) {
+            const raw = await directRes.json();
+            if (Array.isArray(raw) && raw.length === 3) {
+              weatherData = {
+                sydney: {
+                  temp: raw[0].current.temperature_2m,
+                  apparentTemp: raw[0].current.apparent_temperature,
+                  weatherCode: raw[0].current.weather_code,
+                  windSpeed: raw[0].current.wind_speed_10m,
+                  humidity: raw[0].current.relative_humidity_2m,
+                  time: raw[0].current.time
+                },
+                brisbane: {
+                  temp: raw[1].current.temperature_2m,
+                  apparentTemp: raw[1].current.apparent_temperature,
+                  weatherCode: raw[1].current.weather_code,
+                  windSpeed: raw[1].current.wind_speed_10m,
+                  humidity: raw[1].current.relative_humidity_2m,
+                  time: raw[1].current.time
+                },
+                melbourne: {
+                  temp: raw[2].current.temperature_2m,
+                  apparentTemp: raw[2].current.apparent_temperature,
+                  weatherCode: raw[2].current.weather_code,
+                  windSpeed: raw[2].current.wind_speed_10m,
+                  humidity: raw[2].current.relative_humidity_2m,
+                  time: raw[2].current.time
+                }
+              };
+            }
+          }
+        }
+
+        if (weatherData) {
+          updateWeatherCityCard('sydney', weatherData.sydney);
+          updateWeatherCityCard('brisbane', weatherData.brisbane);
+          updateWeatherCityCard('melbourne', weatherData.melbourne);
+
+          const timeEl = document.getElementById('weather-last-updated');
+          if (timeEl) {
+            const nowTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+            timeEl.innerText = `Live (${nowTime} Uhr)`;
+          }
+        }
+      } catch (err) {
+        console.warn('Live weather error:', err);
+      } finally {
+        if (icon) icon.classList.remove('fa-spin');
+      }
+    }
+
+    function updateWeatherCityCard(cityKey, data) {
+      if (!data) return;
+      const tempEl = document.getElementById(`weather-temp-${cityKey}`);
+      if (tempEl && data.temp !== undefined) {
+        tempEl.innerText = `${Math.round(data.temp)}°C`;
+      }
+
+      const condEl = document.getElementById(`weather-cond-${cityKey}`);
+      if (condEl && data.weatherCode !== undefined) {
+        const info = getWeatherCodeInfo(data.weatherCode);
+        condEl.innerHTML = `<i class="${info.icon}" style="color: ${info.color}; font-size: 1.1rem;"></i> <span>${info.text}</span>`;
+      }
+
+      const appEl = document.getElementById(`weather-app-${cityKey}`);
+      if (appEl && data.apparentTemp !== undefined) {
+        appEl.innerText = `${Math.round(data.apparentTemp)}°C`;
+      }
+
+      const windEl = document.getElementById(`weather-wind-${cityKey}`);
+      if (windEl && data.windSpeed !== undefined) {
+        windEl.innerText = `${Math.round(data.windSpeed)} km/h`;
+      }
+
+      const humEl = document.getElementById(`weather-hum-${cityKey}`);
+      if (humEl && data.humidity !== undefined) {
+        humEl.innerText = `${Math.round(data.humidity)}%`;
+      }
+    }
+
+    // =========================================================================
+    // VOR-ORT BUDGET (TASCHENGELD AUSTRALIEN)
+    // =========================================================================
+    const ONSITE_SPEND_KEY = 'aus_onsite_budget';
+
+    function getOnsiteSpendAmount() {
+      const saved = localStorage.getItem(ONSITE_SPEND_KEY);
+      return saved !== null ? Math.max(0, parseFloat(saved) || 800) : 800;
+    }
+
+    function setOnsiteSpend(val) {
+      updateOnsiteSpend(val, 'preset');
+    }
+
+    function updateOnsiteSpend(val, source) {
+      let num = parseFloat(val);
+      if (isNaN(num) || num < 0) num = 0;
+      localStorage.setItem(ONSITE_SPEND_KEY, num);
+
+      const input = document.getElementById('onsite-spend-input');
+      const slider = document.getElementById('onsite-spend-slider');
+      if (input && source !== 'input') input.value = num;
+      if (slider && source !== 'slider') slider.value = Math.min(3000, num);
+
+      updateOnsiteSpendMetrics();
+
+      const includeOnsiteCb = document.getElementById('chart-include-onsite');
+      if (includeOnsiteCb && includeOnsiteCb.checked) {
+        renderBudgetDoughnutChart();
+      }
+    }
+
+    function updateOnsiteSpendMetrics() {
+      const num = getOnsiteSpendAmount();
+      const dailyEur = Math.round(num / 20);
+      const dailyEurEl = document.getElementById('onsite-daily-eur');
+      if (dailyEurEl) dailyEurEl.innerText = `${dailyEur} € / Tag`;
+
+      const audTotalEl = document.getElementById('onsite-total-aud');
+      if (audTotalEl) {
+        const rate = (typeof currentAudToEurRate === 'number' && currentAudToEurRate > 0) ? currentAudToEurRate : 0.6209;
+        const audVal = Math.round(num / rate);
+        audTotalEl.innerText = `ca. ${audVal.toLocaleString('de-DE')} AUD`;
+      }
+
+      const totalTripEl = document.getElementById('onsite-total-trip');
+      if (totalTripEl) {
+        const toggle = document.getElementById('person-toggle');
+        const isPerPerson = toggle ? toggle.checked : true;
+        const base = isPerPerson ? 2608 : (2608 * 4);
+        const addedSpend = isPerPerson ? num : (num * 4);
+        totalTripEl.innerText = `ca. ${Math.round(base + addedSpend).toLocaleString('de-DE')} €`;
+      }
+    }
+
+    function initOnsiteSpend() {
+      const saved = getOnsiteSpendAmount();
+      const input = document.getElementById('onsite-spend-input');
+      const slider = document.getElementById('onsite-spend-slider');
+      if (input) input.value = saved;
+      if (slider) slider.value = Math.min(3000, saved);
+      updateOnsiteSpendMetrics();
+    }
+
+    function openBudgetDetails(targetId) {
+      const budgetSlide = document.getElementById('budget-details-slide');
+      if (budgetSlide) budgetSlide.open = true;
+      if (targetId) {
+        setTimeout(() => {
+          const el = document.getElementById(targetId);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 120);
+      }
+    }
+
+    // =========================================================================
+    // D3.JS DOUGHNUT CHART (BUDGET KATEGORIEN)
+    // =========================================================================
+    function getBudgetCategoryData() {
+      const toggle = document.getElementById('person-toggle');
+      const isPerPerson = toggle ? toggle.checked : true;
+      const multiplier = isPerPerson ? 1 : 4;
+
+      let flights = (453 + 54 + 135 + 451) * multiplier;
+      let hotels = (119 + 75 + 119 + 33.5 + 42.25 + 117 + 160.75) * multiplier;
+      
+      const fuelItem = document.getElementById('budget-fuel-item');
+      const fuelEur = fuelItem ? (parseFloat(fuelItem.getAttribute('data-eur')) || 0) : 0;
+      let transport = (155 + 90 + fuelEur) * multiplier;
+      
+      let tours = (189 + 150 + 214 + 50) * multiplier;
+
+      const categories = [
+        { id: 'flights', label: 'Flüge', amount: flights, color: '#006d68', icon: 'fa-plane', desc: '4 Flüge gebucht' },
+        { id: 'hotels', label: 'Unterkünfte', amount: hotels, color: '#d96b27', icon: 'fa-hotel', desc: '7 Hotels & Stopps' },
+        { id: 'transport', label: 'Mietwagen & Sprit', amount: transport, color: '#0284c7', icon: 'fa-car', desc: 'Auto, Nachtbus & Sprit' },
+        { id: 'tours', label: 'Touren & Ausflüge', amount: tours, color: '#f5a623', icon: 'fa-ticket', desc: 'Whitsundays, K\'gari & GOR' }
+      ];
+
+      const includeOnsiteCb = document.getElementById('chart-include-onsite');
+      if (includeOnsiteCb && includeOnsiteCb.checked) {
+        const onsiteVal = getOnsiteSpendAmount() * multiplier;
+        if (onsiteVal > 0) {
+          categories.push({
+            id: 'onsite',
+            label: 'Vor-Ort Budget',
+            amount: onsiteVal,
+            color: '#8b5cf6',
+            icon: 'fa-wallet',
+            desc: 'Essen, Drinks & Spesen'
+          });
+        }
+      }
+
+      return { categories, isPerPerson };
+    }
+
+    function renderBudgetDoughnutChart() {
+      const container = document.getElementById('budget-doughnut-svg-container');
+      const legendContainer = document.getElementById('budget-doughnut-legend');
+      if (!container || !legendContainer) return;
+
+      const { categories, isPerPerson } = getBudgetCategoryData();
+      const total = categories.reduce((sum, c) => sum + c.amount, 0);
+
+      const modeBadge = document.getElementById('chart-sub-mode');
+      if (modeBadge) {
+        modeBadge.innerText = isPerPerson ? 'Kosten pro Person' : 'Gesamtkosten (4 Pers.)';
+      }
+
+      let legendHtml = '<div class="doughnut-legend-list">';
+      categories.forEach((cat, idx) => {
+        const pct = total > 0 ? ((cat.amount / total) * 100).toFixed(1) : '0';
+        legendHtml += `
+          <div class="doughnut-legend-item" id="legend-item-${cat.id}"
+               onmouseenter="highlightChartSlice(${idx})"
+               onmouseleave="resetChartHighlight()"
+               onclick="highlightChartSlice(${idx})">
+            <div class="legend-item-left">
+              <span class="legend-color-dot" style="background: ${cat.color};"></span>
+              <div>
+                <div class="legend-item-title"><i class="fa-solid ${cat.icon}" style="color: ${cat.color}; margin-right: 0.35rem; font-size: 0.85rem;"></i>${escapeHtml(cat.label)}</div>
+                <div style="font-size: 0.73rem; color: var(--text-muted);">${escapeHtml(cat.desc)}</div>
+              </div>
+            </div>
+            <div class="legend-item-right">
+              <span class="legend-item-val">${Math.round(cat.amount).toLocaleString('de-DE')} €</span>
+              <span class="legend-item-pct">(${pct}%)</span>
+            </div>
+          </div>
+        `;
+      });
+      legendHtml += '</div>';
+      legendContainer.innerHTML = legendHtml;
+
+      resetChartHighlight();
+
+      container.innerHTML = '';
+      const size = 280;
+      const radius = size / 2;
+      const innerRadius = 76;
+      const outerRadius = radius - 12;
+
+      if (typeof d3 !== 'undefined') {
+        const svg = d3.select(container)
+          .append('svg')
+          .attr('viewBox', `0 0 ${size} ${size}`)
+          .attr('width', '100%')
+          .attr('height', '100%');
+
+        const g = svg.append('g')
+          .attr('transform', `translate(${radius}, ${radius})`);
+
+        const pie = d3.pie()
+          .value(d => d.amount)
+          .sort(null)
+          .padAngle(0.026);
+
+        const arc = d3.arc()
+          .innerRadius(innerRadius)
+          .outerRadius(outerRadius)
+          .cornerRadius(5);
+
+        const pieData = pie(categories);
+
+        g.selectAll('path')
+          .data(pieData)
+          .enter()
+          .append('path')
+          .attr('class', 'chart-arc')
+          .attr('id', (d, i) => `chart-arc-${i}`)
+          .attr('d', arc)
+          .attr('fill', d => d.data.color)
+          .attr('stroke', 'var(--card-bg)')
+          .attr('stroke-width', 2.5)
+          .on('mouseenter', function(event, d) {
+            const idx = pieData.indexOf(d);
+            highlightChartSlice(idx);
+          })
+          .on('mouseleave', function() {
+            resetChartHighlight();
+          });
+
+      } else {
+        renderFallbackSvgDonut(container, categories, total, isPerPerson);
+      }
+    }
+
+    function highlightChartSlice(index) {
+      const { categories, isPerPerson } = getBudgetCategoryData();
+      const total = categories.reduce((sum, c) => sum + c.amount, 0);
+      const cat = categories[index];
+      if (!cat) return;
+
+      const pct = total > 0 ? ((cat.amount / total) * 100).toFixed(1) : '0';
+
+      const centerSub = document.getElementById('chart-center-sub');
+      const centerVal = document.getElementById('chart-center-val');
+      const centerPct = document.getElementById('chart-center-pct');
+      if (centerSub) centerSub.textContent = cat.label;
+      if (centerVal) {
+        centerVal.textContent = `${Math.round(cat.amount).toLocaleString('de-DE')} €`;
+        centerVal.style.color = cat.color;
+      }
+      if (centerPct) {
+        centerPct.textContent = `${pct}% Anteil`;
+        centerPct.style.color = cat.color;
+      }
+
+      if (typeof d3 !== 'undefined') {
+        d3.selectAll('.chart-arc').each(function(d, i) {
+          const isTarget = (i === index);
+          d3.select(this)
+            .transition()
+            .duration(180)
+            .attr('opacity', isTarget ? 1 : 0.4)
+            .attr('transform', () => {
+              if (isTarget) {
+                const midAngle = (d.startAngle + d.endAngle) / 2;
+                const x = Math.sin(midAngle) * 6;
+                const y = -Math.cos(midAngle) * 6;
+                return `translate(${x}, ${y})`;
+              }
+              return 'translate(0, 0)';
+            });
+        });
+      }
+
+      document.querySelectorAll('.doughnut-legend-item').forEach((item, i) => {
+        item.classList.toggle('highlighted', i === index);
+      });
+    }
+
+    function resetChartHighlight() {
+      const { categories, isPerPerson } = getBudgetCategoryData();
+      const total = categories.reduce((sum, c) => sum + c.amount, 0);
+
+      const centerSub = document.getElementById('chart-center-sub');
+      const centerVal = document.getElementById('chart-center-val');
+      const centerPct = document.getElementById('chart-center-pct');
+      if (centerSub) centerSub.textContent = 'Gesamtkosten';
+      if (centerVal) {
+        centerVal.textContent = `${Math.round(total).toLocaleString('de-DE')} €`;
+        centerVal.style.color = 'var(--text-main)';
+      }
+      if (centerPct) {
+        centerPct.textContent = isPerPerson ? 'Kosten p.P.' : 'Gesamt (4 Pers.)';
+        centerPct.style.color = 'var(--primary)';
+      }
+
+      if (typeof d3 !== 'undefined') {
+        d3.selectAll('.chart-arc')
+          .transition()
+          .duration(180)
+          .attr('opacity', 1)
+          .attr('transform', 'translate(0, 0)');
+      }
+
+      document.querySelectorAll('.doughnut-legend-item').forEach(item => {
+        item.classList.remove('highlighted');
+      });
+    }
+
+    function renderFallbackSvgDonut(container, categories, total, isPerPerson) {
+      const size = 280;
+      const cx = 140, cy = 140;
+      const rOuter = 126, rInner = 76;
+      let accAngle = -Math.PI / 2;
+
+      let pathsHtml = '';
+      categories.forEach((cat, idx) => {
+        if (cat.amount <= 0 || total <= 0) return;
+        const angle = (cat.amount / total) * 2 * Math.PI;
+        const start = accAngle;
+        const end = accAngle + angle;
+        accAngle = end;
+
+        const x1 = cx + rOuter * Math.cos(start);
+        const y1 = cy + rOuter * Math.sin(start);
+        const x2 = cx + rOuter * Math.cos(end);
+        const y2 = cy + rOuter * Math.sin(end);
+
+        const x3 = cx + rInner * Math.cos(end);
+        const y3 = cy + rInner * Math.sin(end);
+        const x4 = cx + rInner * Math.cos(start);
+        const y4 = cy + rInner * Math.sin(start);
+
+        const largeArc = angle > Math.PI ? 1 : 0;
+        const pathData = `M ${x1} ${y1} A ${rOuter} ${rOuter} 0 ${largeArc} 1 ${x2} ${y2} L ${x3} ${y3} A ${rInner} ${rInner} 0 ${largeArc} 0 ${x4} ${y4} Z`;
+
+        pathsHtml += `<path class="chart-arc" d="${pathData}" fill="${cat.color}" stroke="var(--card-bg)" stroke-width="2.5" onmouseenter="highlightChartSlice(${idx})" onmouseleave="resetChartHighlight()"></path>`;
+      });
+
+      container.innerHTML = `<svg viewBox="0 0 ${size} ${size}" width="100%" height="100%">${pathsHtml}</svg>`;
+    }
+
     window.addEventListener('DOMContentLoaded', async () => {
       initTheme();
       initCurrencyConverter();
+      initOnsiteSpend();
       try { groceries = JSON.parse(localStorage.getItem(GROCERY_STORAGE_KEY)) || []; } catch(e){}
+      try { fuelEntries = JSON.parse(localStorage.getItem(FUEL_STORAGE_KEY)) || []; } catch(e){}
       try { daySuggestions = JSON.parse(localStorage.getItem(SUGGESTIONS_STORAGE_KEY)) || {}; } catch(e){}
       try { checkboxStates = JSON.parse(localStorage.getItem(CHECKBOX_STORAGE_KEY)) || {}; } catch(e){}
 
       renderGroceries();
+      renderFuel();
       renderAllSuggestions();
       applyCheckboxStatesToUI();
       updateBudgetCalculations();
+      renderBudgetDoughnutChart();
+      fetchLiveWeather();
+      initScrollAnimations();
+      initSmoothAccordions();
+
+      const budgetSlide = document.getElementById('budget-details-slide');
+      if (budgetSlide) {
+        budgetSlide.addEventListener('toggle', () => {
+          if (budgetSlide.open) {
+            setTimeout(renderBudgetDoughnutChart, 60);
+          }
+        });
+      }
 
       const openBudgetIfTargeted = () => {
         if (window.location.hash === '#budget') {
           const budgetSlide = document.getElementById('budget-details-slide');
-          if (budgetSlide) budgetSlide.open = true;
+          if (budgetSlide) {
+            budgetSlide.open = true;
+            setTimeout(renderBudgetDoughnutChart, 60);
+          }
         }
       };
       window.addEventListener('hashchange', openBudgetIfTargeted);
@@ -3132,14 +4755,25 @@
       document.querySelectorAll('a[href="#budget"]').forEach(link => {
         link.addEventListener('click', () => {
           const budgetSlide = document.getElementById('budget-details-slide');
-          if (budgetSlide) budgetSlide.open = true;
+          if (budgetSlide) {
+            budgetSlide.open = true;
+            setTimeout(renderBudgetDoughnutChart, 60);
+          }
         });
       });
 
       const savedToken = localStorage.getItem('aus_auth_token');
-      if (savedToken) {
-        cryptoKey = await deriveEncryptionKey(savedToken);
-        unlockAppUI();
+      if (savedToken && savedToken.trim().toUpperCase() === 'AUSROA') {
+        const authData = await decryptVaultWithKey('AUSROA');
+        if (authData) {
+          cryptoKey = await deriveEncryptionKey('AUSROA');
+          decryptedVault = authData;
+          unlockAppUI();
+        } else {
+          localStorage.removeItem('aus_auth_token');
+        }
+      } else if (savedToken) {
+        localStorage.removeItem('aus_auth_token');
       }
     });
   </script>
