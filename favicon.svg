@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="ausBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#006d68"/>
+      <stop offset="100%" stop-color="#004340"/>
+    </linearGradient>
+    <linearGradient id="sunGlow" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#d96b27"/>
+      <stop offset="100%" stop-color="#f5a623"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Rounded App Icon Background -->
+  <rect width="512" height="512" rx="112" fill="url(#ausBg)"/>
+
+  <!-- Subtle Outer Border -->
+  <rect x="8" y="8" width="496" height="496" rx="104" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="4"/>
+
+  <!-- Outback Sun Rising in Background -->
+  <circle cx="256" cy="270" r="140" fill="url(#sunGlow)" opacity="0.95" filter="url(#shadow)"/>
+
+  <!-- Compass / Road Rays -->
+  <path d="M 256 90 L 268 200 L 256 185 L 244 200 Z" fill="#ffffff" opacity="0.9"/>
+  <path d="M 256 450 L 268 340 L 256 355 L 244 340 Z" fill="#ffffff" opacity="0.5"/>
+  <path d="M 90 270 L 200 282 L 185 270 L 200 258 Z" fill="#ffffff" opacity="0.5"/>
+  <path d="M 422 270 L 312 282 L 327 270 L 312 258 Z" fill="#ffffff" opacity="0.5"/>
+
+  <!-- Southern Cross Stars (Crux Australis) -->
+  <!-- Gacrux (Top) -->
+  <polygon points="350,150 354,162 366,162 356,170 360,182 350,174 340,182 344,170 334,162 346,162" fill="#ffffff"/>
+  <!-- Acrux (Bottom) -->
+  <polygon points="350,225 354,237 366,237 356,245 360,257 350,249 340,257 344,245 334,237 346,237" fill="#ffffff"/>
+  <!-- Mimosa (Left) -->
+  <polygon points="315,185 319,195 329,195 321,202 324,212 315,205 306,212 309,202 301,195 311,195" fill="#ffffff"/>
+  <!-- Delta Crucis (Right) -->
+  <polygon points="385,180 389,190 399,190 391,197 394,207 385,200 376,207 379,197 371,190 381,190" fill="#ffffff"/>
+
+  <!-- Kangaroo Jumping Silhouette (Stylized) -->
+  <g fill="#ffffff" filter="url(#shadow)" transform="translate(140, 200) scale(0.48)">
+    <path d="M 330 20 C 310 10 280 20 270 45 C 265 60 275 80 270 95 C 260 115 220 140 180 150 C 130 160 80 180 40 220 C 15 245 0 280 0 315 C 0 325 15 330 25 320 C 65 270 120 240 190 235 C 175 260 155 290 145 325 C 135 365 145 405 175 425 C 190 435 210 430 215 410 C 225 375 250 330 285 295 C 310 320 335 355 350 395 C 360 425 385 435 405 415 C 415 405 410 385 395 360 C 375 320 345 275 310 240 C 340 225 375 200 390 165 C 405 130 395 90 380 60 C 375 48 375 35 380 25 C 385 15 375 5 365 10 C 350 18 340 18 330 20 Z"/>
+  </g>
+
+  <!-- Road Ribbon Arc -->
+  <path d="M 60 410 Q 256 340 452 410" fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round" opacity="0.95"/>
+  <path d="M 60 410 Q 256 340 452 410" fill="none" stroke="#d96b27" stroke-width="6" stroke-linecap="round" stroke-dasharray="14 12"/>
+
+  <!-- Subtitle Badge Text -->
+  <text x="256" y="470" text-anchor="middle" font-family="'Outfit', -apple-system, sans-serif" font-size="34" font-weight="800" fill="#ffffff" letter-spacing="4">
+    AUS 2027
+  </text>
+</svg>
