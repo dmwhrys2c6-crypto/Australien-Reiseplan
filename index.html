@@ -5215,10 +5215,12 @@
                         Inlandsflüge</strong> (SYD➔BNK &amp; PPP➔MEL)</span></li>
                   <li onclick="focusDayOnMap(null)" style="cursor:pointer;"
                     title="Klicken: Alle 27 Sightseeing-Spots auf Karte ansehen"><i class="fa-solid fa-camera"></i>
-                    <span><strong>27 Sightseeing-Spots</strong> &amp; Fototipps</span></li>
+                    <span><strong>27 Sightseeing-Spots</strong> &amp; Fototipps</span>
+                  </li>
                   <li onclick="openBudgetDetails('budget-charts-main-card')" style="cursor:pointer;"
                     title="Klicken: Zum Budget-Bereich springen"><i class="fa-solid fa-wallet"></i>
-                    <span><strong>Budget:</strong> ca. 2.772 € p.P. (inkl. Taschengeld)</span></li>
+                    <span><strong>Budget:</strong> ca. 2.772 € p.P. (inkl. Taschengeld)</span>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -5985,9 +5987,11 @@
                 <div class="hotel-cost-box">
                   <div class="hotel-cost-title"><i class="fa-solid fa-calculator"></i> Hotelkosten Übersicht</div>
                   <div class="hotel-price-group"><i class="fa-solid fa-users"></i> Gesamtkosten: <strong>300 €</strong>
-                    <span class="hotel-price-aud">(~500 AUD)</span></div>
+                    <span class="hotel-price-aud">(~500 AUD)</span>
+                  </div>
                   <div class="hotel-price-person"><i class="fa-solid fa-user"></i> Pro Person: <strong>75 €</strong>
-                    <span class="hotel-price-aud">(~125 AUD)</span></div>
+                    <span class="hotel-price-aud">(~125 AUD)</span>
+                  </div>
                 </div>
                 <a href="https://www.airbnb.at/rooms/1065553106126009714" target="_blank"
                   class="btn-action btn-booking"><i class="fa-solid fa-hotel"></i> AirBnB Link</a>
@@ -7101,9 +7105,11 @@
                 <div class="hotel-cost-box">
                   <div class="hotel-cost-title"><i class="fa-solid fa-calculator"></i> Hotelkosten Übersicht</div>
                   <div class="hotel-price-group"><i class="fa-solid fa-users"></i> Gesamtkosten (4 Pers. Gruppe):
-                    <strong>468 €</strong> <span class="hotel-price-aud">(~780 AUD)</span></div>
+                    <strong>468 €</strong> <span class="hotel-price-aud">(~780 AUD)</span>
+                  </div>
                   <div class="hotel-price-person"><i class="fa-solid fa-user"></i> Pro Person: <strong>117 €</strong>
-                    <span class="hotel-price-aud">(~195 AUD)</span></div>
+                    <span class="hotel-price-aud">(~195 AUD)</span>
+                  </div>
                 </div>
                 <a href="https://www.booking.com/hotel/au/coral-sea-vista-apartments.de.html" target="_blank"
                   class="btn-action btn-booking"><i class="fa-solid fa-hotel"></i> Booking.com Link</a>
@@ -7495,9 +7501,11 @@
                 <div class="hotel-cost-box">
                   <div class="hotel-cost-title"><i class="fa-solid fa-calculator"></i> Hotelkosten Übersicht</div>
                   <div class="hotel-price-group"><i class="fa-solid fa-users"></i> Gesamtkosten (4 Pers. Gruppe):
-                    <strong>643 €</strong> <span class="hotel-price-aud">(~1071,67 AUD)</span></div>
+                    <strong>643 €</strong> <span class="hotel-price-aud">(~1071,67 AUD)</span>
+                  </div>
                   <div class="hotel-price-person"><i class="fa-solid fa-user"></i> Pro Person: <strong>160,75 €</strong>
-                    <span class="hotel-price-aud">(~267,92 AUD)</span></div>
+                    <span class="hotel-price-aud">(~267,92 AUD)</span>
+                  </div>
                 </div>
                 <a href="https://vibehotels.com" target="_blank" class="btn-action btn-booking"><i
                     class="fa-solid fa-hotel"></i> Hotel Website</a>
@@ -8901,7 +8909,8 @@
                           type="checkbox" class="sub-paid-cb" data-id="hotel-melbourne"
                           onchange="toggleSubItemPaid('hotel-melbourne', this.checked)"><span
                           class="paid-status-pill is-planned"><i class="fa-regular fa-circle"></i>
-                          Geplant</span></label></div>
+                          Geplant</span></label>
+                    </div>
                   </li>
                 </ul>
               </div>
@@ -9356,6 +9365,50 @@
           <a href="#map" class="btn-tool photos" title="Zur interaktiven Routenkarte springen">
             <i class="fa-solid fa-map-location-dot"></i> Zur Google Maps Route
           </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4d. Bucket List & Slang -->
+    <section id="bucketlist" class="section-spaced">
+      <h2 class="section-title">Aussie Bucket List &amp; Culture 🦘</h2>
+      <div class="hub-row-2col">
+        <div class="hub-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.6rem;">
+            <h3 style="margin:0;"><i class="fa-solid fa-paw"></i> Wildlife Tracker</h3>
+            <span class="sync-badge"><span class="sync-dot"></span> Live</span>
+          </div>
+          <ul class="checklist">
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="wild_koala"> Wilde Koalas (Noosa
+              / Great Ocean Road)</li>
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="wild_kangaroo"> Wilde Kängurus
+              (Noosa)</li>
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="wild_penguin"> Zwergpinguine
+              (St. Kilda Pier)</li>
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="wild_dingo"> Wilde Dingos
+              (K’gari)</li>
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="wild_dolphin"> Delfine /
+              Schildkröten (Byron Bay)</li>
+          </ul>
+        </div>
+
+        <div class="hub-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.6rem;">
+            <h3 style="margin:0;"><i class="fa-solid fa-utensils"></i> Aussie Taste Challenge</h3>
+            <span class="sync-badge"><span class="sync-dot"></span> Live</span>
+          </div>
+          <ul class="checklist">
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="taste_coffee"> Flat White Kaffee
+              probieren</li>
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="taste_timtam"> Tim Tam Slam
+              Ritual machen</li>
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="taste_pie"> Australien Meat Pie
+            </li>
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="taste_bundaberg"> Bundaberg
+              Ginger Beer</li>
+            <li class="checklist-item"><input type="checkbox" class="sync-checkbox" id="taste_vegemite"> Vegemite
+              Toast-Test</li>
+          </ul>
         </div>
       </div>
     </section>
@@ -10073,6 +10126,7 @@
               animTarget.style.overflow = '';
               isAnimating = false;
               currentAnimation = null;
+              details.dispatchEvent(new Event('toggle'));
 
               // Sofortigen ScrollCheck ausführen, damit nachfolgende Tage nicht verschwinden!
               if (typeof runScrollCheck === 'function') {
@@ -10126,9 +10180,13 @@
               details.classList.remove('is-expanding');
               isAnimating = false;
               currentAnimation = null;
+              details.dispatchEvent(new Event('toggle'));
 
               if (details.id === 'budget-details-slide') {
                 setTimeout(renderCurrentBudgetChart, 60);
+              }
+              if (details.id === 'drone-map-slide' && typeof handleDroneMapToggle === 'function') {
+                handleDroneMapToggle(details);
               }
               if (typeof runScrollCheck === 'function') {
                 runScrollCheck();
@@ -11119,11 +11177,15 @@
         }
       }
 
+      const container = document.getElementById('trip-dashboard-content');
+      if (container) container.dataset.renderedPhase = '';
       updateTripDashboard();
     }
 
     function setDashboardSimDay(dayNum) {
       dashboardSimDay = parseInt(dayNum, 10) || 1;
+      const container = document.getElementById('trip-dashboard-content');
+      if (container) container.dataset.renderedPhase = '';
       setDashboardSimMode('during');
     }
 
@@ -11208,32 +11270,49 @@
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
       const seconds = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
 
+      if (container.dataset.renderedPhase === 'pre') {
+        const elDays = document.getElementById('cd-days');
+        const elHours = document.getElementById('cd-hours');
+        const elMins = document.getElementById('cd-minutes');
+        const elSecs = document.getElementById('cd-seconds');
+        const elHead = document.getElementById('cd-headline-days');
+        if (elDays && elHours && elMins && elSecs) {
+          elDays.innerText = days;
+          elHours.innerText = hours;
+          elMins.innerText = minutes;
+          elSecs.innerText = seconds;
+          if (elHead) elHead.innerText = days + ' Tagen';
+          return;
+        }
+      }
+      container.dataset.renderedPhase = 'pre';
+
       const day1 = TRIP_DAYS_DATA[0];
       const day2 = TRIP_DAYS_DATA[1];
 
       container.innerHTML = `
         <div class="dashboard-phase-banner pre-trip">
           <div class="banner-status-badge"><i class="fa-solid fa-hourglass-half"></i> Reise steht bevor · Countdown läuft</div>
-          <div class="banner-headline">Abflug in <strong>${days} Tagen</strong> nach Australien 🦘🇦🇺</div>
+          <div class="banner-headline">Abflug in <strong id="cd-headline-days">${days} Tagen</strong> nach Australien 🦘🇦🇺</div>
           <div class="banner-subline">
             Abreisedatum: <strong>Sonntag, 21. März 2027 · 10:00 Uhr (MEZ)</strong> ab Flughafen Wien-Schwechat (VIE) mit Scoot TR 12 nach Singapur &amp; Sydney.
           </div>
 
           <div class="countdown-grid">
             <div class="countdown-unit">
-              <div class="countdown-num">${days}</div>
+              <div class="countdown-num" id="cd-days">${days}</div>
               <div class="countdown-lbl">Tage</div>
             </div>
             <div class="countdown-unit">
-              <div class="countdown-num">${hours}</div>
+              <div class="countdown-num" id="cd-hours">${hours}</div>
               <div class="countdown-lbl">Stunden</div>
             </div>
             <div class="countdown-unit">
-              <div class="countdown-num">${minutes}</div>
+              <div class="countdown-num" id="cd-minutes">${minutes}</div>
               <div class="countdown-lbl">Minuten</div>
             </div>
             <div class="countdown-unit">
-              <div class="countdown-num">${seconds}</div>
+              <div class="countdown-num" id="cd-seconds">${seconds}</div>
               <div class="countdown-lbl">Sekunden</div>
             </div>
           </div>
@@ -11331,6 +11410,12 @@
 
     // 2. WÄHREND DER REISE
     function renderDashboardDuringTrip(container, dayNum) {
+      const phaseKey = 'during_' + dayNum;
+      if (container.dataset.renderedPhase === phaseKey) {
+        return;
+      }
+      container.dataset.renderedPhase = phaseKey;
+
       const dayData = TRIP_DAYS_DATA.find(d => d.day === dayNum) || TRIP_DAYS_DATA[0];
       const nextDayData = TRIP_DAYS_DATA.find(d => d.day === dayNum + 1);
 
@@ -11519,10 +11604,15 @@
 
     // 3. NACH DER REISE
     function renderDashboardPostTrip(container) {
+      if (container.dataset.renderedPhase === 'post') {
+        return;
+      }
+      container.dataset.renderedPhase = 'post';
+
       const totalKm = 'ca. 2.100 km Mietwagen + ca. 2.560 km Inlandsflüge';
       const personToggle = document.getElementById('person-toggle');
       const isPerPerson = personToggle ? personToggle.checked : true;
-      const totalAmountEl = document.getElementById('total-sum-badge');
+      const totalAmountEl = document.getElementById('total-sum-badge') || document.getElementById('kpi-total-budget');
       const totalBudgetStr = totalAmountEl ? totalAmountEl.innerText.replace('Gesamt:', '').trim() : 'ca. 2.772 € p.P.';
 
       container.innerHTML = `
@@ -11665,13 +11755,18 @@
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
         const seconds = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
 
-        widget.innerHTML = `
-          <div class="hero-status-card pre-trip">
-            <div class="hero-status-tag"><i class="fa-solid fa-hourglass-half"></i> Countdown zum Abflug</div>
-            <div class="hero-status-title">⏳ Noch <strong>${days}</strong> Tage, <strong>${hours}</strong>:<strong>${minutes}</strong>:<strong>${seconds}</strong> bis zum Abflug in Wien 🇦🇹 ✈️ 🇦🇺</div>
-            <div class="hero-status-sub">Scoot Flug TR 12 · Abflug am 21. März 2027 um 10:00 Uhr</div>
-          </div>
-        `;
+        const cdSpan = document.getElementById('hero-countdown-span');
+        if (cdSpan) {
+          cdSpan.innerHTML = `Noch <strong>${days}</strong> Tage, <strong>${hours}</strong>:<strong>${minutes}</strong>:<strong>${seconds}</strong> bis zum Abflug in Wien 🇦🇹 ✈️ 🇦🇺`;
+        } else {
+          widget.innerHTML = `
+            <div class="hero-status-card pre-trip">
+              <div class="hero-status-tag"><i class="fa-solid fa-hourglass-half"></i> Countdown zum Abflug</div>
+              <div class="hero-status-title">⏳ <span id="hero-countdown-span">Noch <strong>${days}</strong> Tage, <strong>${hours}</strong>:<strong>${minutes}</strong>:<strong>${seconds}</strong> bis zum Abflug in Wien 🇦🇹 ✈️ 🇦🇺</span></div>
+              <div class="hero-status-sub">Scoot Flug TR 12 · Abflug am 21. März 2027 um 10:00 Uhr</div>
+            </div>
+          `;
+        }
       } else if (now >= tripStart && now < tripEnd) {
         // Während der Reise: Ermittle heutigen Tag nach australischer Lokalzeit
         const tz = (currentSelectedTz && currentSelectedTz.trim()) ? currentSelectedTz.trim() : 'Australia/Sydney';
@@ -11714,14 +11809,6 @@
           </div>
         `;
       }
-    }
-    setInterval(updateLiveTripStatus, 1000);
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        updateLiveTripStatus();
-      });
-    } else {
-      updateLiveTripStatus();
     }
 
     // =========================================================================
@@ -14214,6 +14301,10 @@
       updateOnsiteSpendMetrics();
     }
 
+    function openFuelTracker() {
+      openBudgetDetails('fuel-budget-card');
+    }
+
     function openBudgetDetails(targetId) {
       const budgetSec = document.getElementById('budget');
       if (budgetSec) {
@@ -14736,6 +14827,8 @@
     window.addEventListener('DOMContentLoaded', async () => {
       initTheme();
       updateTripDashboard();
+      updateLiveTripStatus();
+      setInterval(updateLiveTripStatus, 1000);
       initCurrencyConverter();
       initOnsiteSpend();
       loadUserExpenses();
