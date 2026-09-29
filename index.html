@@ -2238,7 +2238,315 @@
       text-decoration: underline;
     }
 
-    
+    /* =========================================================================
+       BLOCK 1: INTERAKTIVE ROUTENKARTE & HEUTE-DASHBOARD STYLES
+       ========================================================================= */
+    .travel-map-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 1.5rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .map-toolbar {
+      padding: 0.9rem 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--card-sub-bg);
+    }
+    .map-filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      align-items: center;
+    }
+    .map-filter-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.28rem 0.65rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      white-space: nowrap;
+      user-select: none;
+    }
+    .map-filter-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .map-filter-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+    }
+
+    /* Custom Leaflet Day Marker Pin */
+    .leaflet-day-marker {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      background: var(--primary);
+      border: 2px solid #ffffff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+    .leaflet-day-marker.flight {
+      background: var(--secondary);
+    }
+    .leaflet-day-marker.active,
+    .leaflet-day-marker:hover {
+      transform: rotate(-45deg) scale(1.25);
+      background: var(--accent-gold);
+      color: #0f172a;
+      z-index: 1000 !important;
+      box-shadow: 0 6px 20px rgba(245, 166, 35, 0.6);
+    }
+    .leaflet-day-marker span {
+      transform: rotate(45deg);
+      display: block;
+      text-align: center;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Popup styling in Leaflet Route Map */
+    .route-popup-card {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: #0f172a;
+      padding: 0.25rem 0.1rem;
+      min-width: 200px;
+    }
+    .route-popup-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      background: #e6f4f3;
+      color: #006d68;
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      margin-bottom: 0.35rem;
+    }
+    .route-popup-badge.flight {
+      background: #fff3ec;
+      color: #d96b27;
+    }
+    .route-popup-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 0.35rem;
+      color: #0f172a;
+      line-height: 1.25;
+    }
+    .route-popup-meta {
+      font-size: 0.76rem;
+      color: #475569;
+      margin-bottom: 0.65rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .route-popup-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #006d68;
+      color: #ffffff !important;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.45rem 0.8rem;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      width: 100%;
+      justify-content: center;
+      transition: background 0.15s ease;
+    }
+    .route-popup-btn:hover {
+      background: #004b47;
+    }
+
+    /* Timeline Tag-Sprung zur Karte */
+    .btn-jump-to-map {
+      background: var(--card-sub-bg);
+      border: 1px solid var(--border-color);
+      color: var(--primary);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.15s ease;
+      user-select: none;
+      margin-left: 0.35rem;
+    }
+    .btn-jump-to-map:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary-dark);
+    }
+    .timeline-item.day-highlight-pulse {
+      animation: dayHighlightPulse 2s ease-out;
+      border-color: var(--accent-gold) !important;
+    }
+    @keyframes dayHighlightPulse {
+      0% { box-shadow: 0 0 0 0 rgba(245, 166, 35, 0.7); }
+      40% { box-shadow: 0 0 0 12px rgba(245, 166, 35, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(245, 166, 35, 0); }
+    }
+
+    /* Vollwertiges Heute-Dashboard */
+    .dashboard-progress-wrap {
+      margin: 0.7rem 0 0.85rem 0;
+      text-align: left;
+    }
+    .dashboard-progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 0.25rem;
+    }
+    .dashboard-progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .dashboard-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-gold), #4ade80);
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 0.65rem;
+      margin-top: 0.85rem;
+      text-align: left;
+    }
+    .dashboard-tile {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 0.7rem 0.85rem;
+      font-size: 0.82rem;
+    }
+    .dashboard-tile-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--accent-gold);
+      font-weight: 800;
+      margin-bottom: 0.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .dashboard-tile-val {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.35;
+    }
+    .dashboard-tile-sub {
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.82);
+      margin-top: 0.15rem;
+    }
+    .dashboard-notice-box {
+      margin-top: 0.75rem;
+      background: rgba(245, 166, 35, 0.18);
+      border: 1px solid rgba(245, 166, 35, 0.4);
+      border-radius: 10px;
+      padding: 0.6rem 0.85rem;
+      font-size: 0.78rem;
+      color: #ffffff;
+      text-align: left;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .dashboard-actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-top: 0.85rem;
+    }
+    .hero-btn-action {
+      background: var(--primary);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .hero-btn-action:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+    .hero-btn-action.secondary {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+    }
+    .hero-btn-action.secondary:hover {
+      background: rgba(255, 255, 255, 0.32);
+    }
+    .dashboard-sim-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.85rem;
+      padding-top: 0.7rem;
+      border-top: 1px dashed rgba(255, 255, 255, 0.22);
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.85);
+    }
+    .dashboard-sim-select {
+      background: rgba(0, 0, 0, 0.55);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 8px;
+      padding: 0.25rem 0.65rem;
+      font-size: 0.76rem;
+      font-weight: 700;
+      outline: none;
+      cursor: pointer;
+    }
+
     /* Sight Detail Cards - Ohne Bilder, extrem übersichtlich & kompakt */
     .sight-detail-grid {
       display: grid;
@@ -2821,11 +3129,48 @@
         </div>
       </div>
 
+      <!-- Interaktive Leaflet Routenkarte -->
+      <div class="travel-map-card scroll-tab">
+        <div class="map-toolbar">
+          <div style="display: flex; align-items: center; gap: 0.65rem;">
+            <div style="width: 36px; height: 36px; border-radius: 10px; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.15rem;">
+              <i class="fa-solid fa-map-location-dot"></i>
+            </div>
+            <div>
+              <strong style="color: var(--text-main); font-size: 0.95rem; display: block;">Australien Ostküste Route 2027</strong>
+              <span style="font-size: 0.75rem; color: var(--text-muted);">20 Reisetage · Klicke auf Marker für Details &amp; Reiseplan-Sprung</span>
+            </div>
+          </div>
+
+          <div class="map-filter-group">
+            <button type="button" class="map-filter-btn active" data-filter="all" onclick="filterRouteMap('all')">Alle Stopps</button>
+            <button type="button" class="map-filter-btn" data-filter="sydney" onclick="filterRouteMap('sydney')">Sydney (T1-4)</button>
+            <button type="button" class="map-filter-btn" data-filter="byron" onclick="filterRouteMap('byron')">Byron Bay (T5-6)</button>
+            <button type="button" class="map-filter-btn" data-filter="brisbane" onclick="filterRouteMap('brisbane')">Brisbane (T7-9)</button>
+            <button type="button" class="map-filter-btn" data-filter="sunshine" onclick="filterRouteMap('sunshine')">Noosa / K'gari (T10-12)</button>
+            <button type="button" class="map-filter-btn" data-filter="whitsundays" onclick="filterRouteMap('whitsundays')">Whitsundays (T13-15)</button>
+            <button type="button" class="map-filter-btn" data-filter="melbourne" onclick="filterRouteMap('melbourne')">Melbourne (T16-20)</button>
+            <button type="button" class="map-filter-btn" onclick="resetRouteMapView()" title="Gesamte Ostküste zentrieren" style="background: var(--card-sub-bg); color: var(--primary); border-color: var(--primary);">
+              <i class="fa-solid fa-rotate-left"></i> Übersicht
+            </button>
+          </div>
+        </div>
+
+        <div style="position: relative; width: 100%; height: 500px;">
+          <div id="travel-route-map" style="width: 100%; height: 100%;"></div>
+          <div class="route-map-badge-overlay" style="position: absolute; bottom: 12px; left: 12px; z-index: 500; background: var(--nav-bg); backdrop-filter: blur(10px); padding: 0.4rem 0.8rem; border-radius: 10px; border: 1px solid var(--border-color); font-size: 0.75rem; color: var(--text-main); pointer-events: none; box-shadow: var(--shadow-sm);">
+            <i class="fa-solid fa-route" style="color: var(--primary); margin-right: 0.35rem;"></i>
+            <span><strong>2.100 km</strong> Roadtrip &amp; <strong>2 Inlandsflüge</strong> (SYD ➔ BNK &amp; PPP ➔ MEL)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alternative Google Maps Ansicht (Erhalten als Option) -->
       <details class="clean-slide scroll-tab">
         <summary>
           <div class="slide-icon-title">
-            <i class="fa-solid fa-map-location-dot" style="color: var(--primary);"></i>
-            <span>Interaktive Google Maps Route öffnen</span>
+            <i class="fa-brands fa-google" style="color: var(--primary);"></i>
+            <span>Alternative Google MyMaps Ansicht öffnen</span>
           </div>
           <i class="fa-solid fa-chevron-down chevron-rot"></i>
         </summary>
@@ -6119,6 +6464,9 @@
       initCloudSync();
       initScrollAnimations();
       initSmoothAccordions();
+      setTimeout(() => {
+        if (travelRouteMap) travelRouteMap.invalidateSize();
+      }, 400);
     }
 
     function lockApp() {
@@ -6879,99 +7227,870 @@
     // =========================================================================
     // INTELLIGENTER LIVE-REISESTATUS (HERO) & TAGESPLAN-STEUERUNG
     // =========================================================================
-    const TRIP_DAYS = [
-      { day: 1, date: '2027-03-21', title: 'Abreise aus Wien nach Sydney' },
-      { day: 2, date: '2027-03-22', title: 'Ankunft in Sydney & Darling Harbour' },
-      { day: 3, date: '2027-03-23', title: 'Sydney – Klassiker am Hafen & Manly Ferry' },
-      { day: 4, date: '2027-03-24', title: 'Sydney – Coastal Walk & Trendviertel' },
-      { day: 5, date: '2027-03-25', title: 'Flug nach Ballina / Byron Bay' },
-      { day: 6, date: '2027-03-26', title: 'Byron Bay – Surfen & Kajak' },
-      { day: 7, date: '2027-03-27', title: 'Byron Bay ➔ Gold Coast ➔ Brisbane' },
-      { day: 8, date: '2027-03-28', title: 'Brisbane City & South Bank' },
-      { day: 9, date: '2027-03-29', title: 'Australia Zoo (Beerwah)' },
-      { day: 10, date: '2027-03-30', title: 'Fahrt nach Noosa & Glass House Mountains' },
-      { day: 11, date: '2027-03-31', title: 'Rainbow Beach & Carlo Sand Blow ➔ Hervey Bay' },
-      { day: 12, date: '2027-04-01', title: 'K’gari (Fraser Island) & Greyhound Nachtbus' },
-      { day: 13, date: '2027-04-02', title: 'Airlie Beach & Whitsundays Helikopter' },
-      { day: 14, date: '2027-04-03', title: 'Whitsundays Segeln & Whitehaven Beach' },
-      { day: 15, date: '2027-04-04', title: 'Airlie Beach Erholung & Cedar Creek Falls' },
-      { day: 16, date: '2027-04-05', title: 'Flug nach Melbourne' },
-      { day: 17, date: '2027-04-06', title: 'Melbourne City, Laneways & St. Kilda Pinguine' },
-      { day: 18, date: '2027-04-07', title: 'Great Ocean Road Tagestour (Twelve Apostles)' },
-      { day: 19, date: '2027-04-08', title: 'Melbourne Brighton Beach & Fitzroy Rooftop' },
-      { day: 20, date: '2027-04-09', title: 'Melbourne Ausklang & Heimflug nach Wien' }
+    const ROUTE_STOPS = [
+      {
+        day: 1,
+        date: '2027-03-21',
+        weekday: 'So',
+        title: 'Abreise aus Wien nach Sydney',
+        shortTitle: 'Wien ➔ Sydney',
+        coords: [-33.8732, 151.2008],
+        currentLocation: 'Wien-Schwechat (VIE)',
+        destination: 'Sydney Kingsford Smith (SYD)',
+        region: 'flight',
+        type: 'flight',
+        driveDist: 'Flug VIE ➔ SIN ➔ SYD',
+        driveTime: '22h 50m Gesamtzeit',
+        stay: 'Flug (Scoot Boeing 787 TR 12)',
+        nextAct: '10:00 Uhr Abflug Flughafen Wien Terminal 3',
+        notice: 'Reisepässe & eVisitor Visum (Subclass 651) griffbereit halten!',
+        highlight: 'Stopover Jewel Changi Airport Singapur'
+      },
+      {
+        day: 2,
+        date: '2027-03-22',
+        weekday: 'Mo',
+        title: 'Ankunft in Sydney & Darling Harbour',
+        shortTitle: 'Sydney Ankunft',
+        coords: [-33.8732, 151.2008],
+        currentLocation: 'Sydney Airport (SYD)',
+        destination: 'Darling Harbour & Ultimo',
+        region: 'sydney',
+        type: 'city',
+        driveDist: 'ca. 12 km Transfer',
+        driveTime: 'ca. 25 Min. Airport Train/Taxi',
+        stay: 'The Ultimo, 50 Jones St, Ultimo (Sydney)',
+        nextAct: '18:50 Uhr Landung in Sydney & Hotel-Check-in',
+        notice: 'Kreditkarte für Airport Train / Uber bereithalten',
+        highlight: 'Erster Spaziergang am Darling Harbour & Barangaroo'
+      },
+      {
+        day: 3,
+        date: '2027-03-23',
+        weekday: 'Di',
+        title: 'Sydney – Klassiker am Hafen & Manly Ferry',
+        shortTitle: 'Hafen & Manly Ferry',
+        coords: [-33.8568, 151.2153],
+        currentLocation: 'Circular Quay / The Rocks',
+        destination: 'Manly Beach & Hafen',
+        region: 'sydney',
+        type: 'city',
+        driveDist: 'Fähre F1 & Fußwege',
+        driveTime: 'ca. 30 Min. Fährüberfahrt',
+        stay: 'The Ultimo, Sydney',
+        nextAct: 'Harbour Bridge Walk, Sydney Opera House & Manly Ferry',
+        notice: 'F1 Ferry von Circular Quay Wharf 3 nach Manly nehmen',
+        highlight: 'Sonnenuntergangsfahrt mit der Fähre an der Opera vorbei'
+      },
+      {
+        day: 4,
+        date: '2027-03-24',
+        weekday: 'Mi',
+        title: 'Sydney – Coastal Walk & Trendviertel',
+        shortTitle: 'Bondi to Coogee Walk',
+        coords: [-33.8915, 151.2767],
+        currentLocation: 'Bondi Beach',
+        destination: 'Coogee Beach & Surry Hills',
+        region: 'sydney',
+        type: 'city',
+        driveDist: 'Bus & 6 km Küstenpfad',
+        driveTime: 'ca. 2,5 Std. Coastal Walk',
+        stay: 'The Ultimo, Sydney',
+        nextAct: 'Bondi Beach, Icebergs Pool & Bondi to Coogee Coastal Walk',
+        notice: 'Sonnenschutz (50+), Kopfbedeckung & Badesachen mitnehmen',
+        highlight: 'Spektakuläre Klippenlandschaft entlang des Pazifiks'
+      },
+      {
+        day: 5,
+        date: '2027-03-25',
+        weekday: 'Do',
+        title: 'Flug nach Ballina / Byron Bay',
+        shortTitle: 'Flug ➔ Byron Bay',
+        coords: [-28.6474, 153.6120],
+        currentLocation: 'Sydney (SYD)',
+        destination: 'Ballina / Byron Bay',
+        region: 'byron',
+        type: 'flight',
+        driveDist: 'Inlandsflug + 30 km Mietwagen',
+        driveTime: 'Flug 1h 20m + 25 Min. Fahrt',
+        stay: 'AirBnB East Ballina / Byron Bay',
+        nextAct: 'Flug JQ 456 nach Ballina, Mietwagen-Übernahme & Byron Bay',
+        notice: 'Mietwagen-Formalitäten bei Ankunft am Ballina Airport erledigen',
+        highlight: 'Erster Sonnenuntergang im Surferparadies Byron Bay'
+      },
+      {
+        day: 6,
+        date: '2027-03-26',
+        weekday: 'Fr',
+        title: 'Byron Bay – Surfen & Kajak',
+        shortTitle: 'Byron Bay Aktivitäten',
+        coords: [-28.6380, 153.6366],
+        currentLocation: 'Byron Bay',
+        destination: 'Cape Byron & Wategos Beach',
+        region: 'byron',
+        type: 'roadtrip',
+        driveDist: 'ca. 15 km lokal',
+        driveTime: 'ca. 20 Min.',
+        stay: 'AirBnB East Ballina',
+        nextAct: 'Cape Byron Lighthouse Walk (östlichster Punkt) & Kajaktour',
+        notice: 'Delfine, Rochen & Schildkröten in der Bucht beobachten',
+        highlight: 'Cape Byron Lighthouse & Wategos Beach'
+      },
+      {
+        day: 7,
+        date: '2027-03-27',
+        weekday: 'Sa',
+        title: 'Byron Bay ➔ Gold Coast ➔ Brisbane',
+        shortTitle: 'Byron ➔ Brisbane',
+        coords: [-27.4698, 153.0251],
+        currentLocation: 'Byron Bay (NSW)',
+        destination: 'Brisbane City (QLD)',
+        region: 'brisbane',
+        type: 'roadtrip',
+        driveDist: 'ca. 175 km Roadtrip',
+        driveTime: 'ca. 2h 15m reine Fahrzeit',
+        stay: 'Rambla at Story House, Brisbane City',
+        nextAct: 'Zwischenstopp Burleigh Heads Lookout & Fahrt nach Brisbane',
+        notice: 'Zeitzone: NSW verlässt Sommerzeit – keine Sommerzeit in QLD!',
+        highlight: 'Skyline-Panoramablick von Burleigh Heads'
+      },
+      {
+        day: 8,
+        date: '2027-03-28',
+        weekday: 'So',
+        title: 'Brisbane City & South Bank',
+        shortTitle: 'Brisbane City & River',
+        coords: [-27.4760, 153.0205],
+        currentLocation: 'Brisbane City',
+        destination: 'South Bank & Howard Smith Wharves',
+        region: 'brisbane',
+        type: 'city',
+        driveDist: 'Kostenlose CityHopper Fähre',
+        driveTime: 'Lokal / Fähre ca. 20 Min.',
+        stay: 'Rambla at Story House, Brisbane',
+        nextAct: 'South Bank Parklands, künstlicher Stadtstrand Streets Beach',
+        notice: 'Sonnenuntergang-Drinks unter der Story Bridge einplanen',
+        highlight: 'Howard Smith Wharves Brauerei & Rooftop Bars'
+      },
+      {
+        day: 9,
+        date: '2027-03-29',
+        weekday: 'Mo',
+        title: 'Australia Zoo (Beerwah)',
+        shortTitle: 'Australia Zoo Ausflug',
+        coords: [-26.8375, 152.9617],
+        currentLocation: 'Brisbane',
+        destination: 'Beerwah (Sunshine Coast)',
+        region: 'brisbane',
+        type: 'excursion',
+        driveDist: 'ca. 160 km hin/zurück',
+        driveTime: 'ca. 1h 10m pro Richtung',
+        stay: 'Rambla at Story House, Brisbane',
+        nextAct: 'Steve Irwin Australia Zoo – Kängurus füttern & Krokodil-Show',
+        notice: 'Wildlife Warriors Show im Crocoseum um 13:15 Uhr nicht verpassen',
+        highlight: 'Kängurus hautnah füttern & Koala Hospital'
+      },
+      {
+        day: 10,
+        date: '2027-03-30',
+        weekday: 'Di',
+        title: 'Fahrt nach Noosa & Glass House Mountains',
+        shortTitle: 'Brisbane ➔ Noosa',
+        coords: [-26.3927, 153.0934],
+        currentLocation: 'Brisbane',
+        destination: 'Noosa Heads',
+        region: 'sunshine',
+        type: 'roadtrip',
+        driveDist: 'ca. 150 km Roadtrip',
+        driveTime: 'ca. 2 Std. Fahrt',
+        stay: 'Villa Noosa Hotel, Noosa Heads',
+        nextAct: 'Glass House Mountains Lookout & Fahrt nach Noosa Main Beach',
+        notice: 'Noosa National Park Coastal Walk am Nachmittag (Koalas suchen!)',
+        highlight: 'Hell\'s Gates & Fairy Pools im Noosa National Park'
+      },
+      {
+        day: 11,
+        date: '2027-03-31',
+        weekday: 'Mi',
+        title: 'Rainbow Beach & Carlo Sand Blow ➔ Hervey Bay',
+        shortTitle: 'Noosa ➔ Hervey Bay',
+        coords: [-25.2986, 152.8535],
+        currentLocation: 'Noosa Heads',
+        destination: 'Hervey Bay',
+        region: 'sunshine',
+        type: 'roadtrip',
+        driveDist: 'ca. 190 km Roadtrip',
+        driveTime: 'ca. 2h 30m Fahrt',
+        stay: 'Nightcap at Kondari Resort, Hervey Bay',
+        nextAct: 'Stopp Rainbow Beach & riesige Riesensanddüne Carlo Sand Blow',
+        notice: 'Feste Schuhe für die Sanddüne; Vorbereitung K\'gari Tagestour',
+        highlight: 'Mondlandschaft-Ausblick von der Carlo Sand Blow Düne'
+      },
+      {
+        day: 12,
+        date: '2027-04-01',
+        weekday: 'Do',
+        title: 'K’gari (Fraser Island) & Greyhound Nachtbus',
+        shortTitle: 'K’gari 4WD & Nachtbus',
+        coords: [-25.2442, 153.1257],
+        currentLocation: 'Hervey Bay / K\'gari',
+        destination: 'Airlie Beach (Nachtfahrt)',
+        region: 'sunshine',
+        type: 'excursion',
+        driveDist: '4WD Tour + Nachtbus nach Airlie',
+        driveTime: 'Ganztagestour + 11h Nachtbus',
+        stay: 'Greyhound Nachtbus (Hervey Bay ➔ Airlie Beach)',
+        nextAct: '75 Mile Beach, Lake McKenzie, Maheno Shipwreck, Eli Creek',
+        notice: 'Kleines Handgepäck für die K\'gari-Tour & Kissen für den Nachtbus',
+        highlight: 'Kristallklares Wasser im Lake McKenzie & Dingo-Sichtung'
+      },
+      {
+        day: 13,
+        date: '2027-04-02',
+        weekday: 'Fr',
+        title: 'Airlie Beach & Whitsundays Helikopter',
+        shortTitle: 'Airlie Beach & Helikopter',
+        coords: [-20.2678, 148.7153],
+        currentLocation: 'Port of Airlie',
+        destination: 'Airlie Beach & Whitsundays',
+        region: 'whitsundays',
+        type: 'city',
+        driveDist: 'Ankunft Nachtbus & Lokal',
+        driveTime: 'Ankunft ca. 07:30 Uhr morgens',
+        stay: 'Coral Sea Vista Apartments, Airlie Beach',
+        nextAct: 'Frühstück an der Lagoon, Check-in & Whitsundays Rundflug',
+        notice: 'Helikopterflug (Heart Reef & Whitehaven Beach) am Nachmittag',
+        highlight: 'Spektakulärer Blick auf das weltberühmte Heart Reef'
+      },
+      {
+        day: 14,
+        date: '2027-04-03',
+        weekday: 'Sa',
+        title: 'Whitsundays Segeln & Whitehaven Beach',
+        shortTitle: 'Whitsundays Katamaran',
+        coords: [-20.2825, 149.0397],
+        currentLocation: 'Port of Airlie Marina',
+        destination: 'Whitehaven Beach & Hill Inlet',
+        region: 'whitsundays',
+        type: 'excursion',
+        driveDist: 'Ganztägige Katamaran-Segeltour',
+        driveTime: 'Ganztags ab Marina',
+        stay: 'Coral Sea Vista Apartments, Airlie Beach',
+        nextAct: 'Katamaran-Segeltörn, Schnorcheln am Riff & Hill Inlet Lookout',
+        notice: '98,9% reiner Quarzsand am Whitehaven Beach – Schutzhüllen für Handys',
+        highlight: 'Swirling Sands Panorama am Hill Inlet Lookout'
+      },
+      {
+        day: 15,
+        date: '2027-04-04',
+        weekday: 'So',
+        title: 'Airlie Beach Erholung & Cedar Creek Falls',
+        shortTitle: 'Cedar Creek Falls',
+        coords: [-20.3541, 148.6946],
+        currentLocation: 'Airlie Beach',
+        destination: 'Cedar Creek Falls & Lagoon',
+        region: 'whitsundays',
+        type: 'roadtrip',
+        driveDist: 'ca. 60 km hin/zurück',
+        driveTime: 'ca. 35 Min. Fahrt',
+        stay: 'Coral Sea Vista Apartments, Airlie Beach',
+        nextAct: 'Erholung an der Airlie Beach Lagoon & Ausflug zu den Wasserfällen',
+        notice: 'Erfrischendes Bad in den Naturpools der Cedar Creek Falls',
+        highlight: 'Naturpool-Schwimmen im tropischen Regenwald-Ambiente'
+      },
+      {
+        day: 16,
+        date: '2027-04-05',
+        weekday: 'Mo',
+        title: 'Flug nach Melbourne',
+        shortTitle: 'Flug ➔ Melbourne',
+        coords: [-37.8175, 144.9450],
+        currentLocation: 'Proserpine Airport (PPP)',
+        destination: 'Melbourne Docklands (VIC)',
+        region: 'melbourne',
+        type: 'flight',
+        driveDist: 'Flug PPP-MEL (ca. 2.100 km)',
+        driveTime: 'Flug 3h 10m + Transfer 30 Min.',
+        stay: 'Vibe Hotel Docklands, Melbourne (VIC)',
+        nextAct: 'Transfer zum Flughafen Proserpine, Flug nach Melbourne & Check-in',
+        notice: 'SkyBus vom Melbourne Tullamarine Airport zu den Docklands',
+        highlight: 'Ankunft in Melbourne, Kultur- und Kaffeemetropole'
+      },
+      {
+        day: 17,
+        date: '2027-04-06',
+        weekday: 'Di',
+        title: 'Melbourne City, Laneways & St. Kilda Pinguine',
+        shortTitle: 'Melbourne City & Pinguine',
+        coords: [-37.8676, 144.9734],
+        currentLocation: 'Melbourne CBD',
+        destination: 'St. Kilda Beach & Pier',
+        region: 'melbourne',
+        type: 'city',
+        driveDist: 'Kostenlose City Circle Tram',
+        driveTime: 'Tram & Lokal',
+        stay: 'Vibe Hotel Docklands, Melbourne',
+        nextAct: 'Flinders St Station, Degraves St Laneways, Hosier Lane & St. Kilda Pier',
+        notice: 'Zwergpinguine am Pier nach Sonnenuntergang (kein Fotoblitz erlaubt!)',
+        highlight: 'Kleine Zwergpinguine an den Felsen des St. Kilda Piers'
+      },
+      {
+        day: 18,
+        date: '2027-04-07',
+        weekday: 'Mi',
+        title: 'Great Ocean Road Tagestour (Twelve Apostles)',
+        shortTitle: 'Great Ocean Road',
+        coords: [-38.6657, 143.1047],
+        currentLocation: 'Melbourne',
+        destination: 'Twelve Apostles & Loch Ard Gorge',
+        region: 'melbourne',
+        type: 'excursion',
+        driveDist: 'ca. 520 km Tagesausflug',
+        driveTime: 'Ganztagestour (ca. 11 Std.)',
+        stay: 'Vibe Hotel Docklands, Melbourne',
+        nextAct: 'Fahrt über Torquay, Bells Beach & Otway Rainforest zu den Twelve Apostles',
+        notice: 'Früh starten; eine der berühmtesten Küstenstraßen der Welt',
+        highlight: 'Twelve Apostles Kalksteinfelsen im tosenden Südpolarmeer'
+      },
+      {
+        day: 19,
+        date: '2027-04-08',
+        weekday: 'Do',
+        title: 'Melbourne Brighton Beach & Fitzroy Rooftop',
+        shortTitle: 'Brighton Beach & Fitzroy',
+        coords: [-37.9174, 144.9863],
+        currentLocation: 'Melbourne CBD',
+        destination: 'Brighton Beach & Fitzroy',
+        region: 'melbourne',
+        type: 'city',
+        driveDist: 'Metro Train & Tram',
+        driveTime: 'ca. 30 Min. Bahn',
+        stay: 'Vibe Hotel Docklands, Melbourne',
+        nextAct: 'Bunte Bathing Boxes an der Dendy St ➔ Nachmittags Fitzroy Rooftop Bars',
+        notice: 'Naked for Satan Rooftop Bar in Fitzroy für den besten Skyline-Blick',
+        highlight: 'Skyline-Panoramablick von der Naked for Satan Rooftop Bar'
+      },
+      {
+        day: 20,
+        date: '2027-04-09',
+        weekday: 'Fr',
+        title: 'Melbourne Ausklang & Heimflug nach Wien',
+        shortTitle: 'Heimflug nach Wien',
+        coords: [-37.6690, 144.8410],
+        currentLocation: 'Melbourne CBD',
+        destination: 'Tullamarine Airport (MEL) ➔ Wien',
+        region: 'flight',
+        type: 'flight',
+        driveDist: 'Transfer zum Airport & Langstrecke',
+        driveTime: 'Flug ca. 22h via Singapur nach Wien',
+        stay: 'Rückflug (Ankunft Wien am 10.04. morgens)',
+        nextAct: 'Queen Victoria Market Souvenirs, Flat White Kaffee ➔ SkyBus zum Airport',
+        notice: 'Steuererstattung (TRS Tourist Refund Scheme) vor dem Boarding nutzen!',
+        highlight: 'Abschied von Australien nach 20 unvergesslichen Tagen'
+      }
     ];
 
+    // Rückwärtskompatibilität für alle Stellen, die TRIP_DAYS nutzen
+    const TRIP_DAYS = ROUTE_STOPS;
+
+    // Zeitzonensteuerung mit Persistenz
+    function changeTimezone(tz) {
+      if (!tz) return;
+      currentSelectedTz = tz;
+      try {
+        localStorage.setItem('aus_selected_tz', tz);
+      } catch (e) {}
+      const tzSelect = document.getElementById('timezone-select');
+      if (tzSelect && tzSelect.value !== tz) tzSelect.value = tz;
+      if (typeof updateDualClocks === 'function') updateDualClocks();
+      if (typeof updateLiveTripStatus === 'function') updateLiveTripStatus();
+      if (typeof broadcastState === 'function') broadcastState();
+    }
+
+    // Verbesserter Sprung zum Reisetag mit sanftem Scrollen & optischer Hervorhebung
     function jumpToDay(dayNum) {
       const dayEl = document.getElementById('day-' + dayNum);
       if (!dayEl) return;
       dayEl.open = true;
       const dayPlan = dayEl.querySelector('.day-plan-accordion');
       if (dayPlan) dayPlan.open = true;
-      dayEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      dayEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      dayEl.classList.remove('day-highlight-pulse');
+      void dayEl.offsetWidth;
+      dayEl.classList.add('day-highlight-pulse');
+      setTimeout(() => { dayEl.classList.remove('day-highlight-pulse'); }, 2200);
     }
 
+    // Simulationszustand für das Heute-Dashboard (Vorschaumodus)
+    let simulatedTripDay = null;
+
+    function setSimulatedTripDay(val) {
+      if (val === 'live' || !val) {
+        simulatedTripDay = null;
+      } else {
+        simulatedTripDay = parseInt(val, 10);
+      }
+      updateLiveTripStatus();
+    }
+
+    // Vollwertiges Heute-Dashboard (mit Countdown, Live-Daten, Kacheln & Simulation)
     function updateLiveTripStatus() {
       const widget = document.getElementById('hero-trip-status-widget');
       if (!widget) return;
 
       const now = new Date();
-      // Trip begins: 21.03.2027 10:00 Vienna time (UTC+1)
       const tripStart = new Date("2027-03-21T10:00:00+01:00");
-      // Trip ends: 09.04.2027 23:59:59 Australian eastern time / 10.04.2027 00:00
       const tripEnd = new Date("2027-04-10T00:00:00+10:00");
 
+      // 1. Wenn Vorschaumodus aktiv ist: Zeige ausgewählten Tag im Dashboard
+      if (simulatedTripDay !== null) {
+        const activeDay = ROUTE_STOPS.find(s => s.day === simulatedTripDay) || ROUTE_STOPS[0];
+        renderTodayDashboardUI(widget, activeDay, 'preview', null);
+        return;
+      }
+
+      // 2. Vor dem Trip: Live-Countdown + Option zur Tagessimulation
       if (now < tripStart) {
-        // Vor dem Trip: Live-Countdown
         const diff = tripStart.getTime() - now.getTime();
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
         const seconds = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
 
+        let simOptions = '';
+        ROUTE_STOPS.forEach(s => {
+          simOptions += `<option value="${s.day}">Tag ${s.day}: ${escapeHtml(s.shortTitle)}</option>`;
+        });
+
         widget.innerHTML = `
           <div class="hero-status-card pre-trip">
             <div class="hero-status-tag"><i class="fa-solid fa-hourglass-half"></i> Countdown zum Abflug</div>
             <div class="hero-status-title">⏳ Noch <strong>${days}</strong> Tage, <strong>${hours}</strong>:<strong>${minutes}</strong>:<strong>${seconds}</strong> bis zum Abflug in Wien 🇦🇹 ✈️ 🇦🇺</div>
-            <div class="hero-status-sub">Scoot Flug TR 12 · Abflug am 21. März 2027 um 10:00 Uhr</div>
+            <div class="hero-status-sub">Scoot Flug TR 12 · Abflug am 21. März 2027 um 10:00 Uhr (Wien VIE)</div>
+            
+            <div class="dashboard-sim-bar">
+              <span><i class="fa-solid fa-eye" style="color:var(--accent-gold); margin-right:4px;"></i> Reisetage vorab simulieren:</span>
+              <select class="dashboard-sim-select" onchange="setSimulatedTripDay(this.value)">
+                <option value="live">Live-Countdown</option>
+                ${simOptions}
+              </select>
+            </div>
           </div>
         `;
-      } else if (now >= tripStart && now < tripEnd) {
-        // Während der Reise: Ermittle heutigen Tag nach australischer Lokalzeit
+        return;
+      }
+
+      // 3. Während der Reise: Ermittle heutigen Tag nach australischer Lokalzeit
+      if (now >= tripStart && now < tripEnd) {
         const aussieDateStr = new Intl.DateTimeFormat('en-CA', { 
           timeZone: currentSelectedTz || 'Australia/Sydney', 
           year: 'numeric', month: '2-digit', day: '2-digit' 
         }).format(now);
 
-        let activeDay = TRIP_DAYS.find(d => d.date === aussieDateStr);
+        let activeDay = ROUTE_STOPS.find(d => d.date === aussieDateStr);
         if (!activeDay) {
-          if (aussieDateStr < TRIP_DAYS[0].date) activeDay = TRIP_DAYS[0];
-          else if (aussieDateStr > TRIP_DAYS[TRIP_DAYS.length - 1].date) activeDay = TRIP_DAYS[TRIP_DAYS.length - 1];
-          else activeDay = TRIP_DAYS[0];
+          if (aussieDateStr < ROUTE_STOPS[0].date) activeDay = ROUTE_STOPS[0];
+          else if (aussieDateStr > ROUTE_STOPS[ROUTE_STOPS.length - 1].date) activeDay = ROUTE_STOPS[ROUTE_STOPS.length - 1];
+          else activeDay = ROUTE_STOPS[0];
         }
 
-        const formattedDate = activeDay.date.split('-').reverse().slice(0, 2).join('.');
-
-        widget.innerHTML = `
-          <div class="hero-status-card during-trip" onclick="jumpToDay(${activeDay.day})" role="button" tabindex="0" title="Klicken, um direkt zum heutigen Tag #${activeDay.day} zu springen">
-            <div class="hero-status-badge-live"><span class="live-dot-pulse"></span> LIVE REISESTATUS</div>
-            <div class="hero-status-title">📍 LIVE HEUTE: Tag ${activeDay.day} (${formattedDate}.) | ${activeDay.title}</div>
-            <div class="hero-status-jump"><i class="fa-solid fa-arrow-down"></i> Direkt zum heutigen Tagesplan springen</div>
-          </div>
-        `;
-      } else {
-        // Nach der Reise (ab 10.04.2027)
-        widget.innerHTML = `
-          <div class="hero-status-card post-trip">
-            <div class="hero-status-tag"><i class="fa-solid fa-circle-check"></i> Reise abgeschlossen</div>
-            <div class="hero-status-title">Trip erfolgreich beendet – Willkommen zurück in der Heimat! 🦘🇦🇺</div>
-            <div class="hero-status-sub">Alle Erinnerungen, Kosten &amp; Fotos bleiben dauerhaft gespeichert.</div>
-          </div>
-        `;
+        renderTodayDashboardUI(widget, activeDay, 'live', null);
+        return;
       }
+
+      // 4. Nach der Reise
+      let postSimOptions = '';
+      ROUTE_STOPS.forEach(s => {
+        postSimOptions += `<option value="${s.day}">Tag ${s.day}: ${escapeHtml(s.shortTitle)}</option>`;
+      });
+
+      widget.innerHTML = `
+        <div class="hero-status-card post-trip">
+          <div class="hero-status-tag"><i class="fa-solid fa-circle-check"></i> Reise abgeschlossen</div>
+          <div class="hero-status-title">Trip erfolgreich beendet – Willkommen zurück in der Heimat! 🦘🇦🇺</div>
+          <div class="hero-status-sub">Alle Erinnerungen, Kosten &amp; Notizen bleiben dauerhaft gespeichert.</div>
+          <div class="dashboard-sim-bar">
+            <span>Reisetage erneut ansehen:</span>
+            <select class="dashboard-sim-select" onchange="setSimulatedTripDay(this.value)">
+              <option value="live">Abschlussübersicht</option>
+              ${postSimOptions}
+            </select>
+          </div>
+        </div>
+      `;
+    }
+
+    // Helper zur Erstellung der Heute-Dashboard-Oberfläche
+    function renderTodayDashboardUI(container, activeDay, mode, countdownText) {
+      const formattedDate = activeDay.date.split('-').reverse().slice(0, 2).join('.');
+      const progressPct = Math.round((activeDay.day / 20) * 100);
+
+      let simOptions = '<option value="live">Live-Modus (Automatisch)</option>';
+      ROUTE_STOPS.forEach(s => {
+        const isSel = (simulatedTripDay === s.day) ? 'selected' : '';
+        simOptions += `<option value="${s.day}" ${isSel}>Tag ${s.day}: ${escapeHtml(s.shortTitle)}</option>`;
+      });
+
+      const badgeHtml = mode === 'live' 
+        ? `<div class="hero-status-badge-live"><span class="live-dot-pulse"></span> LIVE REISESTATUS</div>`
+        : `<div class="hero-status-tag" style="background: rgba(245, 166, 35, 0.25); color: var(--accent-gold); padding: 0.2rem 0.65rem; border-radius: 999px;"><i class="fa-solid fa-magnifying-glass"></i> VORSCHAU-MODUS</div>`;
+
+      container.innerHTML = `
+        <div class="hero-status-card during-trip" style="text-align: left;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.4rem;">
+            ${badgeHtml}
+            <span style="font-size: 0.74rem; font-weight: 700; color: rgba(255, 255, 255, 0.85);">
+              ${activeDay.weekday}, ${formattedDate}.2027 · ${activeDay.region.toUpperCase()}
+            </span>
+          </div>
+
+          <div class="hero-status-title" style="margin-bottom: 0.4rem;">
+            📍 HEUTE: Tag ${activeDay.day} – <strong>${escapeHtml(activeDay.title)}</strong>
+          </div>
+
+          <!-- Reisefortschritt -->
+          <div class="dashboard-progress-wrap">
+            <div class="dashboard-progress-header">
+              <span>Reisefortschritt</span>
+              <span>Tag ${activeDay.day} von 20 (${progressPct}%)</span>
+            </div>
+            <div class="dashboard-progress-track">
+              <div class="dashboard-progress-fill" style="width: ${progressPct}%;"></div>
+            </div>
+          </div>
+
+          <!-- 4 Dashboard Kacheln -->
+          <div class="dashboard-grid">
+            <div class="dashboard-tile">
+              <div class="dashboard-tile-label"><i class="fa-solid fa-location-crosshairs"></i> Etappe &amp; Ort</div>
+              <div class="dashboard-tile-val">${escapeHtml(activeDay.currentLocation)} ➔ ${escapeHtml(activeDay.destination)}</div>
+              <div class="dashboard-tile-sub">${escapeHtml(activeDay.highlight)}</div>
+            </div>
+
+            <div class="dashboard-tile">
+              <div class="dashboard-tile-label"><i class="fa-solid fa-car"></i> Nächste Fahrt</div>
+              <div class="dashboard-tile-val">${escapeHtml(activeDay.driveDist)}</div>
+              <div class="dashboard-tile-sub">Fahrzeit: ${escapeHtml(activeDay.driveTime)}</div>
+            </div>
+
+            <div class="dashboard-tile">
+              <div class="dashboard-tile-label"><i class="fa-solid fa-flag-checkered"></i> Nächste Aktivität</div>
+              <div class="dashboard-tile-val">${escapeHtml(activeDay.nextAct)}</div>
+            </div>
+
+            <div class="dashboard-tile">
+              <div class="dashboard-tile-label"><i class="fa-solid fa-hotel"></i> Übernachtung</div>
+              <div class="dashboard-tile-val">${escapeHtml(activeDay.stay)}</div>
+            </div>
+          </div>
+
+          <!-- Wichtiger Tageshinweis -->
+          <div class="dashboard-notice-box">
+            <i class="fa-solid fa-lightbulb" style="color: var(--accent-gold); font-size: 1rem; flex: none; margin-top: 2px;"></i>
+            <div>
+              <strong>Tipp des Tages:</strong> ${escapeHtml(activeDay.notice)}
+            </div>
+          </div>
+
+          <!-- Aktionen -->
+          <div class="dashboard-actions-row">
+            <button type="button" class="hero-btn-action" onclick="jumpToDay(${activeDay.day})">
+              <i class="fa-solid fa-calendar-day"></i> Zum Tagesplan springen
+            </button>
+            <button type="button" class="hero-btn-action secondary" onclick="focusDayOnMap(${activeDay.day}, true)">
+              <i class="fa-solid fa-map-location-dot"></i> Auf Karte zeigen
+            </button>
+          </div>
+
+          <!-- Simulations-Leiste -->
+          <div class="dashboard-sim-bar">
+            <span><i class="fa-solid fa-sliders" style="color:var(--accent-gold); margin-right:4px;"></i> Tag wechseln:</span>
+            <select class="dashboard-sim-select" onchange="setSimulatedTripDay(this.value)">
+              ${simOptions}
+            </select>
+          </div>
+        </div>
+      `;
     }
     setInterval(updateLiveTripStatus, 1000);
     updateLiveTripStatus();
+
+    // =========================================================================
+    // INTERAKTIVE LEAFLET ROUTENKARTE (BLOCK 1)
+    // =========================================================================
+    let travelRouteMap = null;
+    let travelRouteMarkers = {};
+    let travelRoutePolylines = [];
+    let activeMapFilter = 'all';
+
+    function initTravelRouteMap() {
+      const container = document.getElementById('travel-route-map');
+      if (!container || travelRouteMap) return;
+
+      if (typeof L === 'undefined') {
+        container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:0.9rem;"><i class="fa-solid fa-spinner fa-spin" style="margin-right:0.5rem;"></i> Lade Karten-Engine...</div>';
+        setTimeout(initTravelRouteMap, 300);
+        return;
+      }
+
+      // 1. Initialisiere Leaflet-Karte (Australien Ostküste)
+      travelRouteMap = L.map('travel-route-map', {
+        center: [-28.8, 151.8],
+        zoom: 6,
+        minZoom: 4,
+        maxZoom: 17,
+        scrollWheelZoom: false
+      });
+
+      // 2. OpenStreetMap Base Layer
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> | Australien Roadtrip 2027',
+        maxZoom: 18
+      }).addTo(travelRouteMap);
+
+      // 3. Routen-Polylinien zeichnen
+      // A. Roadtrip-Fahrstrecken (Solide Linie in --primary)
+      const driveSegments = [
+        // Ballina -> Byron Bay -> Gold Coast -> Brisbane
+        [
+          [-28.8333, 153.5619],
+          [-28.6474, 153.6120],
+          [-28.6380, 153.6366],
+          [-28.0878, 153.4533],
+          [-28.0024, 153.4295],
+          [-27.4698, 153.0251]
+        ],
+        // Brisbane -> Beerwah (Zoo) -> Glass House Mts -> Noosa -> Rainbow Beach -> Hervey Bay
+        [
+          [-27.4698, 153.0251],
+          [-26.8375, 152.9617],
+          [-26.9069, 152.9238],
+          [-26.3927, 153.0934],
+          [-25.9038, 153.0903],
+          [-25.2986, 152.8535]
+        ],
+        // Hervey Bay -> K'gari Ferry
+        [
+          [-25.2986, 152.8535],
+          [-25.2442, 153.1257]
+        ],
+        // Hervey Bay -> Airlie Beach (Nachtbus-Strecke)
+        [
+          [-25.2986, 152.8535],
+          [-24.8661, 152.3489],
+          [-23.3791, 150.5100],
+          [-21.1411, 149.1861],
+          [-20.2678, 148.7153]
+        ],
+        // Airlie Beach -> Cedar Creek Falls
+        [
+          [-20.2678, 148.7153],
+          [-20.3541, 148.6946]
+        ],
+        // Melbourne -> Great Ocean Road (Twelve Apostles)
+        [
+          [-37.8175, 144.9450],
+          [-38.1499, 144.3617],
+          [-38.3323, 144.3244],
+          [-38.5408, 143.9749],
+          [-38.7578, 143.6700],
+          [-38.6657, 143.1047]
+        ],
+        // Melbourne CBD -> Brighton Beach
+        [
+          [-37.8175, 144.9450],
+          [-37.8676, 144.9734],
+          [-37.9174, 144.9863]
+        ]
+      ];
+
+      driveSegments.forEach(seg => {
+        const poly = L.polyline(seg, {
+          color: '#006d68',
+          weight: 4,
+          opacity: 0.85,
+          lineJoin: 'round',
+          lineCap: 'round'
+        }).addTo(travelRouteMap);
+        travelRoutePolylines.push(poly);
+      });
+
+      // B. Inlandsflüge (Gestrichelte Linien in --secondary)
+      const flight1 = L.polyline([
+        [-33.9461, 151.1772], // Sydney SYD
+        [-31.4333, 152.9000], // Bogen
+        [-28.8333, 153.5619]  // Ballina BNK
+      ], {
+        color: '#d96b27',
+        weight: 3,
+        dashArray: '8, 8',
+        opacity: 0.95
+      }).addTo(travelRouteMap);
+      travelRoutePolylines.push(flight1);
+
+      const flight2 = L.polyline([
+        [-20.4950, 148.5522], // Proserpine PPP
+        [-28.5000, 150.2000], // Bogen
+        [-37.6690, 144.8410]  // Melbourne MEL
+      ], {
+        color: '#d96b27',
+        weight: 3,
+        dashArray: '8, 8',
+        opacity: 0.95
+      }).addTo(travelRouteMap);
+      travelRoutePolylines.push(flight2);
+
+      // 4. Marker für alle 20 Reisetage erstellen
+      ROUTE_STOPS.forEach(stop => {
+        const isFlight = (stop.type === 'flight');
+        const icon = L.divIcon({
+          className: 'custom-map-div-icon',
+          html: `<div class="leaflet-day-marker ${isFlight ? 'flight' : ''}" id="map-pin-${stop.day}"><span>${stop.day}</span></div>`,
+          iconSize: [32, 32],
+          iconAnchor: [16, 32],
+          popupAnchor: [0, -32]
+        });
+
+        const formattedDate = stop.date.split('-').reverse().slice(0, 2).join('.');
+        const popupContent = `
+          <div class="route-popup-card">
+            <span class="route-popup-badge ${isFlight ? 'flight' : ''}">Tag ${stop.day} · ${stop.weekday}, ${formattedDate}.</span>
+            <div class="route-popup-title">${escapeHtml(stop.title)}</div>
+            <div class="route-popup-meta">
+              <span><i class="fa-solid fa-car" style="color:var(--primary); width:14px;"></i> ${escapeHtml(stop.driveDist)} (${escapeHtml(stop.driveTime)})</span>
+              <span><i class="fa-solid fa-hotel" style="color:var(--secondary); width:14px;"></i> ${escapeHtml(stop.stay)}</span>
+              <span><i class="fa-solid fa-star" style="color:var(--accent-gold); width:14px;"></i> ${escapeHtml(stop.highlight)}</span>
+            </div>
+            <button class="route-popup-btn" onclick="jumpToDay(${stop.day});">
+              <i class="fa-solid fa-calendar-day"></i> Tag ${stop.day} im Reiseplan öffnen
+            </button>
+          </div>
+        `;
+
+        const marker = L.marker(stop.coords, { icon: icon }).addTo(travelRouteMap);
+        marker.bindPopup(popupContent, { maxWidth: 300, closeButton: true });
+        
+        marker.on('click', () => {
+          highlightDayMarker(stop.day);
+        });
+
+        travelRouteMarkers[stop.day] = marker;
+      });
+
+      // 5. Invalidate Size, Window Resize & Buttons verknüpfen
+      setTimeout(() => {
+        if (travelRouteMap) travelRouteMap.invalidateSize();
+      }, 250);
+
+      window.addEventListener('resize', () => {
+        if (travelRouteMap) travelRouteMap.invalidateSize();
+      }, { passive: true });
+
+      attachMapButtonsToTimeline();
+    }
+
+    // Hebt den ausgewählten Marker optisch hervor
+    function highlightDayMarker(dayNum) {
+      document.querySelectorAll('.leaflet-day-marker').forEach(pin => pin.classList.remove('active'));
+      const activePin = document.getElementById('map-pin-' + dayNum);
+      if (activePin) activePin.classList.add('active');
+    }
+
+    // Fokussiert einen Reisetag auf der Karte und öffnet sein Popup
+    function focusDayOnMap(dayNum, shouldScrollToMap = false) {
+      const stop = ROUTE_STOPS.find(s => s.day === dayNum);
+      if (!stop) return;
+
+      if (!travelRouteMap) {
+        initTravelRouteMap();
+      }
+
+      if (shouldScrollToMap) {
+        const mapSection = document.getElementById('map');
+        if (mapSection) {
+          mapSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      setTimeout(() => {
+        if (travelRouteMap) {
+          travelRouteMap.invalidateSize();
+          const targetZoom = (stop.region === 'flight') ? 8 : 11;
+          travelRouteMap.setView(stop.coords, targetZoom, { animate: true, duration: 0.8 });
+          
+          const marker = travelRouteMarkers[dayNum];
+          if (marker) {
+            marker.openPopup();
+            highlightDayMarker(dayNum);
+          }
+        }
+      }, shouldScrollToMap ? 300 : 50);
+    }
+
+    // Filtert die Karte nach Regionen
+    function filterRouteMap(regionKey) {
+      activeMapFilter = regionKey;
+      document.querySelectorAll('.map-filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-filter') === regionKey);
+      });
+
+      if (!travelRouteMap) return;
+
+      if (regionKey === 'all') {
+        resetRouteMapView();
+        return;
+      }
+
+      const regionStops = ROUTE_STOPS.filter(s => s.region === regionKey);
+      if (regionStops.length === 0) return;
+
+      const bounds = L.latLngBounds(regionStops.map(s => s.coords));
+      travelRouteMap.fitBounds(bounds, { padding: [50, 50], maxZoom: 12, animate: true });
+
+      // Öffne Popup des ersten Stopps der Region
+      const firstStop = regionStops[0];
+      if (firstStop && travelRouteMarkers[firstStop.day]) {
+        setTimeout(() => {
+          travelRouteMarkers[firstStop.day].openPopup();
+          highlightDayMarker(firstStop.day);
+        }, 400);
+      }
+    }
+
+    // Setzt die Kartenansicht auf die gesamte Ostküste zurück
+    function resetRouteMapView() {
+      if (!travelRouteMap) return;
+      document.querySelectorAll('.map-filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-filter') === 'all');
+      });
+      document.querySelectorAll('.leaflet-day-marker').forEach(pin => pin.classList.remove('active'));
+      travelRouteMap.closePopup();
+
+      const allCoords = ROUTE_STOPS.map(s => s.coords);
+      const bounds = L.latLngBounds(allCoords);
+      travelRouteMap.fitBounds(bounds, { padding: [40, 40], animate: true });
+    }
+
+    // Fügt allen 20 Tagen im Reiseplan automatisch einen "Auf Karte zeigen"-Button hinzu
+    function attachMapButtonsToTimeline() {
+      for (let day = 1; day <= 20; day++) {
+        const dayEl = document.getElementById('day-' + day);
+        if (!dayEl) continue;
+        const badgesContainer = dayEl.querySelector('.timeline-header-badges');
+        if (badgesContainer && !badgesContainer.querySelector('.btn-jump-to-map')) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'btn-jump-to-map';
+          btn.title = `Tag ${day} auf der Routenkarte anzeigen`;
+          btn.innerHTML = '<i class="fa-solid fa-map-pin"></i> Karte';
+          btn.onclick = (e) => {
+            e.stopPropagation();
+            focusDayOnMap(day, true);
+          };
+          badgesContainer.appendChild(btn);
+        }
+      }
+    }
 
     // =========================================================================
     // CUSTOM ACTIVITIES (LOCALSTORAGE & CLOUD SYNC)
@@ -7060,9 +8179,35 @@
     function updateDualClocks() {
       const now = new Date();
       const tzSelect = document.getElementById('timezone-select');
-      const selectedTz = tzSelect ? tzSelect.value : currentSelectedTz;
-      document.getElementById('aussie-time').innerText = now.toLocaleTimeString('de-DE', { timeZone: selectedTz, hour: '2-digit', minute: '2-digit' }) + ' Uhr';
-      document.getElementById('vienna-time').innerText = now.toLocaleTimeString('de-DE', { timeZone: 'Europe/Vienna', hour: '2-digit', minute: '2-digit' }) + ' Uhr';
+      const selectedTz = (tzSelect && tzSelect.value) ? tzSelect.value : (currentSelectedTz || 'Australia/Sydney');
+      
+      const aussieEl = document.getElementById('aussie-time');
+      if (aussieEl) {
+        try {
+          aussieEl.innerText = now.toLocaleTimeString('de-DE', { timeZone: selectedTz, hour: '2-digit', minute: '2-digit' }) + ' Uhr';
+        } catch (e) {
+          aussieEl.innerText = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) + ' Uhr';
+        }
+      }
+
+      const viennaEl = document.getElementById('vienna-time');
+      if (viennaEl) {
+        try {
+          viennaEl.innerText = now.toLocaleTimeString('de-DE', { timeZone: 'Europe/Vienna', hour: '2-digit', minute: '2-digit' }) + ' Uhr';
+        } catch (e) {
+          viennaEl.innerText = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) + ' Uhr';
+        }
+      }
+
+      const viennaBadge = document.getElementById('vienna-status-badge');
+      if (viennaBadge) {
+        try {
+          const viennaHour = parseInt(now.toLocaleTimeString('en-US', { timeZone: 'Europe/Vienna', hour: 'numeric', hour12: false }), 10);
+          const isAwake = viennaHour >= 7 && viennaHour < 23;
+          viennaBadge.className = 'vienna-badge ' + (isAwake ? 'awake' : 'sleeping');
+          viennaBadge.innerHTML = isAwake ? '☀️ Erreichbar' : '🌙 Schlafenszeit';
+        } catch (e) {}
+      }
     }
     setInterval(updateDualClocks, 1000);
     updateDualClocks();
@@ -8028,8 +9173,16 @@
 
     window.addEventListener('DOMContentLoaded', async () => {
       initTheme();
+      const savedTz = localStorage.getItem('aus_selected_tz');
+      if (savedTz) {
+        currentSelectedTz = savedTz;
+        const tzSelect = document.getElementById('timezone-select');
+        if (tzSelect) tzSelect.value = savedTz;
+      }
       initCurrencyConverter();
       initOnsiteSpend();
+      initTravelRouteMap();
+      attachMapButtonsToTimeline();
       try { groceries = JSON.parse(localStorage.getItem(GROCERY_STORAGE_KEY)) || []; } catch(e){}
       try { fuelEntries = JSON.parse(localStorage.getItem(FUEL_STORAGE_KEY)) || []; } catch(e){}
       try { daySuggestions = JSON.parse(localStorage.getItem(SUGGESTIONS_STORAGE_KEY)) || {}; } catch(e){}
