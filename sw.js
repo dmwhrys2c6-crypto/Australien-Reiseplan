@@ -3,12 +3,14 @@
    Offline-Verfügbarkeit für Reisedaten, Assets, Schriftarten & Karten-Tiles
    ========================================================================= */
 
-const CACHE_NAME = 'aus-roadtrip-v1.3.0';
+const CACHE_NAME = 'aus-roadtrip-v2.0.0';
 
 // Statische Kern-Assets für die App-Shell
 const PRECACHE_ASSETS = [
   './',
   './index.html',
+  './css/app.css',
+  './js/app.js',
   './manifest.json',
   './favicon.svg',
   './icon-192.png',
