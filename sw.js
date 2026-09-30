@@ -3,7 +3,7 @@
    Offline-Verfügbarkeit für Reisedaten, Assets, Schriftarten & Karten-Tiles
    ========================================================================= */
 
-const CACHE_NAME = 'aus-roadtrip-84d456d71bdf';
+const CACHE_NAME = 'aus-roadtrip-a412dc3fa2f7';
 
 // Statische Kern-Assets für die App-Shell
 const PRECACHE_ASSETS = [
@@ -11,8 +11,8 @@ const PRECACHE_ASSETS = [
   "./index.html",
   "./css/app.css?v=b08246712910",
   "./css/hero-dock.css?v=b26eb6ed4c6d",
-  "./css/trip.css?v=e0a159e687be",
-  "./css/management.css?v=55bede1d82a5",
+  "./css/trip.css?v=b490a3a382a3",
+  "./css/management.css?v=e0b71c2f4c19",
   "./js/persistence.js?v=693c8733bcb9",
   "./js/session.js?v=b84cab50341e",
   "./js/trip-store.js?v=261da5b8d7af",

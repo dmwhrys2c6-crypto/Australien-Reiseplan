@@ -9,7 +9,7 @@
     "build": "node scripts/build.js",
     "check": "node scripts/check-code.js",
     "lint": "node scripts/check-code.js --lint",
-    "test": "node test_trip_store.js && node test_trip_repository.js && node test_management_repository.js && node test_phase4_dom_simulation.js && node test_zielarchitektur.js && python3 test_integrity.py && python3 test_management_dom.py && node test_fixes.js && node test_session.js && node test_pages.js && node test_phase1.js",
+    "test": "node test_trip_store.js && node test_trip_repository.js && node test_management_repository.js && node test_phase4_dom_simulation.js && node test_zielarchitektur.js && python3 test_integrity.py && python3 test_management_dom.py && node test_fixes.js && node test_session.js && node test_pages.js && node test_phase1.js && node test_phase2.js",
     "test:server": "node test_server.js"
   },
   "dependencies": {

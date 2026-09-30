@@ -21,8 +21,8 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="css/app.css?v=b08246712910">
   <link rel="stylesheet" href="css/hero-dock.css?v=b26eb6ed4c6d">
-  <link rel="stylesheet" href="css/trip.css?v=e0a159e687be">
-  <link rel="stylesheet" href="css/management.css?v=55bede1d82a5">
+  <link rel="stylesheet" href="css/trip.css?v=b490a3a382a3">
+  <link rel="stylesheet" href="css/management.css?v=e0b71c2f4c19">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
@@ -494,74 +494,73 @@
 
     <!-- VIEW 3: 📋 ORGANISATION -->
     <div id="view-organisation" class="app-view">
-      <div class="view-header"><h2 class="view-header-title">Organisation</h2><p class="view-header-subtitle">Buchungen, Packliste und Unterlagen an einem Ort.</p></div>
+      <div id="organization" class="subpage-canvas">
+        <header class="subpage-header">
+          <p class="subpage-eyebrow">REISEORGANISATION</p>
+          <h1 class="subpage-headline">Organisation</h1>
+          <p class="subpage-subline">Buchungen, Packliste und Dokumente im Überblick.</p>
 
-      <!-- 6 Category Quick Tiles -->
-      <div class="category-quick-grid">
-        <div class="category-quick-tile" data-org-cat="flights" onclick="filterOrgCategory('flights')">
-          <span class="tile-icon">✈️</span>
-          <span class="tile-title">Flüge</span>
-          <span class="tile-badge">3 Etappen</span>
-        </div>
-        <div class="category-quick-tile" data-org-cat="hotels" onclick="filterOrgCategory('hotels')">
-          <span class="tile-icon">🏨</span>
-          <span class="tile-title">Unterkünfte</span>
-          <span class="tile-badge">20/20 gebucht</span>
-        </div>
-        <div class="category-quick-tile" data-org-cat="car" onclick="filterOrgCategory('car')">
-          <span class="tile-icon">🚗</span>
-          <span class="tile-title">Mietwagen</span>
-          <span class="tile-badge">3 Fahrzeuge</span>
-        </div>
-        <div class="category-quick-tile" data-org-cat="activities" onclick="filterOrgCategory('activities')">
-          <span class="tile-icon">🥾</span>
-          <span class="tile-title">Aktivitäten</span>
-          <span class="tile-badge">Whitsundays &amp; GBR</span>
-        </div>
-        <div class="category-quick-tile" data-org-cat="packing" onclick="filterOrgCategory('packing')">
-          <span class="tile-icon">🎒</span>
-          <span class="tile-title">Packliste</span>
-          <span class="tile-badge" data-packing-progress id="org-badge-packing-progress">0% gepackt</span>
-        </div>
-        <div class="category-quick-tile" data-org-cat="bookings" onclick="filterOrgCategory('bookings')">
-          <span class="tile-icon">📑</span>
-          <span class="tile-title">Buchungen</span>
-          <span class="tile-badge">Alle Buchungen</span>
-        </div>
-      </div>
-
-      <!-- Section Organisation (Panels Bookings & Packing) -->
-      <section id="organization" class="section-spaced org-section">
-        <div class="org-section-header">
-          <div class="org-header-left">
-            <div class="org-icon-badge"><i class="fa-solid fa-clipboard-list"></i></div>
-            <div>
-              <h2 class="section-title" style="margin-bottom:0.25rem;">Reiseorganisation &amp; Buchungs-Zentrale</h2>
-              <p class="section-subtitle" style="margin:0;">Zentrale Verwaltung aller Flüge, Unterkünfte, Mietwagen,
-                Touren &amp; deiner interaktiven Australien-Packliste</p>
+          <!-- Floating Glass Pill Dock -->
+          <nav class="subpage-nav-dock" aria-label="Organisation Bereiche">
+            <div class="org-subnav-tabs subpage-pills" role="tablist">
+              <button type="button" id="org-tab-btn-bookings" class="org-tab-btn subpage-pill active" role="tab" aria-selected="true"
+                onclick="switchOrgTab('bookings')">
+                <i class="fa-solid fa-receipt" aria-hidden="true"></i>
+                <span>Buchungen &amp; Voucher</span>
+                <span class="subpage-pill-badge" id="org-badge-bookings-count">0</span>
+              </button>
+              <button type="button" id="org-tab-btn-packing" class="org-tab-btn subpage-pill" role="tab" aria-selected="false"
+                onclick="switchOrgTab('packing')">
+                <i class="fa-solid fa-suitcase-rolling" aria-hidden="true"></i>
+                <span>Interaktive Packliste</span>
+                <span class="subpage-pill-badge" data-packing-progress id="org-badge-packing-progress--2" data-shared-id="org-badge-packing-progress">0/55 · 0%</span>
+              </button>
+              <button type="button" id="org-tab-btn-documents" class="org-tab-btn subpage-pill" role="tab" aria-selected="false"
+                onclick="switchOrgTab('documents')">
+                <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+                <span>Dokumente</span>
+              </button>
             </div>
-          </div>
-        </div>
+          </nav>
+        </header>
 
-        <!-- Tab Switcher -->
-        <div class="org-subnav-tabs" role="tablist">
-          <button type="button" id="org-tab-btn-bookings" class="org-tab-btn active" role="tab" aria-selected="true"
-            onclick="switchOrgTab('bookings')">
-            <i class="fa-solid fa-receipt"></i>
-            <span>Buchungen &amp; Voucher</span>
-            <span class="org-tab-badge" id="org-badge-bookings-count">0</span>
+        <!-- Subtly integrated Quick Category Filter Chips -->
+        <div class="category-quick-grid category-quick-chips" aria-label="Schnellfilter">
+          <button type="button" class="category-quick-tile category-quick-chip" data-org-cat="flights" onclick="filterOrgCategory('flights')">
+            <span class="tile-icon">✈️</span>
+            <span class="tile-title">Flüge</span>
+            <span class="tile-badge">3 Etappen</span>
           </button>
-          <button type="button" id="org-tab-btn-packing" class="org-tab-btn" role="tab" aria-selected="false"
-            onclick="switchOrgTab('packing')">
-            <i class="fa-solid fa-suitcase-rolling"></i>
-            <span>Interaktive Packliste</span>
-            <span class="org-tab-badge" data-packing-progress id="org-badge-packing-progress--2" data-shared-id="org-badge-packing-progress">0/55 · 0%</span>
-          </button><button type="button" id="org-tab-btn-documents" class="org-tab-btn" role="tab" aria-selected="false" onclick="switchOrgTab('documents')">Dokumente</button>
+          <button type="button" class="category-quick-tile category-quick-chip" data-org-cat="hotels" onclick="filterOrgCategory('hotels')">
+            <span class="tile-icon">🏨</span>
+            <span class="tile-title">Unterkünfte</span>
+            <span class="tile-badge">20/20 gebucht</span>
+          </button>
+          <button type="button" class="category-quick-tile category-quick-chip" data-org-cat="car" onclick="filterOrgCategory('car')">
+            <span class="tile-icon">🚗</span>
+            <span class="tile-title">Mietwagen</span>
+            <span class="tile-badge">3 Fahrzeuge</span>
+          </button>
+          <button type="button" class="category-quick-tile category-quick-chip" data-org-cat="activities" onclick="filterOrgCategory('activities')">
+            <span class="tile-icon">🥾</span>
+            <span class="tile-title">Aktivitäten</span>
+            <span class="tile-badge">Whitsundays &amp; GBR</span>
+          </button>
+          <button type="button" class="category-quick-tile category-quick-chip" data-org-cat="packing" onclick="filterOrgCategory('packing')">
+            <span class="tile-icon">🎒</span>
+            <span class="tile-title">Packliste</span>
+            <span class="tile-badge" data-packing-progress id="org-badge-packing-progress">0% gepackt</span>
+          </button>
+          <button type="button" class="category-quick-tile category-quick-chip" data-org-cat="bookings" onclick="filterOrgCategory('bookings')">
+            <span class="tile-icon">📑</span>
+            <span class="tile-title">Buchungen</span>
+            <span class="tile-badge">Alle Buchungen</span>
+          </button>
         </div>
 
-        <div id="org-panel-documents" class="org-tab-panel" role="tabpanel" style="display:none;"><div id="manage-documents" class="manage-page"><p role="status">Dokumente werden geladen …</p></div></div>
+        <div id="org-panel-documents" class="org-tab-panel subpage-glass-panel" role="tabpanel" style="display:none;"><div id="manage-documents" class="manage-page"><p role="status">Dokumente werden geladen …</p></div></div>
         <!-- TAB PANEL 1: BUCHUNGEN -->
-        <div id="org-panel-bookings" class="org-tab-panel active" role="tabpanel"><div id="manage-bookings" class="manage-page" aria-live="off"><p class="manage-loading" role="status">Deine Reisedaten werden geladen …</p></div><div class="manage-legacy" hidden inert>
+        <div id="org-panel-bookings" class="org-tab-panel active subpage-glass-panel" role="tabpanel"><div id="manage-bookings" class="manage-page" aria-live="off"><p class="manage-loading" role="status">Deine Reisedaten werden geladen …</p></div><div class="manage-legacy" hidden inert>
           <div class="org-controls-bar">
             <div class="org-filter-group">
               <div class="org-search-box">
@@ -636,7 +635,7 @@
         </div></div>
 
         <!-- TAB PANEL 2: PACKLISTE -->
-        <div id="org-panel-packing" class="org-tab-panel" role="tabpanel" style="display:none;">
+        <div id="org-panel-packing" class="org-tab-panel subpage-glass-panel" role="tabpanel" style="display:none;">
           <!-- Fortschrittsanzeige -->
           <div class="packing-progress-card">
             <div class="packing-progress-header">
@@ -694,45 +693,52 @@
           </div>
         </div>
 
-      </section>
+      </div>
     </div>
 
         <!-- VIEW 4: 💰 FINANZEN -->
         <div id="view-finanzen" class="app-view">
-          <div class="view-header"><h2 class="view-header-title">Finanzen</h2><p class="view-header-subtitle">Behalte deine Reisekosten im Blick.</p></div>
+          <div class="subpage-canvas">
+            <header class="subpage-header">
+              <p class="subpage-eyebrow">REISEKASSE &amp; BUDGET</p>
+              <h1 class="subpage-headline">Finanzen</h1>
+              <p class="subpage-subline">Ausgaben, Budget und gemeinsame Reisekasse im Überblick.</p>
 
-          <!-- Subnav Navigation Tabs für Finanzen -->
-          <div class="subnav-pills">
-            <button type="button" class="subnav-pill fin-subnav-btn active" data-tab="overview"
-              onclick="switchFinTab('overview')">
-              <i class="fa-solid fa-chart-pie"></i> Budgetübersicht
-            </button>
-            <button type="button" class="subnav-pill fin-subnav-btn" data-tab="expenses"
-              onclick="switchFinTab('expenses')">
-              <i class="fa-solid fa-receipt"></i> Ausgaben &amp; Belege
-            </button>
-            <button type="button" class="subnav-pill fin-subnav-btn" data-tab="onsite" onclick="switchFinTab('onsite')">
-              <i class="fa-solid fa-hand-holding-dollar"></i> Vor-Ort-Reisekasse
-            </button>
-            <button type="button" class="subnav-pill fin-subnav-btn" data-tab="splitwise"
-              onclick="switchFinTab('splitwise')">
-              <i class="fa-solid fa-arrow-right-arrow-left"></i> Splitwise Gruppe
-            </button>
-            <button type="button" class="subnav-pill fin-subnav-btn" data-tab="fuel" onclick="switchFinTab('fuel')">
-              <i class="fa-solid fa-gas-pump"></i> Mietwagen &amp; Sprit
-            </button>
-            <button type="button" class="subnav-pill fin-subnav-btn" data-tab="groceries"
-              onclick="switchFinTab('groceries')">
-              <i class="fa-solid fa-cart-shopping"></i> Supermarkt-Einkäufe
-            </button>
-            <button type="button" class="subnav-pill fin-subnav-btn" data-tab="currency"
-              onclick="switchFinTab('currency')">
-              <i class="fa-solid fa-money-bill-transfer"></i> Währungsrechner
-            </button>
-          </div>
+              <!-- Floating Glass Pill Dock -->
+              <nav class="subpage-nav-dock" aria-label="Finanzen Bereiche">
+                <div class="subnav-pills subpage-pills" role="tablist">
+                  <button type="button" class="subnav-pill fin-subnav-btn subpage-pill active" data-tab="overview"
+                    onclick="switchFinTab('overview')">
+                    <i class="fa-solid fa-chart-pie" aria-hidden="true"></i> <span>Budgetübersicht</span>
+                  </button>
+                  <button type="button" class="subnav-pill fin-subnav-btn subpage-pill" data-tab="expenses"
+                    onclick="switchFinTab('expenses')">
+                    <i class="fa-solid fa-receipt" aria-hidden="true"></i> <span>Ausgaben &amp; Belege</span>
+                  </button>
+                  <button type="button" class="subnav-pill fin-subnav-btn subpage-pill" data-tab="onsite" onclick="switchFinTab('onsite')">
+                    <i class="fa-solid fa-hand-holding-dollar" aria-hidden="true"></i> <span>Vor-Ort-Reisekasse</span>
+                  </button>
+                  <button type="button" class="subnav-pill fin-subnav-btn subpage-pill" data-tab="splitwise"
+                    onclick="switchFinTab('splitwise')">
+                    <i class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></i> <span>Splitwise Gruppe</span>
+                  </button>
+                  <button type="button" class="subnav-pill fin-subnav-btn subpage-pill" data-tab="fuel" onclick="switchFinTab('fuel')">
+                    <i class="fa-solid fa-gas-pump" aria-hidden="true"></i> <span>Mietwagen &amp; Sprit</span>
+                  </button>
+                  <button type="button" class="subnav-pill fin-subnav-btn subpage-pill" data-tab="groceries"
+                    onclick="switchFinTab('groceries')">
+                    <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i> <span>Einkäufe</span>
+                  </button>
+                  <button type="button" class="subnav-pill fin-subnav-btn subpage-pill" data-tab="currency"
+                    onclick="switchFinTab('currency')">
+                    <i class="fa-solid fa-money-bill-transfer" aria-hidden="true"></i> <span>Währungsrechner</span>
+                  </button>
+                </div>
+              </nav>
+            </header>
 
-          <!-- Finanzen Panels -->
-          <div id="fin-panel-overview" class="fin-panel"><div id="manage-finance" class="manage-page" aria-live="off"><p class="manage-loading" role="status">Deine Reisedaten werden geladen …</p></div><div class="manage-legacy" hidden inert>
+            <!-- Finanzen Panels -->
+            <div id="fin-panel-overview" class="fin-panel subpage-glass-panel"><div id="manage-finance" class="manage-page" aria-live="off"><p class="manage-loading" role="status">Deine Reisedaten werden geladen …</p></div><div class="manage-legacy" hidden inert>
             <section id="legacy-budget" class="section-spaced">
               <h2 class="section-title">Kosten- & Budgetübersicht (4 Personen)</h2>
 
@@ -1605,7 +1611,7 @@
             </section>
           </div></div>
 
-          <div id="fin-panel-expenses" class="fin-panel" style="display:none;"><div id="manage-expenses" class="manage-page" aria-live="off"><p class="manage-loading" role="status">Deine Reisedaten werden geladen …</p></div><div class="manage-legacy" hidden inert>
+          <div id="fin-panel-expenses" class="fin-panel subpage-glass-panel" style="display:none;"><div id="manage-expenses" class="manage-page" aria-live="off"><p class="manage-loading" role="status">Deine Reisedaten werden geladen …</p></div><div class="manage-legacy" hidden inert>
             <div
               style="background:var(--card-bg); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:1.5rem; box-shadow:var(--shadow-sm);">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
@@ -1622,9 +1628,8 @@
             </div>
           </div></div>
 
-          <div id="fin-panel-onsite" class="fin-panel" style="display:none;">
-            <div
-              style="background:var(--card-bg); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:1.5rem; box-shadow:var(--shadow-sm);">
+          <div id="fin-panel-onsite" class="fin-panel subpage-glass-panel" style="display:none;">
+            <div class="glass-card-inner">
               <h3 style="margin-top:0;"><i class="fa-solid fa-hand-holding-dollar" style="color:var(--primary);"></i>
                 Vor-Ort Reisekasse (Taschengeld Australien)</h3>
               <p style="color:var(--text-muted); font-size:0.9rem;">Kalkulation der täglichen Ausgaben vor Ort für
@@ -1657,9 +1662,8 @@
             </div>
           </div>
 
-          <div id="fin-panel-splitwise" class="fin-panel" style="display:none;">
-            <div
-              style="background:var(--card-bg); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:2rem; box-shadow:var(--shadow-sm); text-align:center; max-width:650px; margin:0 auto;">
+          <div id="fin-panel-splitwise" class="fin-panel subpage-glass-panel" style="display:none;">
+            <div class="glass-card-inner" style="text-align:center; max-width:650px; margin:0 auto;">
               <div style="font-size:3rem; margin-bottom:1rem;">🔀</div>
               <h3 style="margin-top:0;">Splitwise Gruppenausgaben</h3>
               <p style="color:var(--text-muted); margin-bottom:1.5rem;">
@@ -1673,9 +1677,8 @@
             </div>
           </div>
 
-          <div id="fin-panel-fuel" class="fin-panel" style="display:none;">
-            <div
-              style="background:var(--card-bg); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:1.5rem; box-shadow:var(--shadow-sm);">
+          <div id="fin-panel-fuel" class="fin-panel subpage-glass-panel" style="display:none;">
+            <div class="glass-card-inner">
               <h3 style="margin-top:0;"><i class="fa-solid fa-gas-pump" style="color:var(--primary);"></i> Spritrechner
                 &amp; Tankbelege</h3>
               <p style="color:var(--text-muted); font-size:0.9rem;">
@@ -1716,9 +1719,8 @@
             </div>
           </div>
 
-          <div id="fin-panel-groceries" class="fin-panel" style="display:none;">
-            <div
-              style="background:var(--card-bg); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:1.5rem; box-shadow:var(--shadow-sm);">
+          <div id="fin-panel-groceries" class="fin-panel subpage-glass-panel" style="display:none;">
+            <div class="glass-card-inner">
               <h3 style="margin-top:0;"><i class="fa-solid fa-cart-shopping" style="color:var(--primary);"></i>
                 Supermarkt
                 &amp; Einkaufsliste</h3>
@@ -1771,9 +1773,8 @@
             </div>
           </div>
 
-          <div id="fin-panel-currency" class="fin-panel" style="display:none;">
-            <div
-              style="background:var(--card-bg); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:1.5rem; box-shadow:var(--shadow-sm); max-width:550px;">
+          <div id="fin-panel-currency" class="fin-panel subpage-glass-panel" style="display:none;">
+            <div class="glass-card-inner" style="max-width:550px;">
               <h3 style="margin-top:0;"><i class="fa-solid fa-money-bill-transfer" style="color:var(--primary);"></i>
                 Währungsrechner (AUD ↔ EUR)</h3>
               <div style="display:flex; flex-direction:column; gap:1rem; margin-top:1.25rem;">
@@ -1800,37 +1801,47 @@
             </div>
           </div>
         </div>
-
+      </div>
 
         <!-- VIEW 5: 📖 ERLEBNISSE -->
         <div id="view-erlebnisse" class="app-view">
-          <div class="view-header"><h2 class="view-header-title">Erlebnisse</h2><p class="view-header-subtitle">Ausflüge planen. Erinnerungen festhalten.</p></div>
+          <div class="subpage-canvas">
+            <header class="subpage-header">
+              <p class="subpage-eyebrow">ERINNERUNGEN &amp; HIGHLIGHTS</p>
+              <h1 class="subpage-headline">Erlebnisse</h1>
+              <p class="subpage-subline">Ausflüge planen, Reisejournal führen und besondere Momente teilen.</p>
 
-          <!-- Subnav Navigation Tabs für Erlebnisse -->
-          <div class="subnav-pills"><button type="button" class="subnav-pill exp-subnav-btn" data-tab="activities" onclick="switchExpTab('activities')"><i class="fa-solid fa-compass" aria-hidden="true"></i> Ausflüge</button>
-            <button type="button" class="subnav-pill exp-subnav-btn active" data-tab="journal"
-              onclick="switchExpTab('journal')">
-              <i class="fa-solid fa-book-open"></i> Reisejournal
-            </button>
-            <button type="button" class="subnav-pill exp-subnav-btn" data-tab="photos" onclick="switchExpTab('photos')">
-              <i class="fa-solid fa-camera"></i> Fotogalerie &amp; Alben
-            </button>
-            <button type="button" class="subnav-pill exp-subnav-btn" data-tab="bucketlist"
-              onclick="switchExpTab('bucketlist')">
-              <i class="fa-solid fa-list-check"></i> Aussie Bucket List
-            </button>
-            <button type="button" class="subnav-pill exp-subnav-btn" data-tab="wildlife"
-              onclick="switchExpTab('wildlife')">
-              <i class="fa-solid fa-paw"></i> Wildlife Tracker
-            </button>
-            <button type="button" class="subnav-pill exp-subnav-btn" data-tab="taste" onclick="switchExpTab('taste')">
-              <i class="fa-solid fa-utensils"></i> Taste Challenge
-            </button>
-          </div>
+              <!-- Floating Glass Pill Dock -->
+              <nav class="subpage-nav-dock" aria-label="Erlebnisse Bereiche">
+                <div class="subnav-pills subpage-pills" role="tablist">
+                  <button type="button" class="subnav-pill exp-subnav-btn subpage-pill" data-tab="activities" onclick="switchExpTab('activities')">
+                    <i class="fa-solid fa-compass" aria-hidden="true"></i> <span>Ausflüge</span>
+                  </button>
+                  <button type="button" class="subnav-pill exp-subnav-btn subpage-pill active" data-tab="journal"
+                    onclick="switchExpTab('journal')">
+                    <i class="fa-solid fa-book-open" aria-hidden="true"></i> <span>Reisejournal</span>
+                  </button>
+                  <button type="button" class="subnav-pill exp-subnav-btn subpage-pill" data-tab="photos" onclick="switchExpTab('photos')">
+                    <i class="fa-solid fa-camera" aria-hidden="true"></i> <span>Fotogalerie</span>
+                  </button>
+                  <button type="button" class="subnav-pill exp-subnav-btn subpage-pill" data-tab="bucketlist"
+                    onclick="switchExpTab('bucketlist')">
+                    <i class="fa-solid fa-list-check" aria-hidden="true"></i> <span>Bucket List</span>
+                  </button>
+                  <button type="button" class="subnav-pill exp-subnav-btn subpage-pill" data-tab="wildlife"
+                    onclick="switchExpTab('wildlife')">
+                    <i class="fa-solid fa-paw" aria-hidden="true"></i> <span>Wildlife Tracker</span>
+                  </button>
+                  <button type="button" class="subnav-pill exp-subnav-btn subpage-pill" data-tab="taste" onclick="switchExpTab('taste')">
+                    <i class="fa-solid fa-utensils" aria-hidden="true"></i> <span>Taste Challenge</span>
+                  </button>
+                </div>
+              </nav>
+            </header>
 
           <!-- Erlebnisse Panels -->
-          <div id="exp-panel-activities" class="exp-panel" style="display:none;"><div id="manage-activities" class="manage-page"><p role="status">Ausflüge werden geladen …</p></div></div>
-          <div id="exp-panel-journal" class="exp-panel">
+          <div id="exp-panel-activities" class="exp-panel subpage-glass-panel" style="display:none;"><div id="manage-activities" class="manage-page"><p role="status">Ausflüge werden geladen …</p></div></div>
+          <div id="exp-panel-journal" class="exp-panel subpage-glass-panel">
             <section id="journal" class="section-spaced org-section journal-section">
               <div class="org-section-header">
                 <div>
@@ -2027,9 +2038,8 @@
             </section>
           </div>
 
-          <div id="exp-panel-photos" class="exp-panel" style="display:none;">
-            <div
-              style="background:var(--card-bg); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:1.5rem; box-shadow:var(--shadow-sm);">
+          <div id="exp-panel-photos" class="exp-panel subpage-glass-panel" style="display:none;">
+            <div class="glass-card-inner">
               <div
                 style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:1rem;">
                 <div>
@@ -2064,7 +2074,7 @@
             </div>
           </div>
 
-          <div id="exp-panel-bucketlist" class="exp-panel" style="display:none;">
+          <div id="exp-panel-bucketlist" class="exp-panel subpage-glass-panel" style="display:none;">
             <section id="bucketlist" class="section-spaced">
               <h2 class="section-title">Aussie Bucket List &amp; Culture 🦘</h2>
               <div class="hub-row-2col">
@@ -2121,9 +2131,8 @@
             </section>
           </div>
 
-          <div id="exp-panel-wildlife" class="exp-panel" style="display:none;">
-            <div
-              style="background:var(--card-bg); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:1.5rem; box-shadow:var(--shadow-sm);">
+          <div id="exp-panel-wildlife" class="exp-panel subpage-glass-panel" style="display:none;">
+            <div class="glass-card-inner">
               <h3 style="margin-top:0;"><i class="fa-solid fa-paw" style="color:var(--secondary);"></i> Wildlife Tracker
                 🦘🐨</h3>
               <p style="color:var(--text-muted); font-size:0.9rem;">
@@ -2165,9 +2174,8 @@
             </div>
           </div>
 
-          <div id="exp-panel-taste" class="exp-panel" style="display:none;">
-            <div
-              style="background:var(--card-bg); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:1.5rem; box-shadow:var(--shadow-sm);">
+          <div id="exp-panel-taste" class="exp-panel subpage-glass-panel" style="display:none;">
+            <div class="glass-card-inner">
               <h3 style="margin-top:0;"><i class="fa-solid fa-utensils" style="color:var(--secondary);"></i> Aussie
                 Taste
                 Challenge 🥧☕</h3>
@@ -2232,60 +2240,46 @@
               </div>
             </div>
           </div>
+          </div>
         </div>
 
 
         <!-- VIEW 6: ⋮ MEHR -->
         <div id="view-mehr" class="app-view">
-          <div class="view-header"><h2 class="view-header-title">Mehr</h2><p class="view-header-subtitle">Karten und nützliche Begleiter für unterwegs.</p></div>
+          <div class="subpage-canvas">
+            <header class="subpage-header">
+              <p class="subpage-eyebrow">BEGLEITER FÜR UNTERWEGS</p>
+              <h1 class="subpage-headline">Mehr</h1>
+              <p class="subpage-subline">Drohnenkarte, Live-Wetter, Notfallkontakte und Reise-Tools.</p>
 
-          <!-- Erlebnisse Direct Access Shortcut for Mobile & Desktop -->
-          <div class="more-erlebnisse-card" onclick="showView('erlebnisse')"
-            style="background:var(--card-bg); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:1rem 1.25rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1.5rem; cursor:pointer; box-shadow:var(--shadow-sm); transition:all 0.2s ease;">
-            <div style="display:flex; align-items:center; gap:0.9rem;">
-              <div
-                style="width:42px; height:42px; border-radius:12px; background:linear-gradient(135deg, var(--primary), var(--secondary)); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.15rem; flex-shrink:0;">
-                <i class="fa-solid fa-compass"></i>
-              </div>
-              <div>
-                <div style="font-weight:700; font-size:0.95rem; color:var(--text-main);">📖 Reiseerlebnisse, Journal
-                  &amp; Momente</div>
-                <div style="font-size:0.78rem; color:var(--text-muted);">Reisetagebuch (20 Tage), Fotogalerie, Aussie
-                  Bucket List &amp; Wildlife Tracker</div>
-              </div>
-            </div>
-            <div
-              style="display:flex; align-items:center; gap:0.4rem; font-weight:600; font-size:0.82rem; color:var(--primary); white-space:nowrap;">
-              <span>Öffnen</span>
-              <i class="fa-solid fa-arrow-right"></i>
-            </div>
-          </div>
+              <!-- Floating Glass Pill Dock -->
+              <nav class="subpage-nav-dock" aria-label="Mehr Bereiche">
+                <div class="subnav-pills subpage-pills" role="tablist">
+                  <button type="button" class="subnav-pill more-subnav-btn subpage-pill active" data-tab="drone"
+                    onclick="switchMoreTab('drone')">
+                    <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> <span>Drohnenkarte</span>
+                  </button>
+                  <button type="button" class="subnav-pill more-subnav-btn subpage-pill" data-tab="weather"
+                    onclick="switchMoreTab('weather')">
+                    <i class="fa-solid fa-cloud-sun" aria-hidden="true"></i> <span>Live-Wetter ☀️</span>
+                  </button>
+                  <button type="button" class="subnav-pill more-subnav-btn subpage-pill" data-tab="emergency"
+                    onclick="switchMoreTab('emergency')">
+                    <i class="fa-solid fa-truck-medical" aria-hidden="true"></i> <span>Notfall 🚨</span>
+                  </button>
+                  <button type="button" class="subnav-pill more-subnav-btn subpage-pill" data-tab="playlist"
+                    onclick="switchMoreTab('playlist')">
+                    <i class="fa-solid fa-music" aria-hidden="true"></i> <span>Playlist 🎵</span>
+                  </button>
+                  <button type="button" class="subnav-pill more-subnav-btn subpage-pill" data-tab="tools" onclick="switchMoreTab('tools')">
+                    <i class="fa-solid fa-toolbox" aria-hidden="true"></i> <span>Reise-Tools 🧰</span>
+                  </button>
+                </div>
+              </nav>
+            </header>
 
-          <!-- Subnav Navigation Tabs für Mehr -->
-          <div class="subnav-pills">
-            <button type="button" class="subnav-pill more-subnav-btn active" data-tab="drone"
-              onclick="switchMoreTab('drone')">
-              <i class="fa-solid fa-paper-plane"></i> Drohnenkarte
-            </button>
-            <button type="button" class="subnav-pill more-subnav-btn" data-tab="weather"
-              onclick="switchMoreTab('weather')">
-              <i class="fa-solid fa-cloud-sun"></i> Live-Wetter &amp; Regenradar ☀️
-            </button>
-            <button type="button" class="subnav-pill more-subnav-btn" data-tab="emergency"
-              onclick="switchMoreTab('emergency')">
-              <i class="fa-solid fa-truck-medical"></i> Notfall, Admin &amp; Regeln 🚨
-            </button>
-            <button type="button" class="subnav-pill more-subnav-btn" data-tab="playlist"
-              onclick="switchMoreTab('playlist')">
-              <i class="fa-solid fa-music"></i> Roadtrip Playlist 🎵
-            </button>
-            <button type="button" class="subnav-pill more-subnav-btn" data-tab="tools" onclick="switchMoreTab('tools')">
-              <i class="fa-solid fa-toolbox"></i> Reise-Tools &amp; Slang 🧰
-            </button>
-          </div>
-
-          <!-- Mehr Panels -->
-          <div id="more-panel-drone" class="more-panel"><div id="manage-drone-container" class="manage-page">
+            <!-- Mehr Panels -->
+            <div id="more-panel-drone" class="more-panel subpage-glass-panel"><div id="manage-drone-container" class="manage-page">
  <div class="manage-header"><div><span class="trip-eyebrow">EINE NEUE PERSPEKTIVE</span><h2>Drohnenkarte</h2><p>Gespeicherte Spots entlang deiner Reise.</p></div><button type="button" class="trip-primary-button" data-manage="create" data-kind="drone">+ Drohnen-Spot hinzufügen</button></div>
  <div class="manage-drone-workspace"><div id="manage-drone-map" aria-label="Karte der gespeicherten Drohnen-Spots"></div>
  <div class="manage-drone-layers trip-glass"><label><input type="checkbox" data-drone-layer="route" checked> Reise anzeigen</label><label><input type="checkbox" data-drone-layer="spots" checked> Drohnen-Spots</label><label><input type="checkbox" data-drone-layer="favorites"> Nur Favoriten</label><label><input id="manage-zone-toggle" data-drone-layer="zones" type="checkbox" disabled aria-describedby="manage-zones-info"> Flugzonen</label></div>
@@ -2570,7 +2564,7 @@
             </section>
           </div></div>
 
-          <div id="more-panel-weather" class="more-panel" style="display:none;">
+          <div id="more-panel-weather" class="more-panel subpage-glass-panel" style="display:none;">
             <section id="weather" class="section-spaced">
               <div
                 style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 1.2rem;">
@@ -2679,7 +2673,7 @@
             </section>
           </div>
 
-          <div id="more-panel-emergency" class="more-panel" style="display:none;">
+          <div id="more-panel-emergency" class="more-panel subpage-glass-panel" style="display:none;">
             <section id="emergency" class="section-spaced">
               <h2 class="section-title">Notfall, Admin & Regeln 🚨</h2>
               <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
@@ -2699,7 +2693,7 @@
             </section>
           </div>
 
-          <div id="more-panel-playlist" class="more-panel" style="display:none;">
+          <div id="more-panel-playlist" class="more-panel subpage-glass-panel" style="display:none;">
             <section id="playlist" class="section-spaced">
               <h2 class="section-title">Roadtrip Playlist 🎵</h2>
               <details class="clean-slide" style="max-width: 680px; margin: 0 auto;">
@@ -2721,7 +2715,7 @@
             </section>
           </div>
 
-          <div id="more-panel-tools" class="more-panel" style="display:none;">
+          <div id="more-panel-tools" class="more-panel subpage-glass-panel" style="display:none;">
             <section id="hub" class="section-spaced">
               <h2 class="section-title">Reise-Tools & Aussie-Helfer</h2>
 
@@ -2976,6 +2970,7 @@
 
               </div>
             </section>
+          </div>
           </div>
         </div>
 
