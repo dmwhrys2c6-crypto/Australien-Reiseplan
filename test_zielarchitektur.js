@@ -44,7 +44,7 @@ assert(html.includes('id="day-modal-form"'), 'Day Modal Form #day-modal-form exi
 // 3. Check Script Inclusions
 console.log('\n3. Script Inclusions in index.html:');
 assert(html.includes('js/tripMasterData.js'), 'Script js/tripMasterData.js is linked');
-assert(html.includes('js/tripStore.js'), 'Script js/tripStore.js is linked');
+assert(html.includes('js/trip-store.js'), 'Script js/tripStore.js is linked');
 assert(html.includes('js/reiseApp.js'), 'Script js/reiseApp.js is linked');
 
 // 4. Check CSS Styles
@@ -72,7 +72,7 @@ const runMaster = new Function('root', 'self', masterDataCode);
 const masterCtx = {};
 runMaster(masterCtx, masterCtx);
 
-const storeCode = fs.readFileSync(path.join(__dirname, 'js/tripStore.js'), 'utf8');
+const storeCode = fs.readFileSync(path.join(__dirname, 'js/trip-store.js'), 'utf8');
 const runStore = new Function('root', 'self', 'require', storeCode);
 const storeCtx = {};
 runStore(storeCtx, storeCtx, () => masterCtx.TRIP_MASTER_DATA);

@@ -22,7 +22,7 @@ runMaster(masterCtx, masterCtx);
 const masterData = masterCtx.TRIP_MASTER_DATA;
 
 // Load TripStore
-const storeCode = fs.readFileSync(path.join(__dirname, 'js/tripStore.js'), 'utf8');
+const storeCode = fs.readFileSync(path.join(__dirname, 'js/trip-store.js'), 'utf8');
 const runStore = new Function('root', 'self', 'require', storeCode);
 const storeCtx = {};
 runStore(storeCtx, storeCtx, () => masterData);

@@ -1,0 +1,549 @@
+/* =========================================================================
+   AUSTRALIEN ROADTRIP 2027
+   CINEMATIC HERO + LIQUID GLASS DOCK
+   ========================================================================= */
+
+/* =========================================================================
+   1. KEYFRAMES
+   ========================================================================= */
+
+@keyframes kenBurns1 {
+  0%   { transform: scale(1.08) translate(-2%, -1%); }
+  100% { transform: scale(1.18) translate(2%, 1%); }
+}
+@keyframes kenBurns2 {
+  0%   { transform: scale(1.12) translate(1%, 2%); }
+  100% { transform: scale(1.05) translate(-1%, -2%); }
+}
+@keyframes kenBurns3 {
+  0%   { transform: scale(1.06) translate(0%, -2%); }
+  100% { transform: scale(1.15) translate(-2%, 1%); }
+}
+
+/* Cross-fade sequence: each slide is visible for ~5 s out of 15 s total */
+@keyframes heroSlide1 {
+  0%   { opacity: 1; }
+  28%  { opacity: 1; }
+  35%  { opacity: 0; }
+  95%  { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes heroSlide2 {
+  0%   { opacity: 0; }
+  28%  { opacity: 0; }
+  35%  { opacity: 1; }
+  60%  { opacity: 1; }
+  67%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+@keyframes heroSlide3 {
+  0%   { opacity: 0; }
+  60%  { opacity: 0; }
+  67%  { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes heroScrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.7; }
+  50%       { transform: translateX(-50%) translateY(8px); opacity: 1; }
+}
+
+@keyframes dockSlideUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(28px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes dockPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 109, 104, 0.55); }
+  60%       { box-shadow: 0 0 0 7px rgba(0, 109, 104, 0); }
+}
+
+/* =========================================================================
+   2. CINEMATIC HERO
+   ========================================================================= */
+
+.hero-cinematic {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  min-height: 600px;
+  overflow: hidden;
+  background: #080c14;
+}
+
+/* Generic layer */
+.hero-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- Animated Ken-Burns layer ---- */
+.hero-animated {
+  z-index: 1;
+  transition: opacity 1.2s ease;
+}
+.hero-animated.hero-fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero-kb-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  will-change: transform, opacity;
+}
+
+/* Slide 1 – Sydney Opera House / Harbour */
+.hero-kb-slide--1 {
+  background-image:
+    linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.5) 100%),
+    url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1800&auto=format&fit=crop&q=80');
+  animation:
+    kenBurns1 15s ease-in-out infinite alternate,
+    heroSlide1 15s ease-in-out infinite;
+}
+
+/* Slide 2 – Great Barrier Reef / Whitsundays turquoise */
+.hero-kb-slide--2 {
+  background-image:
+    linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.48) 100%),
+    url('https://images.unsplash.com/photo-1587139223877-04ea07031ef7?w=1800&auto=format&fit=crop&q=80');
+  animation:
+    kenBurns2 15s ease-in-out 5s infinite alternate,
+    heroSlide2 15s ease-in-out infinite;
+  opacity: 0;
+}
+
+/* Slide 3 – Great Ocean Road clifftops */
+.hero-kb-slide--3 {
+  background-image:
+    linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.52) 100%),
+    url('https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=1800&auto=format&fit=crop&q=80');
+  animation:
+    kenBurns3 15s ease-in-out 10s infinite alternate,
+    heroSlide3 15s ease-in-out infinite;
+  opacity: 0;
+}
+
+/* Dark vignette on top of all slides */
+.hero-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.15) 0%,
+    rgba(0,0,0,0.06) 35%,
+    rgba(0,0,0,0.50) 75%,
+    rgba(0,0,0,0.80) 100%
+  );
+}
+
+/* ---- Static layer (fades in after 5 s via JS) ---- */
+.hero-static {
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(180deg, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.65) 100%),
+    url('https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=2000&auto=format&fit=crop&q=90');
+  background-size: cover;
+  background-position: center 28%;
+  transition: opacity 1.2s ease;
+}
+.hero-static.hero-fade-in {
+  opacity: 1;
+}
+
+/* ---- Hero content ---- */
+.hero-content {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1.5rem 7rem;
+  color: #fff;
+  gap: 1.4rem;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.24);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border-radius: 100px;
+  padding: 0.38rem 1.15rem;
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.92);
+}
+.hero-flag { font-size: 1.15rem; }
+
+.hero-headline {
+  font-family: var(--font-heading);
+  font-size: clamp(2.8rem, 9vw, 6.5rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  color: #fff;
+  text-shadow: 0 4px 40px rgba(0,0,0,0.55);
+  margin: 0;
+}
+.hero-headline em {
+  font-style: normal;
+  background: linear-gradient(125deg, #2dd4bf 10%, #f5a623 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subline {
+  font-family: var(--font-body);
+  font-size: clamp(0.82rem, 2.3vw, 1.05rem);
+  font-weight: 500;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+/* ---- Countdown inside hero ---- */
+.hero-countdown {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  background: rgba(0,0,0,0.30);
+  border: 1px solid rgba(255,255,255,0.17);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border-radius: 18px;
+  padding: 1rem 1.8rem;
+}
+.hero-cd-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.18rem;
+  min-width: 3.6rem;
+}
+/* Override old .cp-cd-val / .cp-cd-lbl styles inside hero */
+.hero-countdown .cp-cd-val,
+.hero-cd-val {
+  font-family: var(--font-heading) !important;
+  font-size: clamp(2rem, 5.5vw, 3.4rem) !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  color: #fff !important;
+  letter-spacing: -0.04em !important;
+  display: block;
+}
+.hero-countdown .cp-cd-lbl,
+.hero-cd-lbl {
+  font-family: var(--font-body) !important;
+  font-size: 0.6rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.13em !important;
+  color: rgba(255,255,255,0.58) !important;
+  display: block;
+}
+.hero-cd-sep {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.35);
+  line-height: 1;
+  padding-top: 0.55rem;
+  align-self: flex-start;
+}
+
+/* ---- CTA Button ---- */
+.hero-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: linear-gradient(135deg, #006d68 0%, #14b8a6 100%);
+  color: #fff;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 100px;
+  padding: 0.9rem 2.1rem;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(0,109,104,0.5), 0 0 0 1px rgba(255,255,255,0.12) inset;
+  transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
+  letter-spacing: 0.01em;
+}
+.hero-cta-btn:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 14px 44px rgba(0,109,104,0.65), 0 0 0 1px rgba(255,255,255,0.15) inset;
+}
+.hero-cta-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* ---- Scroll hint ---- */
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 7rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  color: rgba(255,255,255,0.5);
+  font-size: 1.2rem;
+  animation: heroScrollBounce 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ---- Below-hero section spacing ---- */
+.cockpit-below-hero {
+  padding-top: 2rem;
+  padding-bottom: 8rem; /* breathing room above fixed dock */
+}
+
+/* =========================================================================
+   3. LIQUID GLASS DOCK
+   ========================================================================= */
+
+.liquid-glass-dock {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(28px);
+  z-index: 9900;
+
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  /* Frosted glass */
+  background: rgba(255, 255, 255, 0.58);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  border-radius: 22px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.11),
+    0 2px 8px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+
+  padding: 0.6rem 0.9rem;
+  white-space: nowrap;
+  max-width: calc(100vw - 2rem);
+
+  /* Initially hidden – JS adds .dock-visible */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.liquid-glass-dock.dock-visible {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Dark mode */
+body.dark-theme .liquid-glass-dock {
+  background: rgba(13, 19, 32, 0.72);
+  border-color: rgba(255, 255, 255, 0.10);
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.55),
+    0 2px 8px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* ---- Next event button ---- */
+.dock-next-event {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem 0.45rem;
+  border-radius: 12px;
+  transition: background 0.18s ease;
+  text-align: left;
+  min-width: 0;
+}
+.dock-next-event:hover {
+  background: rgba(0, 109, 104, 0.08);
+}
+
+.dock-pulse-dot {
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #006d68;
+  animation: dockPulse 2.2s ease-in-out infinite;
+}
+body.dark-theme .dock-pulse-dot {
+  background: #14b8a6;
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.22);
+  animation: none;
+}
+
+.dock-next-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+.dock-next-prefix {
+  font-family: var(--font-heading);
+  font-size: 0.54rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--primary);
+  line-height: 1;
+}
+.dock-next-title {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 230px;
+}
+
+.dock-next-arrow {
+  color: var(--primary);
+  font-size: 0.72rem;
+  flex-shrink: 0;
+  margin-left: 0.1rem;
+  transition: transform 0.15s ease;
+}
+.dock-next-event:hover .dock-next-arrow {
+  transform: translateX(3px);
+}
+
+/* ---- Divider ---- */
+.dock-divider {
+  width: 1px;
+  height: 30px;
+  background: rgba(0, 0, 0, 0.11);
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+body.dark-theme .dock-divider {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+/* ---- Pill nav ---- */
+.dock-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.dock-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 100px;
+  padding: 0.42rem 0.9rem;
+  font-family: var(--font-heading);
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-main);
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.14s cubic-bezier(0.34,1.56,0.64,1),
+    box-shadow 0.18s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+.dock-pill i { font-size: 0.78rem; }
+.dock-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+}
+.dock-pill:active { transform: translateY(0); box-shadow: none; }
+
+/* Accent hover colours */
+.dock-pill--reise:hover  { background: rgba(0,109,104,0.12); color: #006d68; border-color: rgba(0,109,104,0.28); }
+.dock-pill--org:hover    { background: rgba(99,102,241,0.12); color: #4f46e5; border-color: rgba(99,102,241,0.28); }
+.dock-pill--fin:hover    { background: rgba(245,166,35,0.12); color: #b45309; border-color: rgba(245,166,35,0.3); }
+.dock-pill--erl:hover    { background: rgba(217,107,39,0.12); color: #c05621; border-color: rgba(217,107,39,0.28); }
+
+/* Dark mode pills */
+body.dark-theme .dock-pill {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.08);
+}
+body.dark-theme .dock-pill--reise:hover { background: rgba(20,184,166,0.15); color: #2dd4bf; }
+body.dark-theme .dock-pill--org:hover   { background: rgba(129,140,248,0.15); color: #a5b4fc; }
+body.dark-theme .dock-pill--fin:hover   { background: rgba(251,191,36,0.15); color: #fcd34d; }
+body.dark-theme .dock-pill--erl:hover   { background: rgba(249,115,22,0.15); color: #fb923c; }
+
+/* =========================================================================
+   4. RESPONSIVE
+   ========================================================================= */
+
+/* Tablet compact */
+@media (max-width: 900px) {
+  .dock-next-title { max-width: 160px; }
+}
+
+/* Mobile – dock sits above the mobile bottom nav */
+@media (max-width: 640px) {
+  .liquid-glass-dock {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 4.2rem);
+    left: 0.75rem;
+    right: 0.75rem;
+    transform: translateY(28px);
+    max-width: none;
+    border-radius: 18px;
+    padding: 0.55rem 0.75rem;
+    gap: 0.55rem;
+  }
+  .liquid-glass-dock.dock-visible {
+    transform: translateY(0);
+  }
+  /* Hide pill text labels on tiny screens */
+  .dock-pill span { display: none; }
+  .dock-pill { padding: 0.48rem 0.65rem; gap: 0; }
+  /* Compact next-event */
+  .dock-next-title { max-width: 120px; font-size: 0.75rem; }
+  /* Hero adjustments */
+  .hero-content { padding-bottom: 11rem; gap: 1rem; }
+  .hero-countdown { padding: 0.75rem 1rem; gap: 0.3rem; }
+  .hero-cd-unit { min-width: 2.6rem; }
+  .hero-scroll-hint { bottom: 9rem; }
+}
+
+/* Motion safety */
+@media (prefers-reduced-motion: reduce) {
+  .hero-kb-slide { animation: none !important; opacity: 1 !important; }
+  .hero-kb-slide--2, .hero-kb-slide--3 { opacity: 0 !important; }
+  .hero-kb-slide--1 { opacity: 1 !important; }
+  .hero-scroll-hint { animation: none !important; }
+  .dock-pulse-dot { animation: none !important; }
+  .liquid-glass-dock { transition: opacity 0.2s ease !important; }
+  .hero-cta-btn { transition: none !important; }
+}

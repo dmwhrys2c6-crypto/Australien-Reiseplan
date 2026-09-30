@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/hero-dock.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
@@ -142,55 +143,87 @@
 
     <!-- VIEW 1: 🏠 DASHBOARD -->
     <!-- =========================================================================
-         VIEW 1: 🏠 DASHBOARD (TRAVEL-COCKPIT)
+         VIEW 1: 🏠 DASHBOARD – CINEMATIC HERO & LIQUID GLASS DOCK
          ========================================================================= -->
     <div id="view-dashboard" class="app-view active">
-      <div class="cockpit-container">
 
-        <!-- 1. HEADER (Ruhig, klar, klein bis mittelgroßer Countdown) -->
-        <header class="cockpit-header">
-          <div class="cockpit-title-row">
-            <div class="cockpit-title-group">
-              <span class="cockpit-flag" role="img" aria-label="Australien">🇦🇺</span>
-              <div>
-                <h1 class="cockpit-title">AUSTRALIEN 2027</h1>
-                <p class="cockpit-dates">21.03.2027 – 09.04.2027 · 20 Reisetage · 4 Personen</p>
-              </div>
+      <!-- ═══════════════════════════════════════════════════════════════════
+           CINEMATIC HERO – Ken Burns (5 s) → Static Fade
+           ═══════════════════════════════════════════════════════════════════ -->
+      <div id="hero-cinematic" class="hero-cinematic" aria-label="Australien Roadtrip 2027 – Bildgewaltiger Startscreen">
+
+        <!-- Layer 1: Animiertes Ken-Burns-Banner (sichtbar 0–6 s) -->
+        <div id="hero-animated" class="hero-layer hero-animated" aria-hidden="true">
+          <!-- Verwendete Hintergrundbilder rotieren via CSS-Animation (Ken Burns) -->
+          <div class="hero-kb-slide hero-kb-slide--1"></div>
+          <div class="hero-kb-slide hero-kb-slide--2"></div>
+          <div class="hero-kb-slide hero-kb-slide--3"></div>
+          <!-- Dunkler Gradient Overlay -->
+          <div class="hero-gradient-overlay"></div>
+        </div>
+
+        <!-- Layer 2: Statisches Hintergrundbild (eingeblendet ab ~5 s) -->
+        <div id="hero-static" class="hero-layer hero-static" aria-hidden="true"></div>
+
+        <!-- Hero-Content: Titel, Countdown, CTA -->
+        <div class="hero-content">
+          <div class="hero-eyebrow">
+            <span class="hero-flag" aria-hidden="true">🇦🇺</span>
+            <span class="hero-eyebrow-text">AUSTRALIEN ROADTRIP 2027</span>
+          </div>
+
+          <h1 class="hero-headline">Von Sydney bis<br><em>Melbourne</em></h1>
+          <p class="hero-subline">21.03. – 09.04.2027 &nbsp;·&nbsp; 20 Reisetage &nbsp;·&nbsp; 4 Personen</p>
+
+          <!-- Countdown (IDs beibehalten für Rückwärtskompatibilität mit app.js) -->
+          <div class="hero-countdown" id="cockpit-countdown" aria-label="Countdown bis Abflug">
+            <div class="hero-cd-unit">
+              <span class="cp-cd-val hero-cd-val" id="cd-days">--</span>
+              <span class="cp-cd-lbl hero-cd-lbl">Tage</span>
             </div>
-
-            <!-- Countdown: dezent, klein bis mittelgroß, kein gigantisches Hero-Element -->
-            <div class="cockpit-countdown" id="cockpit-countdown" aria-label="Countdown bis Abflug">
-              <div class="cp-cd-unit">
-                <span class="cp-cd-val" id="cd-days">--</span>
-                <span class="cp-cd-lbl">Tage</span>
-              </div>
-              <span class="cp-cd-sep">:</span>
-              <div class="cp-cd-unit">
-                <span class="cp-cd-val" id="cd-hours">--</span>
-                <span class="cp-cd-lbl">Std</span>
-              </div>
-              <span class="cp-cd-sep">:</span>
-              <div class="cp-cd-unit">
-                <span class="cp-cd-val" id="cd-minutes">--</span>
-                <span class="cp-cd-lbl">Min</span>
-              </div>
-              <span class="cp-cd-sep">:</span>
-              <div class="cp-cd-unit">
-                <span class="cp-cd-val" id="cd-seconds">--</span>
-                <span class="cp-cd-lbl">Sek</span>
-              </div>
+            <span class="hero-cd-sep">:</span>
+            <div class="hero-cd-unit">
+              <span class="cp-cd-val hero-cd-val" id="cd-hours">--</span>
+              <span class="cp-cd-lbl hero-cd-lbl">Std</span>
+            </div>
+            <span class="hero-cd-sep">:</span>
+            <div class="hero-cd-unit">
+              <span class="cp-cd-val hero-cd-val" id="cd-minutes">--</span>
+              <span class="cp-cd-lbl hero-cd-lbl">Min</span>
+            </div>
+            <span class="hero-cd-sep">:</span>
+            <div class="hero-cd-unit">
+              <span class="cp-cd-val hero-cd-val" id="cd-seconds">--</span>
+              <span class="cp-cd-lbl hero-cd-lbl">Sek</span>
             </div>
           </div>
-        </header>
 
-        <!-- 2. ALS NÄCHSTES (Prominenter Fokusbereich) -->
+          <button type="button" class="hero-cta-btn" id="cockpit-btn-open-day"
+            onclick="jumpToCurrentOrNextDay()" aria-label="Zum aktuellen Tagesplan">
+            <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+            <span>Tagesplan öffnen</span>
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <!-- Scroll-Hint Pfeil -->
+        <div class="hero-scroll-hint" aria-hidden="true">
+          <i class="fa-solid fa-chevron-down"></i>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════════════
+           NÄCHSTES EREIGNIS & SCHNELLZUGRIFF (unterhalb des Hero)
+           ═══════════════════════════════════════════════════════════════════ -->
+      <div class="cockpit-container cockpit-below-hero">
+
+        <!-- Als Nächstes -->
         <section class="cockpit-next-section" id="cockpit-next-stage-wrapper">
           <div class="cockpit-next-card">
             <div class="cockpit-next-top">
               <span class="cockpit-badge"><i class="fa-solid fa-location-dot"></i> ALS NÄCHSTES</span>
               <span class="cockpit-next-daybadge" id="cockpit-next-daynum">Tag 1 von 20</span>
             </div>
-
             <div class="cockpit-next-body">
               <div class="cockpit-next-main">
                 <h2 class="cockpit-next-title" id="cockpit-next-title">Tag 1: Abreise aus Wien ➔ Flug nach Sydney</h2>
@@ -198,14 +231,11 @@
                   <i class="fa-solid fa-map-pin"></i> <span>Ziel: Sydney, New South Wales (NSW)</span>
                 </div>
                 <div class="cockpit-next-acts" id="cockpit-next-activities">
-                  <i class="fa-solid fa-compass"></i> <span>Langstreckenflug ab Wien (VIE) · Scoot TR 12 via Singapur ·
-                    Landung Kingsford Smith Airport</span>
+                  <i class="fa-solid fa-compass"></i> <span>Langstreckenflug ab Wien (VIE) · Scoot TR 12 via Singapur · Landung Kingsford Smith Airport</span>
                 </div>
               </div>
-
               <div class="cockpit-next-action">
-                <button type="button" class="btn-cockpit-primary" id="cockpit-btn-open-day"
-                  onclick="jumpToCurrentOrNextDay()">
+                <button type="button" class="btn-cockpit-primary" onclick="jumpToCurrentOrNextDay()">
                   <span>Tagesplan öffnen</span>
                   <i class="fa-solid fa-arrow-right"></i>
                 </button>
@@ -214,10 +244,9 @@
           </div>
         </section>
 
-        <!-- 3. SCHNELLZUGRIFFE (4 kompakte Bereiche zur Navigation) -->
+        <!-- Schnellzugriffe -->
         <section class="cockpit-quicklinks-section">
           <div class="cockpit-quicklinks-grid">
-            <!-- 1. REISE -->
             <div class="cockpit-quick-card" onclick="showView('reise')">
               <div class="cockpit-card-icon reise"><i class="fa-solid fa-map-location-dot"></i></div>
               <div class="cockpit-card-content">
@@ -226,8 +255,6 @@
               </div>
               <i class="fa-solid fa-chevron-right cockpit-card-arrow"></i>
             </div>
-
-            <!-- 2. ORGANISATION -->
             <div class="cockpit-quick-card" onclick="showView('organisation')">
               <div class="cockpit-card-icon organisation"><i class="fa-solid fa-clipboard-list"></i></div>
               <div class="cockpit-card-content">
@@ -236,8 +263,6 @@
               </div>
               <i class="fa-solid fa-chevron-right cockpit-card-arrow"></i>
             </div>
-
-            <!-- 3. FINANZEN -->
             <div class="cockpit-quick-card" onclick="showView('finanzen')">
               <div class="cockpit-card-icon finanzen"><i class="fa-solid fa-wallet"></i></div>
               <div class="cockpit-card-content">
@@ -246,8 +271,6 @@
               </div>
               <i class="fa-solid fa-chevron-right cockpit-card-arrow"></i>
             </div>
-
-            <!-- 4. ERLEBNISSE -->
             <div class="cockpit-quick-card" onclick="showView('erlebnisse')">
               <div class="cockpit-card-icon erlebnisse"><i class="fa-solid fa-compass"></i></div>
               <div class="cockpit-card-content">
@@ -259,8 +282,52 @@
           </div>
         </section>
 
-      </div>
-    </div>
+      </div><!-- /.cockpit-below-hero -->
+
+      <!-- ═══════════════════════════════════════════════════════════════════
+           LIQUID GLASS DOCK – schwebende Nav-Bar unten
+           ═══════════════════════════════════════════════════════════════════ -->
+      <div class="liquid-glass-dock" id="liquid-glass-dock" role="navigation" aria-label="Schnellnavigation">
+
+        <!-- Links: Nächstes Ereignis -->
+        <button type="button" class="dock-next-event" id="dock-next-event-btn"
+          onclick="jumpToCurrentOrNextDay()" aria-label="Zum nächsten Reisetag">
+          <span class="dock-pulse-dot" aria-hidden="true"></span>
+          <span class="dock-next-label">
+            <span class="dock-next-prefix">NÄCHSTES EREIGNIS</span>
+            <span class="dock-next-title" id="dock-next-title">Tag 1 · Abreise aus Wien</span>
+          </span>
+          <i class="fa-solid fa-arrow-right dock-next-arrow" aria-hidden="true"></i>
+        </button>
+
+        <!-- Divider -->
+        <div class="dock-divider" aria-hidden="true"></div>
+
+        <!-- Rechts: 4 Pill-Buttons -->
+        <nav class="dock-pills" aria-label="Hauptnavigation">
+          <button type="button" class="dock-pill dock-pill--reise" id="dock-btn-reise"
+            onclick="showView('reise')" aria-label="Reiseplan und Karte öffnen">
+            <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+            <span>Reise</span>
+          </button>
+          <button type="button" class="dock-pill dock-pill--org" id="dock-btn-organisation"
+            onclick="showView('organisation')" aria-label="Reiseorganisation öffnen">
+            <i class="fa-solid fa-clipboard-list" aria-hidden="true"></i>
+            <span>Organisation</span>
+          </button>
+          <button type="button" class="dock-pill dock-pill--fin" id="dock-btn-finanzen"
+            onclick="showView('finanzen')" aria-label="Finanzen und Budget öffnen">
+            <i class="fa-solid fa-wallet" aria-hidden="true"></i>
+            <span>Finanzen</span>
+          </button>
+          <button type="button" class="dock-pill dock-pill--erl" id="dock-btn-erlebnisse"
+            onclick="showView('erlebnisse')" aria-label="Erlebnisse und Journal öffnen">
+            <i class="fa-solid fa-compass" aria-hidden="true"></i>
+            <span>Erlebnisse</span>
+          </button>
+        </nav>
+      </div><!-- /.liquid-glass-dock -->
+    </div><!-- /#view-dashboard -->
 
 
     <!-- VIEW 2: 🗺️ REISE (TIMELINE + STICKY INTERAKTIVE KARTE) -->
@@ -3606,16 +3673,99 @@
     </div>
   </div>
 
-  <!-- Scripts -->
-  <!-- Single Source of Truth Master Data & TripStore -->
+  <!-- =========================================================================
+       SCRIPTS – konsolidiertes, schlankes Loading-Order
+       ========================================================================= -->
+  <!-- 1. Reisetage-Datenspeicher & Timeline-Renderer (Single Source of Truth) -->
   <script src="js/trip-store.js"></script>
+  <!-- 2. Karten-Geodaten & Routen -->
   <script src="js/tripMasterData.js"></script>
-  <script src="js/tripStore.js"></script>
   <script src="js/tripData.js"></script>
-  <script src="js/reiseApp.js"></script>
+  <!-- 3. UI-Komponenten, Router & Reise-App -->
   <script src="js/components.js"></script>
   <script src="js/router.js"></script>
+  <script src="js/reiseApp.js"></script>
+  <!-- 4. Kern-Applikationslogik -->
   <script src="js/app.js"></script>
+
+  <!-- 5. Cinematic Hero (5-Sek Fade) & Liquid Glass Dock (Initialisierung) -->
+  <script>
+  (function () {
+    'use strict';
+
+    /* -----------------------------------------------------------------------
+       HERO: Ken Burns (5 s) → Static Image Fade
+    ----------------------------------------------------------------------- */
+    function initHero() {
+      var animated = document.getElementById('hero-animated');
+      var staticLayer = document.getElementById('hero-static');
+      if (!animated || !staticLayer) return;
+
+      // After 5 s: fade the Ken-Burns layer out, fade the static layer in
+      setTimeout(function () {
+        animated.classList.add('hero-fade-out');
+        staticLayer.classList.add('hero-fade-in');
+      }, 5000);
+    }
+
+    /* -----------------------------------------------------------------------
+       DOCK: Show only on Dashboard view
+    ----------------------------------------------------------------------- */
+    function updateDockVisibility() {
+      var dock = document.getElementById('liquid-glass-dock');
+      if (!dock) return;
+      var dashActive = document.getElementById('view-dashboard');
+      if (dashActive && dashActive.classList.contains('active')) {
+        dock.classList.add('dock-visible');
+      } else {
+        dock.classList.remove('dock-visible');
+      }
+    }
+
+    /* -----------------------------------------------------------------------
+       DOCK: Sync "Next Event" title with TripStore / DOM
+    ----------------------------------------------------------------------- */
+    function updateDockNextEvent() {
+      var dockTitle = document.getElementById('dock-next-title');
+      if (!dockTitle) return;
+      // Mirror whatever the cockpit sets
+      var sourceEl = document.getElementById('cockpit-next-title');
+      if (sourceEl && sourceEl.textContent.trim()) {
+        var text = sourceEl.textContent.trim();
+        // Shorten to ~40 chars for compact dock display
+        dockTitle.textContent = text.length > 42 ? text.slice(0, 40) + '…' : text;
+      }
+    }
+
+    /* -----------------------------------------------------------------------
+       INIT on DOMContentLoaded
+    ----------------------------------------------------------------------- */
+    document.addEventListener('DOMContentLoaded', function () {
+      initHero();
+
+      // Show dock initially if dashboard is active
+      setTimeout(updateDockVisibility, 900);
+
+      // Sync dock next-event text once data arrives
+      setTimeout(updateDockNextEvent, 1200);
+
+      // Observe view changes: hook into showView if available
+      var origShowView = window.showView;
+      if (typeof origShowView === 'function') {
+        window.showView = function (viewName, skipHistory) {
+          origShowView.call(this, viewName, skipHistory);
+          setTimeout(function () {
+            updateDockVisibility();
+            if (viewName === 'dashboard') initHero();
+          }, 60);
+        };
+      } else {
+        // Fallback: poll once per second
+        setInterval(updateDockVisibility, 1000);
+      }
+    });
+  }());
+  </script>
 </body>
 
 </html>
