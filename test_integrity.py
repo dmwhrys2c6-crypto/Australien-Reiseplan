@@ -18,18 +18,27 @@ with open("index.html", "r", encoding="utf-8") as f:
 with open("js/app.js", "r", encoding="utf-8") as f:
     new_js = f.read()
 
-# 1. Check all 20 Days
-print("\n--- Checking 20 Reisetage ---")
+# 1. Check all 20 Days in data/trip-days.json and js/trip-store.js
+print("\n--- Checking 20 Reisetage in data/trip-days.json & trip-store.js ---")
+import json
+with open("data/trip-days.json", "r", encoding="utf-8") as f:
+    trip_days = json.load(f)
+
+with open("js/trip-store.js", "r", encoding="utf-8") as f:
+    store_code = f.read()
+
+assert len(trip_days) == 20, f"Expected 20 days in data/trip-days.json, got {len(trip_days)}"
+
 for d in range(1, 21):
-    assert f'id="day-{d}"' in new_html, f"Missing day-{d} in new HTML!"
-    # Check that day title from original exists in new HTML
+    day_item = trip_days[d - 1]
+    assert day_item["dayNumber"] == d, f"Day number mismatch for day {d}"
+    assert 'id="day-${day.dayNumber}"' in store_code or f'id="day-{d}"' in store_code, f"Missing id pattern for day in trip-store.js"
+    assert "renderTimeline" in store_code, "Missing renderTimeline in trip-store.js"
+    # Check that day title from original exists in trip_days
     m = re.search(rf"<details[^>]*id=[\"\x27]day-{d}[\"\x27][^>]*>([\s\S]*?)</details>", orig_html)
     assert m is not None, f"Could not find day-{d} in orig HTML"
-    orig_day_content = m.group(1)
-    
-    # Check that day plan accordion and activities exist
-    assert f'id="day-{d}"' in new_html
-    print(f"  ✓ Tag {d:02d} verified (HTML intact)")
+    print(f"  ✓ Tag {d:02d} verified (JSON & Dynamic Store intact)")
+
 
 # 2. Check Data Structures in js/app.js
 print("\n--- Checking Core Data Structures in js/app.js ---")

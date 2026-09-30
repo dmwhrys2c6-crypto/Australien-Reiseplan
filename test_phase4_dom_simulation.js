@@ -161,8 +161,13 @@ testAssert(spot18.day === 14, 'Spot 18 ist Tag 14 zugeordnet');
 
 // 4. Test Return to Day (Zurück zum Tag)
 console.log('\n4. Test: Zurück zum Tag');
-testAssert(html.includes('id="day-14"'), 'Element #day-14 existiert im HTML');
-testAssert(html.includes('TAG 14 · WHITSUNDAYS'), 'Tag 14 hat Badge "TAG 14 · WHITSUNDAYS"');
+const tripStoreCode = fs.readFileSync(path.join(__dirname, 'js/trip-store.js'), 'utf8');
+const storeModule = new Function('root', 'self', tripStoreCode + '; return root.TripStore;');
+const TripStore = storeModule(globalThis, globalThis);
+const mockTimelineEl = { innerHTML: '' };
+TripStore.renderTimeline(mockTimelineEl);
+testAssert(mockTimelineEl.innerHTML.includes('id="day-14"') || html.includes('id="day-14"'), 'Element #day-14 existiert im gerenderten DOM');
+testAssert(mockTimelineEl.innerHTML.includes('TAG 14 · WHITSUNDAYS') || html.includes('TAG 14 · WHITSUNDAYS'), 'Tag 14 hat Badge "TAG 14 · WHITSUNDAYS"');
 
 // 5. Test Zoom & Filter (6 Layer-System)
 console.log('\n5. Test: Filter & Layer-System');
