@@ -159,3 +159,18 @@ body.is-trip .btn-icon-action { height:36px; width:36px; padding:0; background:r
   .trip-day-card { padding:12px; gap:10px; }.trip-day-card-date { width:55px; }
 }
 @media(prefers-reduced-motion:reduce) { .trip-sheet,.trip-marker,.trip-icon-button,.trip-day-pill { transition:none; }.trip-editor[open] { animation:none; } }
+
+/* Restore the shared dark theme on the existing trip surfaces. */
+body.dark-theme { --trip-glass-bg:var(--card-bg); --trip-muted:var(--text-muted); --trip-border:var(--border-color); }
+body.dark-theme.is-trip { background:var(--bg-main); }
+body.dark-theme.is-trip .app-header,body.dark-theme.is-trip .mobile-bottom-nav { background:var(--nav-bg); border-color:var(--border-color); }
+body.dark-theme.is-trip .desktop-nav,body.dark-theme.is-trip .btn-icon-action { background:var(--card-bg); border-color:var(--border-color); }
+body.dark-theme .trip-workspace { color:var(--text-main); --trip-glass-bg:var(--card-bg); --trip-muted:var(--text-muted); --trip-border:var(--border-color); }
+body.dark-theme .trip-glass { box-shadow:0 8px 32px rgba(0,0,0,.2); }
+body.dark-theme .trip-header-content h1,body.dark-theme .trip-sheet-top h2,body.dark-theme .trip-empty h3,body.dark-theme .trip-stop-select,body.dark-theme .trip-menu button,body.dark-theme .trip-editor h2,body.dark-theme .trip-confirm h2 { color:var(--text-main); }
+body.dark-theme .trip-eyebrow,body.dark-theme .trip-stop-time,body.dark-theme .trip-stop-detail,body.dark-theme .trip-empty,body.dark-theme .trip-editor-fields label,body.dark-theme .trip-confirm p { color:var(--text-muted); }
+body.dark-theme .trip-icon-button,body.dark-theme .trip-day-pill,body.dark-theme .trip-day-card,body.dark-theme .trip-stop-row,body.dark-theme .trip-add-stop,body.dark-theme .trip-secondary-button,body.dark-theme .trip-route-note { background:var(--card-sub-bg); color:var(--text-main); border-color:var(--border-color); }
+body.dark-theme .trip-day-pill.is-active { background:var(--primary); color:white; }
+body.dark-theme .trip-day-pill:hover,body.dark-theme .trip-day-card:hover,body.dark-theme .trip-icon-button:hover,body.dark-theme .trip-stop-card.is-selected .trip-stop-row { background:var(--card-bg); }
+body.dark-theme .trip-menu>div,body.dark-theme .trip-editor,body.dark-theme .trip-confirm,body.dark-theme .trip-editor-footer { background:var(--card-bg); color:var(--text-main); border-color:var(--border-color); }
+body.dark-theme .trip-editor-fields input,body.dark-theme .trip-editor-fields textarea,body.dark-theme .trip-editor-fields select { background:var(--card-sub-bg); color:var(--text-main); border-color:var(--border-color); }

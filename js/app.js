@@ -925,8 +925,11 @@ const localStorage = window.Persistence.wrap(window.localStorage);
 
     // THEME & CORE
     function updateThemeUI(isDark) {
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
       const topBtn = document.getElementById('theme-toggle-btn');
       if (topBtn) {
+        topBtn.setAttribute('aria-pressed', String(isDark));
+        topBtn.setAttribute('aria-label', isDark ? 'Light Mode aktivieren' : 'Dark Mode aktivieren');
         topBtn.innerHTML = isDark ? '<i class="fa-solid fa-sun" style="color:var(--accent-gold);"></i>' : '<i class="fa-solid fa-moon"></i>';
       }
       const drawerIcon = document.getElementById('drawer-theme-icon');
@@ -941,19 +944,17 @@ const localStorage = window.Persistence.wrap(window.localStorage);
     }
 
     function initTheme() {
-      const savedTheme = localStorage.getItem('aus_theme');
-      if (savedTheme === 'dark') {
-        document.body.classList.add('dark-theme');
-        updateThemeUI(true);
-      } else {
-        updateThemeUI(false);
-      }
+      let isDark = false;
+      try { isDark = window.localStorage.getItem('aus_theme') === 'dark'; } catch (e) { console.warn('Theme konnte nicht geladen werden.', e); }
+      document.body.classList.toggle('dark-theme', isDark);
+      updateThemeUI(isDark);
     }
 
     function toggleDarkMode() {
       const isDark = document.body.classList.toggle('dark-theme');
-      localStorage.setItem('aus_theme', isDark ? 'dark' : 'light');
       updateThemeUI(isDark);
+      // Preferences may change independently in another tab; keep data conflict guards intact.
+      try { window.localStorage.setItem('aus_theme', isDark ? 'dark' : 'light'); } catch (e) { console.warn('Theme konnte nicht gespeichert werden.', e); }
     }
 
     // =========================================================================
@@ -4108,6 +4109,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
 
     // Von der Karte zum Reiseplan: Öffnet den passenden Tag, scrollt dorthin und hebt Tag + Spot hervor
     function jumpToDayAndHighlight(dayNum, spotId) {
+      if (window.TripPage) { showView('reise'); window.TripPage.selectDayNumber(dayNum); return; }
       isSyncingFromMap = true;
       if (typeof showView === 'function') {
         showView('reise', true);
@@ -7223,6 +7225,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
     }
 
     function openBookingsForDay(dayNum) {
+      showView('organisation');
       const sec = document.getElementById('organization');
       if (sec) {
         switchOrgTab('bookings');
@@ -7534,6 +7537,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
     }
 
     function openPackingList(cat) {
+      showView('organisation');
       const sec = document.getElementById('organization');
       if (sec) {
         switchOrgTab('packing');
@@ -7878,6 +7882,8 @@ const localStorage = window.Persistence.wrap(window.localStorage);
     }
 
     function jumpToJournalDay(dayNum) {
+      showView('erlebnisse');
+      switchExpTab('journal');
       const sec = document.getElementById('journal');
       if (sec) {
         switchJournalTab('entries');
@@ -8422,7 +8428,12 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           title: h.name,
           subtitle: `${h.loc} · ${h.desc}`,
           keywords: `${h.name} ${h.loc} ${h.desc} hotel accommodation unterkunft`,
-          action: () => openBookingsForDay(h.day)
+          action: () => {
+            const hotelName = h.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+            const booking = window.ManagementPage?.repo?.get('booking').find(b => b.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(hotelName));
+            if (booking) window.ManagementPage.openEntity('booking', booking.id);
+            else openBookingsForDay(h.day);
+          }
         });
       });
 
@@ -8846,7 +8857,9 @@ function showView(viewName, skipHistory) {
 
   // Hide all views, activate target
   document.querySelectorAll('.app-view').forEach(v => {
-    v.classList.remove('active');
+    const active = v.id === 'view-' + target;
+    v.classList.toggle('active', active);
+    v.style.display = active ? 'block' : 'none';
   });
   const viewEl = document.getElementById('view-' + target);
   if (viewEl) {
@@ -8854,8 +8867,10 @@ function showView(viewName, skipHistory) {
   }
 
   // Update desktop navigation
-  document.querySelectorAll('.desktop-nav .nav-tab').forEach(tab => {
-    tab.classList.toggle('active', tab.getAttribute('data-view') === target);
+  document.querySelectorAll('.desktop-nav .nav-tab, .dock-pill[data-view]').forEach(tab => {
+    const active = tab.getAttribute('data-view') === target;
+    tab.classList.toggle('active', active);
+    tab.setAttribute('aria-selected', String(active));
   });
 
   // Update mobile bottom navigation (5-item layout: when viewing erlebnisse, highlight mehr)
@@ -8863,6 +8878,7 @@ function showView(viewName, skipHistory) {
     const itemView = item.getAttribute('data-view');
     const isActive = (itemView === target) || (target === 'erlebnisse' && itemView === 'mehr');
     item.classList.toggle('active', isActive);
+    item.setAttribute('aria-selected', String(isActive));
   });
 
   // Trigger view hooks
@@ -8907,12 +8923,12 @@ function showView(viewName, skipHistory) {
     }
   }
 
-  if (!skipHistory) {
-    if (window.Router && typeof window.Router.navigate === 'function' && window.Router.getCurrentRoute() !== target) {
-      window.Router.navigate(target, { push: true, silent: true });
-    } else if (window.location.hash !== '#' + target && !window.location.hash.startsWith('#day-')) {
-      history.replaceState(null, '', '#' + target);
+  if (window.Router && typeof window.Router.navigate === 'function') {
+    if (window.Router.getCurrentRoute() !== target) {
+      window.Router.navigate(target, { push: !skipHistory, silent: true });
     }
+  } else if (!skipHistory && window.location.hash !== '#' + target && !window.location.hash.startsWith('#day-')) {
+    history.replaceState(null, '', '#' + target);
   }
 }
 

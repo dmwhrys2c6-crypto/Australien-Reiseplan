@@ -125,7 +125,7 @@
       });
 
       // 2. Navigation-Tabs aktualisieren (Desktop & Mobile)
-      const navTabs = document.querySelectorAll('.desktop-nav .nav-tab, .mobile-bottom-nav .bottom-nav-item');
+      const navTabs = document.querySelectorAll('.desktop-nav .nav-tab, .mobile-bottom-nav .bottom-nav-item, .dock-pill[data-view]');
       navTabs.forEach(tab => {
         const tabView = tab.getAttribute('data-view');
         const isMobileItem = tab.classList.contains('bottom-nav-item');

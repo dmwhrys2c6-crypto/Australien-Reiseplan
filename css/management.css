@@ -108,3 +108,14 @@ body.is-management .org-subnav-tabs .org-tab-btn {flex-shrink:0;}
 /* Existing .app-view section resets require this scoped specificity. */
 .manage-page .manage-budget,.manage-page .manage-categories {padding:28px;margin:0;}
 @media(max-width:600px){.manage-page .manage-budget,.manage-page .manage-categories {padding:22px;}}
+
+/* Existing management layout uses the shared dark palette. */
+body.dark-theme.is-management { background:var(--bg-main); }
+body.dark-theme.is-management .app-header,body.dark-theme.is-management .mobile-bottom-nav { background:var(--nav-bg); border-color:var(--border-color); }
+body.dark-theme.is-management .desktop-nav,body.dark-theme.is-management .header-actions .btn-icon-action,body.dark-theme.is-management .subnav-pills,body.dark-theme.is-management .org-subnav-tabs { background:var(--card-bg); }
+body.dark-theme.is-management .clean-slide,body.dark-theme.is-management .org-section,body.dark-theme.is-management .journal-section,body.dark-theme.is-management .tool-card,body.dark-theme.is-management .packing-category { background:var(--card-bg); border-color:var(--border-color); }
+body.dark-theme .manage-page,body.dark-theme .manage-booking-summary strong,body.dark-theme .manage-search input { color:var(--text-main); }
+body.dark-theme .manage-search,body.dark-theme .manage-toolbar select,body.dark-theme .manage-live,body.dark-theme .manage-image-placeholder,body.dark-theme .manage-drone-status { background:var(--card-sub-bg); color:var(--text-main); border-color:var(--border-color); }
+body.dark-theme .manage-row { border-color:var(--border-color); }
+body.dark-theme .manage-header p,body.dark-theme .manage-summary-card>span,body.dark-theme .manage-budget p,body.dark-theme .manage-budget small,body.dark-theme .manage-row-main small,body.dark-theme .manage-activity p,body.dark-theme .manage-activity small,body.dark-theme .manage-muted,body.dark-theme .manage-notice,body.dark-theme .manage-booking-summary,body.dark-theme.is-management .view-header-subtitle,body.dark-theme.is-management .subnav-pill,body.dark-theme.is-management .org-tab-btn { color:var(--text-muted); }
+body.dark-theme.is-management .subnav-pill.active,body.dark-theme.is-management .org-tab-btn.active { color:white; }

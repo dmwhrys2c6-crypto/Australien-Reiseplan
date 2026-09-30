@@ -93,13 +93,13 @@ body.is-home #view-dashboard { animation: none; }
   transition: background .18s ease;
 }
 .dock-pill i { font-size: .8rem; }
-.dock-pill--reise { background: #171e27; color: #fff; }
+.dock-pill.active { background: #171e27; color: #fff; }
 .dock-pill:hover, .dock-next-event:hover { background: rgba(255,255,255,.45); }
-.dock-pill--reise:hover { background: #304154; }
+.dock-pill.active:hover { background: #304154; }
 .app-brand:focus-visible, .dock-pill:focus-visible, .dock-next-event:focus-visible {
   outline: 3px solid #80b6ff; outline-offset: 3px;
 }
-/* Das Bild und das helle Glas bleiben auch bei aktivem Dunkelmodus gleich. */
+/* Theme follows the existing dark palette; the travel image is preserved. */
 @media (max-width: 850px) {
   .liquid-glass-dock { gap: 9px; padding: 9px; }
   .dock-pill { padding: 0 9px; }
@@ -144,3 +144,11 @@ body.is-home #view-dashboard { animation: none; }
   .hero-playing .hero-kb-slide { animation: none; transform: none; }
   .hero-animated, .liquid-glass-dock { transition: none; }
 }
+
+body.dark-theme.is-home { background:var(--bg-main); }
+body.dark-theme .liquid-glass-dock { background:var(--nav-bg); color:var(--text-main); border-color:var(--border-color); box-shadow:0 12px 38px rgba(0,0,0,.3); }
+body.dark-theme .dock-pill { color:var(--text-main); }
+body.dark-theme .dock-next-prefix,body.dark-theme .dock-next-arrow { color:var(--text-muted); }
+body.dark-theme .dock-event-icon { background:var(--card-sub-bg); border-color:var(--border-color); }
+body.dark-theme .dock-divider { background:var(--border-color); }
+body.dark-theme .dock-pill:hover,body.dark-theme .dock-next-event:hover { background:var(--card-sub-bg); }
