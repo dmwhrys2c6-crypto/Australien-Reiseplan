@@ -150,7 +150,8 @@
       <!-- ═══════════════════════════════════════════════════════════════════
            CINEMATIC HERO – Ken Burns (5 s) → Static Fade
            ═══════════════════════════════════════════════════════════════════ -->
-      <div id="hero-cinematic" class="hero-cinematic" aria-label="Australien Roadtrip 2027 – Bildgewaltiger Startscreen">
+      <div id="hero-cinematic" class="hero-cinematic"
+        aria-label="Australien Roadtrip 2027 – Bildgewaltiger Startscreen">
 
         <!-- Layer 1: Animiertes Ken-Burns-Banner (sichtbar 0–6 s) -->
         <div id="hero-animated" class="hero-layer hero-animated" aria-hidden="true">
@@ -198,8 +199,8 @@
             </div>
           </div>
 
-          <button type="button" class="hero-cta-btn" id="cockpit-btn-open-day"
-            onclick="jumpToCurrentOrNextDay()" aria-label="Zum aktuellen Tagesplan">
+          <button type="button" class="hero-cta-btn" id="cockpit-btn-open-day" onclick="jumpToCurrentOrNextDay()"
+            aria-label="Zum aktuellen Tagesplan">
             <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
             <span>Tagesplan öffnen</span>
             <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
@@ -231,7 +232,8 @@
                   <i class="fa-solid fa-map-pin"></i> <span>Ziel: Sydney, New South Wales (NSW)</span>
                 </div>
                 <div class="cockpit-next-acts" id="cockpit-next-activities">
-                  <i class="fa-solid fa-compass"></i> <span>Langstreckenflug ab Wien (VIE) · Scoot TR 12 via Singapur · Landung Kingsford Smith Airport</span>
+                  <i class="fa-solid fa-compass"></i> <span>Langstreckenflug ab Wien (VIE) · Scoot TR 12 via Singapur ·
+                    Landung Kingsford Smith Airport</span>
                 </div>
               </div>
               <div class="cockpit-next-action">
@@ -290,8 +292,8 @@
       <div class="liquid-glass-dock" id="liquid-glass-dock" role="navigation" aria-label="Schnellnavigation">
 
         <!-- Links: Nächstes Ereignis -->
-        <button type="button" class="dock-next-event" id="dock-next-event-btn"
-          onclick="jumpToCurrentOrNextDay()" aria-label="Zum nächsten Reisetag">
+        <button type="button" class="dock-next-event" id="dock-next-event-btn" onclick="jumpToCurrentOrNextDay()"
+          aria-label="Zum nächsten Reisetag">
           <span class="dock-pulse-dot" aria-hidden="true"></span>
           <span class="dock-next-label">
             <span class="dock-next-prefix">NÄCHSTES EREIGNIS</span>
@@ -305,8 +307,8 @@
 
         <!-- Rechts: 4 Pill-Buttons -->
         <nav class="dock-pills" aria-label="Hauptnavigation">
-          <button type="button" class="dock-pill dock-pill--reise" id="dock-btn-reise"
-            onclick="showView('reise')" aria-label="Reiseplan und Karte öffnen">
+          <button type="button" class="dock-pill dock-pill--reise" id="dock-btn-reise" onclick="showView('reise')"
+            aria-label="Reiseplan und Karte öffnen">
             <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
             <span>Reise</span>
           </button>
@@ -315,8 +317,8 @@
             <i class="fa-solid fa-clipboard-list" aria-hidden="true"></i>
             <span>Organisation</span>
           </button>
-          <button type="button" class="dock-pill dock-pill--fin" id="dock-btn-finanzen"
-            onclick="showView('finanzen')" aria-label="Finanzen und Budget öffnen">
+          <button type="button" class="dock-pill dock-pill--fin" id="dock-btn-finanzen" onclick="showView('finanzen')"
+            aria-label="Finanzen und Budget öffnen">
             <i class="fa-solid fa-wallet" aria-hidden="true"></i>
             <span>Finanzen</span>
           </button>
@@ -469,8 +471,10 @@
               <div class="timeline">
 
                 <!-- Dynamisch gerendert aus data/trip-days.json via js/trip-store.js -->
-                <div class="timeline-loading-placeholder" id="timeline-loading-placeholder" style="text-align:center; padding:3rem 1.5rem; color:var(--text-muted);">
-                  <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem; color:var(--primary); margin-bottom:1rem;"></i>
+                <div class="timeline-loading-placeholder" id="timeline-loading-placeholder"
+                  style="text-align:center; padding:3rem 1.5rem; color:var(--text-muted);">
+                  <i class="fa-solid fa-spinner fa-spin"
+                    style="font-size:2rem; color:var(--primary); margin-bottom:1rem;"></i>
                   <p style="font-size:1rem; font-weight:600;">Reiseplan wird geladen...</p>
                 </div>
               </div>
@@ -3690,81 +3694,81 @@
 
   <!-- 5. Cinematic Hero (5-Sek Fade) & Liquid Glass Dock (Initialisierung) -->
   <script>
-  (function () {
-    'use strict';
+    (function () {
+      'use strict';
 
-    /* -----------------------------------------------------------------------
-       HERO: Ken Burns (5 s) → Static Image Fade
-    ----------------------------------------------------------------------- */
-    function initHero() {
-      var animated = document.getElementById('hero-animated');
-      var staticLayer = document.getElementById('hero-static');
-      if (!animated || !staticLayer) return;
+      /* -----------------------------------------------------------------------
+         HERO: Ken Burns (5 s) → Static Image Fade
+      ----------------------------------------------------------------------- */
+      function initHero() {
+        var animated = document.getElementById('hero-animated');
+        var staticLayer = document.getElementById('hero-static');
+        if (!animated || !staticLayer) return;
 
-      // After 5 s: fade the Ken-Burns layer out, fade the static layer in
-      setTimeout(function () {
-        animated.classList.add('hero-fade-out');
-        staticLayer.classList.add('hero-fade-in');
-      }, 5000);
-    }
-
-    /* -----------------------------------------------------------------------
-       DOCK: Show only on Dashboard view
-    ----------------------------------------------------------------------- */
-    function updateDockVisibility() {
-      var dock = document.getElementById('liquid-glass-dock');
-      if (!dock) return;
-      var dashActive = document.getElementById('view-dashboard');
-      if (dashActive && dashActive.classList.contains('active')) {
-        dock.classList.add('dock-visible');
-      } else {
-        dock.classList.remove('dock-visible');
+        // After 5 s: fade the Ken-Burns layer out, fade the static layer in
+        setTimeout(function () {
+          animated.classList.add('hero-fade-out');
+          staticLayer.classList.add('hero-fade-in');
+        }, 5000);
       }
-    }
 
-    /* -----------------------------------------------------------------------
-       DOCK: Sync "Next Event" title with TripStore / DOM
-    ----------------------------------------------------------------------- */
-    function updateDockNextEvent() {
-      var dockTitle = document.getElementById('dock-next-title');
-      if (!dockTitle) return;
-      // Mirror whatever the cockpit sets
-      var sourceEl = document.getElementById('cockpit-next-title');
-      if (sourceEl && sourceEl.textContent.trim()) {
-        var text = sourceEl.textContent.trim();
-        // Shorten to ~40 chars for compact dock display
-        dockTitle.textContent = text.length > 42 ? text.slice(0, 40) + '…' : text;
+      /* -----------------------------------------------------------------------
+         DOCK: Show only on Dashboard view
+      ----------------------------------------------------------------------- */
+      function updateDockVisibility() {
+        var dock = document.getElementById('liquid-glass-dock');
+        if (!dock) return;
+        var dashActive = document.getElementById('view-dashboard');
+        if (dashActive && dashActive.classList.contains('active')) {
+          dock.classList.add('dock-visible');
+        } else {
+          dock.classList.remove('dock-visible');
+        }
       }
-    }
 
-    /* -----------------------------------------------------------------------
-       INIT on DOMContentLoaded
-    ----------------------------------------------------------------------- */
-    document.addEventListener('DOMContentLoaded', function () {
-      initHero();
-
-      // Show dock initially if dashboard is active
-      setTimeout(updateDockVisibility, 900);
-
-      // Sync dock next-event text once data arrives
-      setTimeout(updateDockNextEvent, 1200);
-
-      // Observe view changes: hook into showView if available
-      var origShowView = window.showView;
-      if (typeof origShowView === 'function') {
-        window.showView = function (viewName, skipHistory) {
-          origShowView.call(this, viewName, skipHistory);
-          setTimeout(function () {
-            updateDockVisibility();
-            if (viewName === 'dashboard') initHero();
-          }, 60);
-        };
-      } else {
-        // Fallback: poll once per second
-        setInterval(updateDockVisibility, 1000);
+      /* -----------------------------------------------------------------------
+         DOCK: Sync "Next Event" title with TripStore / DOM
+      ----------------------------------------------------------------------- */
+      function updateDockNextEvent() {
+        var dockTitle = document.getElementById('dock-next-title');
+        if (!dockTitle) return;
+        // Mirror whatever the cockpit sets
+        var sourceEl = document.getElementById('cockpit-next-title');
+        if (sourceEl && sourceEl.textContent.trim()) {
+          var text = sourceEl.textContent.trim();
+          // Shorten to ~40 chars for compact dock display
+          dockTitle.textContent = text.length > 42 ? text.slice(0, 40) + '…' : text;
+        }
       }
-    });
-  }());
+
+      /* -----------------------------------------------------------------------
+         INIT on DOMContentLoaded
+      ----------------------------------------------------------------------- */
+      document.addEventListener('DOMContentLoaded', function () {
+        initHero();
+
+        // Show dock initially if dashboard is active
+        setTimeout(updateDockVisibility, 900);
+
+        // Sync dock next-event text once data arrives
+        setTimeout(updateDockNextEvent, 1200);
+
+        // Observe view changes: hook into showView if available
+        var origShowView = window.showView;
+        if (typeof origShowView === 'function') {
+          window.showView = function (viewName, skipHistory) {
+            origShowView.call(this, viewName, skipHistory);
+            setTimeout(function () {
+              updateDockVisibility();
+              if (viewName === 'dashboard') initHero();
+            }, 60);
+          };
+        } else {
+          // Fallback: poll once per second
+          setInterval(updateDockVisibility, 1000);
+        }
+      });
+    }());
   </script>
 </body>
 
