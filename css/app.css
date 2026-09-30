@@ -59,6 +59,11 @@ body.dark-theme {
   --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.5);
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 72px;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -239,25 +244,31 @@ body {
   align-items: center;
   justify-content: center;
   flex: 1;
+  min-height: 48px;
   height: 100%;
   background: transparent;
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  padding: 0.25rem 0;
+  padding: 0.35rem 0.2rem;
   transition: all 0.18s ease;
   font-family: var(--font-body);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .bottom-nav-item i {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   margin-bottom: 2px;
-  transition: transform 0.18s ease;
+  transition: transform 0.18s ease, color 0.18s ease;
 }
 
 .bottom-nav-item span {
   font-size: 0.68rem;
   font-weight: 600;
+  line-height: 1.1;
+  transition: color 0.18s ease;
 }
 
 .bottom-nav-item:hover,
@@ -267,6 +278,12 @@ body {
 
 .bottom-nav-item.active i {
   transform: translateY(-2px);
+  color: var(--primary);
+}
+
+.bottom-nav-item.active span {
+  font-weight: 700;
+  color: var(--primary);
 }
 
 /* App Main Container */
@@ -312,150 +329,385 @@ body {
   margin: 0;
 }
 
-/* Dashboard Cockpit Cards */
-.dash-hero-card {
-  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.08) 0%, rgba(217, 107, 39, 0.08) 100%), var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-xl);
-  padding: 1.75rem 2rem;
-  margin-bottom: 1.75rem;
-  box-shadow: var(--shadow-sm);
+/* =========================================================================
+   PHASE 3: REDESIGNED COCKPIT DASHBOARD
+   Ruhig, aufgeräumt, viel Weißraum, klare Hierarchie
+   ========================================================================= */
+
+.cockpit-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem 0 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+}
+
+/* 1. Cockpit Header */
+.cockpit-header {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.5rem;
+}
+
+.cockpit-title-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
-.dash-hero-text h1 {
-  font-size: 1.85rem;
+.cockpit-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.cockpit-flag {
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+.cockpit-title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.65rem;
   font-weight: 800;
-  margin-bottom: 0.3rem;
-  letter-spacing: 0.02em;
-  color: var(--primary);
+  letter-spacing: 0.01em;
+  color: var(--text-main);
+  line-height: 1.15;
 }
 
-.dash-hero-dates {
-  font-size: 1.05rem;
+.cockpit-dates {
+  margin: 0.25rem 0 0;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+/* Klein bis mittelgroßer Countdown */
+.cockpit-countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.45rem 0.85rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.cp-cd-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 2rem;
+}
+
+.cp-cd-val {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.1;
+}
+
+.cp-cd-lbl {
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cp-cd-sep {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  opacity: 0.45;
+  margin-top: -6px;
+}
+
+/* 2. ALS NÄCHSTES (Prominenter Bereich) */
+.cockpit-next-section {
+  width: 100%;
+}
+
+.cockpit-next-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cockpit-next-card:hover {
+  border-color: rgba(var(--primary-rgb), 0.3);
+  box-shadow: var(--shadow-md);
+}
+
+.cockpit-next-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.1rem;
+}
+
+.cockpit-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--primary);
+  background: rgba(var(--primary-rgb), 0.08);
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+}
+
+.cockpit-next-daybadge {
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--text-muted);
 }
 
-.dash-next-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 1.75rem;
-}
-
-.dash-next-header {
+.cockpit-next-body {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  gap: 1.75rem;
 }
 
-.dash-next-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.3rem 0.75rem;
-  border-radius: 9999px;
-  background: var(--secondary-light);
-  color: var(--secondary);
-  font-size: 0.78rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.hub-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
-  margin-top: 1.25rem;
-  margin-bottom: 2rem;
-}
-
-.hub-card-cockpit {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: 1.25rem;
-  box-shadow: var(--shadow-sm);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-}
-
-.hub-card-cockpit::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: transparent;
-  transition: background 0.2s ease;
-}
-
-.hub-card-cockpit:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
-  border-color: rgba(var(--primary-rgb), 0.3);
-}
-
-.hub-card-cockpit:hover::before {
-  background: var(--primary);
-}
-
-.hub-card-cockpit .card-icon-wrap {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-md);
-  background: rgba(var(--primary-rgb), 0.1);
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  margin-bottom: 0.9rem;
-}
-
-.hub-card-cockpit .card-title {
-  font-family: var(--font-heading);
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text-main);
-  margin-bottom: 0.3rem;
-}
-
-.hub-card-cockpit .card-meta {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 1.2rem;
+.cockpit-next-main {
   flex: 1;
 }
 
-.hub-card-cockpit .card-action {
+.cockpit-next-title {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.25;
+}
+
+.cockpit-next-dest {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.45rem;
+}
+
+.cockpit-next-dest i {
+  color: var(--secondary);
+  font-size: 0.95rem;
+  width: 16px;
+}
+
+.cockpit-next-acts {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.cockpit-next-acts i {
+  color: var(--primary);
+  font-size: 0.95rem;
+  width: 16px;
+  margin-top: 3px;
+}
+
+.cockpit-next-action {
+  flex-shrink: 0;
+}
+
+.btn-cockpit-primary {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.82rem;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 48px;
+  padding: 0.75rem 1.4rem;
+  border-radius: var(--radius-md);
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
   font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.25);
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+
+.btn-cockpit-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.35);
+}
+
+/* 3. Schnellzugriffe (4 kompakte Bereiche) */
+.cockpit-quicklinks-section {
+  width: 100%;
+}
+
+.cockpit-quicklinks-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.cockpit-quick-card {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  min-height: 82px;
+  padding: 1.15rem 1.4rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.18s ease;
+}
+
+.cockpit-quick-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+.cockpit-card-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  transition: transform 0.18s ease;
+}
+
+.cockpit-quick-card:hover .cockpit-card-icon {
+  transform: scale(1.05);
+}
+
+.cockpit-card-icon.reise {
+  background: rgba(0, 109, 104, 0.1);
   color: var(--primary);
 }
 
-/* Reise 2-Column Split Layout */
+.cockpit-card-icon.organisation {
+  background: rgba(2, 132, 199, 0.1);
+  color: #0284c7;
+}
+
+.cockpit-card-icon.finanzen {
+  background: rgba(217, 107, 39, 0.1);
+  color: var(--secondary);
+}
+
+.cockpit-card-icon.erlebnisse {
+  background: rgba(139, 92, 246, 0.1);
+  color: #8b5cf6;
+}
+
+.cockpit-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.cockpit-card-title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.02em;
+}
+
+.cockpit-card-desc {
+  margin: 0.25rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cockpit-card-arrow {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  opacity: 0.5;
+  transition: all 0.18s ease;
+}
+
+.cockpit-quick-card:hover .cockpit-card-arrow {
+  opacity: 1;
+  color: var(--primary);
+  transform: translateX(3px);
+}
+
+@media (max-width: 768px) {
+  .cockpit-container {
+    gap: 1.5rem;
+    padding: 0.75rem 0 2rem;
+  }
+
+  .cockpit-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .cockpit-countdown {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cockpit-next-card {
+    padding: 1.25rem;
+  }
+
+  .cockpit-next-body {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
+  }
+
+  .btn-cockpit-primary {
+    width: 100%;
+  }
+
+  .cockpit-quicklinks-grid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .cockpit-quick-card {
+    min-height: 72px;
+    padding: 1rem 1.15rem;
+  }
+}
+
+/* =========================================================================
+   PHASE 4: REISE 2-COLUMN SPLIT LAYOUT (Desktop 44% Timeline / 56% Map)
+   ========================================================================= */
 .reise-split-layout {
   display: grid;
-  grid-template-columns: minmax(460px, 1.15fr) minmax(440px, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: minmax(360px, 44fr) minmax(480px, 56fr);
+  gap: 1.75rem;
   align-items: start;
 }
 
@@ -463,10 +715,12 @@ body {
   min-width: 0;
 }
 
+/* Große, immersive interaktive Karte (Kein kleines Widget!) */
 .map-sticky-column {
   position: sticky;
   top: 76px;
   height: calc(100vh - 96px);
+  min-height: 640px;
   display: flex;
   flex-direction: column;
   background: var(--card-bg);
@@ -474,6 +728,12 @@ body {
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-md);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.map-sticky-column:hover {
+  border-color: rgba(0, 109, 104, 0.35);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
 }
 
 .map-sticky-column .route-map-container-card {
@@ -487,8 +747,326 @@ body {
 
 .map-sticky-column #view-leaflet-map {
   flex: 1;
-  min-height: 250px;
+  min-height: 300px;
   height: 100% !important;
+  position: relative;
+}
+
+#route-interactive-map {
+  width: 100%;
+  height: 100%;
+  background: #f1f5f9;
+}
+
+/* Karten-Toolbar & Layer-Umschalter */
+.route-map-layers-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.85rem;
+  background: var(--card-sub-bg);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.layers-bar-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-right: 0.2rem;
+  flex-shrink: 0;
+}
+
+.layer-chk-label {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.layer-chk-label input[type="checkbox"] {
+  display: none;
+}
+
+.layer-chk-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.26rem 0.65rem;
+  border-radius: 9999px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all 0.18s ease;
+}
+
+.layer-chk-label:hover .layer-chk-pill {
+  border-color: var(--primary);
+  color: var(--text-main);
+}
+
+.layer-chk-label input[type="checkbox"]:checked + .layer-chk-pill {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary-dark);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 109, 104, 0.12);
+}
+
+/* Timeline Compact Preview Chips */
+.timeline-compact-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.4rem;
+}
+
+.compact-highlight-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  background: var(--card-sub-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-main);
+  transition: all 0.18s ease;
+}
+
+details.timeline-item:hover .compact-highlight-chip {
+  border-color: rgba(0, 109, 104, 0.3);
+  background: var(--primary-light);
+  color: var(--primary-dark);
+}
+
+/* Marker-Styles & Hervorhebung */
+.custom-route-pin,
+.custom-hotel-pin,
+.custom-photo-pin,
+.custom-drone-pin,
+.custom-dest-pin {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, filter 0.25s ease;
+}
+
+.sight-pin-bubble.active-day-pin,
+.hotel-pin-bubble.active-day-pin {
+  transform: scale(1.32) !important;
+  box-shadow: 0 0 0 4px #f59e0b, 0 6px 20px rgba(245, 158, 11, 0.5) !important;
+  z-index: 3500 !important;
+  animation: pulsePinGlow 2s infinite ease-in-out;
+}
+
+@keyframes pulsePinGlow {
+  0%, 100% { box-shadow: 0 0 0 4px #f59e0b, 0 6px 18px rgba(245, 158, 11, 0.45); }
+  50% { box-shadow: 0 0 0 7px #f59e0b, 0 8px 26px rgba(245, 158, 11, 0.7); }
+}
+
+.custom-route-pin.dimmed-marker,
+.custom-hotel-pin.dimmed-marker,
+.custom-photo-pin.dimmed-marker,
+.custom-drone-pin.dimmed-marker,
+.custom-dest-pin.dimmed-marker {
+  opacity: 0.26 !important;
+  filter: grayscale(60%) contrast(0.85);
+  transform: scale(0.82) !important;
+  pointer-events: auto;
+}
+
+/* Spezifische Pin-Designs */
+.hotel-pin-bubble {
+  width: 30px;
+  height: 30px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: #0284c7;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(2, 132, 199, 0.38);
+  border: 2px solid #fff;
+}
+
+.hotel-pin-bubble i {
+  transform: rotate(45deg);
+  font-size: 0.78rem;
+}
+
+.photo-pin-bubble {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #f59e0b;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(245, 158, 11, 0.4);
+  border: 2px solid #fff;
+  font-size: 0.75rem;
+}
+
+.drone-pin-bubble {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #10b981;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.4);
+  border: 2px solid #fff;
+  font-size: 0.75rem;
+}
+
+.dest-pin-bubble {
+  width: 32px;
+  height: 32px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: #0f172a;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.4);
+  border: 2px solid #fff;
+}
+
+.dest-pin-bubble i {
+  transform: rotate(45deg);
+  font-size: 0.85rem;
+  color: #f8fafc;
+}
+
+/* Rich Marker Popups (Phase 4 Anforderung) */
+.sight-map-popup {
+  padding: 0.25rem 0.2rem;
+  font-family: var(--font-body);
+  max-width: 290px;
+}
+
+.popup-top-badge {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.45rem;
+  font-size: 0.72rem;
+}
+
+.popup-day-tag {
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 12px;
+}
+
+.popup-region-tag {
+  background: var(--card-sub-bg);
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: 12px;
+}
+
+.popup-cat-badge {
+  background: rgba(245, 158, 11, 0.12);
+  color: #b45309;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: 12px;
+}
+
+.popup-title {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0 0 0.35rem;
+  line-height: 1.3;
+}
+
+.popup-highlight {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  margin-bottom: 0.55rem;
+}
+
+.popup-photo-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  background: var(--card-sub-bg);
+  border-left: 3px solid var(--accent-gold);
+  padding: 0.45rem 0.65rem;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.76rem;
+  color: var(--text-main);
+  margin-bottom: 0.65rem;
+}
+
+.popup-action-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.55rem;
+}
+
+.btn-popup-jump {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.48rem 0.75rem;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn-popup-jump:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn-popup-maps {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.48rem 0.75rem;
+  background: var(--card-sub-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-popup-maps:hover {
+  background: var(--border-color);
 }
 
 /* Mobile Segmented Switcher for Reise */
@@ -526,7 +1104,7 @@ body {
   font-weight: 700;
 }
 
-/* Mobile Map Bottom Sheet */
+/* Mobile Map Bottom Sheet (Phase 4: Hochziehbar & Spot-Chips) */
 .mobile-map-bottom-sheet {
   display: none;
   position: fixed;
@@ -536,18 +1114,38 @@ body {
   background: var(--card-bg);
   border-top: 1px solid var(--border-color);
   border-radius: 20px 20px 0 0;
-  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.12);
-  z-index: 900;
-  padding: 0.75rem 1.25rem 1rem;
-  transition: transform 0.25s ease;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.15);
+  z-index: 950;
+  padding: 0.75rem 1.25rem 1.25rem;
+  transition: max-height 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s ease;
+  max-height: 180px;
+  overflow: hidden;
+  user-select: none;
+}
+
+.mobile-map-bottom-sheet.sheet-expanded {
+  max-height: 68vh;
+  overflow-y: auto;
+  box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.22);
 }
 
 .sheet-drag-handle {
-  width: 36px;
-  height: 4px;
+  width: 44px;
+  height: 5px;
   background: var(--border-color);
-  border-radius: 2px;
+  border-radius: 9999px;
   margin: 0 auto 0.75rem;
+  cursor: grab;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.sheet-drag-handle:active {
+  cursor: grabbing;
+  transform: scaleX(1.15);
+}
+
+.mobile-map-bottom-sheet:hover .sheet-drag-handle {
+  background: var(--text-muted);
 }
 
 .sheet-header-row {
@@ -555,36 +1153,61 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.65rem;
+  cursor: pointer;
 }
 
 .sheet-day-title {
   font-family: var(--font-heading);
-  font-size: 1rem;
+  font-size: 0.96rem;
   font-weight: 700;
   color: var(--text-main);
+  line-height: 1.35;
 }
 
 .sheet-spots-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin-bottom: 0.75rem;
-  max-height: 80px;
+  margin-bottom: 0.5rem;
+  max-height: 84px;
   overflow-y: auto;
+}
+
+.mobile-map-bottom-sheet.sheet-expanded .sheet-spots-chips {
+  max-height: none;
 }
 
 .spot-sheet-chip {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.25rem 0.6rem;
-  background: rgba(var(--primary-rgb), 0.1);
+  padding: 0.3rem 0.7rem;
+  background: rgba(0, 109, 104, 0.1);
   color: var(--primary);
+  border: 1px solid rgba(0, 109, 104, 0.2);
   border-radius: 9999px;
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.spot-sheet-chip:active {
+  background: var(--primary);
+  color: #fff;
+  transform: scale(0.96);
+}
+
+.sheet-expanded-content {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 }
 
 /* Sub-Navigation Pills (Organisation, Finanzen, Erlebnisse, Mehr) */
@@ -673,6 +1296,16 @@ body {
   margin-top: 2px;
 }
 
+.category-quick-tile.active {
+  border-color: var(--primary);
+  background: rgba(var(--primary-rgb), 0.08);
+  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+}
+
+.category-quick-tile.active .tile-title {
+  color: var(--primary);
+}
+
 /* Ensure original sections fit seamlessly in the views */
 .app-view section {
   padding: 0;
@@ -690,6 +1323,10 @@ body {
 }
 
 @media (max-width: 960px) {
+  html {
+    scroll-padding-top: 20px;
+    scroll-padding-bottom: 75px;
+  }
   .desktop-nav {
     display: none;
   }
@@ -712,7 +1349,7 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
   .app-main {
-    padding: 1rem 1rem 5.5rem;
+    padding: 1rem 1rem calc(5.5rem + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -750,27 +1387,152 @@ body {
       --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.05);
     }
 
-    body.dark-theme {
-      --primary: #14b8a6;
-      --primary-dark: #0d9488;
-      --primary-light: #134e4a;
-      --secondary: #f97316;
-      --secondary-light: #431407;
-      --accent-gold: #fbbf24;
-      --bg-main: #090d16;
-      --card-bg: #131b2a;
-      --card-sub-bg: #1c2638;
-      --text-main: #f1f5f9;
-      --text-muted: #94a3b8;
-      --border-color: #233045;
-      --nav-bg: rgba(19, 27, 42, 0.94);
-      --status-paid: #4ade80;
-      --status-paid-bg: #064e3b;
-      --status-open: #fb923c;
-      --status-open-bg: #7c2d12;
-      --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.25);
-      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
-    }
+/* =========================================================================
+   UI REUSABLE COMPONENT SYSTEM (Phase 1 Architecture)
+   ========================================================================= */
+
+/* --- Badges --- */
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.ui-badge-primary {
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1px solid rgba(var(--primary-rgb), 0.2);
+}
+.ui-badge-success {
+  background: var(--status-paid-bg);
+  color: var(--status-paid);
+  border: 1px solid rgba(22, 163, 74, 0.2);
+}
+.ui-badge-warning {
+  background: var(--status-open-bg);
+  color: var(--status-open);
+  border: 1px solid rgba(234, 88, 12, 0.2);
+}
+.ui-badge-neutral {
+  background: var(--card-sub-bg);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+}
+
+/* --- Progress Bar --- */
+.ui-progress-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+.ui-progress-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--card-sub-bg);
+  border-radius: 9999px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+.ui-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+.ui-progress-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* --- Section Header --- */
+.ui-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.ui-section-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+.ui-section-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--primary-light);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+.ui-section-title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+.ui-section-subtitle {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* --- Toast Notifications --- */
+.ui-toast-container {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+.ui-toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-md);
+  background: var(--card-bg);
+  color: var(--text-main);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+  font-size: 0.88rem;
+  font-weight: 600;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ui-toast.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+.ui-toast-success i { color: #16a34a; }
+.ui-toast-warning i { color: #ea580c; }
+.ui-toast-info i { color: var(--primary); }
+
+/* --- Mobile / Desktop Responsive Hooks --- */
+@media (max-width: 768px) {
+  .ui-toast-container {
+    bottom: 85px;
+    right: 15px;
+    left: 15px;
+  }
+}
 
     * {
       box-sizing: border-box;
@@ -8263,4 +9025,585 @@ body {
         z-index: 10;
       }
     }
-  
+
+    /* =========================================================================
+       ZIELARCHITEKTUR: FULLSCREEN MAP & FLOATING DAY PLAN OVERLAY
+       ========================================================================= */
+    .reise-fullscreen-canvas {
+      position: relative;
+      width: 100%;
+      height: calc(100vh - 84px);
+      min-height: 680px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      background: #0f172a;
+    }
+
+    .fullscreen-map-surface {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      background: #f1f5f9;
+    }
+
+    /* Floating Horizontal Day Selector Bar (Top Centered) */
+    .floating-days-bar {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.14);
+      max-width: 90%;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .floating-days-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    [data-theme="dark"] .floating-days-bar {
+      background: rgba(15, 23, 42, 0.92);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+    }
+
+    .floating-day-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .floating-day-pill:hover {
+      background: rgba(0, 109, 104, 0.08);
+      color: var(--primary);
+    }
+
+    .floating-day-pill.active {
+      background: var(--primary);
+      color: #ffffff !important;
+      border-color: var(--primary);
+      box-shadow: 0 4px 14px rgba(0, 109, 104, 0.4);
+    }
+
+    .floating-day-pill.btn-add-day {
+      background: rgba(245, 158, 11, 0.15);
+      color: #d97706;
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .floating-day-pill.btn-add-day:hover {
+      background: #f59e0b;
+      color: #ffffff;
+    }
+
+    /* Floating Day Plan Overlay (Desktop Draggable & Collapsible) */
+    .floating-day-plan-overlay {
+      position: absolute;
+      top: 68px;
+      left: 20px;
+      width: 420px;
+      max-width: calc(100vw - 40px);
+      max-height: calc(100% - 84px);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.16);
+      overflow: hidden;
+      transition: transform 0.25s ease, opacity 0.25s ease, height 0.25s ease;
+    }
+
+    [data-theme="dark"] .floating-day-plan-overlay {
+      background: rgba(24, 32, 47, 0.94);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
+      color: #f8fafc;
+    }
+
+    .floating-day-plan-overlay.is-minimized {
+      max-height: 60px;
+      overflow: hidden;
+    }
+
+    .overlay-drag-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: rgba(0, 109, 104, 0.05);
+      border-bottom: 1px solid var(--border-color);
+      cursor: grab;
+      user-select: none;
+    }
+
+    [data-theme="dark"] .overlay-drag-header {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .overlay-header-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .overlay-day-badge {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    [data-theme="dark"] .overlay-day-badge {
+      color: var(--primary-light);
+    }
+
+    .overlay-day-title {
+      font-size: 0.96rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--text-color);
+    }
+
+    .overlay-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .overlay-tool-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      background: rgba(0, 0, 0, 0.04);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.15s ease;
+    }
+
+    [data-theme="dark"] .overlay-tool-btn {
+      background: rgba(255, 255, 255, 0.06);
+      color: #94a3b8;
+    }
+
+    .overlay-tool-btn:hover {
+      background: rgba(0, 109, 104, 0.12);
+      color: var(--primary);
+    }
+
+    .overlay-tool-btn.btn-close:hover {
+      background: rgba(239, 68, 68, 0.12);
+      color: #ef4444;
+    }
+
+    .overlay-content-body {
+      padding: 14px 16px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Subcard inside Overlay */
+    .overlay-section-box {
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: var(--card-sub-bg);
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .overlay-section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+    }
+
+    /* Activities in Overlay */
+    .overlay-activity-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      transition: background 0.15s ease;
+    }
+
+    .overlay-activity-item:hover {
+      background: rgba(0, 109, 104, 0.03);
+    }
+
+    .act-time-pill {
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--primary);
+      background: rgba(0, 109, 104, 0.1);
+      padding: 2px 6px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .act-main-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .act-title-text {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-color);
+      line-height: 1.3;
+    }
+
+    .act-note-text {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .act-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      opacity: 0.65;
+      transition: opacity 0.15s ease;
+    }
+
+    .overlay-activity-item:hover .act-actions-row {
+      opacity: 1;
+    }
+
+    .act-icon-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 3px;
+      font-size: 0.76rem;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+    }
+
+    .act-icon-btn:hover {
+      color: var(--primary);
+      background: rgba(0, 109, 104, 0.1);
+    }
+
+    .act-icon-btn.btn-del:hover {
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    .btn-add-activity-row {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px dashed var(--border-color);
+      background: transparent;
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-add-activity-row:hover {
+      background: rgba(0, 109, 104, 0.08);
+      border-color: var(--primary);
+    }
+
+    /* Floating Map Action Buttons (Bottom Right FABs) */
+    .floating-map-controls {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .map-fab-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      color: var(--text-color);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] .map-fab-btn {
+      background: rgba(24, 32, 47, 0.94);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: #f8fafc;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .map-fab-btn:hover {
+      transform: scale(1.08);
+      background: #ffffff;
+      color: var(--primary);
+    }
+
+    [data-theme="dark"] .map-fab-btn:hover {
+      background: #1e293b;
+      color: var(--primary-light);
+    }
+
+    /* Floating Layer Popover */
+    .floating-layers-popover {
+      position: absolute;
+      bottom: 80px;
+      right: 24px;
+      z-index: 1000;
+      width: 250px;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    [data-theme="dark"] .floating-layers-popover {
+      background: rgba(24, 32, 47, 0.96);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    /* In-Place CRUD Modals */
+    .crud-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s ease;
+    }
+
+    .crud-modal-backdrop.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .crud-modal-card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transform: scale(0.95) translateY(10px);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .crud-modal-backdrop.is-open .crud-modal-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .crud-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--card-sub-bg);
+    }
+
+    .crud-modal-header h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-color);
+    }
+
+    .crud-modal-body {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+
+    .crud-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .crud-form-group label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .crud-form-group input,
+    .crud-form-group select,
+    .crud-form-group textarea {
+      padding: 0.65rem 0.85rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-size: 0.88rem;
+      transition: border-color 0.15s ease;
+    }
+
+    .crud-form-group input:focus,
+    .crud-form-group select:focus,
+    .crud-form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(0, 109, 104, 0.15);
+    }
+
+    .crud-modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 1.25rem;
+      border-top: 1px solid var(--border-color);
+      background: var(--card-sub-bg);
+    }
+
+    .btn-crud-primary {
+      padding: 0.6rem 1.25rem;
+      border-radius: 10px;
+      border: none;
+      background: var(--primary);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s ease;
+    }
+
+    .btn-crud-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-crud-delete {
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      background: rgba(239, 68, 68, 0.08);
+      color: #ef4444;
+      font-weight: 700;
+      font-size: 0.84rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-crud-delete:hover {
+      background: #ef4444;
+      color: #ffffff;
+    }
+
+    .btn-crud-cancel {
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.84rem;
+      cursor: pointer;
+    }
+
+    /* Mobile Adaptations */
+    @media (max-width: 900px) {
+      .floating-day-plan-overlay {
+        display: none !important; /* On mobile, the Bottom Sheet takes over */
+      }
+      
+      .floating-days-bar {
+        top: 8px;
+        max-width: 96%;
+        padding: 4px 8px;
+      }
+
+      .reise-fullscreen-canvas {
+        height: calc(100vh - 128px);
+        min-height: 520px;
+      }
+    }

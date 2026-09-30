@@ -1687,18 +1687,91 @@
       return 'Melbourne & Victoria (VIC)';
     }
 
+    function jumpToCurrentOrNextDay() {
+      const state = (typeof determineCurrentTripState === 'function') ? determineCurrentTripState() : { phase: 'pre', dayNum: 1 };
+      const targetDay = (state.phase === 'during' && state.dayNum) ? state.dayNum : 1;
+      showView('reise');
+      setTimeout(() => jumpToDay(targetDay), 120);
+    }
+    window.jumpToCurrentOrNextDay = jumpToCurrentOrNextDay;
+
     function updateTripDashboard() {
-      const container = document.getElementById('trip-dashboard-content');
-      if (!container) return;
-
       const state = determineCurrentTripState();
+      const allDays = (window.tripData && window.tripData.length) ? window.tripData : TRIP_DAYS_DATA;
 
-      if (state.phase === 'pre') {
-        renderDashboardPreTrip(container, state);
-      } else if (state.phase === 'during') {
-        renderDashboardDuringTrip(container, state.dayNum);
-      } else {
-        renderDashboardPostTrip(container);
+      // 1. Calculate Countdown
+      const now = new Date();
+      const tripStart = new Date("2027-03-21T10:00:00+01:00");
+      let diff = tripStart.getTime() - now.getTime();
+      if (diff < 0) diff = 0;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
+
+      // Update cockpit countdown
+      const elDays = document.getElementById('cd-days');
+      const elHours = document.getElementById('cd-hours');
+      const elMins = document.getElementById('cd-minutes');
+      const elSecs = document.getElementById('cd-seconds');
+      if (elDays && elHours && elMins && elSecs) {
+        elDays.textContent = days;
+        elHours.textContent = hours;
+        elMins.textContent = minutes;
+        elSecs.textContent = seconds;
+      }
+
+      // 2. Determine current or next day
+      const currentDayNum = (state.phase === 'during' && state.dayNum) ? state.dayNum : 1;
+      const d = allDays[currentDayNum - 1] || allDays[0];
+
+      // 3. Update "ALS NÄCHSTES" section
+      const titleEl = document.getElementById('cockpit-next-title');
+      const destEl = document.getElementById('cockpit-next-destination');
+      const actsEl = document.getElementById('cockpit-next-activities');
+      const dayNumEl = document.getElementById('cockpit-next-daynum');
+      const btnEl = document.getElementById('cockpit-btn-open-day');
+
+      if (titleEl && d) {
+        titleEl.textContent = `Tag ${d.day}: ${d.title}`;
+      }
+      if (destEl && d) {
+        destEl.innerHTML = `<i class="fa-solid fa-map-pin"></i> <span>Ziel: ${escapeHtml(d.destination || d.start || 'Australien')}</span>`;
+      }
+      if (actsEl && d) {
+        let actSummary = '';
+        if (d.activities && Array.isArray(d.activities) && d.activities.length > 0) {
+          actSummary = d.activities.slice(0, 3).map(a => typeof a === 'string' ? a : (a.title || a.name || '')).filter(Boolean).join(' · ');
+        }
+        if (!actSummary && d.highlights && Array.isArray(d.highlights) && d.highlights.length > 0) {
+          actSummary = d.highlights.slice(0, 3).join(' · ');
+        }
+        if (!actSummary) {
+          actSummary = `${d.start} ➔ ${d.destination}`;
+        }
+        actsEl.innerHTML = `<i class="fa-solid fa-compass"></i> <span>${escapeHtml(actSummary)}</span>`;
+      }
+      if (dayNumEl && d) {
+        dayNumEl.textContent = state.phase === 'post' ? 'Reise beendet' : `Tag ${d.day} von 20`;
+      }
+      if (btnEl && d) {
+        btnEl.onclick = () => {
+          showView('reise');
+          setTimeout(() => jumpToDay(d.day), 120);
+        };
+      }
+
+      // 4. Update legacy / simulation container if present in Tools
+      const container = document.getElementById('trip-dashboard-content');
+      if (container) {
+        if (state.phase === 'pre') {
+          renderDashboardPreTrip(container, state);
+        } else if (state.phase === 'during') {
+          renderDashboardDuringTrip(container, state.dayNum);
+        } else {
+          renderDashboardPostTrip(container);
+        }
       }
     }
 
@@ -1744,19 +1817,19 @@
 
           <div class="countdown-grid">
             <div class="countdown-unit">
-              <div class="countdown-num" id="cd-days">${days}</div>
+              <div class="countdown-num" id="dash-banner-cd-days">${days}</div>
               <div class="countdown-lbl">Tage</div>
             </div>
             <div class="countdown-unit">
-              <div class="countdown-num" id="cd-hours">${hours}</div>
+              <div class="countdown-num" id="dash-banner-cd-hours">${hours}</div>
               <div class="countdown-lbl">Stunden</div>
             </div>
             <div class="countdown-unit">
-              <div class="countdown-num" id="cd-minutes">${minutes}</div>
+              <div class="countdown-num" id="dash-banner-cd-minutes">${minutes}</div>
               <div class="countdown-lbl">Minuten</div>
             </div>
             <div class="countdown-unit">
-              <div class="countdown-num" id="cd-seconds">${seconds}</div>
+              <div class="countdown-num" id="dash-banner-cd-seconds">${seconds}</div>
               <div class="countdown-lbl">Sekunden</div>
             </div>
           </div>
@@ -3824,6 +3897,47 @@
     let activeFocusedDay = null;
     let isSyncingFromMap = false;
 
+    // Phase 4: 6 Interaktive Kartenlayer (Reiseziele, Highlights, Unterkünfte, Fotospots, Drohnen, No-Fly-Zonen)
+    let routeLayers = {
+      destinations: null,
+      highlights: null,
+      accommodations: null,
+      photospots: null,
+      drones: null,
+      nofly: null
+    };
+
+    let routeLayerStates = {
+      destinations: true,
+      highlights: true,
+      accommodations: false,
+      photospots: false,
+      drones: false,
+      nofly: false
+    };
+
+    function toggleRouteMapLayer(layerName, isChecked) {
+      routeLayerStates[layerName] = isChecked;
+      const chk = document.getElementById('layer-chk-' + layerName);
+      if (chk && chk.checked !== isChecked) chk.checked = isChecked;
+
+      if (!routeInteractiveMap) {
+        ensureRouteMapReady(true);
+      }
+      if (!routeInteractiveMap || !routeLayers || !routeLayers[layerName]) return;
+
+      if (isChecked) {
+        if (!routeInteractiveMap.hasLayer(routeLayers[layerName])) {
+          routeInteractiveMap.addLayer(routeLayers[layerName]);
+        }
+      } else {
+        if (routeInteractiveMap.hasLayer(routeLayers[layerName])) {
+          routeInteractiveMap.removeLayer(routeLayers[layerName]);
+        }
+      }
+    }
+    window.toggleRouteMapLayer = toggleRouteMapLayer;
+
     // Generiert die 20 interaktiven Tages-Buttons in der Etappen-Pills-Leiste über der Karte
     function renderRouteDaysPills() {
       const bar = document.getElementById('route-days-pills-bar');
@@ -3890,12 +4004,19 @@
         activeStageMarkers.forEach(m => routeInteractiveMap.removeLayer(m));
         activeStageMarkers = [];
 
-        // Pins normalisieren
+        // Pins normalisieren & Dimming aufheben
         routeMapMarkers.forEach(({ marker }) => {
           if (marker._icon) {
+            marker._icon.classList.remove('dimmed-marker');
             const bubble = marker._icon.querySelector('.sight-pin-bubble');
             if (bubble) bubble.classList.remove('active-day-pin');
+            marker.setZIndexOffset(0);
           }
+        });
+
+        // Hintergrundrouten wieder voll sichtbar
+        routeMapLines.forEach(line => {
+          line.setStyle({ opacity: 0.85, weight: 4 });
         });
 
         // Stage Info ausblenden
@@ -3906,6 +4027,11 @@
         document.querySelectorAll('.day-pill-btn').forEach(b => b.classList.remove('active'));
         const allPill = document.getElementById('day-pill-all');
         if (allPill) allPill.classList.add('active');
+
+        // Mobile Bottom Sheet auf Tag 1 zurücksetzen
+        if (typeof updateMobileBottomSheet === 'function') {
+          updateMobileBottomSheet(1);
+        }
 
         resetRouteMapView();
         setTimeout(() => {
@@ -3940,6 +4066,11 @@
         }).addTo(routeInteractiveMap);
       }
 
+      // Hintergrund-Routenlinien zurückhaltender/abgedimmt darstellen
+      routeMapLines.forEach(line => {
+        line.setStyle({ opacity: 0.22, weight: 2 });
+      });
+
       // 4. Start- und Ziel-Endpunktmarker erzeugen
       if (dayData.startCoords) {
         const startIcon = L.divIcon({
@@ -3967,7 +4098,7 @@
         activeStageMarkers.push(destMarker);
       }
 
-      // 5. Sightseeing-Marker dieses Tages hervorheben & ersten Popup öffnen
+      // 5. Sightseeing-Marker dieses Tages hervorheben & andere zurückhaltender (dimmed) darstellen
       const bounds = L.latLngBounds([]);
       if (dayData.startCoords) bounds.extend(dayData.startCoords);
       if (dayData.destCoords) bounds.extend(dayData.destCoords);
@@ -3978,12 +4109,14 @@
         const isThisDay = spot.day === dayNum;
         if (marker._icon) {
           const bubble = marker._icon.querySelector('.sight-pin-bubble');
-          if (bubble) {
-            if (isThisDay) {
-              bubble.classList.add('active-day-pin');
-            } else {
-              bubble.classList.remove('active-day-pin');
-            }
+          if (isThisDay) {
+            marker._icon.classList.remove('dimmed-marker');
+            if (bubble) bubble.classList.add('active-day-pin');
+            marker.setZIndexOffset(3500);
+          } else {
+            marker._icon.classList.add('dimmed-marker');
+            if (bubble) bubble.classList.remove('active-day-pin');
+            marker.setZIndexOffset(0);
           }
         }
         if (isThisDay) {
@@ -4051,7 +4184,20 @@
         activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       }
 
-      // 9. Sanft zur Karte scrollen, falls gewünscht
+      // 9. Mobile Bottom Sheet aktualisieren
+      if (typeof updateMobileBottomSheet === 'function') {
+        updateMobileBottomSheet(dayNum);
+      }
+
+      // 9b. Zielarchitektur: Floating Day Plan Overlay & Days Bar aktualisieren
+      if (typeof renderDayPlanOverlay === 'function') {
+        renderDayPlanOverlay(dayNum);
+      }
+      if (typeof renderFloatingDaysBar === 'function') {
+        renderFloatingDaysBar(dayNum);
+      }
+
+      // 10. Sanft zur Karte scrollen, falls gewünscht
       if (shouldScroll) {
         const mapSection = document.getElementById('map') || document.querySelector('.route-map-container-card');
         if (mapSection) {
@@ -4082,6 +4228,13 @@
     // Von der Karte zum Reiseplan: Öffnet den passenden Tag, scrollt dorthin und hebt Tag + Spot hervor
     function jumpToDayAndHighlight(dayNum, spotId) {
       isSyncingFromMap = true;
+      if (typeof showView === 'function') {
+        showView('reise', true);
+      }
+      if (window.innerWidth <= 960 && typeof switchMobileReiseMode === 'function') {
+        switchMobileReiseMode('plan');
+      }
+
       const dayEl = document.getElementById('day-' + dayNum);
       if (!dayEl) {
         isSyncingFromMap = false;
@@ -4105,6 +4258,17 @@
       // Leuchteffekt für den Tag
       dayEl.classList.add('highlight-glow');
       setTimeout(() => dayEl.classList.remove('highlight-glow'), 2600);
+
+      // Zielarchitektur: Floating Day Plan Overlay öffnen & anzeigen
+      if (typeof openDayOverlay === 'function') {
+        openDayOverlay();
+      }
+      if (typeof renderDayPlanOverlay === 'function') {
+        renderDayPlanOverlay(dayNum);
+      }
+      if (typeof renderFloatingDaysBar === 'function') {
+        renderFloatingDaysBar(dayNum);
+      }
 
       if (spotId) {
         const spotCard = document.getElementById('spot-card-' + spotId) || dayEl.querySelector(`[data-spot-id="${spotId}"]`);
@@ -4401,6 +4565,49 @@
 
         routeMapMarkers = [];
 
+        // LAYER 1: 🚩 REISEZIELE (Wichtige Etappen- & Knotenpunkte)
+        routeLayers.destinations = L.layerGroup();
+        const keyDestinations = [
+          { name: "Sydney (NSW)", coords: [-33.8688, 151.2093], days: "Tage 1–4", desc: "Hafenmetropole, Opernhaus & Coastal Walks", day: 2 },
+          { name: "Ballina & Byron Bay (NSW)", coords: [-28.6430, 153.6120], days: "Tage 5–6", desc: "Surfer-Paradies, Leuchtturm & Delfine", day: 5 },
+          { name: "Gold Coast / Surfers Paradise (QLD)", coords: [-28.0024, 153.4310], days: "Tag 7", desc: "Skyline & weltberühmte Surfstrände", day: 7 },
+          { name: "Brisbane (QLD)", coords: [-27.4698, 153.0251], days: "Tage 7–10", desc: "Sonnige Metropole, South Bank & Riverwalk", day: 8 },
+          { name: "Sunshine Coast & Noosa (QLD)", coords: [-26.3980, 153.0930], days: "Tage 10–11", desc: "Nationalpark, Fairy Pools & Kängurus", day: 10 },
+          { name: "Hervey Bay & Rainbow Beach (QLD)", coords: [-25.2986, 152.8535], days: "Tag 11", desc: "Carlo Sand Blow & Tor nach K'gari", day: 11 },
+          { name: "K'gari / Fraser Island (QLD)", coords: [-25.4490, 153.0580], days: "Tag 12", desc: "Größte Sandinsel der Welt, Lake McKenzie & Maheno", day: 12 },
+          { name: "Airlie Beach & Whitsundays (QLD)", coords: [-20.2675, 148.7180], days: "Tage 13–15", desc: "Whitehaven Beach, Great Barrier Reef & Inseln", day: 14 },
+          { name: "Melbourne (VIC)", coords: [-37.8136, 144.9631], days: "Tage 16–20", desc: "Kultur- & Kaffee-Hauptstadt, Laneways & Street Art", day: 16 },
+          { name: "Great Ocean Road (Port Campbell)", coords: [-38.6180, 142.9960], days: "Tage 18–19", desc: "Twelve Apostles, Loch Ard Gorge & wilde Koalas", day: 18 }
+        ];
+
+        keyDestinations.forEach(dest => {
+          const destIcon = L.divIcon({
+            html: `<div class="dest-pin-bubble" title="${escapeHtml(dest.name)}"><i class="fa-solid fa-flag-checkered"></i></div>`,
+            className: 'custom-dest-pin',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+          });
+          const destPopup = `
+            <div class="sight-map-popup">
+              <div class="popup-top-badge">
+                <span class="popup-day-tag"><i class="fa-solid fa-map-location-dot"></i> Reiseziel</span>
+                <span class="popup-region-tag">${dest.days}</span>
+              </div>
+              <h4 class="popup-title">${escapeHtml(dest.name)}</h4>
+              <div class="popup-highlight">${escapeHtml(dest.desc)}</div>
+              <div class="popup-action-row">
+                <button type="button" class="btn-popup-jump" onclick="jumpToDayAndHighlight(${dest.day})">
+                  <i class="fa-solid fa-calendar-day"></i> Zum Tagesplan
+                </button>
+              </div>
+            </div>
+          `;
+          L.marker(dest.coords, { icon: destIcon }).bindPopup(destPopup, { maxWidth: 300 }).addTo(routeLayers.destinations);
+        });
+
+        // LAYER 2: ⭐ HIGHLIGHTS (Die 27 Sightseeing-Highlights)
+        routeLayers.highlights = L.layerGroup();
         ALL_SIGHTSEEING_SPOTS.forEach(spot => {
           const pinHtml = `
             <div class="sight-pin-wrapper" title="${spot.id}. ${escapeHtml(spot.name)}">
@@ -4418,20 +4625,26 @@
             popupAnchor: [0, -32]
           });
 
+          const catBadge = spot.category ? `<span class="popup-cat-badge">${escapeHtml(spot.category)}</span>` : '';
+          const photoTipHtml = spot.photoTip ? `
+            <div class="popup-photo-tip">
+              <i class="fa-solid fa-camera"></i>
+              <div>${spot.photoTip}</div>
+            </div>` : '';
+
           const popupHtml = `
             <div class="sight-map-popup">
               <div class="popup-top-badge">
-                <i class="fa-solid fa-calendar-day"></i> Tag ${spot.day} • ${regionNames[spot.region] || spot.region}
+                <span class="popup-day-tag"><i class="fa-solid fa-calendar-day"></i> Tag ${spot.day}</span>
+                <span class="popup-region-tag">${regionNames[spot.region] || spot.region}</span>
+                ${catBadge}
               </div>
               <h4 class="popup-title">${spot.id}. ${escapeHtml(spot.name)}</h4>
               <div class="popup-highlight">${escapeHtml(spot.highlight)}</div>
-              <div class="popup-photo-tip">
-                <i class="fa-solid fa-camera"></i>
-                <div>${spot.photoTip}</div>
-              </div>
+              ${photoTipHtml}
               <div class="popup-action-row">
-                <button type="button" class="btn-popup-jump" onclick="jumpToDayAndHighlight(${spot.day})">
-                  <i class="fa-solid fa-calendar-day"></i> Zum Tagesplan Tag ${spot.day}
+                <button type="button" class="btn-popup-jump" onclick="jumpToDayAndHighlight(${spot.day}, ${spot.id})">
+                  <i class="fa-solid fa-calendar-day"></i> Zum Tagesplan
                 </button>
                 <a href="${spot.mapsUrl}" target="_blank" rel="noopener noreferrer" class="btn-popup-maps">
                   <i class="fa-solid fa-location-arrow"></i> Google Maps
@@ -4441,7 +4654,6 @@
           `;
 
           const marker = L.marker(spot.coords, { icon: customIcon })
-            .addTo(routeInteractiveMap)
             .bindPopup(popupHtml, { maxWidth: 320 });
 
           marker.on('click', () => {
@@ -4456,8 +4668,177 @@
             }
           });
 
+          marker.addTo(routeLayers.highlights);
           routeMapMarkers.push({ marker, spot });
         });
+
+        // LAYER 3: 🏨 UNTERKÜNFTE (20 Hotels & AirBnBs)
+        routeLayers.accommodations = L.layerGroup();
+        const hotelCoordsMap = {
+          2: [-33.8807, 151.2034],
+          3: [-33.8807, 151.2034],
+          4: [-33.8807, 151.2034],
+          5: [-28.8650, 153.5900],
+          6: [-28.8650, 153.5900],
+          7: [-28.0030, 153.4290],
+          8: [-27.4690, 153.0220],
+          9: [-26.6530, 153.0650],
+          10: [-25.2950, 152.8900],
+          11: [-25.5130, 153.1310],
+          12: [-25.5130, 153.1310],
+          13: [-20.2740, 148.7060],
+          14: [-20.2740, 148.7060],
+          15: [-20.2740, 148.7060],
+          16: [-37.8140, 144.9510],
+          17: [-37.8140, 144.9510],
+          18: [-38.6140, 142.9850],
+          19: [-37.6980, 144.8960]
+        };
+
+        Object.entries(hotelCoordsMap).forEach(([dayStr, coords]) => {
+          const day = parseInt(dayStr, 10);
+          const hotel = ACCOMMODATION_DETAILS[day];
+          if (!hotel) return;
+
+          const hotelIcon = L.divIcon({
+            html: `<div class="hotel-pin-bubble" title="${escapeHtml(hotel.name)}"><i class="fa-solid fa-bed"></i></div>`,
+            className: 'custom-hotel-pin',
+            iconSize: [30, 30],
+            iconAnchor: [15, 30],
+            popupAnchor: [0, -30]
+          });
+
+          const bookingBtn = hotel.bookingUrl ? `
+            <a href="${hotel.bookingUrl}" target="_blank" rel="noopener noreferrer" class="btn-popup-maps">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Buchung
+            </a>` : '';
+
+          const hotelPopup = `
+            <div class="sight-map-popup">
+              <div class="popup-top-badge">
+                <span class="popup-day-tag"><i class="fa-solid fa-hotel"></i> Tag ${day}</span>
+                <span class="popup-region-tag">Unterkunft</span>
+              </div>
+              <h4 class="popup-title">${escapeHtml(hotel.name)}</h4>
+              <div class="popup-highlight">${escapeHtml(hotel.address)}</div>
+              <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.5rem; line-height:1.4;">
+                <i class="fa-solid fa-clock"></i> Check-in: <strong>${escapeHtml(hotel.checkIn)}</strong><br>
+                <i class="fa-solid fa-right-from-bracket"></i> Check-out: <strong>${escapeHtml(hotel.checkOut)}</strong>
+              </div>
+              <div class="popup-action-row">
+                <button type="button" class="btn-popup-jump" onclick="jumpToDayAndHighlight(${day})">
+                  <i class="fa-solid fa-calendar-day"></i> Zum Tagesplan
+                </button>
+                ${bookingBtn}
+              </div>
+            </div>
+          `;
+          L.marker(coords, { icon: hotelIcon }).bindPopup(hotelPopup, { maxWidth: 300 }).addTo(routeLayers.accommodations);
+        });
+
+        // LAYER 4: 📷 FOTOSPOTS (Spezifische Fotospots mit Tipps)
+        routeLayers.photospots = L.layerGroup();
+        ALL_SIGHTSEEING_SPOTS.forEach(spot => {
+          if (!spot.photoTip) return;
+          const photoIcon = L.divIcon({
+            html: `<div class="photo-pin-bubble" title="Fotospot: ${escapeHtml(spot.name)}"><i class="fa-solid fa-camera"></i></div>`,
+            className: 'custom-photo-pin',
+            iconSize: [28, 28],
+            iconAnchor: [14, 14],
+            popupAnchor: [0, -18]
+          });
+          const photoPopup = `
+            <div class="sight-map-popup">
+              <div class="popup-top-badge">
+                <span class="popup-day-tag"><i class="fa-solid fa-camera"></i> Tag ${spot.day}</span>
+                <span class="popup-region-tag">Fotospot</span>
+              </div>
+              <h4 class="popup-title">${escapeHtml(spot.name)}</h4>
+              <div class="popup-photo-tip" style="margin-top:0.4rem;">
+                <i class="fa-solid fa-camera"></i>
+                <div>${spot.photoTip}</div>
+              </div>
+              <div class="popup-action-row">
+                <button type="button" class="btn-popup-jump" onclick="jumpToDayAndHighlight(${spot.day}, ${spot.id})">
+                  <i class="fa-solid fa-calendar-day"></i> Zum Tagesplan
+                </button>
+              </div>
+            </div>
+          `;
+          L.marker(spot.coords, { icon: photoIcon }).bindPopup(photoPopup, { maxWidth: 300 }).addTo(routeLayers.photospots);
+        });
+
+        // LAYER 5: 🛸 DROHNEN (Freigegebene Drohnen-Traumspots)
+        routeLayers.drones = L.layerGroup();
+        airspaceFeatures.filter(f => f.type === 'spot').forEach(droneSpot => {
+          const droneIcon = L.divIcon({
+            html: `<div class="drone-pin-bubble" title="${escapeHtml(droneSpot.title)}"><i class="fa-solid fa-paper-plane"></i></div>`,
+            className: 'custom-drone-pin',
+            iconSize: [28, 28],
+            iconAnchor: [14, 14],
+            popupAnchor: [0, -18]
+          });
+          const dronePopup = `
+            <div class="sight-map-popup">
+              <div class="popup-top-badge">
+                <span class="popup-day-tag" style="background:#dcfce7; color:#166534;"><i class="fa-solid fa-paper-plane"></i> Drohnenspot</span>
+                <span class="popup-region-tag">${escapeHtml(droneSpot.badgeText)}</span>
+              </div>
+              <h4 class="popup-title">${escapeHtml(droneSpot.title)}</h4>
+              <div class="popup-highlight">${escapeHtml(droneSpot.desc)}</div>
+              <div style="font-size:0.74rem; background:rgba(16,185,129,0.1); padding:0.4rem 0.6rem; border-radius:6px; color:#065f46;">
+                <i class="fa-solid fa-circle-check"></i> <strong>Regeln:</strong> Max. 120m Höhe, 30m Mindestabstand zu Personen.
+              </div>
+            </div>
+          `;
+          L.marker(droneSpot.coords, { icon: droneIcon }).bindPopup(dronePopup, { maxWidth: 310 }).addTo(routeLayers.drones);
+        });
+
+        // LAYER 6: 🚫 NO-FLY-ZONEN (Flughäfen & Nationalpark-Sperrzonen)
+        routeLayers.nofly = L.layerGroup();
+        airspaceFeatures.filter(f => f.type !== 'spot').forEach(feature => {
+          let layer;
+          if (feature.type === 'circle') {
+            layer = L.circle(feature.coords, {
+              radius: feature.radius,
+              color: feature.color,
+              fillColor: feature.fillColor,
+              fillOpacity: feature.fillOpacity,
+              weight: 2
+            });
+          } else if (feature.type === 'polygon') {
+            layer = L.polygon(feature.coords, {
+              color: feature.color,
+              fillColor: feature.fillColor,
+              fillOpacity: feature.fillOpacity,
+              weight: 2
+            });
+          }
+          if (layer) {
+            layer.bindPopup(`
+              <div class="sight-map-popup">
+                <div class="popup-top-badge">
+                  <span class="popup-day-tag" style="background:#fee2e2; color:#991b1b;"><i class="fa-solid fa-ban"></i> No-Fly-Zone</span>
+                  <span class="popup-region-tag">${escapeHtml(feature.badgeText)}</span>
+                </div>
+                <h4 class="popup-title">${escapeHtml(feature.title)}</h4>
+                <div class="popup-highlight">${escapeHtml(feature.desc)}</div>
+                <div style="font-size:0.74rem; background:rgba(239,68,68,0.1); padding:0.4rem 0.6rem; border-radius:6px; color:#991b1b;">
+                  <i class="fa-solid fa-triangle-exclamation"></i> <strong>CASA Vorschrift:</strong> Strenges Flugverbot! Hohe Geldstrafen bei Zuwiderhandlung.
+                </div>
+              </div>
+            `, { maxWidth: 310 });
+            layer.addTo(routeLayers.nofly);
+          }
+        });
+
+        // Standardmäßig aktive Layer auf die Karte legen
+        if (routeLayerStates.destinations) routeLayers.destinations.addTo(routeInteractiveMap);
+        if (routeLayerStates.highlights) routeLayers.highlights.addTo(routeInteractiveMap);
+        if (routeLayerStates.accommodations) routeLayers.accommodations.addTo(routeInteractiveMap);
+        if (routeLayerStates.photospots) routeLayers.photospots.addTo(routeInteractiveMap);
+        if (routeLayerStates.drones) routeLayers.drones.addTo(routeInteractiveMap);
+        if (routeLayerStates.nofly) routeLayers.nofly.addTo(routeInteractiveMap);
 
         renderRouteDaysPills();
         setupTimelineMapSync();
@@ -6521,6 +6902,9 @@
         btnPacking.setAttribute('aria-selected', 'true');
         panelBookings.style.display = 'none';
         panelPacking.style.display = 'block';
+        document.querySelectorAll('.category-quick-tile').forEach(tile => {
+          tile.classList.toggle('active', tile.getAttribute('data-org-cat') === 'packing');
+        });
         renderPackingList();
       } else {
         btnPacking.classList.remove('active');
@@ -6529,6 +6913,11 @@
         btnBookings.setAttribute('aria-selected', 'true');
         panelPacking.style.display = 'none';
         panelBookings.style.display = 'block';
+        const curCat = document.getElementById('org-booking-filter-cat')?.value || 'all';
+        const activeCat = (curCat === 'all') ? 'bookings' : curCat;
+        document.querySelectorAll('.category-quick-tile').forEach(tile => {
+          tile.classList.toggle('active', tile.getAttribute('data-org-cat') === activeCat);
+        });
         renderBookings();
       }
     }
@@ -8593,9 +8982,11 @@ function showView(viewName, skipHistory) {
     tab.classList.toggle('active', tab.getAttribute('data-view') === target);
   });
 
-  // Update mobile bottom navigation
+  // Update mobile bottom navigation (5-item layout: when viewing erlebnisse, highlight mehr)
   document.querySelectorAll('.mobile-bottom-nav .bottom-nav-item').forEach(item => {
-    item.classList.toggle('active', item.getAttribute('data-view') === target);
+    const itemView = item.getAttribute('data-view');
+    const isActive = (itemView === target) || (target === 'erlebnisse' && itemView === 'mehr');
+    item.classList.toggle('active', isActive);
   });
 
   // Trigger view hooks
@@ -8640,8 +9031,12 @@ function showView(viewName, skipHistory) {
     }
   }
 
-  if (!skipHistory && window.location.hash !== '#' + target && !window.location.hash.startsWith('#day-')) {
-    history.replaceState(null, '', '#' + target);
+  if (!skipHistory) {
+    if (window.Router && typeof window.Router.navigate === 'function' && window.Router.getCurrentRoute() !== target) {
+      window.Router.navigate(target, { push: true, silent: true });
+    } else if (window.location.hash !== '#' + target && !window.location.hash.startsWith('#day-')) {
+      history.replaceState(null, '', '#' + target);
+    }
   }
 }
 
@@ -8668,7 +9063,7 @@ function jumpToDay(dayNum) {
   updateMobileBottomSheet(dayNum);
 }
 
-// Mobile Reise Mode Switcher
+// Mobile Reise Mode Switcher (Phase 4: [ Plan ] [ Karte ])
 function switchMobileReiseMode(mode) {
   const planCol = document.querySelector('.timeline-column');
   const mapCol = document.querySelector('.map-sticky-column');
@@ -8701,7 +9096,7 @@ function switchMobileReiseMode(mode) {
   }
 }
 
-// Mobile Map Bottom Sheet Updater
+// Mobile Map Bottom Sheet Updater (Phase 4: TAG 14 · 4 HIGHLIGHTS + Chips + Pull-up)
 function updateMobileBottomSheet(dayNum) {
   const sheet = document.getElementById('mobile-map-bottom-sheet');
   if (!sheet) return;
@@ -8711,33 +9106,77 @@ function updateMobileBottomSheet(dayNum) {
   const titleEl = document.getElementById('bottom-sheet-day-title');
   const spotsEl = document.getElementById('bottom-sheet-spots-list');
   const actionBtn = document.getElementById('bottom-sheet-plan-btn');
+  const expandedEl = document.getElementById('bottom-sheet-expanded-content');
+
+  const spotsCountLabel = spots.length > 0 ? `${spots.length} HIGHLIGHT${spots.length > 1 ? 'S' : ''}` : escapeHtml(dayData.title || 'ETAPPE');
 
   if (titleEl) {
-    titleEl.innerHTML = `<strong>Tag ${dayData.day} · ${escapeHtml(dayData.title)}</strong> <span style="font-size:0.75rem; color:var(--text-muted); margin-left:0.5rem;">${dayData.date}</span>`;
+    titleEl.innerHTML = `<strong>TAG ${dayData.day} · ${spotsCountLabel}</strong> <span style="font-size:0.75rem; color:var(--text-muted); margin-left:0.4rem;">${escapeHtml(dayData.date || '')}</span>`;
   }
+
   if (spotsEl) {
     if (spots.length > 0) {
-      spotsEl.innerHTML = spots.map(s => `
-        <span class="spot-sheet-chip" onclick="focusSpotOnMap('${s.id}', event)">
-          <i class="fa-solid fa-location-dot"></i> ${escapeHtml(s.name)}
-        </span>
-      `).join('');
+      spotsEl.innerHTML = spots.map(s => {
+        let icon = '🏝️';
+        if (s.name.includes('Heart Reef') || s.name.includes('Helikopter')) icon = '🚁';
+        else if (s.name.includes('Falls') || s.name.includes('Park') || s.name.includes('Gardens')) icon = '🌿';
+        else if (s.name.includes('Lookout') || s.name.includes('Inlet') || s.name.includes('View')) icon = '🏖️';
+        else if (s.name.includes('Harbour') || s.name.includes('Bridge') || s.name.includes('Opera')) icon = '🏙️';
+        else if (s.name.includes('Zoo') || s.name.includes('Koala') || s.name.includes('Pinguin')) icon = '🦘';
+        return `
+          <span class="spot-sheet-chip" onclick="focusSpotOnMap(${s.id}, event)" title="${escapeHtml(s.name)}">
+            <span>${icon}</span> ${escapeHtml(s.name)}
+          </span>
+        `;
+      }).join('');
     } else {
-      spotsEl.innerHTML = `<span style="font-size:0.8rem; color:var(--text-muted);">${escapeHtml(dayData.drive || 'Reisetag')}</span>`;
+      spotsEl.innerHTML = `<span style="font-size:0.8rem; color:var(--text-muted);"><i class="fa-solid fa-route"></i> ${escapeHtml(dayData.drive || (dayData.transportType === 'flight' ? 'Flugreise' : 'Fahrtetappe'))}</span>`;
     }
   }
+
+  if (expandedEl) {
+    expandedEl.innerHTML = `
+      <div><strong>🏁 Start:</strong> ${escapeHtml(dayData.start || '-')} ➔ <strong>Ziel:</strong> ${escapeHtml(dayData.destination || '-')}</div>
+      <div><strong>🛣️ Distanz:</strong> ${escapeHtml(dayData.distance || '-')} • <strong>Fahrzeit:</strong> ${escapeHtml(dayData.driveTime || '-')}</div>
+      <div><strong>🏨 Unterkunft:</strong> ${escapeHtml(dayData.accommodation || '-')}</div>
+    `;
+  }
+
   if (actionBtn) {
-    actionBtn.onclick = () => jumpToDay(dayData.day);
+    actionBtn.onclick = (e) => {
+      if (e) e.stopPropagation();
+      jumpToDay(dayData.day);
+    };
   }
 }
+
+// Bottom Sheet Hochziehen / Minimieren Toggle
+function toggleMobileBottomSheet() {
+  const sheet = document.getElementById('mobile-map-bottom-sheet');
+  const expandedEl = document.getElementById('bottom-sheet-expanded-content');
+  if (!sheet) return;
+  sheet.classList.toggle('sheet-expanded');
+  if (expandedEl) {
+    expandedEl.style.display = sheet.classList.contains('sheet-expanded') ? 'flex' : 'none';
+  }
+}
+window.toggleMobileBottomSheet = toggleMobileBottomSheet;
 
 // Organisation Shortcuts
 function filterOrgCategory(catKey) {
   showView('organisation');
+  document.querySelectorAll('.category-quick-tile').forEach(tile => {
+    tile.classList.toggle('active', tile.getAttribute('data-org-cat') === catKey);
+  });
+  if (catKey === 'packing') {
+    switchOrgTab('packing');
+    document.getElementById('org-panel-packing')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
   switchOrgTab('bookings');
   const filterSelect = document.getElementById('org-booking-filter-cat');
   if (filterSelect) {
-    filterSelect.value = catKey;
+    filterSelect.value = (catKey === 'bookings') ? 'all' : catKey;
     renderBookings();
     document.getElementById('org-panel-bookings')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -8800,15 +9239,22 @@ window.addEventListener('hashchange', () => {
   }
 });
 
-// Setup Initial View on Load
+// Setup Initial View & Router on Load
 window.addEventListener('DOMContentLoaded', () => {
+  if (window.UI && window.UI.modal && typeof window.UI.modal.init === 'function') {
+    window.UI.modal.init();
+  }
+  if (window.Router && typeof window.Router.init === 'function') {
+    window.Router.init();
+  }
+
   const initialHash = window.location.hash.replace('#', '').trim();
   if (initialHash.startsWith('day-') || initialHash.startsWith('tag-')) {
     const num = parseInt(initialHash.replace(/^(?:day|tag)-/, ''), 10);
     if (num) setTimeout(() => jumpToDay(num), 300);
   } else if (initialHash) {
     showView(initialHash, true);
-  } else {
+  } else if (!window.Router) {
     showView('dashboard', true);
   }
 });
