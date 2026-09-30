@@ -27,23 +27,8 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
-<body class="is-locked">
+<body>
 
-  <div id="security-gate" role="dialog" aria-modal="true" aria-label="Anmeldung">
-    <div class="security-card">
-      <div class="security-icon"><i class="fa-solid fa-shield-halved"></i></div>
-      <h2 style="margin-bottom: 0.4rem; color: var(--primary);">Australien Roadtrip 2027</h2>
-      <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.8rem;">
-        Deine Anmeldung wird geprüft.
-      </p>
-
-      <button class="security-btn" onclick="verifyPin()">
-        <i class="fa-solid fa-key"></i> Zur Anmeldung
-      </button>
-
-      <div id="gate-error" class="security-error"></div>
-    </div>
-  </div>
   <div id="offline-status-banner" class="offline-status-banner" style="display:none;" role="status" aria-live="polite">
     <i class="fa-solid fa-plane-slash"></i>
     <span id="offline-status-text">Offline-Modus · Alle Reisetage, Buchungen &amp; Tagebuch verfügbar</span>
@@ -100,9 +85,6 @@
         <button type="button" class="btn-icon-action" id="theme-toggle-btn" onclick="toggleDarkMode()"
           title="Design-Modus wechseln">
           <i class="fa-solid fa-moon"></i>
-        </button>
-        <button type="button" class="btn-icon-action" onclick="lockApp()" title="App sperren">
-          <i class="fa-solid fa-lock"></i>
         </button>
       </div>
     </div>
@@ -3570,17 +3552,17 @@
        ========================================================================= -->
   <!-- 1. Reisetage-Datenspeicher & Timeline-Renderer (Single Source of Truth) -->
   <script src="js/persistence.js?v=693c8733bcb9"></script>
-  <script src="js/session.js?v=f10e972dff58"></script>
+  <script src="js/session.js?v=b84cab50341e"></script>
   <script src="js/trip-store.js?v=261da5b8d7af"></script>
   <!-- 2. Karten-Geodaten & Routen -->
   <script src="js/tripMasterData.js?v=58ad749efcf0"></script>
   <script src="js/tripData.js?v=6ce761a867ec"></script>
   <!-- 3. UI-Komponenten, Router & Reise-App -->
   <script src="js/components.js?v=fd379f0318c9"></script>
-  <script src="js/router.js?v=42c6d1df2caf"></script>
+  <script src="js/router.js?v=e2cb389dd45e"></script>
   <script src="js/reiseApp.js?v=6b902ba2875b"></script>
   <!-- 4. Kern-Applikationslogik -->
-  <script src="js/app.js?v=bed661ab1c39"></script>
+  <script src="js/app.js?v=db776985349c"></script>
 
 
   <dialog id="trip-editor" class="trip-editor" aria-labelledby="trip-editor-title">
@@ -3605,7 +3587,7 @@
 <dialog id="manage-editor" class="trip-editor" aria-labelledby="manage-editor-title"><header class="trip-editor-header"><div><span class="trip-eyebrow">ALLES AN EINEM ORT</span><h2 id="manage-editor-title">Eintrag bearbeiten</h2></div><button type="button" id="manage-close" class="trip-icon-button" aria-label="Editor schließen">×</button></header><form id="manage-form"><div id="manage-fields" class="trip-editor-fields"></div><p id="manage-error" class="trip-form-error" role="alert" tabindex="-1"></p><div id="manage-detail-actions" hidden></div><footer class="trip-editor-footer"><button type="button" id="manage-delete" class="trip-danger-button" hidden>Löschen</button><span></span><button type="button" id="manage-cancel" class="trip-secondary-button">Abbrechen</button><button type="submit" id="manage-save" class="trip-primary-button">Speichern</button></footer></form></dialog>
 <dialog id="manage-confirm" class="trip-confirm trip-glass" aria-labelledby="manage-confirm-title" aria-describedby="manage-confirm-text"><h2 id="manage-confirm-title">Eintrag löschen?</h2><p id="manage-confirm-text"></p><div><button type="button" id="manage-confirm-no" class="trip-secondary-button" autofocus>Abbrechen</button><button type="button" id="manage-confirm-yes" class="trip-danger-button">Löschen</button></div></dialog>
 <div id="manage-live" class="manage-live" role="status" aria-live="polite"></div>
-<script src="js/management/repository.js?v=f567a43dee8b"></script><script src="js/management/ui.js?v=d91fa0046bb0"></script><script src="js/management/editor.js?v=8fb1877561ac"></script><script src="js/management/drone-map.js?v=1a70049a3c48"></script><script src="js/management/page.js?v=38b96ea12b27"></script>
+<script src="js/management/repository.js?v=f567a43dee8b"></script><script src="js/management/ui.js?v=d91fa0046bb0"></script><script src="js/management/editor.js?v=8fb1877561ac"></script><script src="js/management/drone-map.js?v=1a70049a3c48"></script><script src="js/management/page.js?v=1f7cd79860ff"></script>
   <!-- 5. Bildauftakt und Liquid-Glass-Navigation -->
   <script src="js/home.js?v=2694589ca6e1"></script>
 </body>

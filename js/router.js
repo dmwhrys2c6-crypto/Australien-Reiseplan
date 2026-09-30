@@ -67,6 +67,8 @@
   const Router = {
     routes: ROUTES,
 
+    routeUrl: function(route, sub = '') { return '#' + route + (sub ? '/' + sub : ''); },
+
     getCurrentRoute: function () {
       return currentRoute;
     },
@@ -139,14 +141,9 @@
 
       // 3. Browser-History & URL aktualisieren
       if (push && !isNavigating) {
-        const isFileProtocol = window.location.protocol === 'file:';
-        if (isFileProtocol) {
-          window.location.hash = sub ? `${routeKey}/${sub}` : routeKey;
-        } else {
-          const targetUrl = targetConfig.path + (sub ? `#${sub}` : '');
-          if (window.location.pathname !== targetConfig.path || window.location.hash !== (sub ? `#${sub}` : '')) {
-            window.history.pushState({ route: routeKey, sub: sub }, targetConfig.title, targetUrl);
-          }
+        const targetHash = '#' + routeKey + (sub ? '/' + sub : '');
+        if (window.location.hash !== targetHash) {
+          window.history.pushState({route:routeKey,sub},targetConfig.title,targetHash);
         }
       }
 

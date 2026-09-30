@@ -3,7 +3,7 @@
   "short_name": "Australien 2027",
   "description": "Interaktiver 20-Tage-Reiseplan, Budgetkalkulation, Reiseorganisation, Reisejournal, Fotogalerie & Offline-Reiseführer für 4 Personen.",
   "start_url": "./index.html",
-  "id": "/australien-roadtrip-2027",
+  "id": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
@@ -40,7 +40,7 @@
       "name": "20-Tage Reiseplan",
       "short_name": "Reiseplan",
       "description": "Direkt zum 20-tägigen Roadtrip-Ablauf springen",
-      "url": "./reise",
+      "url": "./#reise",
       "icons": [
         {
           "src": "./icon-192.png",
@@ -52,7 +52,7 @@
       "name": "Reisejournal",
       "short_name": "Journal",
       "description": "Tagebucheintrag schreiben oder Fotos ansehen",
-      "url": "./erlebnisse#journal",
+      "url": "./#erlebnisse/journal",
       "icons": [
         {
           "src": "./icon-192.png",
@@ -64,7 +64,7 @@
       "name": "Reiseorganisation",
       "short_name": "Buchungen",
       "description": "Flüge, Hotels, Mietwagen & Packliste",
-      "url": "./organisation#bookings",
+      "url": "./#organisation/bookings",
       "icons": [
         {
           "src": "./icon-192.png",
@@ -76,7 +76,7 @@
       "name": "Notfall & Hilfe",
       "short_name": "Notfall 000",
       "description": "Notrufnummern & Konsulatskontakte sofort anzeigen",
-      "url": "./mehr#emergency",
+      "url": "./#mehr/emergency",
       "icons": [
         {
           "src": "./icon-192.png",

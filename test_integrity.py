@@ -71,7 +71,7 @@ for ds in data_structures:
 # 3. Check Critical Functions in js/app.js
 print("\n--- Checking Critical Functions in js/app.js ---")
 critical_funcs = [
-    'verifyPin', 'unlockAppUI', 'lockApp', 'showView', 'jumpToDay',
+    'verifyPin', 'unlockAppUI', 'showView', 'jumpToDay',
     'focusDayOnMap', 'focusSpotOnMap', 'jumpToDayAndHighlight',
     'initRouteLeafletMap', 'initDroneAirspaceMap', 'renderCurrentBudgetChart',
     'updateBudgetCalculations', 'renderBookings', 'renderPackingList',
@@ -87,7 +87,7 @@ for fn in critical_funcs:
 # 4. Check Modals in index.html
 print("\n--- Checking Modals & Security in index.html ---")
 modals = [
-    'security-gate', 'booking-modal-backdrop', 'packing-modal-backdrop',
+ 'booking-modal-backdrop', 'packing-modal-backdrop',
     'expense-modal-backdrop', 'photo-modal-backdrop', 'photo-lightbox-modal',
     'global-search-modal'
 ]

@@ -106,7 +106,16 @@ export function createApp(options = {}) {
   app.use((error,req,res,next)=>{if(res.headersSent)return next(error);res.status(error.type==='entity.parse.failed'?400:500).json({message:error.type==='entity.parse.failed'?'Ungültiges JSON.':'Anfrage fehlgeschlagen.'});});
   return app;
 }
+export function createStaticApp() {
+  const app = express();
+  for (const folder of ['css','js','data']) app.use('/'+folder,express.static(path.join(directory,folder),{index:false,dotfiles:'deny'}));
+  for (const file of ['index.html','manifest.json','sw.js','favicon.svg','icon-192.png','icon-512.png']) app.get('/'+file,(req,res)=>res.sendFile(path.join(directory,file)));
+  app.get('/',(req,res)=>res.sendFile(path.join(directory,'index.html')));
+  app.get('/login',(req,res)=>res.redirect('./'));
+  app.use((req,res)=>res.status(404).send('Nicht gefunden.'));
+  return app;
+}
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const port=process.env.PORT || 3000;
-  createApp().listen(port,'0.0.0.0',()=>console.log(`Australien Roadtrip läuft auf Port ${port}. Zugangscode: lokale .env-Datei.`));
+  createStaticApp().listen(port,'0.0.0.0',()=>console.log(`GitHub-Pages-Vorschau läuft auf http://localhost:${port}/`));
 }

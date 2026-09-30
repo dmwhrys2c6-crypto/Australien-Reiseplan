@@ -3,6 +3,8 @@ versionAssets();
 /* Vanilla app: production export includes only public runtime assets. */
 import fs from 'node:fs';import path from 'node:path';
 const output=path.resolve('dist');fs.mkdirSync(output,{recursive:true});
-const assets=['index.html','login.html','css','js','data','sw.js','manifest.json','favicon.svg','icon-192.png','icon-512.png'];
+const assets=['index.html','css','js','data','sw.js','manifest.json','favicon.svg','icon-192.png','icon-512.png'];
 for(const asset of assets)fs.cpSync(asset,path.join(output,asset),{recursive:true});
-console.log('Production assets exported to '+output+'. Private site: run the Express server with .env configuration. Static hosting does not enforce authentication.');
+for (const obsolete of ['login.html','js/login.js']) fs.rmSync(path.join(output,obsolete),{force:true});
+fs.writeFileSync(path.join(output,'.nojekyll'),'');
+console.log('Production assets exported to '+output+'. GitHub Pages: publish the dist folder or use the Pages workflow.');

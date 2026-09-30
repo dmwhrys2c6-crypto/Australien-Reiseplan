@@ -57,7 +57,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       }
     }
 
-    async function verifyPin() { location.assign('/login'); }
+    async function verifyPin() { await restoreSession(); }
     async function restoreSession() {
       try {
         const grant = await window.AppSession.restore();
@@ -71,12 +71,13 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       } catch (error) {
         const message = document.getElementById('gate-error');
         if (message) message.textContent = error.message;
+        window.Persistence.report(error);
       }
     }
 
     function unlockAppUI() {
       document.body.classList.remove('is-locked');
-      window.AppSession.setLocked(false);
+
       const gate = document.getElementById('security-gate');
       if (gate) {
         gate.style.opacity = '0';
@@ -120,18 +121,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       }
     }
 
-    async function lockApp() {
-      if (syncSocket) { syncSocket.onclose = null; syncSocket.close(); }
-      cryptoKey = null; decryptedVault = null;
-      document.body.classList.add('is-locked');
-      window.AppSession.setLocked(true);
-      await window.AppSession.logout();
-      location.assign('/login');
-    }
 
-    // =========================================================================
-    // SCROLL-ENGINE: GLEICHMÄSSIG, SEQUENTIELL & RICHTUNGSABHÄNGIG
-    // =========================================================================
     function initScrollAnimations() {
       const dashEl = document.getElementById('dashboard');
       if (dashEl) {
@@ -5224,10 +5214,6 @@ const localStorage = window.Persistence.wrap(window.localStorage);
 
       try {
         let data = null;
-        try {
-          const res = await fetch('/api/rates', {signal:AbortSignal.timeout(4000)});
-          if (res.ok) data = await res.json();
-        } catch (e) { }
 
         if (!data || !data.rate) {
           try {
@@ -5475,13 +5461,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         let weatherData = null;
 
 
-        // 1. Backend-Proxy versuchen
-        try {
-          const res = await fetch('/api/weather', { signal: AbortSignal.timeout(4000) });
-          if (res.ok) weatherData = await res.json();
-        } catch (e) { }
-
-        // 2. Fallback direkt zu Open-Meteo API
+        // Direct API requests work on static GitHub Pages hosting.
         if (!weatherData || !weatherData.sydney) {
           const directUrl = 'https://api.open-meteo.com/v1/forecast?latitude=-33.8688,-27.4698,-37.8136&longitude=151.2093,153.0251,144.9631&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,relative_humidity_2m&timezone=auto';
           try {

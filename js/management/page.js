@@ -35,7 +35,7 @@ root.showView=function(name,skipHistory){
  originalShowView(name,skipHistory);
  if(!skipHistory&&root.Router){
   const route=root.Router.getCurrentRoute(),prefix={finanzen:'fin',organisation:'org',erlebnisse:'exp',mehr:'more'}[route];
-  if(prefix){const button=document.querySelector(prefix==='org'?'#organization .org-tab-btn.active':'.'+prefix+'-subnav-btn.active');const sub=prefix==='org'?button?.id.replace('org-tab-btn-',''):button?.dataset.tab;if(sub){if(location.protocol==='file:')location.hash=route+'/'+sub;else history.replaceState({route,sub},document.title,root.Router.routes[route].path+'#'+sub);}}
+  if(prefix){const button=document.querySelector(prefix==='org'?'#organization .org-tab-btn.active':'.'+prefix+'-subnav-btn.active');const sub=prefix==='org'?button?.id.replace('org-tab-btn-',''):button?.dataset.tab;if(sub){history.replaceState({route,sub},document.title,root.Router.routeUrl(route,sub));}}
  }
  syncLayout();
 };
@@ -48,7 +48,7 @@ for(const [name,route,prefix] of [['switchFinTab','finanzen','fin'],['switchExpT
    document.querySelectorAll('#organization .org-tab-btn').forEach(button=>{const active=button.id==='org-tab-btn-'+key;button.classList.toggle('active',active);button.setAttribute('aria-selected',String(active));});
    if(key==='packing')root.renderPackingList();
   }else previous(key);
-  if(root.Router.getCurrentRoute()===route&&location.hash!==(location.protocol==='file:'?'#'+route+'/'+key:'#'+key))root.Router.navigate(route,{sub:key,silent:true});
+  if(root.Router.getCurrentRoute()===route&&location.hash!==root.Router.routeUrl(route,key))root.Router.navigate(route,{sub:key,silent:true});
   if(key==='drone')syncDrone();
  };
 }

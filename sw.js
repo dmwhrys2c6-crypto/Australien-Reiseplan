@@ -3,7 +3,7 @@
    Offline-Verfügbarkeit für Reisedaten, Assets, Schriftarten & Karten-Tiles
    ========================================================================= */
 
-const CACHE_NAME = 'aus-roadtrip-49495e280863';
+const CACHE_NAME = 'aus-roadtrip-43f9ad97178a';
 
 // Statische Kern-Assets für die App-Shell
 const PRECACHE_ASSETS = [
@@ -14,14 +14,14 @@ const PRECACHE_ASSETS = [
   "./css/trip.css?v=6d82ecdf5fc8",
   "./css/management.css?v=56091d09dd23",
   "./js/persistence.js?v=693c8733bcb9",
-  "./js/session.js?v=f10e972dff58",
+  "./js/session.js?v=b84cab50341e",
   "./js/trip-store.js?v=261da5b8d7af",
   "./js/tripMasterData.js?v=58ad749efcf0",
   "./js/tripData.js?v=6ce761a867ec",
   "./js/components.js?v=fd379f0318c9",
-  "./js/router.js?v=42c6d1df2caf",
+  "./js/router.js?v=e2cb389dd45e",
   "./js/reiseApp.js?v=6b902ba2875b",
-  "./js/app.js?v=bed661ab1c39",
+  "./js/app.js?v=db776985349c",
   "./js/trip/repository.js?v=c3ec41579d34",
   "./js/trip/map-adapter.js?v=5e3b2363aae9",
   "./js/trip/components.js?v=b4924ab8eed0",
@@ -31,7 +31,7 @@ const PRECACHE_ASSETS = [
   "./js/management/ui.js?v=d91fa0046bb0",
   "./js/management/editor.js?v=8fb1877561ac",
   "./js/management/drone-map.js?v=1a70049a3c48",
-  "./js/management/page.js?v=38b96ea12b27",
+  "./js/management/page.js?v=1f7cd79860ff",
   "./js/home.js?v=2694589ca6e1",
   "./data/trip-days.json",
   "./manifest.json",
@@ -98,7 +98,7 @@ self.addEventListener('fetch', (event) => {
         .catch(async () => {
           console.log('[SW] Offline: serving cached index.html for navigation');
           const shell = await caches.open(CACHE_NAME);
-          const cached = await shell.match('./index.html') || await shell.match('/');
+          const cached = await shell.match(new URL('index.html', self.registration.scope).href);
           if (cached) return cached;
           return new Response('Offline: Australien Roadtrip App verfügbar aus Cache.', {
             headers: { 'Content-Type': 'text/html; charset=utf-8' }

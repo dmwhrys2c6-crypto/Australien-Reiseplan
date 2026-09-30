@@ -2,15 +2,17 @@
 
 Stand: 30. September 2026. Grundlage ist der lokale Projektstand, einschließlich der bereits vorhandenen Änderungen. Die Sicherung vor diesem Durchlauf liegt unter `/private/tmp/australien-before-fixes-20260930`. Es wurde nichts veröffentlicht.
 
-## Anmeldung und Start
+## Aktueller Betrieb: GitHub Pages
 
-`npm ci` installiert die durch `package-lock.json` festgelegten Pakete. `npm start` startet den Express-Server auf Port 3000. Die lokal angelegte und von Git ausgeschlossene `.env` enthält den neuen `AUTH_CODE`, `SESSION_SECRET`, `SYNC_SECRET` und `SYNC_TOPIC`. Der bisher öffentlich enthaltene Code funktioniert nicht mehr. Zugangscode und Sync-Konfiguration werden vom Server verwaltet.
+Die Website läuft wieder als öffentliche statische Website ohne Anmeldeserver. Diese Änderung ersetzt die zuvor eingeführte Server-Anmeldung ausdrücklich auf Wunsch des Nutzers. Eine Browser-Passwortsperre wird nicht als Zugriffsschutz eingesetzt.
 
-Für den privaten Betrieb muss die Website über diesen Server bereitgestellt werden; ein öffentlicher statischer Export von `dist` schützt die Dateien nicht. Bei Hosting hinter einem HTTPS-Reverse-Proxy wird `TRUST_PROXY=1` nur verwendet, wenn tatsächlich ein vertrauenswürdiger Proxy vorgeschaltet ist. Die lokale Entwicklung läuft ohne Proxy.
+`npm ci` installiert die festgelegten Pakete. `npm start` startet eine statische lokale Vorschau auf Port 3000. `npm run build` exportiert die Website nach `dist`. Die GitHub-Pages-Workflowdatei `.github/workflows/pages.yml` prüft Tests und Build bei einem Push auf `main`. Die bestehende GitHub-Pages-Veröffentlichung aus dem Projektstamm von `main` bleibt erhalten. Der Export in `dist` steht alternativ für eine Veröffentlichung der reinen Laufzeitdateien bereit. Die lokale `.env` bleibt ausgeschlossen und ist für GitHub Pages nicht erforderlich.
 
-Nach erfolgreicher Online-Anmeldung speichert der Browser die Gerätefreigabe in IndexedDB. Damit funktioniert der bereits heruntergeladene Reiseplan offline. Abmelden entfernt Freigabe und App-Caches, lässt Reise-, Journal-, Foto- und sonstige lokale Nutzerdaten bestehen. Eine abgelaufene Online-Sitzung verlangt eine neue Anmeldung. Server-Neustarts beenden bestehende Online-Sitzungen.
+Die Navigation verwendet Hash-URLs wie `#reise` und `#finanzen/onsite`. Dadurch bleiben Projektpfade und neu geladene Unteransichten auf statischem Hosting gültig. PWA-Shortcuts verwenden dieselben URLs. Der Service Worker lädt seine Offline-Startseite relativ zum jeweiligen Projektpfad.
 
-Die neue private Sync-Konfiguration verwendet einen neuen Kanal und Schlüssel. Vorhandene lokale Daten bleiben erhalten; alte Cloud-Nachrichten werden nicht automatisch in den neuen Kanal übernommen. Alle Teilnehmer müssen dieselbe Serverinstallation beziehungsweise Sync-Konfiguration verwenden.
+Wetter und Wechselkurse werden direkt von den öffentlichen APIs geladen. Die bestehende Gruppensynchronisierung verwendet wieder ihren ursprünglichen Kanal und das ursprüngliche Verschlüsselungsformat. Diese öffentlich ausgelieferte Konfiguration bietet keinen privaten Zugriffsschutz. Lokal gespeicherte Nutzerdaten bleiben erhalten; nach dem ersten vollständigen Download funktioniert die Website auch offline, ohne vorherige Anmeldung.
+
+Die Umstellung wurde zusätzlich unter `/Australien-Reiseplan/` mit einem rein statischen Testserver geprüft: Start ohne Anmeldung, Navigation zu einer Unteransicht, Neuladen derselben Unteransicht und Budgetbedienung funktionieren. Die Gruppensynchronisierung wurde dabei isoliert, damit die Prüfung keine echten Gruppendaten verändert. Die Veröffentlichung erfolgt über den bestehenden GitHub-Pages-Branch-Workflow nach dem Push auf `main`.
 
 ## Zuordnung zum Fehlerbericht
 
@@ -24,7 +26,7 @@ Die neue private Sync-Konfiguration verwendet einen neuen Kanal und Schlüssel. 
 - **F-009:** Repository-Zugriffe auf denselben Store teilen den Zustand der Reisemetadaten.
 - **F-010:** Journal- und Foto-Tagesauswahl folgen dem aktuellen TripStore. Unterkunftsobjekte werden als Namen angezeigt. Neu angelegte Tagesnummern werden nicht wiederverwendet, damit alte Erinnerungen nicht einem neuen Tag zugeordnet werden.
 - **F-011:** JSON-Importe prüfen Tagesnummern, Titel, Aktivitäten und doppelte Nummern und werden dauerhaft gespeichert. Ungültige Importe verändern den gespeicherten Stand nicht.
-- **F-012/F-013:** Server-Anmeldung, signierte HttpOnly-Sitzungscookies, begrenzte Anmeldeversuche und geschützte App-Dateien ersetzen das öffentliche Frontend-Passwort. Projektdateien und `.env` werden nicht ausgeliefert. Gesperrte Inhalte sind nicht per Tastatur bedienbar.
+- **F-012/F-013:** Die anfänglich implementierte Server-Anmeldung wurde für GitHub Pages entfernt. Der aktuelle öffentliche Betrieb ist ausdrücklich gewählt; es gibt keine irreführende Passwortsperre. Der Pages-Build veröffentlicht keine Serverkonfiguration oder `.env`.
 - **F-014:** Ein Tab mit veraltetem Speicherstand darf neuere Daten nicht still überschreiben; stattdessen erscheint eine Aufforderung zum Neuladen. Dies schützt gewöhnliche aufeinanderfolgende Änderungen. Extrem zeitgleiche Schreibvorgänge sind mit synchronem localStorage nicht vollständig transaktional abgesichert.
 - **F-015:** Veraltete oder bereits übernommene Cloud-Snapshots werden verworfen. Auch reine Änderungen an Tankdaten werden erkannt. Bei abweichenden lokalen Daten muss die Übernahme bestätigt werden; empfangene und vorherige Version werden lokal gesichert.
 - **F-016/F-017:** Proxy und direkte Wetter-/Kursabfragen haben unabhängige Zeitlimits. Gespeicherte, veraltete und Fallback-Daten werden entsprechend gekennzeichnet; Offline-API-Antworten tragen Stale-Metadaten.
