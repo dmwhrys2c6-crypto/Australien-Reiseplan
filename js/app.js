@@ -1,18 +1,18 @@
+const localStorage = window.Persistence.wrap(window.localStorage);
 
     // =========================================================================
     // SICHERHEITSKOMPONENTEN: KRYPTOGRAFIE & XSS FILTER
     // =========================================================================
-    const SYNC_TOPIC = 'aus2027_vault_8f19e4c02ab9';
-    const NTFY_WS_URL = `wss://ntfy.sh/${SYNC_TOPIC}/ws`;
-    const NTFY_API_URL = `https://ntfy.sh/${SYNC_TOPIC}`;
-
-    // AES-256-GCM verschlüsselte vertrauliche Ressourcen (Splitwise & Google Photos)
-    // Ausschließlich entschlüsselbar mit dem Masterschlüssel "AUSROA"
-    const CIPHER_VAULT = "ThR/FNJqnlHxJA5qHW+zJb1NJ8p4bioKKh0+Sm2OM+pap2SPauSZNMWRADsI6aGmEA3tlarePe7OtB74DXc+UmTYv/CgUm4SI/EfECdfi+ZxQVkkWEnxHPYGeF4yCSKssokh3YpdcXHu4/GhXhlfTZZCTYQP97YLwjqMQuP3PnP20TAAt0JhuA+/xGCGfQpoEYwY1r4g7gDo1MzH95ja/aoEdN1A34kRpRZj5X7nyRkd";
-
+    let NTFY_WS_URL = null, NTFY_API_URL = null;
     let cryptoKey = null;
     let decryptedVault = null;
 
+    function currentMemoryDays() {
+      const days = window.TripStore?.getDays();
+      return days ? days.map(d => ({...d, day:d.dayNumber, date:d.date || '', title:d.title || '', location:d.location || d.destination || d.routeBadge || '', destination:d.destination || '', distance:d.distance || d.distanceText || '', driveTime:d.driveTime || d.duration || '', accommodation:typeof d.accommodation === 'string' ? d.accommodation : d.accommodation?.name || 'Keine Unterkunft eingetragen', activities:(d.activities || []).map(a => a.title || a.name || '')})) : TRIP_DAYS_DATA;
+    }
+    function liveElements(id) { return document.querySelectorAll(`[id="${id}"], [data-shared-id="${id}"]`); }
+    function storageFailure(error) { window.Persistence.report(error); return false; }
     function escapeHtml(str) {
       if (!str) return '';
       return String(str)
@@ -21,74 +21,6 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
-    }
-
-    async function deriveEncryptionKey(passphrase) {
-      const enc = new TextEncoder();
-      const keyMaterial = await crypto.subtle.importKey(
-        'raw',
-        enc.encode(passphrase),
-        { name: 'PBKDF2' },
-        false,
-        ['deriveKey']
-      );
-      return crypto.subtle.deriveKey(
-        {
-          name: 'PBKDF2',
-          salt: enc.encode('aus_roadtrip_salt_2027_secure'),
-          iterations: 100000,
-          hash: 'SHA-256'
-        },
-        keyMaterial,
-        { name: 'AES-GCM', length: 256 },
-        false,
-        ['encrypt', 'decrypt']
-      );
-    }
-
-    async function decryptVaultWithKey(passcode) {
-      if (!passcode) return null;
-      try {
-        const enc = new TextEncoder();
-        const keyMaterial = await crypto.subtle.importKey(
-          'raw',
-          enc.encode(passcode),
-          { name: 'PBKDF2' },
-          false,
-          ['deriveKey']
-        );
-        const derivedKey = await crypto.subtle.deriveKey(
-          {
-            name: 'PBKDF2',
-            salt: enc.encode('aus_roadtrip_salt_2027_secure'),
-            iterations: 100000,
-            hash: 'SHA-256'
-          },
-          keyMaterial,
-          { name: 'AES-GCM', length: 256 },
-          false,
-          ['decrypt']
-        );
-
-        const binary = atob(CIPHER_VAULT);
-        const bytes = new Uint8Array(binary.length);
-        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-        const iv = bytes.slice(0, 12);
-        const ciphertext = bytes.slice(12);
-
-        const decrypted = await crypto.subtle.decrypt(
-          { name: 'AES-GCM', iv: iv },
-          derivedKey,
-          ciphertext
-        );
-        const parsed = JSON.parse(new TextDecoder().decode(decrypted));
-        if (parsed && parsed.check === 'AUSROA_VERIFIED_2027') {
-          return parsed;
-        }
-        return null;
-      } catch (err) {
-        return null;
-      }
     }
 
     async function encryptPayload(plainText) {
@@ -125,65 +57,26 @@
       }
     }
 
-    async function verifyPin() {
-      const input = document.getElementById('gate-pin-input');
-      const errEl = document.getElementById('gate-error');
-      const enteredCode = (input.value || '').trim();
-
-      if (!enteredCode) {
-        errEl.innerText = "Bitte den Sicherheitscode eingeben.";
-        input.focus();
-        return;
-      }
-
-      errEl.innerText = "";
-      const normalizedCode = enteredCode.toUpperCase();
-
-      // 1. Serverseitige Verifikation über die geschützte API
-      let authData = null;
+    async function verifyPin() { location.assign('/login'); }
+    async function restoreSession() {
       try {
-        const response = await fetch('/api/verify-auth', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code: normalizedCode })
-        });
-        if (response.ok) {
-          const resJson = await response.json();
-          if (resJson && resJson.success && resJson.resources) {
-            authData = resJson.resources;
-          }
+        const grant = await window.AppSession.restore();
+        cryptoKey = grant.key;
+        decryptedVault = grant.resources;
+        if (grant.syncTopic) {
+          NTFY_WS_URL = `wss://ntfy.sh/${grant.syncTopic}/ws`;
+          NTFY_API_URL = `https://ntfy.sh/${grant.syncTopic}`;
         }
-      } catch (netErr) {
-        // Fallback auf Offline / PWA AES-256-GCM Entschlüsselung
-      }
-
-      // 2. Clientseitige kryptografische Entschlüsselung
-      if (!authData) {
-        authData = await decryptVaultWithKey(normalizedCode);
-      }
-
-      // 3. Nur wer den Code "AUSROA" besitzt, erhält Zugriff
-      if (authData && normalizedCode === 'AUSROA') {
-        try {
-          cryptoKey = await deriveEncryptionKey(normalizedCode);
-          decryptedVault = authData;
-          localStorage.setItem('aus_auth_token', normalizedCode);
-          unlockAppUI();
-        } catch (e) {
-          errEl.innerText = "Fehler bei der kryptografischen Initialisierung.";
-        }
-      } else {
-        errEl.innerText = "Ungültiger Sicherheitscode! Zugriff verweigert.";
-        input.value = '';
-        input.focus();
-        input.classList.remove('shake');
-        void input.offsetWidth;
-        input.classList.add('shake');
+        unlockAppUI();
+      } catch (error) {
+        const message = document.getElementById('gate-error');
+        if (message) message.textContent = error.message;
       }
     }
 
     function unlockAppUI() {
       document.body.classList.remove('is-locked');
+      window.AppSession.setLocked(false);
       const gate = document.getElementById('security-gate');
       if (gate) {
         gate.style.opacity = '0';
@@ -205,14 +98,16 @@
           swBtnBudget.setAttribute('rel', 'noopener noreferrer');
           swBtnBudget.innerHTML = '<i class="fa-solid fa-calculator"></i> Splitwise Gruppe öffnen';
         }
-        const photosBtn = document.getElementById('link-photos');
-        if (photosBtn && decryptedVault.photos) {
+        liveElements('link-photos').forEach(photosBtn => {
+        if (decryptedVault.photos) {
           photosBtn.href = decryptedVault.photos;
           photosBtn.setAttribute('rel', 'noopener noreferrer');
           photosBtn.innerHTML = '<i class="fa-solid fa-images"></i> Google Photos öffnen';
         }
+        });
       }
 
+      renderPhotosGallery();
       initCloudSync();
       loadUserExpenses();
       renderExpenseList();
@@ -225,9 +120,13 @@
       }
     }
 
-    function lockApp() {
-      localStorage.removeItem('aus_auth_token');
-      location.reload();
+    async function lockApp() {
+      if (syncSocket) { syncSocket.onclose = null; syncSocket.close(); }
+      cryptoKey = null; decryptedVault = null;
+      document.body.classList.add('is-locked');
+      window.AppSession.setLocked(true);
+      await window.AppSession.logout();
+      location.assign('/login');
     }
 
     // =========================================================================
@@ -653,7 +552,7 @@
     let isApplyingRemote = false;
 
     function initCloudSync() {
-      if (!navigator.onLine) return;
+      if (!navigator.onLine || !cryptoKey || !NTFY_API_URL) return;
       try {
         if (syncSocket && syncSocket.readyState === WebSocket.OPEN) return;
         syncSocket = new WebSocket(NTFY_WS_URL);
@@ -694,41 +593,31 @@
     }
 
     function handleRemoteUpdate(payload) {
-      if (!payload) return;
+      if (!payload || !Number.isFinite(payload.timestamp)) return;
+      const accepted = Number(localStorage.getItem('aus_sync_accepted_v2') || 0);
+      if (payload.timestamp <= accepted || payload.timestamp < Number(localStorage.getItem('aus_sync_local_v2') || 0)) return;
+      const fields = [['groceries',GROCERY_STORAGE_KEY,groceries],['fuelEntries',FUEL_STORAGE_KEY,fuelEntries],['checkboxStates',CHECKBOX_STORAGE_KEY,checkboxStates],['daySuggestions',SUGGESTIONS_STORAGE_KEY,daySuggestions],['customActivities',CUSTOM_ACTIVITIES_KEY,getCustomActivities()]];
+      if (fields.some(([key]) => payload[key] == null || typeof payload[key] !== 'object')) return;
+      if (!Array.isArray(payload.groceries) || !Array.isArray(payload.fuelEntries) || payload.groceries.some(x=>!x || typeof x.text!=='string') || payload.fuelEntries.some(x=>!x || !Number.isFinite(Number(x.costAud)))) return;
+      const differs = fields.some(([key,,value]) => JSON.stringify(payload[key]) !== JSON.stringify(value));
+      if (!differs) { localStorage.setItem('aus_sync_accepted_v2',payload.timestamp); return; }
+      const hasLocal = fields.some(([,,value]) => Object.keys(value).length > 0);
+      // Retain both versions before asking; cancelled conflicts never replace local data.
+      localStorage.setItem('aus_sync_received_v2', JSON.stringify(payload));
+      if (hasLocal && !window.confirm('Es gibt abweichende Gruppendaten. Möchtest du die empfangene Version übernehmen? Deine aktuelle Version wird vorher lokal gesichert.')) return;
+      localStorage.setItem('aus_sync_backup_v2', JSON.stringify(Object.fromEntries(fields.map(([key,,value])=>[key,value]))));
       isApplyingRemote = true;
-
-      if (payload.groceries) {
-        groceries = payload.groceries;
-        localStorage.setItem(GROCERY_STORAGE_KEY, JSON.stringify(groceries));
-        renderGroceries();
-      }
-      if (payload.fuelEntries) {
-        fuelEntries = payload.fuelEntries;
-        localStorage.setItem(FUEL_STORAGE_KEY, JSON.stringify(fuelEntries));
-        renderFuel();
-      }
-      if (payload.checkboxStates) {
-        checkboxStates = payload.checkboxStates;
-        localStorage.setItem(CHECKBOX_STORAGE_KEY, JSON.stringify(checkboxStates));
-        applyCheckboxStatesToUI();
-        applySubItemsPaidStateToUI();
-      }
-      if (payload.daySuggestions) {
-        daySuggestions = payload.daySuggestions;
-        localStorage.setItem(SUGGESTIONS_STORAGE_KEY, JSON.stringify(daySuggestions));
-        renderAllSuggestions();
-      }
-      if (payload.customActivities) {
-        saveCustomActivities(payload.customActivities);
-        renderCustomActivities();
-      }
-
-      isApplyingRemote = false;
-      updateBudgetCalculations();
+      try {
+        // Check all storage writes before updating the UI. A failed write stays visible as an error.
+        localStorage.batch([...fields.map(([key,storageKey]) => [storageKey,JSON.stringify(payload[key])]),['aus_sync_accepted_v2',String(payload.timestamp)]]);
+        groceries=payload.groceries;fuelEntries=payload.fuelEntries;checkboxStates=payload.checkboxStates;daySuggestions=payload.daySuggestions;
+        renderGroceries();renderFuel();applyCheckboxStatesToUI();applySubItemsPaidStateToUI();renderAllSuggestions();renderCustomActivities();updateBudgetCalculations();
+      } catch(error) { storageFailure(error); }
+      finally { isApplyingRemote=false; }
     }
 
     async function broadcastState() {
-      if (isApplyingRemote || !cryptoKey) return;
+      if (isApplyingRemote) return;
 
       const rawPayload = JSON.stringify({
         groceries: groceries,
@@ -740,11 +629,8 @@
         timestamp: Date.now()
       });
 
-      localStorage.setItem(GROCERY_STORAGE_KEY, JSON.stringify(groceries));
-      localStorage.setItem(FUEL_STORAGE_KEY, JSON.stringify(fuelEntries));
-      localStorage.setItem(CHECKBOX_STORAGE_KEY, JSON.stringify(checkboxStates));
-      localStorage.setItem(SUGGESTIONS_STORAGE_KEY, JSON.stringify(daySuggestions));
-
+      localStorage.batch([[GROCERY_STORAGE_KEY,JSON.stringify(groceries)],[FUEL_STORAGE_KEY,JSON.stringify(fuelEntries)],[CHECKBOX_STORAGE_KEY,JSON.stringify(checkboxStates)],[SUGGESTIONS_STORAGE_KEY,JSON.stringify(daySuggestions)],['aus_sync_local_v2',String(Date.now())]]);
+      if (!cryptoKey || !NTFY_API_URL || !navigator.onLine) { updateBudgetCalculations(); return; }
       const encryptedCipher = await encryptPayload(rawPayload);
       if (encryptedCipher) {
         fetch(NTFY_API_URL, {
@@ -835,7 +721,8 @@
         id: Date.now(),
         text: text,
         priceAud: priceAud,
-        priceEur: priceAud * 0.60,
+        priceEur: priceAud * currentAudToEurRate,
+        exchangeRate: currentAudToEurRate,
         payer: priceAud > 0 ? payerSelect.value : null,
         done: false
       });
@@ -877,9 +764,9 @@
 
       groceries.forEach((item, index) => {
         const priceAud = item.priceAud || 0;
-        const priceEur = item.priceEur || (priceAud * 0.60);
-        if (priceAud > 0 && item.payer && payerTotals[item.payer] !== undefined) {
-          payerTotals[item.payer] += priceEur;
+        const priceEur = item.exchangeRate ? priceAud * item.exchangeRate : priceAud * currentAudToEurRate;
+        if (priceAud > 0 && item.payer && payerTotals[item.payer === 'Kerstin' ? 'Ker' : item.payer] !== undefined) {
+          payerTotals[item.payer === 'Kerstin' ? 'Ker' : item.payer] += priceEur;
         }
 
         const li = document.createElement('li');
@@ -2347,8 +2234,8 @@
 
       // Finanzen für diesen Tag
       const plannedExp = DAY_PLANNED_EXPENSES[dayNum] || { amount: 65, label: 'Tagesausgaben & Verpflegung' };
-      const onsiteBase = getOnsiteSpendAmount();
-      const dailyOnsiteBudget = Math.round(onsiteBase / 20);
+      const onsiteBase = getOnsiteSpendAmount() * currentMemoryDays().length;
+      const dailyOnsiteBudget = getOnsiteSpendAmount();
       const spentSoFarEstimate = Math.round(dailyOnsiteBudget * (dayNum - 1));
       const remainingOnsite = Math.max(0, onsiteBase - spentSoFarEstimate);
 
@@ -2854,7 +2741,8 @@
     function saveCustomActivities(data) {
       try {
         localStorage.setItem(CUSTOM_ACTIVITIES_KEY, JSON.stringify(data));
-      } catch (e) { }
+        return true;
+      } catch (e) { return storageFailure(e); }
     }
 
     function renderCustomActivities() {
@@ -2899,7 +2787,7 @@
       };
 
       allActs[dayKey].push(newAct);
-      saveCustomActivities(allActs);
+      if (!saveCustomActivities(allActs)) return;
       descInput.value = '';
       if (timeInput) timeInput.value = '';
 
@@ -2914,7 +2802,7 @@
       const dayKey = 'day-' + dayNum;
       if (!allActs[dayKey]) return;
       allActs[dayKey] = allActs[dayKey].filter(a => a.id !== actId);
-      saveCustomActivities(allActs);
+      if (!saveCustomActivities(allActs)) return;
       renderCustomActivities();
       if (typeof broadcastState === 'function') {
         broadcastState();
@@ -3050,13 +2938,14 @@
     function saveSubItemsPaidState(state) {
       try {
         localStorage.setItem(SUB_ITEMS_PAID_STORAGE_KEY, JSON.stringify(state));
-      } catch (e) { }
+        return true;
+      } catch (e) { return storageFailure(e); }
     }
 
     function toggleSubItemPaid(itemId, isChecked) {
       const state = getSubItemsPaidState();
       state[itemId] = !!isChecked;
-      saveSubItemsPaidState(state);
+      if (!saveSubItemsPaidState(state)) return;
       applySubItemsPaidStateToUI();
       updateBudgetCalculations();
       if (typeof broadcastState === 'function') broadcastState();
@@ -3094,7 +2983,7 @@
           userExpenses = JSON.parse(raw);
         } else {
           userExpenses = [...DEFAULT_EXPENSES_LIST];
-          saveUserExpenses();
+          if (!saveUserExpenses()) return;
         }
       } catch (e) {
         userExpenses = [...DEFAULT_EXPENSES_LIST];
@@ -3104,7 +2993,8 @@
     function saveUserExpenses() {
       try {
         localStorage.setItem(EXPENSES_STORAGE_KEY, JSON.stringify(userExpenses));
-      } catch (e) { }
+        return true;
+      } catch (e) { return storageFailure(e); }
     }
 
     // Modal Funktionen
@@ -3246,7 +3136,7 @@
         });
       }
 
-      saveUserExpenses();
+      if (!saveUserExpenses()) return;
       closeExpenseModal();
       renderExpenseList();
       updateBudgetCalculations();
@@ -3258,7 +3148,7 @@
 
     function deleteExpense(id) {
       userExpenses = userExpenses.filter(e => String(e.id) !== String(id));
-      saveUserExpenses();
+      if (!saveUserExpenses()) return;
       renderExpenseList();
       updateBudgetCalculations();
       const dashContainer = document.getElementById('trip-dashboard-content');
@@ -3415,7 +3305,7 @@
       });
 
       // 3. Vor-Ort-Budget (Taschengeld für Essen, Drinks, Supermarkt & Spesen)
-      const onsiteSpendAmount = getOnsiteSpendAmount() * multiplier;
+      const onsiteSpendAmount = getOnsiteSpendAmount() * currentMemoryDays().length * multiplier;
 
       // 4. Ausgaben aus dem Ausgaben-Tracker (bereits getätigte Vor-Ort Ausgaben)
       // Standard-Startflüge (exp-1 bis exp-4) nicht doppelt zählen, da sie bereits im 2x2 Grid als bezahlt geführt werden!
@@ -3963,6 +3853,7 @@
 
     // Zentriert die Karte auf den Tag, blendet Etappe & Start-/Ziel-Marker ein und aktualisiert die Infoleiste
     function focusDayOnMap(dayNum, event, shouldScroll = true) {
+      if (window.TripPage) { if (event) event.stopPropagation(); window.TripPage.selectDayNumber(dayNum); return; }
       if (event) event.stopPropagation();
 
       // Wechsel zu Leaflet, falls Google My Maps Tab aktiv war
@@ -4356,6 +4247,7 @@
 
     // Robuste Kontrollfunktion: Initialisiert erst bei Sichtbarkeit, ansonsten invalidateSize()
     function ensureRouteMapReady(force = false) {
+      if (window.TripPage) return;
       const container = document.getElementById('route-interactive-map');
       if (!container) return;
 
@@ -5333,23 +5225,23 @@
       try {
         let data = null;
         try {
-          const res = await fetch('/api/rates');
+          const res = await fetch('/api/rates', {signal:AbortSignal.timeout(4000)});
           if (res.ok) data = await res.json();
         } catch (e) { }
 
         if (!data || !data.rate) {
           try {
-            const directRes = await fetch('https://open.er-api.com/v6/latest/AUD');
+            const directRes = await fetch('https://open.er-api.com/v6/latest/AUD', {signal:AbortSignal.timeout(4000)});
             if (directRes.ok) {
               const raw = await directRes.json();
               if (raw && raw.rates && raw.rates.EUR) {
-                data = { rate: Number(raw.rates.EUR), updatedAt: raw.time_last_update_utc };
+                data = { rate: Number(raw.rates.EUR), updatedAt: raw.time_last_update_utc, source:'live', stale:false };
               }
             }
           } catch (e) { }
         }
 
-        if (data && data.rate) {
+        if (data && Number.isFinite(Number(data.rate)) && Number(data.rate) > 0) {
           currentAudToEurRate = Number(data.rate);
           // In LocalStorage als Offline-Fallback speichern
           try {
@@ -5368,7 +5260,7 @@
           const updateTime = document.getElementById('currency-update-time');
           if (updateTime) {
             const nowTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
-            updateTime.innerHTML = `<i class="fa-solid fa-cloud-arrow-down" style="color:var(--status-paid);"></i> Live (${nowTime} Uhr)`;
+            updateTime.innerHTML = `<i class="fa-solid fa-cloud-arrow-down" style="color:var(--status-paid);"></i> ${data.source === 'fallback' ? 'Ersatzkurs' : data.stale ? 'Gespeicherter Kurs' : 'Kursstand'}: ${data.updatedAt ? escapeHtml(new Date(data.updatedAt).toLocaleString('de-AT')) : 'Datum unbekannt'}`;
           }
         } else {
           // OFFLINE-FALLBACK AUS LOCALSTORAGE
@@ -5581,12 +5473,11 @@
 
       try {
         let weatherData = null;
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 4000);
+
 
         // 1. Backend-Proxy versuchen
         try {
-          const res = await fetch('/api/weather', { signal: controller.signal });
+          const res = await fetch('/api/weather', { signal: AbortSignal.timeout(4000) });
           if (res.ok) weatherData = await res.json();
         } catch (e) { }
 
@@ -5594,11 +5485,12 @@
         if (!weatherData || !weatherData.sydney) {
           const directUrl = 'https://api.open-meteo.com/v1/forecast?latitude=-33.8688,-27.4698,-37.8136&longitude=151.2093,153.0251,144.9631&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,relative_humidity_2m&timezone=auto';
           try {
-            const directRes = await fetch(directUrl, { signal: controller.signal });
+            const directRes = await fetch(directUrl, { signal: AbortSignal.timeout(4000) });
             if (directRes.ok) {
               const raw = await directRes.json();
               if (Array.isArray(raw) && raw.length === 3) {
                 weatherData = {
+                  source:'live', stale:false, updatedAt:new Date().toISOString(),
                   sydney: {
                     temp: raw[0].current.temperature_2m,
                     apparentTemp: raw[0].current.apparent_temperature,
@@ -5629,7 +5521,6 @@
           } catch (e) { }
         }
 
-        clearTimeout(timeoutId);
 
         if (weatherData && weatherData.sydney) {
           try {
@@ -5643,7 +5534,7 @@
 
           if (timeEl) {
             const nowTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
-            timeEl.innerHTML = `<i class="fa-solid fa-cloud-arrow-down" style="color:var(--status-paid);"></i> Live (${nowTime} Uhr)`;
+            timeEl.innerHTML = `<i class="fa-solid fa-cloud-arrow-down" style="color:var(--status-paid);"></i> ${weatherData.stale ? 'Gespeichertes Wetter' : 'Messwerte'}: ${escapeHtml(weatherData.sydney.time || weatherData.updatedAt || 'Datum unbekannt')}`;
           }
         } else {
           applyOfflineWeatherFallback();
@@ -5691,8 +5582,10 @@
     const ONSITE_SPEND_KEY = 'aus_onsite_budget';
 
     function getOnsiteSpendAmount() {
+      const daily = localStorage.getItem('aus_onsite_daily_v2');
+      if (daily !== null && Number.isFinite(Number(daily))) return Math.max(0, Number(daily));
       const saved = localStorage.getItem(ONSITE_SPEND_KEY);
-      return saved !== null ? Math.max(0, parseFloat(saved) || 800) : 800;
+      return saved !== null && Number.isFinite(Number(saved)) ? Math.max(0, Number(saved) / 20) : 65;
     }
 
     function setOnsiteSpend(val) {
@@ -5702,12 +5595,12 @@
     function updateOnsiteSpend(val, source) {
       let num = parseFloat(val);
       if (isNaN(num) || num < 0) num = 0;
-      localStorage.setItem(ONSITE_SPEND_KEY, num);
+      localStorage.batch([['aus_onsite_daily_v2',num],[ONSITE_SPEND_KEY,num * currentMemoryDays().length]]);
 
       const input = document.getElementById('onsite-spend-input');
       const slider = document.getElementById('onsite-spend-slider');
       if (input && source !== 'input') input.value = num;
-      if (slider && source !== 'slider') slider.value = Math.min(3000, num);
+      if (slider && source !== 'slider') slider.value = num;
 
       updateOnsiteSpendMetrics();
 
@@ -5718,26 +5611,11 @@
     }
 
     function updateOnsiteSpendMetrics() {
-      const num = getOnsiteSpendAmount();
-      const dailyEur = Math.round(num / 20);
-      const dailyEurEl = document.getElementById('onsite-daily-eur');
-      if (dailyEurEl) dailyEurEl.innerText = `${dailyEur} € / Tag`;
-
-      const audTotalEl = document.getElementById('onsite-total-aud');
-      if (audTotalEl) {
-        const rate = (typeof currentAudToEurRate === 'number' && currentAudToEurRate > 0) ? currentAudToEurRate : 0.6209;
-        const audVal = Math.round(num / rate);
-        audTotalEl.innerText = `ca. ${audVal.toLocaleString('de-DE')} AUD`;
-      }
-
-      const totalTripEl = document.getElementById('onsite-total-trip');
-      if (totalTripEl) {
-        const toggle = document.getElementById('person-toggle');
-        const isPerPerson = toggle ? toggle.checked : true;
-        const base = isPerPerson ? 2608 : (2608 * 4);
-        const addedSpend = isPerPerson ? num : (num * 4);
-        totalTripEl.innerText = `ca. ${Math.round(base + addedSpend).toLocaleString('de-DE')} €`;
-      }
+      const daily = getOnsiteSpendAmount(), count = currentMemoryDays().length;
+      const label = document.getElementById('onsite-total-label');
+      if (label) label.textContent = `Gesamtbudget ${count} Tage:`;
+      document.getElementById('onsite-daily-eur').textContent = `${(daily * 4).toLocaleString('de-AT')} €`;
+      document.getElementById('onsite-total-trip').textContent = `${(daily * 4 * count).toLocaleString('de-AT')} € (${count} Tage)`;
     }
 
     function initOnsiteSpend() {
@@ -5745,7 +5623,7 @@
       const input = document.getElementById('onsite-spend-input');
       const slider = document.getElementById('onsite-spend-slider');
       if (input) input.value = saved;
-      if (slider) slider.value = Math.min(3000, saved);
+      if (slider) slider.value = saved;
       updateOnsiteSpendMetrics();
     }
 
@@ -6056,7 +5934,7 @@
       const multiplier = isPerPerson ? 1 : 4;
 
       const catConfig = BUDGET_CATEGORIES_CONFIG;
-      const onsiteSpend = getOnsiteSpendAmount() * multiplier;
+      const onsiteSpend = getOnsiteSpendAmount() * currentMemoryDays().length * multiplier;
 
       // 8 Standard-Kategorien (Soll-Kalkulation)
       const categories = [
@@ -6275,10 +6153,17 @@
     function initPwaAndOffline() {
       // 1. Service Worker registrieren
       if ('serviceWorker' in navigator) {
+        const controlled = Boolean(navigator.serviceWorker.controller);
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (!controlled) return;
+          if (journalDirty && !saveJournalEntry(currentJournalDay)) return;
+          location.reload();
+        });
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('./sw.js')
             .then((reg) => {
               console.log('[PWA] Service Worker erfolgreich registriert mit Scope:', reg.scope);
+              reg.update().catch(err => console.warn('[PWA] Update-Prüfung:', err.message));
             })
             .catch((err) => {
               console.warn('[PWA] Service Worker Registrierung fehlgeschlagen:', err);
@@ -6391,19 +6276,8 @@
         });
       });
 
-      const savedToken = localStorage.getItem('aus_auth_token');
-      if (savedToken && savedToken.trim().toUpperCase() === 'AUSROA') {
-        const authData = await decryptVaultWithKey('AUSROA');
-        if (authData) {
-          cryptoKey = await deriveEncryptionKey('AUSROA');
-          decryptedVault = authData;
-          unlockAppUI();
-        } else {
-          localStorage.removeItem('aus_auth_token');
-        }
-      } else if (savedToken) {
-        localStorage.removeItem('aus_auth_token');
-      }
+      localStorage.removeItem('aus_auth_token');
+      await restoreSession();
     });
 
     // =========================================================================
@@ -6856,13 +6730,14 @@
         }
       } catch (e) { }
       userBookings = JSON.parse(JSON.stringify(DEFAULT_BOOKINGS_LIST));
-      saveUserBookings();
+      if (!saveUserBookings()) return;
     }
 
     function saveUserBookings() {
       try {
         localStorage.setItem(BOOKINGS_STORAGE_KEY, JSON.stringify(userBookings));
-      } catch (e) { }
+        return true;
+      } catch (e) { return storageFailure(e); }
     }
 
     function loadUserPacking() {
@@ -6877,13 +6752,14 @@
         }
       } catch (e) { }
       userPacking = JSON.parse(JSON.stringify(DEFAULT_PACKING_ITEMS));
-      saveUserPacking();
+      if (!saveUserPacking()) return;
     }
 
     function saveUserPacking() {
       try {
         localStorage.setItem(PACKING_STORAGE_KEY, JSON.stringify(userPacking));
-      } catch (e) { }
+        return true;
+      } catch (e) { return storageFailure(e); }
     }
 
     // Sub-Navigation Tab Switcher
@@ -7257,7 +7133,7 @@
         userBookings.unshift(newBooking);
       }
 
-      saveUserBookings();
+      if (!saveUserBookings()) return;
       renderBookings();
       closeBookingModal();
     }
@@ -7359,7 +7235,7 @@
       }
 
       userBookings = userBookings.filter(item => String(item.id) !== strId);
-      saveUserBookings();
+      if (!saveUserBookings()) return;
       renderBookings();
       if (typeof updateCockpitData === 'function') {
         try { updateCockpitData(); } catch (e) { }
@@ -7540,7 +7416,7 @@
       const item = userPacking.find(p => p.id === itemId);
       if (!item) return;
       item.packed = !!isChecked;
-      saveUserPacking();
+      if (!saveUserPacking()) return;
       renderPackingList();
     }
 
@@ -7592,7 +7468,7 @@
       };
 
       userPacking.unshift(newItem);
-      saveUserPacking();
+      if (!saveUserPacking()) return;
       renderPackingList();
       closePackingModal();
     }
@@ -7642,7 +7518,7 @@
       }
 
       userPacking = userPacking.filter(p => String(p.id) !== strId);
-      saveUserPacking();
+      if (!saveUserPacking()) return;
       renderPackingList();
     }
 
@@ -7652,7 +7528,7 @@
         : userPacking.filter(p => p.category === currentPackingCatFilter);
 
       targetItems.forEach(p => p.packed = true);
-      saveUserPacking();
+      if (!saveUserPacking()) return;
       renderPackingList();
     }
 
@@ -7665,14 +7541,14 @@
         : userPacking.filter(p => p.category === currentPackingCatFilter);
 
       targetItems.forEach(p => p.packed = false);
-      saveUserPacking();
+      if (!saveUserPacking()) return;
       renderPackingList();
     }
 
     function restoreDefaultPackingList() {
       if (!confirm('Möchtest du die Packliste auf den vollständigen australischen 55-Artikel-Standard zurücksetzen? Eigene Änderungen gehen dabei verloren.')) return;
       userPacking = JSON.parse(JSON.stringify(DEFAULT_PACKING_ITEMS));
-      saveUserPacking();
+      if (!saveUserPacking()) return;
       currentPackingCatFilter = 'all';
       renderPackingList();
     }
@@ -7730,6 +7606,7 @@
     let userJournal = {};
     let currentJournalDay = 1;
     let journalAutosaveTimer = null;
+    let journalDirty = false;
 
     function loadUserJournal() {
       try {
@@ -7749,7 +7626,8 @@
     function saveUserJournal() {
       try {
         localStorage.setItem(JOURNAL_STORAGE_KEY, JSON.stringify(userJournal));
-      } catch (e) { }
+        return true;
+      } catch (e) { return storageFailure(e); }
     }
 
     function switchJournalTab(tabName) {
@@ -7788,7 +7666,7 @@
       const scroller = document.getElementById('journal-day-scroller');
       if (!scroller) return;
 
-      scroller.innerHTML = TRIP_DAYS.map(d => {
+      scroller.innerHTML = currentMemoryDays().map(d => {
         const entry = userJournal[d.day];
         const hasEntry = !!(entry && (entry.title || entry.text));
         const moodIcon = (entry && entry.mood) ? entry.mood.split(' ')[0] : '';
@@ -7810,13 +7688,18 @@
 
       const countEl = document.getElementById('journal-entries-count-badge');
       if (countEl) {
-        const count = Object.keys(userJournal).filter(k => userJournal[k] && (userJournal[k].title || userJournal[k].text)).length;
-        countEl.textContent = `${count} / 20 ausgefüllt`;
+        const count = currentMemoryDays().filter(d => userJournal[d.day] && (userJournal[d.day].title || userJournal[d.day].text)).length;
+        countEl.textContent = `${count} / ${currentMemoryDays().length} ausgefüllt`;
       }
     }
 
     function selectJournalDay(dayNum) {
-      currentJournalDay = parseInt(dayNum, 10) || 1;
+      if (journalDirty) {
+        clearTimeout(journalAutosaveTimer); journalAutosaveTimer = null;
+        if (!saveJournalEntry(currentJournalDay)) return;
+      }
+      const days = currentMemoryDays();
+      currentJournalDay = days.some(d => d.day === Number(dayNum)) ? Number(dayNum) : days[0]?.day || 0;
 
       document.querySelectorAll('.journal-day-pill').forEach(pill => pill.classList.remove('active'));
       const activePill = document.getElementById(`journal-pill-day-${currentJournalDay}`);
@@ -7828,7 +7711,7 @@
       renderJournalDayInfoCard(currentJournalDay);
 
       const entry = userJournal[currentJournalDay] || {};
-      const dayData = TRIP_DAYS_DATA.find(d => d.day === currentJournalDay) || TRIP_DAYS_DATA[0];
+      const dayData = currentMemoryDays().find(d => d.day === currentJournalDay) || currentMemoryDays()[0];
 
       const titleInput = document.getElementById('journal-entry-title');
       const textInput = document.getElementById('journal-entry-text');
@@ -7858,7 +7741,8 @@
       const container = document.getElementById('journal-day-info-card');
       if (!container) return;
 
-      const dayData = TRIP_DAYS_DATA.find(d => d.day === dayNum) || TRIP_DAYS_DATA[0];
+      const dayData = currentMemoryDays().find(d => d.day === dayNum) || currentMemoryDays()[0];
+      if (!dayData) { container.textContent = "Noch kein Reisetag angelegt."; return; }
 
       container.innerHTML = `
         <div class="journal-day-info-header">
@@ -7874,7 +7758,7 @@
           </div>
           <div class="journal-day-meta-item">
             <i class="fa-solid fa-road"></i>
-            <span><strong>Distanz / Dauer:</strong> ${escapeHtml(dayData.distance)} (${escapeHtml(dayData.driveTime)})</span>
+            <span><strong>Distanz / Dauer:</strong> ${escapeHtml(dayData.distance) || 'Nicht hinterlegt'}${dayData.driveTime ? ' (' + escapeHtml(dayData.driveTime) + ')' : ''}</span>
           </div>
           <div class="journal-day-meta-item">
             <i class="fa-solid fa-hotel"></i>
@@ -7907,12 +7791,14 @@
     }
 
     function onJournalInput() {
+      journalDirty = true;
       const statusEl = document.getElementById('journal-autosave-indicator');
       if (statusEl) {
         statusEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:var(--accent-gold);"></i> <span>Änderungen ungespeichert...</span>`;
       }
       if (journalAutosaveTimer) clearTimeout(journalAutosaveTimer);
       journalAutosaveTimer = setTimeout(() => {
+        journalAutosaveTimer = null;
         saveJournalEntry(currentJournalDay, false);
       }, 900);
     }
@@ -7946,7 +7832,11 @@
         updatedAt: new Date().toISOString()
       };
 
-      saveUserJournal();
+      if (!saveUserJournal()) {
+        const status = document.getElementById('journal-autosave-indicator');
+        if (status) status.textContent = 'Speichern fehlgeschlagen. Deine Eingabe bleibt erhalten.';
+        return false;
+      }
       renderJournalDays();
 
       if (typeof buildGlobalSearchIndex === 'function') buildGlobalSearchIndex();
@@ -7964,6 +7854,8 @@
           setTimeout(() => { saveBtn.innerHTML = orig; }, 1800);
         }
       }
+      journalDirty = false;
+      return true;
     }
 
     function confirmOrDeleteJournalEntry(dayNum, btn) {
@@ -7994,7 +7886,12 @@
         if (!conf) return;
       }
       delete userJournal[day];
-      saveUserJournal();
+      if (!saveUserJournal()) {
+        const status = document.getElementById('journal-autosave-indicator');
+        if (status) status.textContent = 'Speichern fehlgeschlagen. Deine Eingabe bleibt erhalten.';
+        return false;
+      }
+      clearTimeout(journalAutosaveTimer); journalAutosaveTimer = null; journalDirty = false;
       renderJournalDays();
       selectJournalDay(day);
       if (typeof buildGlobalSearchIndex === 'function') buildGlobalSearchIndex();
@@ -8160,24 +8057,22 @@
     function saveUserPhotos() {
       try {
         localStorage.setItem(PHOTOS_STORAGE_KEY, JSON.stringify(userPhotos));
-      } catch (e) { }
+        return true;
+      } catch (e) { return storageFailure(e); }
     }
 
     function renderPhotosGallery() {
       const grid = document.getElementById('photos-grid');
-      const filterSelect = document.getElementById('photos-filter-day');
+      const filters = document.querySelectorAll('[data-photo-filter]');
       const countBadge = document.getElementById('photos-count-badge');
       if (!grid) return;
 
-      if (filterSelect && filterSelect.options.length <= 1) {
-        filterSelect.innerHTML = `
-          <option value="all">Alle Fotos anzeigen (${userPhotos.length})</option>
-          <option value="0">Allgemeine Highlights</option>
-          ${TRIP_DAYS.map(d => `<option value="${d.day}">Tag ${d.day}: ${escapeHtml(d.title.split('–')[0].split('➔')[0].trim())}</option>`).join('')}
-        `;
+      filters.forEach(filterSelect => {
+        filterSelect.innerHTML = `<option value="all">Alle Fotos anzeigen (${userPhotos.length})</option><option value="0">Allgemeine Highlights</option>` + currentMemoryDays().map((d,i) => `<option value="${d.day}">Tag ${i+1}: ${escapeHtml(d.title)}</option>`).join('');
         filterSelect.value = currentPhotosDayFilter;
-      }
-
+      });
+      const grids = [grid, document.getElementById('journal-inner-photos-grid')].filter(Boolean);
+      const paint = html => grids.forEach((target,i) => target.innerHTML = html.replace(/id="photo-(card|del-btn)-/g, `id="photo-$1-${i}-`));
       if (countBadge) countBadge.textContent = `${userPhotos.length} Fotos`;
 
       const extPhotosLink = document.getElementById('link-photos');
@@ -8191,7 +8086,7 @@
         : userPhotos.filter(p => String(p.dayNum) === String(currentPhotosDayFilter));
 
       if (photos.length === 0) {
-        grid.innerHTML = `
+        paint(`
           <div class="org-empty-state" style="grid-column: 1 / -1;">
             <i class="fa-solid fa-camera"></i>
             <h3>Keine Fotos für diesen Reisetag</h3>
@@ -8200,14 +8095,14 @@
               Alle Fotos anzeigen
             </button>
           </div>
-        `;
+        `);
         return;
       }
 
-      grid.innerHTML = photos.map(p => `
+      paint(photos.map(p => `
         <div class="photo-card" id="photo-card-${p.id}">
           <div class="photo-thumb-wrap" onclick="openPhotoLightbox('${p.id}')" title="Klicken für Vollbild-Vorschau">
-            <img src="${escapeHtml(p.url)}" alt="${escapeHtml(p.title)}" class="photo-thumb" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=600'">
+            <img src="${escapeHtml(window.TripModel.safeUrl(p.url))}" alt="${escapeHtml(p.title)}" class="photo-thumb" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=600'">
             <span class="photo-day-badge">${p.dayNum > 0 ? 'Tag ' + p.dayNum : 'Roadtrip'}</span>
             <div class="photo-zoom-overlay"><i class="fa-solid fa-expand"></i></div>
           </div>
@@ -8225,7 +8120,7 @@
             </div>
           </div>
         </div>
-      `).join('');
+      `).join(''));
     }
 
     function filterPhotosByDay(dayVal) {
@@ -8247,12 +8142,12 @@
       if (!p) return;
 
       currentLightboxPhotoId = p.id;
-      img.src = p.url;
+      img.src = window.TripModel.safeUrl(p.url) || '';
       if (titleEl) titleEl.textContent = p.title;
       if (metaEl) {
         metaEl.textContent = `${p.dayNum > 0 ? 'Tag ' + p.dayNum + ' · ' : ''}${p.location ? p.location + ' · ' : ''}${p.caption || ''}`;
       }
-      if (origLink) origLink.href = p.url;
+      if (origLink) { const url = window.TripModel.safeUrl(p.url); origLink.hidden = !url; origLink.href = url || '#'; }
 
       modal.style.display = 'flex';
       document.body.style.overflow = 'hidden';
@@ -8293,10 +8188,10 @@
       form.reset();
       resetActiveConfirmBtn();
 
-      if (daySelect && daySelect.options.length <= 1) {
+      if (daySelect) {
         daySelect.innerHTML = `
           <option value="0">Allgemein / Roadtrip Highlights</option>
-          ${TRIP_DAYS.map(d => `<option value="${d.day}">Tag ${d.day}: ${escapeHtml(d.title.split('–')[0].trim())}</option>`).join('')}
+          ${currentMemoryDays().map(d => `<option value="${d.day}">Tag ${d.day}: ${escapeHtml(d.title.split('–')[0].trim())}</option>`).join('')}
         `;
       }
 
@@ -8347,8 +8242,8 @@
       const location = document.getElementById('photo-form-location').value.trim();
       const caption = document.getElementById('photo-form-caption').value.trim();
 
-      if (!title || !url) {
-        alert('Bitte gib mindestens einen Titel und eine Foto-URL an.');
+      if (!title || !window.TripModel.safeUrl(url)) {
+        alert('Bitte gib einen Titel und eine gültige HTTP(S)-Foto-URL an.');
         return;
       }
 
@@ -8370,7 +8265,7 @@
         userPhotos.unshift(newPhoto);
       }
 
-      saveUserPhotos();
+      if (!saveUserPhotos()) return;
       renderPhotosGallery();
       closePhotoModal();
       if (typeof buildGlobalSearchIndex === 'function') buildGlobalSearchIndex();
@@ -8420,7 +8315,7 @@
       }
 
       userPhotos = userPhotos.filter(item => String(item.id) !== strId);
-      saveUserPhotos();
+      if (!saveUserPhotos()) return;
       renderPhotosGallery();
       if (typeof buildGlobalSearchIndex === 'function') buildGlobalSearchIndex();
     }
@@ -8589,11 +8484,12 @@
         });
       }
 
-      globalSearchIndex = index;
+      globalSearchIndex = window.ManagementPage?.repo ? [...index.filter(x => !['days','activities','bookings','expenses','drone'].includes(x.cat)), ...window.ManagementPage.searchIndex()] : index;
       return index;
     }
 
     function openGlobalSearch() {
+      if (document.body.classList.contains('is-locked')) return;
       const modal = document.getElementById('global-search-modal');
       const input = document.getElementById('global-search-input');
       if (!modal || !input) return;
@@ -9042,6 +8938,7 @@ function showView(viewName, skipHistory) {
 
 // Enhance jumpToDay for Seamless Navigation
 function jumpToDay(dayNum) {
+  if (window.TripPage) { showView('reise'); window.TripPage.selectDayNumber(dayNum); return; }
   showView('reise', true);
   
   if (window.innerWidth <= 960) {
@@ -9190,7 +9087,7 @@ function switchFinTab(tabKey) {
   document.querySelectorAll('.fin-panel').forEach(panel => {
     panel.style.display = panel.id === 'fin-panel-' + tabKey ? 'block' : 'none';
   });
-  if (tabKey === 'overview') {
+  if (tabKey === 'overview' && !window.ManagementPage) {
     setTimeout(() => {
       renderCurrentBudgetChart();
       updateBudgetCalculations();
@@ -9218,7 +9115,7 @@ function switchMoreTab(tabKey) {
   document.querySelectorAll('.more-panel').forEach(panel => {
     panel.style.display = panel.id === 'more-panel-' + tabKey ? 'block' : 'none';
   });
-  if (tabKey === 'drone') {
+  if (tabKey === 'drone' && !window.ManagementPage) {
     setTimeout(() => {
       const droneDetails = document.getElementById('drone-map-slide');
       if (droneDetails) droneDetails.open = true;
@@ -9234,7 +9131,7 @@ window.addEventListener('hashchange', () => {
   if (hash.startsWith('day-') || hash.startsWith('tag-')) {
     const num = parseInt(hash.replace(/^(?:day|tag)-/, ''), 10);
     if (num) jumpToDay(num);
-  } else if (hash) {
+  } else if (hash && !window.Router) {
     showView(hash, true);
   }
 });
@@ -9252,9 +9149,44 @@ window.addEventListener('DOMContentLoaded', () => {
   if (initialHash.startsWith('day-') || initialHash.startsWith('tag-')) {
     const num = parseInt(initialHash.replace(/^(?:day|tag)-/, ''), 10);
     if (num) setTimeout(() => jumpToDay(num), 300);
-  } else if (initialHash) {
+  } else if (initialHash && !window.Router) {
     showView(initialHash, true);
   } else if (!window.Router) {
     showView('dashboard', true);
   }
+});
+
+// Bridge existing persisted collections; new views reuse the same storage keys.
+window.ManagementLegacy = {
+ seed() { return { expenses:userExpenses, bookings:userBookings, totalBudget:Object.values(BUDGET_CATEGORIES_CONFIG).reduce((sum,c)=>sum+c.plannedEurP,0)*4 }; },
+ sync(data) { userExpenses=data.expenses.map(x=>({...x,category:({accommodation:'hotels',transport:'flights',shopping:'groceries',other:'misc'})[x.category]||x.category,amountEur:x.currency==='EUR'?x.amount:x.amountEur,amountAud:x.currency==='AUD'?x.amount:x.amountAud})); userBookings=data.bookings; }
+};
+
+window.addEventListener('trip-store:ready', () => {
+  TripStore.subscribe('*', ({event}) => {
+    if (/^(days|day):/.test(event)) { renderJournalDays(); renderPhotosGallery(); selectJournalDay(currentJournalDay); updateOnsiteSpendMetrics(); }
+  });
+});
+
+window.addEventListener('beforeunload', event => {
+  if (!journalDirty) return;
+  clearTimeout(journalAutosaveTimer); journalAutosaveTimer = null;
+  if (!saveJournalEntry(currentJournalDay)) {
+    event.preventDefault(); event.returnValue = '';
+  }
+});
+
+function mirrorSharedDisplays() {
+  document.querySelectorAll('[data-shared-id]').forEach(el => {
+    const id = el.dataset.sharedId;
+    const source = document.getElementById(id);
+    if (source && source !== el && /^(weather-|org-badge-)/.test(id) && el.innerHTML !== source.innerHTML) el.innerHTML = source.innerHTML;
+  });
+}
+window.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-shared-id]').forEach(el => {
+    const source=document.getElementById(el.dataset.sharedId);
+    if (source && source !== el && /^(weather-|org-badge-)/.test(el.dataset.sharedId)) new MutationObserver(mirrorSharedDisplays).observe(source,{childList:true,subtree:true,characterData:true});
+  });
+  mirrorSharedDisplays();
 });

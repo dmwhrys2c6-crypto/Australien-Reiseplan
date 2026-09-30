@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';import vm from 'node:vm';import {webcrypto} from 'node:crypto';
+const values=new Map();let fail=false;
+const storage={getItem:k=>values.get(k)??null,setItem:(k,v)=>{if(fail)throw new Error('Speicher voll');values.set(k,v);}};
+function context(){const ctx=vm.createContext({console,JSON,Date,Math,Set,Map,Promise,URL,Intl,crypto:webcrypto,localStorage:storage});for(const file of ['js/trip-store.js','js/trip/repository.js','js/management/repository.js'])vm.runInContext(fs.readFileSync(file,'utf8'),ctx);return ctx;}
+const ctx=context();ctx.TripStore.init([{dayNumber:1,date:'2027-03-21',title:'Sydney',activities:[],sights:[]},{dayNumber:2,date:'2027-03-22',title:'Küste',activities:[],sights:[]}]);
+const trip=ctx.createTripRepository(ctx.TripStore,storage,{tripMeta:{id:'test',title:'Test'}});const repo=ctx.createManagementRepository(trip,storage,{seed:()=>({totalBudget:1000,expenses:[{id:'old-exp',title:'Flug',amountEur:100,currency:'EUR',category:'flights',dayNum:1,date:'2027-03-21'}],bookings:[{id:'old-book',name:'Hotel',category:'hotels',date:'2027-03-21',cost:80,currency:'EUR',status:'confirmed',dayNum:1}]})});await repo.init();
+assert.equal(repo.get('expense')[0].category,'transport');assert.equal(repo.get('expense')[0].amount,100);assert.equal(repo.get('booking')[0].type,'hotel');assert.equal(repo.summary().spent,100);
+const day=trip.getDays()[0],secondDay=trip.getDays()[1];
+const draft=repo.save('activity',{title:'Oper',category:'culture',price:30,currency:'EUR',latitude:-33.857,longitude:151.215,startTime:'09:00',endTime:'11:00',website:'https://example.com'});assert.equal(repo.get('activity').length,1);assert.equal(trip.getStops().length,0);
+const draftExpense=repo.expenseFrom('activity',draft.id);
+const assigned=repo.save('activity',{...draft,dayId:day.id},draft.id);assert.equal(repo.get('activity').length,1);assert.equal(assigned.id,draft.id);assert.equal(trip.getStops().length,1);assert.equal(assigned.stopId,trip.getStops()[0].id);
+repo.save('activity',{...assigned,title:'Oper Sydney',dayId:secondDay.id},assigned.id);assert.equal(trip.getStop(assigned.stopId).title,'Oper Sydney');assert.equal(trip.getStop(assigned.stopId).dayId,secondDay.id);
+trip.updateStop(assigned.stopId,{title:'Sydney Opera House'});assert.equal(repo.get('activity')[0].title,'Sydney Opera House');
+const copy=repo.duplicateActivity(assigned.id);assert.notEqual(copy.stopId,assigned.stopId);assert.equal(trip.getStops().length,2);
+const expense=repo.expenseFrom('activity',assigned.id);assert.equal(expense.id,draftExpense.id);assert.equal(expense.stopId,assigned.stopId);assert.equal(expense.amount,30);assert.equal(expense.status,'pending');assert.equal(repo.expenseFrom('activity',assigned.id).id,expense.id);assert.equal(repo.get('expense').length,2);
+repo.save('expense',{...expense,status:'paid'},expense.id);assert.equal(repo.summary().spent,130);assert.equal(repo.summary().remaining,870);
+repo.save('expense',{title:'AUD separately',category:'food',amount:40,currency:'AUD',date:'2027-03-21',status:'paid'});assert.equal(repo.summary().spent,130);assert.equal(repo.summary().excluded,1);
+const booking=repo.save('booking',{title:'Oper Ticket',type:'ticket',status:'pending',date:'2027-03-22',price:30,currency:'EUR',stopId:assigned.stopId});assert.equal(booking.dayId,secondDay.id);assert.equal(repo.expenseFrom('booking',booking.id).bookingId,booking.id);
+assert.throws(()=>repo.save('booking',{...booking,status:'invalid'},booking.id),/Status/);assert.throws(()=>repo.save('expense',{...expense,amount:-1},expense.id),/Betrag/);assert.throws(()=>repo.save('expense',{...expense,date:'2027-02-30'},expense.id),/Datum/);assert.throws(()=>repo.save('activity',{...assigned,website:'javascript:alert(1)'},assigned.id),/Links/);
+const spot=repo.save('drone',{title:'Hafen',category:'coast',latitude:-33.85,longitude:151.22,dayId:day.id,favorite:true});repo.save('drone',{...spot,longitude:151.23},spot.id);assert.equal(repo.get('drone')[0].longitude,151.23);assert.throws(()=>repo.save('drone',{...spot,latitude:100},spot.id),/Koordinaten/);
+const doc=repo.save('document',{title:'Bestätigung',category:'transport',url:'https://example.com/document',dayId:day.id});assert.throws(()=>repo.save('document',{...doc,url:'file:///private/passport'},doc.id),/Links/);
+const before=JSON.stringify(repo.get('expense'));fail=true;assert.throws(()=>repo.remove('expense',expense.id),/Speicher/);assert.equal(JSON.stringify(repo.get('expense')),before);fail=false;
+repo.saveBudget({totalBudget:2000,currency:'EUR'});assert.equal(repo.summary().remaining,1870);
+repo.remove('activity',assigned.id);assert.equal(trip.getStops().length,1);assert.equal(repo.get('booking').find(b=>b.id===booking.id).relationMissing,true);assert.equal(repo.get('expense').find(x=>x.id===expense.id).relationMissing,true);
+repo.remove('drone',spot.id);repo.remove('document',doc.id);repo.remove('booking',booking.id);repo.remove('activity',copy.id);repo.remove('expense',expense.id);
+const reload=context();await reload.TripStore.load();const reloadTrip=reload.createTripRepository(reload.TripStore,storage,{tripMeta:{id:'test',title:'Test'}});const loaded=reload.createManagementRepository(reloadTrip,storage);await loaded.init();assert.equal(loaded.get('activity').length,0);assert.equal(loaded.get('drone').length,0);assert.equal(loaded.get('document').length,0);assert.equal(loaded.getBudget().totalBudget,2000);assert.equal(loaded.get('expense').length,2);
+console.log('Management repository: migration, CRUD, relations, canonical stops, duplicate prevention, currencies, validation and persistence passed.');

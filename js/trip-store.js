@@ -15,6 +15,7 @@
 }(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
+  const localStorage = globalThis.Persistence?.wrap(globalThis.localStorage) || globalThis.localStorage;
   const STORAGE_KEY = 'aus_trip_days_v1';
   const listeners = new Map();
 
@@ -1748,6 +1749,7 @@
   let tripDays = [];
   let isLoaded = false;
   let rawMasterState = null;
+  let loadingPromise = null;
 
   // Helper: Deep Clone
   function deepClone(obj) {
@@ -1756,6 +1758,14 @@
 
   // Helper: Event-Bus Notify
   function notify(event, payload) {
+    if (/^(activity|day|spot):(created|updated|deleted|changed)$/.test(event) && typeof localStorage !== 'undefined') {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 2, days: tripDays })); }
+      catch (error) {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+        if (saved?.days) tripDays = saved.days;
+        throw error;
+      }
+    }
     if (listeners.has(event)) {
       listeners.get(event).forEach(cb => {
         try { cb(payload); } catch (e) { console.error('[TripStore Listener Error (' + event + ')]:', e); }
@@ -1782,6 +1792,17 @@
   // 1. Data Loader with file:// and offline fallback
   async function loadTripDays() {
     let loadedData = null;
+    if (typeof localStorage !== 'undefined') {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+        if (saved && Array.isArray(saved.days)) {
+          tripDays = saved.days;
+          isLoaded = true;
+          notify('days:loaded', tripDays);
+          return deepClone(tripDays);
+        }
+      } catch (error) { console.warn('[TripStore] Gespeicherte Daten konnten nicht geladen werden:', error); }
+    }
 
     // A. Attempt async fetch from data/trip-days.json
     try {
@@ -2305,6 +2326,17 @@
     },
 
     // Export / Import
+    ready: () => loadingPromise || Promise.resolve(deepClone(tripDays)),
+    replaceDays: (days) => {
+      if (!Array.isArray(days)) throw new Error('Ungültige Reisetage');
+      const copy = deepClone(days);
+      // Erst speichern, dann veröffentlichen: bei vollem Speicher bleibt der alte Zustand erhalten.
+      if (typeof localStorage !== 'undefined') localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 2, days: copy }));
+      tripDays = copy;
+      isLoaded = true;
+      notify('days:loaded', deepClone(tripDays));
+      return deepClone(tripDays);
+    },
     exportMasterJSON: () => {
       return JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), days: tripDays }, null, 2);
     },
@@ -2312,12 +2344,11 @@
     importMasterJSON: (jsonStr) => {
       try {
         const data = typeof jsonStr === 'string' ? JSON.parse(jsonStr) : jsonStr;
-        if (Array.isArray(data)) {
-          tripDays = data;
-        } else if (data && Array.isArray(data.days)) {
-          tripDays = data.days;
-        }
-        notify('days:loaded', tripDays);
+        const days = Array.isArray(data) ? data : data?.days;
+        if (!Array.isArray(days) || days.some(d => !d || !Number.isInteger(d.dayNumber) || d.dayNumber < 1 || !String(d.title || '').trim() || !Array.isArray(d.activities))) throw new Error('Ungültiges Reiseformat');
+        const numbers = days.map(d => d.dayNumber);
+        if (new Set(numbers).size !== numbers.length) throw new Error('Doppelte Tagesnummern');
+        TripStore.replaceDays(days);
         return true;
       } catch (e) {
         console.error('[TripStore] Import failed:', e);
@@ -2343,15 +2374,15 @@
       }
 
       // 1. Initial immediate render from fallback to avoid FOUC / delay
-      if (!isLoaded || tripDays.length === 0) {
+      if (!isLoaded) {
         tripDays = deepClone(FALLBACK_TRIP_DAYS);
         isLoaded = true;
       }
       renderTimeline();
 
       // 2. Async revalidate via fetch('data/trip-days.json')
-      if (typeof window !== 'undefined') {
-        loadTripDays().then((freshDays) => {
+      if (typeof window !== 'undefined' && !loadingPromise) {
+        loadingPromise = loadTripDays().then((freshDays) => {
           if (JSON.stringify(freshDays) !== JSON.stringify(FALLBACK_TRIP_DAYS)) {
             renderTimeline();
           }

@@ -60,9 +60,10 @@ data_structures = [
     'PACKING_CATEGORIES',
     'DEFAULT_JOURNAL_ENTRIES',
     'DEFAULT_PHOTOS_LIST',
-    'CIPHER_VAULT'
+    'restoreSession'
 ]
 
+assert "AUSROA" not in new_js, "Public access code must not be bundled"
 for ds in data_structures:
     assert ds in new_js, f"Missing data structure in js/app.js: {ds}"
     print(f"  ✓ {ds:26} verified")

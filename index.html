@@ -19,28 +19,26 @@
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="css/app.css">
-  <link rel="stylesheet" href="css/hero-dock.css">
+  <link rel="stylesheet" href="css/app.css?v=b08246712910">
+  <link rel="stylesheet" href="css/hero-dock.css?v=eb408cb35dcc">
+  <link rel="stylesheet" href="css/trip.css?v=6d82ecdf5fc8">
+  <link rel="stylesheet" href="css/management.css?v=56091d09dd23">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
 <body class="is-locked">
 
-  <div id="security-gate">
+  <div id="security-gate" role="dialog" aria-modal="true" aria-label="Anmeldung">
     <div class="security-card">
       <div class="security-icon"><i class="fa-solid fa-shield-halved"></i></div>
       <h2 style="margin-bottom: 0.4rem; color: var(--primary);">Australien Roadtrip 2027</h2>
       <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.8rem;">
-        Reiseplan, Unterkünfte & Gruppen-Tools geschützt. Bitte den Sicherheitscode eingeben:
+        Deine Anmeldung wird geprüft.
       </p>
 
-      <input type="password" id="gate-pin-input" class="security-input" maxlength="24"
-        placeholder="Sicherheitscode eingeben..." autocomplete="off" autofocus
-        onkeypress="if(event.key==='Enter') verifyPin()">
-
       <button class="security-btn" onclick="verifyPin()">
-        <i class="fa-solid fa-key"></i> Website freischalten
+        <i class="fa-solid fa-key"></i> Zur Anmeldung
       </button>
 
       <div id="gate-error" class="security-error"></div>
@@ -57,13 +55,13 @@
        ========================================================================= -->
   <header class="app-header">
     <div class="header-inner">
-      <div class="app-brand" onclick="showView('dashboard')">
+      <button type="button" class="app-brand" onclick="showView('dashboard')" aria-label="Zur Startseite">
         <span class="brand-flag">🇦🇺</span>
         <div class="brand-text">
           <span class="brand-title">AUSTRALIEN 2027</span>
           <span class="brand-subtitle">21.03. – 09.04.2027</span>
         </div>
-      </div>
+      </button>
 
       <nav class="desktop-nav">
         <button type="button" class="nav-tab active" data-view="dashboard" onclick="showView('dashboard')">
@@ -141,199 +139,92 @@
        ========================================================================= -->
   <main class="app-main">
 
-    <!-- VIEW 1: 🏠 DASHBOARD -->
-    <!-- =========================================================================
-         VIEW 1: 🏠 DASHBOARD – CINEMATIC HERO & LIQUID GLASS DOCK
-         ========================================================================= -->
+    <!-- STARTSEITE: Bildauftakt und kompakte Reise-Navigation -->
     <div id="view-dashboard" class="app-view active">
-
-      <!-- ═══════════════════════════════════════════════════════════════════
-           CINEMATIC HERO – Ken Burns (5 s) → Static Fade
-           ═══════════════════════════════════════════════════════════════════ -->
-      <div id="hero-cinematic" class="hero-cinematic"
-        aria-label="Australien Roadtrip 2027 – Bildgewaltiger Startscreen">
-
-        <!-- Layer 1: Animiertes Ken-Burns-Banner (sichtbar 0–6 s) -->
-        <div id="hero-animated" class="hero-layer hero-animated" aria-hidden="true">
-          <!-- Verwendete Hintergrundbilder rotieren via CSS-Animation (Ken Burns) -->
-          <div class="hero-kb-slide hero-kb-slide--1"></div>
-          <div class="hero-kb-slide hero-kb-slide--2"></div>
-          <div class="hero-kb-slide hero-kb-slide--3"></div>
-          <!-- Dunkler Gradient Overlay -->
-          <div class="hero-gradient-overlay"></div>
-        </div>
-
-        <!-- Layer 2: Statisches Hintergrundbild (eingeblendet ab ~5 s) -->
+      <section id="hero-cinematic" class="hero-cinematic" aria-label="Australien Roadtrip 2027">
         <div id="hero-static" class="hero-layer hero-static" aria-hidden="true"></div>
-
-        <!-- Hero-Content: Titel, Countdown, CTA -->
+        <div id="hero-animated" class="hero-layer hero-animated" aria-hidden="true">
+          <div class="hero-kb-slide"></div>
+        </div>
+        <div class="hero-gradient-overlay" aria-hidden="true"></div>
         <div class="hero-content">
-          <div class="hero-eyebrow">
-            <span class="hero-flag" aria-hidden="true">🇦🇺</span>
-            <span class="hero-eyebrow-text">AUSTRALIEN ROADTRIP 2027</span>
-          </div>
-
-          <h1 class="hero-headline">Von Sydney bis<br><em>Melbourne</em></h1>
-          <p class="hero-subline">21.03. – 09.04.2027 &nbsp;·&nbsp; 20 Reisetage &nbsp;·&nbsp; 4 Personen</p>
-
-          <!-- Countdown (IDs beibehalten für Rückwärtskompatibilität mit app.js) -->
-          <div class="hero-countdown" id="cockpit-countdown" aria-label="Countdown bis Abflug">
-            <div class="hero-cd-unit">
-              <span class="cp-cd-val hero-cd-val" id="cd-days">--</span>
-              <span class="cp-cd-lbl hero-cd-lbl">Tage</span>
-            </div>
-            <span class="hero-cd-sep">:</span>
-            <div class="hero-cd-unit">
-              <span class="cp-cd-val hero-cd-val" id="cd-hours">--</span>
-              <span class="cp-cd-lbl hero-cd-lbl">Std</span>
-            </div>
-            <span class="hero-cd-sep">:</span>
-            <div class="hero-cd-unit">
-              <span class="cp-cd-val hero-cd-val" id="cd-minutes">--</span>
-              <span class="cp-cd-lbl hero-cd-lbl">Min</span>
-            </div>
-            <span class="hero-cd-sep">:</span>
-            <div class="hero-cd-unit">
-              <span class="cp-cd-val hero-cd-val" id="cd-seconds">--</span>
-              <span class="cp-cd-lbl hero-cd-lbl">Sek</span>
-            </div>
-          </div>
-
-          <button type="button" class="hero-cta-btn" id="cockpit-btn-open-day" onclick="jumpToCurrentOrNextDay()"
-            aria-label="Zum aktuellen Tagesplan">
-            <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
-            <span>Tagesplan öffnen</span>
-            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-          </button>
+          <p class="hero-eyebrow">UNSER ROADTRIP · 21. MÄRZ – 9. APRIL</p>
+          <h1 class="hero-headline">Australien<br><em>2027.</em></h1>
+          <p class="hero-subline">20 Tage. 4 Menschen. Ein großes Abenteuer.</p>
         </div>
+        <span class="hero-location"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Sydney, Australien</span>
+      </section>
 
-        <!-- Scroll-Hint Pfeil -->
-        <div class="hero-scroll-hint" aria-hidden="true">
-          <i class="fa-solid fa-chevron-down"></i>
-        </div>
-      </div>
+      <!-- Der vorhandene Dashboard-Updater liefert das nächste Ereignis. -->
+      <span id="cockpit-next-title" hidden>Tag 1: Abreise aus Wien</span>
 
-      <!-- ═══════════════════════════════════════════════════════════════════
-           NÄCHSTES EREIGNIS & SCHNELLZUGRIFF (unterhalb des Hero)
-           ═══════════════════════════════════════════════════════════════════ -->
-      <div class="cockpit-container cockpit-below-hero">
-
-        <!-- Als Nächstes -->
-        <section class="cockpit-next-section" id="cockpit-next-stage-wrapper">
-          <div class="cockpit-next-card">
-            <div class="cockpit-next-top">
-              <span class="cockpit-badge"><i class="fa-solid fa-location-dot"></i> ALS NÄCHSTES</span>
-              <span class="cockpit-next-daybadge" id="cockpit-next-daynum">Tag 1 von 20</span>
-            </div>
-            <div class="cockpit-next-body">
-              <div class="cockpit-next-main">
-                <h2 class="cockpit-next-title" id="cockpit-next-title">Tag 1: Abreise aus Wien ➔ Flug nach Sydney</h2>
-                <div class="cockpit-next-dest" id="cockpit-next-destination">
-                  <i class="fa-solid fa-map-pin"></i> <span>Ziel: Sydney, New South Wales (NSW)</span>
-                </div>
-                <div class="cockpit-next-acts" id="cockpit-next-activities">
-                  <i class="fa-solid fa-compass"></i> <span>Langstreckenflug ab Wien (VIE) · Scoot TR 12 via Singapur ·
-                    Landung Kingsford Smith Airport</span>
-                </div>
-              </div>
-              <div class="cockpit-next-action">
-                <button type="button" class="btn-cockpit-primary" onclick="jumpToCurrentOrNextDay()">
-                  <span>Tagesplan öffnen</span>
-                  <i class="fa-solid fa-arrow-right"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Schnellzugriffe -->
-        <section class="cockpit-quicklinks-section">
-          <div class="cockpit-quicklinks-grid">
-            <div class="cockpit-quick-card" onclick="showView('reise')">
-              <div class="cockpit-card-icon reise"><i class="fa-solid fa-map-location-dot"></i></div>
-              <div class="cockpit-card-content">
-                <h3 class="cockpit-card-title">🗺️ REISE</h3>
-                <p class="cockpit-card-desc">20 Reisetage, Timeline &amp; interaktive Karte</p>
-              </div>
-              <i class="fa-solid fa-chevron-right cockpit-card-arrow"></i>
-            </div>
-            <div class="cockpit-quick-card" onclick="showView('organisation')">
-              <div class="cockpit-card-icon organisation"><i class="fa-solid fa-clipboard-list"></i></div>
-              <div class="cockpit-card-content">
-                <h3 class="cockpit-card-title">📋 ORGANISATION</h3>
-                <p class="cockpit-card-desc">Flüge, Unterkünfte, Mietwagen &amp; Packliste</p>
-              </div>
-              <i class="fa-solid fa-chevron-right cockpit-card-arrow"></i>
-            </div>
-            <div class="cockpit-quick-card" onclick="showView('finanzen')">
-              <div class="cockpit-card-icon finanzen"><i class="fa-solid fa-wallet"></i></div>
-              <div class="cockpit-card-content">
-                <h3 class="cockpit-card-title">💰 FINANZEN</h3>
-                <p class="cockpit-card-desc">Budget, Ausgaben, Reisekasse &amp; Rechner</p>
-              </div>
-              <i class="fa-solid fa-chevron-right cockpit-card-arrow"></i>
-            </div>
-            <div class="cockpit-quick-card" onclick="showView('erlebnisse')">
-              <div class="cockpit-card-icon erlebnisse"><i class="fa-solid fa-compass"></i></div>
-              <div class="cockpit-card-content">
-                <h3 class="cockpit-card-title">📖 ERLEBNISSE</h3>
-                <p class="cockpit-card-desc">Reisejournal, Fotos, Bucket List &amp; Wildlife</p>
-              </div>
-              <i class="fa-solid fa-chevron-right cockpit-card-arrow"></i>
-            </div>
-          </div>
-        </section>
-
-      </div><!-- /.cockpit-below-hero -->
-
-      <!-- ═══════════════════════════════════════════════════════════════════
-           LIQUID GLASS DOCK – schwebende Nav-Bar unten
-           ═══════════════════════════════════════════════════════════════════ -->
-      <div class="liquid-glass-dock" id="liquid-glass-dock" role="navigation" aria-label="Schnellnavigation">
-
-        <!-- Links: Nächstes Ereignis -->
+      <div class="liquid-glass-dock" id="liquid-glass-dock" role="navigation" aria-label="Reise-Schnellnavigation" inert>
         <button type="button" class="dock-next-event" id="dock-next-event-btn" onclick="jumpToCurrentOrNextDay()"
-          aria-label="Zum nächsten Reisetag">
-          <span class="dock-pulse-dot" aria-hidden="true"></span>
+          aria-label="Nächsten Tagesplan öffnen">
+          <span class="dock-event-icon" aria-hidden="true"><i class="fa-solid fa-plane-departure"></i></span>
           <span class="dock-next-label">
-            <span class="dock-next-prefix">NÄCHSTES EREIGNIS</span>
+            <span class="dock-next-prefix">Nächstes Ereignis</span>
             <span class="dock-next-title" id="dock-next-title">Tag 1 · Abreise aus Wien</span>
           </span>
-          <i class="fa-solid fa-arrow-right dock-next-arrow" aria-hidden="true"></i>
+          <i class="fa-solid fa-arrow-up-right-from-square dock-next-arrow" aria-hidden="true"></i>
         </button>
-
-        <!-- Divider -->
         <div class="dock-divider" aria-hidden="true"></div>
-
-        <!-- Rechts: 4 Pill-Buttons -->
-        <nav class="dock-pills" aria-label="Hauptnavigation">
-          <button type="button" class="dock-pill dock-pill--reise" id="dock-btn-reise" onclick="showView('reise')"
-            aria-label="Reiseplan und Karte öffnen">
-            <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
-            <span>Reise</span>
+        <nav class="dock-pills" aria-label="Reisebereiche">
+          <button type="button" class="dock-pill dock-pill--reise" id="dock-btn-reise" onclick="showView('reise')">
+            <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i><span>Reise</span>
           </button>
-          <button type="button" class="dock-pill dock-pill--org" id="dock-btn-organisation"
-            onclick="showView('organisation')" aria-label="Reiseorganisation öffnen">
-            <i class="fa-solid fa-clipboard-list" aria-hidden="true"></i>
-            <span>Organisation</span>
+          <button type="button" class="dock-pill" id="dock-btn-organisation" onclick="showView('organisation')">
+            <i class="fa-solid fa-clipboard-list" aria-hidden="true"></i><span>Reiseorganisation</span>
           </button>
-          <button type="button" class="dock-pill dock-pill--fin" id="dock-btn-finanzen" onclick="showView('finanzen')"
-            aria-label="Finanzen und Budget öffnen">
-            <i class="fa-solid fa-wallet" aria-hidden="true"></i>
-            <span>Finanzen</span>
+          <button type="button" class="dock-pill" id="dock-btn-finanzen" onclick="showView('finanzen')">
+            <i class="fa-solid fa-wallet" aria-hidden="true"></i><span>Finanzen</span>
           </button>
-          <button type="button" class="dock-pill dock-pill--erl" id="dock-btn-erlebnisse"
-            onclick="showView('erlebnisse')" aria-label="Erlebnisse und Journal öffnen">
-            <i class="fa-solid fa-compass" aria-hidden="true"></i>
-            <span>Erlebnisse</span>
+          <button type="button" class="dock-pill" id="dock-btn-erlebnisse" onclick="showView('erlebnisse')">
+            <i class="fa-solid fa-compass" aria-hidden="true"></i><span>Erlebnisse</span>
           </button>
         </nav>
-      </div><!-- /.liquid-glass-dock -->
-    </div><!-- /#view-dashboard -->
-
+      </div>
+    </div>
 
     <!-- VIEW 2: 🗺️ REISE (TIMELINE + STICKY INTERAKTIVE KARTE) -->
     <div id="view-reise" class="app-view">
+      <div class="trip-workspace" id="trip-workspace">
+        <div id="trip-map" aria-label="Interaktive Reise-Karte"></div>
+        <div class="trip-floating-header trip-glass">
+          <div id="trip-header-content" class="trip-header-content"></div>
+          <nav id="trip-day-selector" class="trip-day-selector" aria-label="Reisetage"></nav>
+        </div>
+        <div class="trip-map-controls" aria-label="Kartensteuerung">
+          <button type="button" class="trip-icon-button trip-glass" data-action="zoom-in" aria-label="Karte vergrößern"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+          <button type="button" class="trip-icon-button trip-glass" data-action="zoom-out" aria-label="Karte verkleinern"><i class="fa-solid fa-minus" aria-hidden="true"></i></button>
+          <button type="button" class="trip-icon-button trip-glass" data-action="fit-map" aria-label="Route zentrieren"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button>
+        </div>
+        <div class="trip-map-status trip-glass" id="trip-map-status" role="status" hidden>
+          <span id="trip-map-status-text"></span><button type="button" id="trip-map-retry" data-action="retry-map" hidden>Erneut versuchen</button>
+        </div>
+        <p class="trip-route-note" id="trip-route-note"></p>
+        <section class="trip-sheet trip-glass" id="trip-sheet" data-state="default" aria-label="Reiseplan">
+          <button type="button" class="trip-sheet-handle" id="trip-sheet-handle" data-action="cycle-sheet" aria-label="Tagesplan erweitern"><span></span></button>
+          <div class="trip-sheet-top">
+            <div id="trip-sheet-heading"></div>
+            <div class="trip-sheet-tools">
+              <div id="trip-day-actions" hidden>
+                <button type="button" class="trip-icon-button" data-action="edit-day" aria-label="Tag bearbeiten"><i class="fa-solid fa-pen" aria-hidden="true"></i></button>
+                <button type="button" class="trip-icon-button" data-action="duplicate-day" aria-label="Tag duplizieren"><i class="fa-regular fa-copy" aria-hidden="true"></i></button>
+              </div>
+              <button type="button" class="trip-icon-button" data-action="collapse-sheet" aria-label="Tagesplan minimieren"><i class="fa-solid fa-minus" aria-hidden="true"></i></button>
+              <button type="button" class="trip-icon-button" id="trip-sheet-expand" data-action="expand-sheet" aria-label="Tagesplan erweitern"><i class="fa-solid fa-up-right-and-down-left-from-center" aria-hidden="true"></i></button>
+            </div>
+          </div>
+          <div id="trip-status" class="trip-data-status" role="alert">Reiseplan wird geladen …</div>
+          <button type="button" id="trip-data-retry" hidden>Erneut laden</button>
+          <div class="trip-sheet-body" id="trip-sheet-body"></div>
+        </section>
+        <span id="trip-announcement" class="trip-sr-only" role="status" aria-live="polite"></span>
+      </div>
+      <!-- Kompatibilitäts-Container für vorhandene Daten-, Such- und Buchungsfunktionen. -->
+      <div id="trip-legacy" hidden inert>
+
       <div class="view-header">
         <h2 class="view-header-title">🗺️ Unser Reiseplan &amp; Interaktive Karte</h2>
         <p class="view-header-subtitle">20 Reisetage von Sydney über Brisbane &amp; Whitsundays bis nach Melbourne &amp;
@@ -615,16 +506,13 @@
 
     </div>
     </div>
+      </div>
     </div>
 
 
     <!-- VIEW 3: 📋 ORGANISATION -->
     <div id="view-organisation" class="app-view">
-      <div class="view-header">
-        <h2 class="view-header-title">📋 Reiseorganisation &amp; Buchungs-Zentrale</h2>
-        <p class="view-header-subtitle">Zentrale Übersicht aller Flüge, Unterkünfte, Mietwagen, Touren &amp; deiner
-          interaktiven Australien-Packliste</p>
-      </div>
+      <div class="view-header"><h2 class="view-header-title">Organisation</h2><p class="view-header-subtitle">Buchungen, Packliste und Unterlagen an einem Ort.</p></div>
 
       <!-- 6 Category Quick Tiles -->
       <div class="category-quick-grid">
@@ -651,7 +539,7 @@
         <div class="category-quick-tile" data-org-cat="packing" onclick="filterOrgCategory('packing')">
           <span class="tile-icon">🎒</span>
           <span class="tile-title">Packliste</span>
-          <span class="tile-badge" id="org-badge-packing-progress">0% gepackt</span>
+          <span class="tile-badge" data-packing-progress id="org-badge-packing-progress">0% gepackt</span>
         </div>
         <div class="category-quick-tile" data-org-cat="bookings" onclick="filterOrgCategory('bookings')">
           <span class="tile-icon">📑</span>
@@ -685,21 +573,22 @@
             onclick="switchOrgTab('packing')">
             <i class="fa-solid fa-suitcase-rolling"></i>
             <span>Interaktive Packliste</span>
-            <span class="org-tab-badge" id="org-badge-packing-progress">0/55 · 0%</span>
-          </button>
+            <span class="org-tab-badge" data-packing-progress id="org-badge-packing-progress--2" data-shared-id="org-badge-packing-progress">0/55 · 0%</span>
+          </button><button type="button" id="org-tab-btn-documents" class="org-tab-btn" role="tab" aria-selected="false" onclick="switchOrgTab('documents')">Dokumente</button>
         </div>
 
+        <div id="org-panel-documents" class="org-tab-panel" role="tabpanel" style="display:none;"><div id="manage-documents" class="manage-page"><p role="status">Dokumente werden geladen …</p></div></div>
         <!-- TAB PANEL 1: BUCHUNGEN -->
-        <div id="org-panel-bookings" class="org-tab-panel active" role="tabpanel">
+        <div id="org-panel-bookings" class="org-tab-panel active" role="tabpanel"><div id="manage-bookings" class="manage-page" aria-live="off"><p class="manage-loading" role="status">Deine Reisedaten werden geladen …</p></div><div class="manage-legacy" hidden inert>
           <div class="org-controls-bar">
             <div class="org-filter-group">
               <div class="org-search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="org-booking-search" class="org-search-input"
+                <input type="text" id="legacy-org-booking-search" class="org-search-input"
                   placeholder="Buchung, Ort oder Ref suchen..." oninput="renderBookings()" autocomplete="off">
               </div>
 
-              <select id="org-booking-filter-cat" class="org-select-filter" onchange="renderBookings()"
+              <select id="legacy-org-booking-filter-cat" class="org-select-filter" onchange="renderBookings()"
                 aria-label="Nach Kategorie filtern">
                 <option value="all">Alle Kategorien</option>
                 <option value="flights">✈️ Flüge</option>
@@ -710,7 +599,7 @@
                 <option value="misc">🎟️ Sonstiges &amp; Transfers</option>
               </select>
 
-              <select id="org-booking-filter-day" class="org-select-filter" onchange="renderBookings()"
+              <select id="legacy-org-booking-filter-day" class="org-select-filter" onchange="renderBookings()"
                 aria-label="Nach Reisetag filtern">
                 <option value="all">Alle Reisetage (1–20)</option>
                 <option value="1">Tag 1: Flug Wien ➔ Sydney</option>
@@ -735,7 +624,7 @@
                 <option value="20">Tag 20: Melbourne City &amp; Rückflug</option>
               </select>
 
-              <select id="org-booking-sort" class="org-select-filter" onchange="renderBookings()"
+              <select id="legacy-org-booking-sort" class="org-select-filter" onchange="renderBookings()"
                 aria-label="Sortierung">
                 <option value="day-asc">Sortierung: Reisetag (aufsteigend)</option>
                 <option value="day-desc">Sortierung: Reisetag (absteigend)</option>
@@ -753,16 +642,16 @@
           </div>
 
           <div class="org-summary-bar">
-            <div><i class="fa-solid fa-receipt"></i> <span id="org-bookings-summary-count" class="org-summary-pill">18
+            <div><i class="fa-solid fa-receipt"></i> <span id="legacy-org-bookings-summary-count" class="org-summary-pill">18
                 Buchungen</span> hinterlegt</div>
-            <div><i class="fa-solid fa-coins"></i> Gesamtvolumen: <span id="org-bookings-summary-cost"
+            <div><i class="fa-solid fa-coins"></i> Gesamtvolumen: <span id="legacy-org-bookings-summary-cost"
                 class="org-summary-total">10.490 € (2.622,50 € p.P.)</span></div>
           </div>
 
-          <div id="org-bookings-list-container" class="booking-cards-grid">
+          <div id="legacy-org-bookings-list-container" class="booking-cards-grid">
             <!-- Dynamisch per JavaScript generiert -->
           </div>
-        </div>
+        </div></div>
 
         <!-- TAB PANEL 2: PACKLISTE -->
         <div id="org-panel-packing" class="org-tab-panel" role="tabpanel" style="display:none;">
@@ -823,20 +712,18 @@
           </div>
         </div>
 
+      </section>
+    </div>
+
         <!-- VIEW 4: 💰 FINANZEN -->
         <div id="view-finanzen" class="app-view">
-          <div class="view-header">
-            <h2 class="view-header-title">💰 Kosten- &amp; Budgetübersicht</h2>
-            <p class="view-header-subtitle">Transparente Kalkulation für 4 Personen, Vor-Ort-Reisekasse, Spritkosten
-              &amp;
-              Ausgaben-Tracker</p>
-          </div>
+          <div class="view-header"><h2 class="view-header-title">Finanzen</h2><p class="view-header-subtitle">Behalte deine Reisekosten im Blick.</p></div>
 
           <!-- Subnav Navigation Tabs für Finanzen -->
           <div class="subnav-pills">
             <button type="button" class="subnav-pill fin-subnav-btn active" data-tab="overview"
               onclick="switchFinTab('overview')">
-              <i class="fa-solid fa-chart-pie"></i> Budgetübersicht &amp; D3 Charts
+              <i class="fa-solid fa-chart-pie"></i> Budgetübersicht
             </button>
             <button type="button" class="subnav-pill fin-subnav-btn" data-tab="expenses"
               onclick="switchFinTab('expenses')">
@@ -863,11 +750,11 @@
           </div>
 
           <!-- Finanzen Panels -->
-          <div id="fin-panel-overview" class="fin-panel">
-            <section id="budget" class="section-spaced">
+          <div id="fin-panel-overview" class="fin-panel"><div id="manage-finance" class="manage-page" aria-live="off"><p class="manage-loading" role="status">Deine Reisedaten werden geladen …</p></div><div class="manage-legacy" hidden inert>
+            <section id="legacy-budget" class="section-spaced">
               <h2 class="section-title">Kosten- & Budgetübersicht (4 Personen)</h2>
 
-              <details class="clean-slide" id="budget-details-slide">
+              <details class="clean-slide" id="legacy-budget-details-slide">
                 <summary>
                   <div class="slide-icon-title">
                     <i class="fa-solid fa-coins" style="color: var(--primary);"></i>
@@ -880,9 +767,9 @@
                   <div class="budget-toggle-wrapper">
                     <span class="budget-toggle-label">Gesamtkosten (4 Pers.)</span>
                     <label class="budget-switch">
-                      <input type="checkbox" id="person-toggle" onchange="updateBudgetCalculations()" checked>
+                      <input type="checkbox" id="legacy-person-toggle" onchange="updateBudgetCalculations()" checked>
                       <span class="budget-slider"></span>
-                      <span id="toggle-dot" class="budget-slider-dot"></span>
+                      <span id="legacy-toggle-dot" class="budget-slider-dot"></span>
                     </label>
                     <span class="budget-toggle-label">Kosten pro Person</span>
                   </div>
@@ -892,8 +779,8 @@
                     <div class="budget-kpi-card">
                       <div class="budget-kpi-label"><i class="fa-solid fa-wallet" style="color:var(--primary);"></i>
                         Gesamtbudget</div>
-                      <div class="budget-kpi-val" id="kpi-total-budget">3.408 €</div>
-                      <div class="budget-kpi-sub" id="kpi-total-sub"><i class="fa-solid fa-user"></i> pro Person (13.632
+                      <div class="budget-kpi-val" id="legacy-kpi-total-budget">3.408 €</div>
+                      <div class="budget-kpi-sub" id="legacy-kpi-total-sub"><i class="fa-solid fa-user"></i> pro Person (13.632
                         €
                         Gruppe)</div>
                     </div>
@@ -902,25 +789,25 @@
                       <div class="budget-kpi-label"><i class="fa-solid fa-clipboard-list" style="color:#0284c7;"></i>
                         Geplante
                         Kosten</div>
-                      <div class="budget-kpi-val" id="kpi-planned-cost">2.608 €</div>
-                      <div class="budget-kpi-sub" id="kpi-planned-sub">Fixe Reiseetappen</div>
+                      <div class="budget-kpi-val" id="legacy-kpi-planned-cost">2.608 €</div>
+                      <div class="budget-kpi-sub" id="legacy-kpi-planned-sub">Fixe Reiseetappen</div>
                     </div>
 
                     <div class="budget-kpi-card">
                       <div class="budget-kpi-label"><i class="fa-solid fa-receipt" style="color:#10b981;"></i> Bisher
                         ausgegeben
                       </div>
-                      <div class="budget-kpi-val" id="kpi-actual-spent">1.093 €</div>
-                      <div class="budget-kpi-sub" id="kpi-actual-sub">Gebucht &amp; Vor Ort</div>
+                      <div class="budget-kpi-val" id="legacy-kpi-actual-spent">1.093 €</div>
+                      <div class="budget-kpi-sub" id="legacy-kpi-actual-sub">Gebucht &amp; Vor Ort</div>
                     </div>
 
                     <div class="budget-kpi-card">
                       <div class="budget-kpi-label"><i class="fa-solid fa-piggy-bank"
                           style="color:var(--secondary);"></i>
                         Verbleibend</div>
-                      <div class="budget-kpi-val" id="kpi-remaining-budget" style="color:var(--secondary);">2.315 €
+                      <div class="budget-kpi-val" id="legacy-kpi-remaining-budget" style="color:var(--secondary);">2.315 €
                       </div>
-                      <div class="budget-kpi-sub" id="kpi-remaining-sub">Noch verfügbar</div>
+                      <div class="budget-kpi-sub" id="legacy-kpi-remaining-sub">Noch verfügbar</div>
                     </div>
 
                     <div class="budget-kpi-card">
@@ -928,39 +815,39 @@
                         Kosten /
                         Tag
                       </div>
-                      <div class="budget-kpi-val" id="kpi-daily-avg">170 € / Tag</div>
-                      <div class="budget-kpi-sub" id="kpi-daily-sub">Kalkuliert auf 20 Tage</div>
+                      <div class="budget-kpi-val" id="legacy-kpi-daily-avg">170 € / Tag</div>
+                      <div class="budget-kpi-sub" id="legacy-kpi-daily-sub">Kalkuliert auf 20 Tage</div>
                     </div>
 
                     <div class="budget-kpi-card">
                       <div class="budget-kpi-label"><i class="fa-solid fa-calendar-check" style="color:#d97706;"></i>
                         Verbleibend / Tag</div>
-                      <div class="budget-kpi-val" id="kpi-daily-remaining">116 € / Tag</div>
-                      <div class="budget-kpi-sub" id="kpi-daily-rem-sub">Tagesbudget für Restzeit</div>
+                      <div class="budget-kpi-val" id="legacy-kpi-daily-remaining">116 € / Tag</div>
+                      <div class="budget-kpi-sub" id="legacy-kpi-daily-rem-sub">Tagesbudget für Restzeit</div>
                     </div>
                   </div>
 
                   <!-- 1. Interaktive D3.js Diagramme: 3 Ansichten (Kategorie, Tag, Geplant vs. Tatsächlich) -->
-                  <div class="hub-card budget-chart-card" id="budget-charts-main-card">
+                  <div class="hub-card budget-chart-card" id="legacy-budget-charts-main-card">
                     <div
                       style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.1rem; flex-wrap: wrap; gap: 0.6rem;">
                       <div class="budget-chart-tabs" role="tablist">
-                        <button type="button" class="budget-chart-tab-btn active" id="tab-btn-cat"
+                        <button type="button" class="budget-chart-tab-btn active" id="legacy-tab-btn-cat"
                           onclick="switchBudgetChartTab('cat')">
                           <i class="fa-solid fa-chart-pie"></i> Nach Kategorie
                         </button>
-                        <button type="button" class="budget-chart-tab-btn" id="tab-btn-daily"
+                        <button type="button" class="budget-chart-tab-btn" id="legacy-tab-btn-daily"
                           onclick="switchBudgetChartTab('daily')">
                           <i class="fa-solid fa-chart-simple"></i> Kosten pro Tag (1–20)
                         </button>
-                        <button type="button" class="budget-chart-tab-btn" id="tab-btn-vs"
+                        <button type="button" class="budget-chart-tab-btn" id="legacy-tab-btn-vs"
                           onclick="switchBudgetChartTab('vs')">
                           <i class="fa-solid fa-scale-balanced"></i> Geplant vs. Tatsächlich
                         </button>
                       </div>
 
                       <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
-                        <span id="chart-sub-mode"
+                        <span id="legacy-chart-sub-mode"
                           style="font-size: 0.78rem; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 0.22rem 0.65rem; border-radius: 999px;">
                           Kosten pro Person
                         </span>
@@ -969,34 +856,34 @@
                     </div>
 
                     <!-- Tab 1: Donut nach Kategorie -->
-                    <div id="chart-view-cat" class="budget-chart-view-panel">
+                    <div id="legacy-chart-view-cat" class="budget-chart-view-panel">
                       <div class="doughnut-container-grid">
                         <div style="display: flex; justify-content: center; align-items: center;">
-                          <div id="budget-doughnut-svg-wrap"
+                          <div id="legacy-budget-doughnut-svg-wrap"
                             style="position: relative; width: 280px; height: 280px; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
-                            <div id="budget-doughnut-svg-container" style="width: 280px; height: 280px;"></div>
-                            <div id="budget-doughnut-center-content" class="doughnut-center-overlay">
-                              <div id="chart-center-sub"
+                            <div id="legacy-budget-doughnut-svg-container" style="width: 280px; height: 280px;"></div>
+                            <div id="legacy-budget-doughnut-center-content" class="doughnut-center-overlay">
+                              <div id="legacy-chart-center-sub"
                                 style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">
                                 Gesamtkosten</div>
-                              <div id="chart-center-val"
+                              <div id="legacy-chart-center-val"
                                 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin: 0.15rem 0;">
                                 2.608
                                 €</div>
-                              <div id="chart-center-pct"
+                              <div id="legacy-chart-center-pct"
                                 style="font-size: 0.76rem; font-weight: 700; color: var(--primary);">
                                 Kosten p.P.</div>
                             </div>
                           </div>
                         </div>
-                        <div class="doughnut-legend-col" id="budget-doughnut-legend">
+                        <div class="doughnut-legend-col" id="legacy-budget-doughnut-legend">
                           <!-- Dynamically generated via renderBudgetDoughnutChart -->
                         </div>
                       </div>
                     </div>
 
                     <!-- Tab 2: Kosten pro Tag (Tag 1–20) -->
-                    <div id="chart-view-daily" class="budget-chart-view-panel" style="display:none;">
+                    <div id="legacy-chart-view-daily" class="budget-chart-view-panel" style="display:none;">
                       <div
                         style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
                         <div style="font-size:0.84rem; color:var(--text-muted);">Ausgabenverteilung über die 20
@@ -1012,12 +899,12 @@
                             Bisher erfasst</span>
                         </div>
                       </div>
-                      <div id="budget-daily-chart-container" style="width:100%; min-height:260px; position:relative;">
+                      <div id="legacy-budget-daily-chart-container" style="width:100%; min-height:260px; position:relative;">
                       </div>
                     </div>
 
                     <!-- Tab 3: Geplant vs. Tatsächlich -->
-                    <div id="chart-view-vs" class="budget-chart-view-panel" style="display:none;">
+                    <div id="legacy-chart-view-vs" class="budget-chart-view-panel" style="display:none;">
                       <div
                         style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
                         <div style="font-size:0.84rem; color:var(--text-muted);">Soll-Ist-Vergleich aller 8
@@ -1032,16 +919,16 @@
                             Tatsächlich ausgegeben</span>
                         </div>
                       </div>
-                      <div id="budget-vs-chart-container" style="width:100%; min-height:280px; position:relative;">
+                      <div id="legacy-budget-vs-chart-container" style="width:100%; min-height:280px; position:relative;">
                       </div>
                     </div>
 
                     <!-- Universal Tooltip Container -->
-                    <div id="d3-chart-universal-tooltip" class="d3-chart-tooltip"></div>
+                    <div id="legacy-d3-chart-universal-tooltip" class="d3-chart-tooltip"></div>
                   </div>
 
                   <!-- 2. Ausgaben-Tracker: Erfassen, Bearbeiten & Löschen aller 8 Kategorien -->
-                  <div class="hub-card expense-tracker-card" id="expense-tracker-card">
+                  <div class="hub-card expense-tracker-card" id="legacy-expense-tracker-card">
                     <div class="expense-toolbar">
                       <div>
                         <h3
@@ -1065,7 +952,7 @@
                     <div
                       style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 0.85rem;">
                       <div class="expense-filters">
-                        <select id="expense-filter-cat" class="expense-filter-select" onchange="renderExpenseList()">
+                        <select id="legacy-expense-filter-cat" class="expense-filter-select" onchange="renderExpenseList()">
                           <option value="all">Alle Kategorien (8)</option>
                           <option value="flights">✈️ Flüge</option>
                           <option value="hotels">🏨 Unterkunft</option>
@@ -1077,7 +964,7 @@
                           <option value="misc">📦 Sonstiges</option>
                         </select>
 
-                        <select id="expense-filter-payer" class="expense-filter-select" onchange="renderExpenseList()">
+                        <select id="legacy-expense-filter-payer" class="expense-filter-select" onchange="renderExpenseList()">
                           <option value="all">Alle Personen</option>
                           <option value="Gruppe">Gruppe (Alle)</option>
                           <option value="Tobi">Tobi</option>
@@ -1087,14 +974,14 @@
                         </select>
                       </div>
 
-                      <div id="expense-count-summary"
+                      <div id="legacy-expense-count-summary"
                         style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted);">
                         0 Ausgaben erfasst
                       </div>
                     </div>
 
                     <!-- Expense List -->
-                    <div id="expense-items-list" class="expense-list-wrap">
+                    <div id="legacy-expense-items-list" class="expense-list-wrap">
                       <!-- Dynamically populated via renderExpenseList() -->
                     </div>
                   </div>
@@ -1125,7 +1012,7 @@
                         style="display: flex; align-items: center; gap: 0.4rem; background: var(--card-sub-bg); border: 1.5px solid var(--border-color); border-radius: 12px; padding: 0.4rem 0.75rem; width: fit-content;">
                         <label for="onsite-spend-input"
                           style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-right: 0.2rem;">Budget:</label>
-                        <input type="number" id="onsite-spend-input" min="0" max="10000" step="25" value="800"
+                        <input type="number" id="legacy-onsite-spend-input" min="0" max="10000" step="25" value="800"
                           style="width: 80px; font-size: 1.15rem; font-weight: 800; border: none; background: transparent; color: var(--text-main); outline: none; text-align: right;"
                           oninput="updateOnsiteSpend(this.value, 'input')">
                         <span style="font-weight: 800; color: var(--primary); font-size: 1rem;">€</span>
@@ -1133,7 +1020,7 @@
 
                       <!-- Interactive Slider Bar -->
                       <div style="flex: 1; min-width: 190px; display: flex; flex-direction: column; gap: 0.35rem;">
-                        <input type="range" id="onsite-spend-slider" min="0" max="3000" step="25" value="800"
+                        <input type="range" id="legacy-onsite-spend-slider" min="0" max="3000" step="25" value="800"
                           class="budget-bar-range" oninput="updateOnsiteSpend(this.value, 'slider')">
                         <div
                           style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">
@@ -1152,7 +1039,7 @@
                         style="background: var(--card-sub-bg); padding: 0.6rem 0.8rem; border-radius: 10px; border: 1px solid var(--border-color);">
                         <span
                           style="display: block; font-size: 0.72rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Tagesbudget:</span>
-                        <strong id="onsite-daily-eur" style="font-size: 1rem; color: var(--primary);">40 € /
+                        <strong id="legacy-onsite-daily-eur" style="font-size: 1rem; color: var(--primary);">40 € /
                           Tag</strong>
                       </div>
                       <div
@@ -1160,7 +1047,7 @@
                         <span
                           style="display: block; font-size: 0.72rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">In
                           AUD (vor Ort):</span>
-                        <strong id="onsite-total-aud" style="font-size: 1rem; color: var(--secondary);">ca. 1.288
+                        <strong id="legacy-onsite-total-aud" style="font-size: 1rem; color: var(--secondary);">ca. 1.288
                           AUD</strong>
                       </div>
                       <div
@@ -1168,7 +1055,7 @@
                         <span
                           style="display: block; font-size: 0.72rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Gesamt
                           p.P. inkl. Taschengeld:</span>
-                        <strong id="onsite-total-trip" style="font-size: 1rem; color: var(--primary);">ca. 3.408
+                        <strong id="legacy-onsite-total-trip" style="font-size: 1rem; color: var(--primary);">ca. 3.408
                           €</strong>
                       </div>
                     </div>
@@ -1189,7 +1076,7 @@
                   </div>
 
                   <!-- 3. Gemeinsame Reisekasse (Splitwise) - Minimalistischer Link-Zugang -->
-                  <div class="hub-card reisekasse-budget-card" id="reisekasse-budget-card"
+                  <div class="hub-card reisekasse-budget-card" id="legacy-reisekasse-budget-card"
                     style="margin-bottom: 2rem; padding: 1.1rem 1.3rem;">
                     <div
                       style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem;">
@@ -1206,7 +1093,7 @@
                             Flo</span>
                         </div>
                       </div>
-                      <a id="link-splitwise-budget" href="#" target="_blank" class="btn-tool splitwise splitwise-btn"
+                      <a id="legacy-link-splitwise-budget" href="#" target="_blank" class="btn-tool splitwise splitwise-btn"
                         style="text-decoration: none; padding: 0.65rem 1.25rem; font-weight: 700; border-radius: 12px; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.9rem;">
                         <i class="fa-solid fa-lock"></i> Geschützte Splitwise Gruppe
                       </a>
@@ -1214,7 +1101,7 @@
                   </div>
 
                   <!-- 4. Spritrechner & Tankbelege (Live-Sync über alle Geräte) -->
-                  <div class="hub-card" id="fuel-budget-card" style="margin-bottom: 2rem;">
+                  <div class="hub-card" id="legacy-fuel-budget-card" style="margin-bottom: 2rem;">
                     <div
                       style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
                       <h3
@@ -1242,14 +1129,14 @@
                     <div class="grocery-input-group" style="display: flex; flex-direction: column; gap: 0.55rem;">
                       <div style="display: flex; gap: 0.5rem; width: 100%;">
                         <div style="position: relative; flex: 1;">
-                          <input type="number" id="fuel-cost-aud" class="grocery-input"
+                          <input type="number" id="legacy-fuel-cost-aud" class="grocery-input"
                             style="width: 100%; font-size: 1.05rem; font-weight: 700; padding-right: 3.5rem;"
                             placeholder="Betrag in AUD..." step="0.01" oninput="updateFuelEurPreview()"
                             onkeypress="if(event.key === 'Enter') addFuelEntry()">
                           <span
                             style="position: absolute; right: 0.8rem; top: 50%; transform: translateY(-50%); font-size: 0.78rem; font-weight: 800; color: var(--secondary); pointer-events: none;">AUD</span>
                         </div>
-                        <select id="fuel-payer" class="grocery-input"
+                        <select id="legacy-fuel-payer" class="grocery-input"
                           style="width: 120px; flex: none; font-weight: 700; font-size: 0.92rem; background: var(--card-sub-bg); cursor: pointer;"
                           title="Wer hat bezahlt?">
                           <option value="Ker">Ker</option>
@@ -1260,7 +1147,7 @@
                       </div>
 
                       <div style="display: flex; gap: 0.5rem; width: 100%;">
-                        <input type="text" id="fuel-location" class="grocery-input" style="flex: 1;"
+                        <input type="text" id="legacy-fuel-location" class="grocery-input" style="flex: 1;"
                           placeholder="Tankstelle / Ort / Liter (optional, z.B. BP Coffs Harbour, 45L)..."
                           onkeypress="if(event.key === 'Enter') addFuelEntry()">
                         <button type="button" class="grocery-btn-add"
@@ -1271,7 +1158,7 @@
                       </div>
 
                       <!-- Preview hint -->
-                      <div id="fuel-eur-preview"
+                      <div id="legacy-fuel-eur-preview"
                         style="font-size: 0.78rem; color: var(--text-muted); padding: 0.1rem 0.2rem;">
                         Entspricht ca. 0,00 € (Kurs: 1 AUD ≈ 0,62 EUR) • Wird fair durch 4 geteilt
                       </div>
@@ -1285,7 +1172,7 @@
                         <span
                           style="display: block; font-size: 0.72rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Gesamtkosten
                           Sprit:</span>
-                        <strong id="fuel-total-sum" style="font-size: 1.15rem; color: var(--primary);">0,00 AUD (0
+                        <strong id="legacy-fuel-total-sum" style="font-size: 1.15rem; color: var(--primary);">0,00 AUD (0
                           €)</strong>
                       </div>
                       <div
@@ -1293,7 +1180,7 @@
                         <span
                           style="display: block; font-size: 0.72rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Kosten
                           p.P. (÷ 4):</span>
-                        <strong id="fuel-per-person" style="font-size: 1.15rem; color: var(--secondary);">0,00 AUD (0
+                        <strong id="legacy-fuel-per-person" style="font-size: 1.15rem; color: var(--secondary);">0,00 AUD (0
                           €)</strong>
                       </div>
                     </div>
@@ -1304,19 +1191,19 @@
                         style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 0.35rem;">Bisher
                         bezahlt (nach Person):</span>
                       <div class="breakdown-grid">
-                        <div class="breakdown-cell"><span class="payer-badge ker">Ker</span><strong id="fuel-ker-sum">0
-                            €</strong><small id="fuel-ker-aud"
+                        <div class="breakdown-cell"><span class="payer-badge ker">Ker</span><strong id="legacy-fuel-ker-sum">0
+                            €</strong><small id="legacy-fuel-ker-aud"
                             style="font-size: 0.7rem; color: var(--text-muted); display: block;">0 AUD</small></div>
                         <div class="breakdown-cell"><span class="payer-badge tobi">Tobi</span><strong
-                            id="fuel-tobi-sum">0
-                            €</strong><small id="fuel-tobi-aud"
+                            id="legacy-fuel-tobi-sum">0
+                            €</strong><small id="legacy-fuel-tobi-aud"
                             style="font-size: 0.7rem; color: var(--text-muted); display: block;">0 AUD</small></div>
-                        <div class="breakdown-cell"><span class="payer-badge flo">Flo</span><strong id="fuel-flo-sum">0
-                            €</strong><small id="fuel-flo-aud"
+                        <div class="breakdown-cell"><span class="payer-badge flo">Flo</span><strong id="legacy-fuel-flo-sum">0
+                            €</strong><small id="legacy-fuel-flo-aud"
                             style="font-size: 0.7rem; color: var(--text-muted); display: block;">0 AUD</small></div>
                         <div class="breakdown-cell"><span class="payer-badge lara">Lara</span><strong
-                            id="fuel-lara-sum">0
-                            €</strong><small id="fuel-lara-aud"
+                            id="legacy-fuel-lara-sum">0
+                            €</strong><small id="legacy-fuel-lara-aud"
                             style="font-size: 0.7rem; color: var(--text-muted); display: block;">0 AUD</small></div>
                       </div>
                     </div>
@@ -1327,17 +1214,17 @@
                       <span
                         style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Eingetragene
                         Tankfüllungen:</span>
-                      <span id="fuel-entry-count"
+                      <span id="legacy-fuel-entry-count"
                         style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">0
                         Einträge</span>
                     </div>
-                    <div id="fuel-list-container">
+                    <div id="legacy-fuel-list-container">
                       <!-- Dynamically populated -->
                     </div>
                   </div>
 
                   <!-- 4. Supermarkt-Einkaufszettel (Coles & Woolies) -->
-                  <div class="hub-card" id="grocery-budget-card" style="margin-bottom: 2rem;">
+                  <div class="hub-card" id="legacy-grocery-budget-card" style="margin-bottom: 2rem;">
                     <div
                       style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
                       <h3
@@ -1369,13 +1256,13 @@
 
                     <div class="grocery-input-group">
                       <div style="display: flex; gap: 0.5rem; width: 100%;">
-                        <input type="text" id="grocery-item-input" class="grocery-input"
+                        <input type="text" id="legacy-grocery-item-input" class="grocery-input"
                           placeholder="Artikel eingeben..." onkeypress="if(event.key === 'Enter') addGroceryItem()">
                       </div>
                       <div style="display: flex; gap: 0.5rem; width: 100%;">
-                        <input type="number" id="grocery-price-aud" class="grocery-input" style="flex: 1;"
+                        <input type="number" id="legacy-grocery-price-aud" class="grocery-input" style="flex: 1;"
                           placeholder="Betrag in AUD (optional)" step="0.01">
-                        <select id="grocery-payer" class="grocery-input"
+                        <select id="legacy-grocery-payer" class="grocery-input"
                           style="width: 110px; flex: none; font-weight: 700;">
                           <option value="Tobi">Tobi</option>
                           <option value="Lara">Lara</option>
@@ -1388,13 +1275,13 @@
                     </div>
 
                     <div class="breakdown-grid" style="margin-bottom: 0.8rem;">
-                      <div class="breakdown-cell">Tobi: <strong id="grocery-tobi-sum">0 €</strong></div>
-                      <div class="breakdown-cell">Lara: <strong id="grocery-lara-sum">0 €</strong></div>
-                      <div class="breakdown-cell">Ker: <strong id="grocery-ker-sum">0 €</strong></div>
-                      <div class="breakdown-cell">Flo: <strong id="grocery-flo-sum">0 €</strong></div>
+                      <div class="breakdown-cell">Tobi: <strong id="legacy-grocery-tobi-sum">0 €</strong></div>
+                      <div class="breakdown-cell">Lara: <strong id="legacy-grocery-lara-sum">0 €</strong></div>
+                      <div class="breakdown-cell">Ker: <strong id="legacy-grocery-ker-sum">0 €</strong></div>
+                      <div class="breakdown-cell">Flo: <strong id="legacy-grocery-flo-sum">0 €</strong></div>
                     </div>
 
-                    <ul id="grocery-list-container" class="grocery-list"></ul>
+                    <ul id="legacy-grocery-list-container" class="grocery-list"></ul>
                   </div>
 
                   <!-- Live Währungsrechner (AUD ↔ EUR) -->
@@ -1406,11 +1293,11 @@
                         <i class="fa-solid fa-calculator" style="color: var(--secondary);"></i>
                         Währungsrechner (AUD ↔ EUR)
                       </h3>
-                      <div id="currency-rate-badge"
+                      <div id="legacy-currency-rate-badge"
                         style="display: flex; align-items: center; gap: 0.45rem; font-size: 0.78rem; font-weight: 700; color: var(--text-muted); background: var(--card-sub-bg); border: 1px solid var(--border-color); padding: 0.25rem 0.65rem; border-radius: 999px;">
                         <span class="sync-dot"
                           style="width: 8px; height: 8px; border-radius: 50%; background: #16a34a; display: inline-block;"></span>
-                        <span id="currency-rate-text">1 AUD ≈ 0,621 EUR</span>
+                        <span id="legacy-currency-rate-text">1 AUD ≈ 0,621 EUR</span>
                       </div>
                     </div>
 
@@ -1425,7 +1312,7 @@
                           <span style="color: var(--secondary); font-weight: 800;">🇦🇺 A$</span>
                         </label>
                         <div class="conv-input-wrap">
-                          <input type="number" id="conv-aud-input" class="grocery-input"
+                          <input type="number" id="legacy-conv-aud-input" class="grocery-input"
                             style="width: 100%; font-size: 1.15rem; font-weight: 700; padding: 0.7rem 2.8rem 0.7rem 0.9rem;"
                             placeholder="0.00" step="any" value="100">
                           <span class="conv-currency-badge">AUD</span>
@@ -1435,7 +1322,7 @@
                       <!-- Swap Button -->
                       <div class="conv-swap-cell"
                         style="display: flex; justify-content: center; align-items: flex-end; padding-top: 1.25rem;">
-                        <button type="button" id="conv-swap-btn" class="conv-swap-btn" title="Richtung wechseln"
+                        <button type="button" id="legacy-conv-swap-btn" class="conv-swap-btn" title="Richtung wechseln"
                           onclick="swapCurrencies()">
                           <i class="fa-solid fa-arrow-right-arrow-left"></i>
                         </button>
@@ -1449,7 +1336,7 @@
                           <span style="color: var(--primary); font-weight: 800;">🇪🇺 €</span>
                         </label>
                         <div class="conv-input-wrap">
-                          <input type="number" id="conv-eur-input" class="grocery-input"
+                          <input type="number" id="legacy-conv-eur-input" class="grocery-input"
                             style="width: 100%; font-size: 1.15rem; font-weight: 700; padding: 0.7rem 2.8rem 0.7rem 0.9rem;"
                             placeholder="0.00" step="any" value="62.09">
                           <span class="conv-currency-badge">EUR</span>
@@ -1473,10 +1360,10 @@
 
                       <div
                         style="font-size: 0.76rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.45rem;">
-                        <span id="currency-update-time">Marktkurs live</span>
+                        <span id="legacy-currency-update-time">Marktkurs live</span>
                         <button type="button" onclick="fetchExchangeRates(true)" title="Kurs jetzt aktualisieren"
                           style="background: none; border: none; color: var(--primary); cursor: pointer; font-size: 0.85rem; padding: 0.2rem;">
-                          <i class="fa-solid fa-arrows-rotate" id="currency-refresh-icon"></i>
+                          <i class="fa-solid fa-arrows-rotate" id="legacy-currency-refresh-icon"></i>
                         </button>
                       </div>
                     </div>
@@ -1495,7 +1382,7 @@
                               Sydney:</span>
                             <div style="display:flex; align-items:center;"><strong class="sub-price-val">453 €</strong>
                               <label class="paid-toggle-btn" title="Klicken: Geplant ↔ Gebucht &amp; bezahlt"><input
-                                  type="checkbox" class="sub-paid-cb" data-id="flight-1" checked
+                                  type="checkbox" class="sub-paid-cb" data-id="flight-1--2" checked
                                   onchange="toggleSubItemPaid('flight-1', this.checked)"><span
                                   class="paid-status-pill is-paid"><i class="fa-solid fa-circle-check"></i> Gebucht
                                   &amp;
@@ -1507,7 +1394,7 @@
                               Ballina:</span>
                             <div style="display:flex; align-items:center;"><strong class="sub-price-val">54 €</strong>
                               <label class="paid-toggle-btn" title="Klicken: Geplant ↔ Gebucht &amp; bezahlt"><input
-                                  type="checkbox" class="sub-paid-cb" data-id="flight-2" checked
+                                  type="checkbox" class="sub-paid-cb" data-id="flight-2--2" checked
                                   onchange="toggleSubItemPaid('flight-2', this.checked)"><span
                                   class="paid-status-pill is-paid"><i class="fa-solid fa-circle-check"></i> Gebucht
                                   &amp;
@@ -1519,7 +1406,7 @@
                               Melbourne:</span>
                             <div style="display:flex; align-items:center;"><strong class="sub-price-val">135 €</strong>
                               <label class="paid-toggle-btn" title="Klicken: Geplant ↔ Gebucht &amp; bezahlt"><input
-                                  type="checkbox" class="sub-paid-cb" data-id="flight-3" checked
+                                  type="checkbox" class="sub-paid-cb" data-id="flight-3--2" checked
                                   onchange="toggleSubItemPaid('flight-3', this.checked)"><span
                                   class="paid-status-pill is-paid"><i class="fa-solid fa-circle-check"></i> Gebucht
                                   &amp;
@@ -1532,7 +1419,7 @@
                               Wien:</span>
                             <div style="display:flex; align-items:center;"><strong class="sub-price-val">451 €</strong>
                               <label class="paid-toggle-btn" title="Klicken: Geplant ↔ Gebucht &amp; bezahlt"><input
-                                  type="checkbox" class="sub-paid-cb" data-id="flight-4" checked
+                                  type="checkbox" class="sub-paid-cb" data-id="flight-4--2" checked
                                   onchange="toggleSubItemPaid('flight-4', this.checked)"><span
                                   class="paid-status-pill is-paid"><i class="fa-solid fa-circle-check"></i> Gebucht
                                   &amp;
@@ -1555,7 +1442,7 @@
                             <span>Sydney:</span>
                             <div style="display:flex; align-items:center;"><strong class="sub-price-val">119 €</strong>
                               <label class="paid-toggle-btn" title="Klicken: Geplant ↔ Gebucht &amp; bezahlt"><input
-                                  type="checkbox" class="sub-paid-cb" data-id="hotel-sydney"
+                                  type="checkbox" class="sub-paid-cb" data-id="hotel-sydney--2"
                                   onchange="toggleSubItemPaid('hotel-sydney', this.checked)"><span
                                   class="paid-status-pill is-planned"><i class="fa-regular fa-circle"></i>
                                   Geplant</span></label>
@@ -1566,7 +1453,7 @@
                               Bay:</span>
                             <div style="display:flex; align-items:center;"><strong class="sub-price-val">75 €</strong>
                               <label class="paid-toggle-btn" title="Klicken: Geplant ↔ Gebucht &amp; bezahlt"><input
-                                  type="checkbox" class="sub-paid-cb" data-id="hotel-byron"
+                                  type="checkbox" class="sub-paid-cb" data-id="hotel-byron--2"
                                   onchange="toggleSubItemPaid('hotel-byron', this.checked)"><span
                                   class="paid-status-pill is-planned"><i class="fa-regular fa-circle"></i>
                                   Geplant</span></label>
@@ -1576,7 +1463,7 @@
                             <span>Brisbane:</span>
                             <div style="display:flex; align-items:center;"><strong class="sub-price-val">119 €</strong>
                               <label class="paid-toggle-btn" title="Klicken: Geplant ↔ Gebucht &amp; bezahlt"><input
-                                  type="checkbox" class="sub-paid-cb" data-id="hotel-brisbane"
+                                  type="checkbox" class="sub-paid-cb" data-id="hotel-brisbane--2"
                                   onchange="toggleSubItemPaid('hotel-brisbane', this.checked)"><span
                                   class="paid-status-pill is-planned"><i class="fa-regular fa-circle"></i>
                                   Geplant</span></label>
@@ -1587,7 +1474,7 @@
                             <div style="display:flex; align-items:center;"><strong class="sub-price-val">33,50
                                 €</strong>
                               <label class="paid-toggle-btn" title="Klicken: Geplant ↔ Gebucht &amp; bezahlt"><input
-                                  type="checkbox" class="sub-paid-cb" data-id="hotel-noosa"
+                                  type="checkbox" class="sub-paid-cb" data-id="hotel-noosa--2"
                                   onchange="toggleSubItemPaid('hotel-noosa', this.checked)"><span
                                   class="paid-status-pill is-planned"><i class="fa-regular fa-circle"></i>
                                   Geplant</span></label>
@@ -1599,7 +1486,7 @@
                             <div style="display:flex; align-items:center;"><strong class="sub-price-val">42,25
                                 €</strong>
                               <label class="paid-toggle-btn" title="Klicken: Geplant ↔ Gebucht &amp; bezahlt"><input
-                                  type="checkbox" class="sub-paid-cb" data-id="hotel-hervey"
+                                  type="checkbox" class="sub-paid-cb" data-id="hotel-hervey--2"
                                   onchange="toggleSubItemPaid('hotel-hervey', this.checked)"><span
                                   class="paid-status-pill is-planned"><i class="fa-regular fa-circle"></i>
                                   Geplant</span></label>
@@ -1610,7 +1497,7 @@
                               Beach:</span>
                             <div style="display:flex; align-items:center;"><strong class="sub-price-val">117 €</strong>
                               <label class="paid-toggle-btn" title="Klicken: Geplant ↔ Gebucht &amp; bezahlt"><input
-                                  type="checkbox" class="sub-paid-cb" data-id="hotel-airlie"
+                                  type="checkbox" class="sub-paid-cb" data-id="hotel-airlie--2"
                                   onchange="toggleSubItemPaid('hotel-airlie', this.checked)"><span
                                   class="paid-status-pill is-planned"><i class="fa-regular fa-circle"></i>
                                   Geplant</span></label>
@@ -1621,7 +1508,7 @@
                             <div style="display:flex; align-items:center;"><strong class="sub-price-val">160,75
                                 €</strong>
                               <label class="paid-toggle-btn" title="Klicken: Geplant ↔ Gebucht &amp; bezahlt"><input
-                                  type="checkbox" class="sub-paid-cb" data-id="hotel-melbourne"
+                                  type="checkbox" class="sub-paid-cb" data-id="hotel-melbourne--2"
                                   onchange="toggleSubItemPaid('hotel-melbourne', this.checked)"><span
                                   class="paid-status-pill is-planned"><i class="fa-regular fa-circle"></i>
                                   Geplant</span></label>
@@ -1644,7 +1531,7 @@
                               Coast Mietwagen:</span>
                             <div style="display:flex; align-items:center;"><strong class="sub-price-val">155 €</strong>
                               <label class="paid-toggle-btn" title="Klicken: Geplant ↔ Gebucht &amp; bezahlt"><input
-                                  type="checkbox" class="sub-paid-cb" data-id="car-east-coast"
+                                  type="checkbox" class="sub-paid-cb" data-id="car-east-coast--2"
                                   onchange="toggleSubItemPaid('car-east-coast', this.checked)"><span
                                   class="paid-status-pill is-planned"><i class="fa-regular fa-circle"></i>
                                   Geplant</span></label>
@@ -1654,17 +1541,17 @@
                             <span>Greyhound Nachtbus:</span>
                             <div style="display:flex; align-items:center;"><strong class="sub-price-val">90 €</strong>
                               <label class="paid-toggle-btn" title="Klicken: Geplant ↔ Gebucht &amp; bezahlt"><input
-                                  type="checkbox" class="sub-paid-cb" data-id="bus-greyhound"
+                                  type="checkbox" class="sub-paid-cb" data-id="bus-greyhound--2"
                                   onchange="toggleSubItemPaid('bus-greyhound', this.checked)"><span
                                   class="paid-status-pill is-planned"><i class="fa-regular fa-circle"></i>
                                   Geplant</span></label>
                             </div>
                           </li>
-                          <li class="sub-price-item" id="budget-fuel-item" data-eur="0" data-paid="true"
+                          <li class="sub-price-item" id="legacy-budget-fuel-item" data-eur="0" data-paid="true"
                             style="cursor: pointer;" onclick="openBudgetDetails('fuel-budget-card')"
                             title="Zum Spritrechner & Tankbelegen springen"><span><i class="fa-solid fa-gas-pump"
                                 style="color: var(--secondary); margin-right: 0.3rem;"></i> Getankter Sprit:</span>
-                            <div><strong class="sub-price-val" id="budget-fuel-val">0 €</strong> <span
+                            <div><strong class="sub-price-val" id="legacy-budget-fuel-val">0 €</strong> <span
                                 class="status-pill paid">Bezahlt</span></div>
                           </li>
                         </ul>
@@ -1685,7 +1572,7 @@
                               Tagestour:</span>
                             <div style="display:flex; align-items:center;"><strong class="sub-price-val">189 €</strong>
                               <label class="paid-toggle-btn" title="Klicken: Geplant ↔ Gebucht &amp; bezahlt"><input
-                                  type="checkbox" class="sub-paid-cb" data-id="tour-kgari"
+                                  type="checkbox" class="sub-paid-cb" data-id="tour-kgari--2"
                                   onchange="toggleSubItemPaid('tour-kgari', this.checked)"><span
                                   class="paid-status-pill is-planned"><i class="fa-regular fa-circle"></i>
                                   Geplant</span></label>
@@ -1696,7 +1583,7 @@
                             <span>Whitsundays Katamaran:</span>
                             <div style="display:flex; align-items:center;"><strong class="sub-price-val">150 €</strong>
                               <label class="paid-toggle-btn" title="Klicken: Geplant ↔ Gebucht &amp; bezahlt"><input
-                                  type="checkbox" class="sub-paid-cb" data-id="tour-whitsundays-cat"
+                                  type="checkbox" class="sub-paid-cb" data-id="tour-whitsundays-cat--2"
                                   onchange="toggleSubItemPaid('tour-whitsundays-cat', this.checked)"><span
                                   class="paid-status-pill is-planned"><i class="fa-regular fa-circle"></i>
                                   Geplant</span></label>
@@ -1707,7 +1594,7 @@
                             <span>Whitsundays Rundflug:</span>
                             <div style="display:flex; align-items:center;"><strong class="sub-price-val">214 €</strong>
                               <label class="paid-toggle-btn" title="Klicken: Geplant ↔ Gebucht &amp; bezahlt"><input
-                                  type="checkbox" class="sub-paid-cb" data-id="tour-whitsundays-heli"
+                                  type="checkbox" class="sub-paid-cb" data-id="tour-whitsundays-heli--2"
                                   onchange="toggleSubItemPaid('tour-whitsundays-heli', this.checked)"><span
                                   class="paid-status-pill is-planned"><i class="fa-regular fa-circle"></i>
                                   Geplant</span></label>
@@ -1718,7 +1605,7 @@
                               Road:</span>
                             <div style="display:flex; align-items:center;"><strong class="sub-price-val">50 €</strong>
                               <label class="paid-toggle-btn" title="Klicken: Geplant ↔ Gebucht &amp; bezahlt"><input
-                                  type="checkbox" class="sub-paid-cb" data-id="tour-gor"
+                                  type="checkbox" class="sub-paid-cb" data-id="tour-gor--2"
                                   onchange="toggleSubItemPaid('tour-gor', this.checked)"><span
                                   class="paid-status-pill is-planned"><i class="fa-regular fa-circle"></i>
                                   Geplant</span></label>
@@ -1734,9 +1621,9 @@
                 </div>
               </details>
             </section>
-          </div>
+          </div></div>
 
-          <div id="fin-panel-expenses" class="fin-panel" style="display:none;">
+          <div id="fin-panel-expenses" class="fin-panel" style="display:none;"><div id="manage-expenses" class="manage-page" aria-live="off"><p class="manage-loading" role="status">Deine Reisedaten werden geladen …</p></div><div class="manage-legacy" hidden inert>
             <div
               style="background:var(--card-bg); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:1.5rem; box-shadow:var(--shadow-sm);">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
@@ -1747,11 +1634,11 @@
                   <i class="fa-solid fa-plus"></i> Ausgabe hinzufügen
                 </button>
               </div>
-              <div id="expense-items-list">
+              <div id="legacy-expense-items-list--2">
                 <!-- Dynamically populated -->
               </div>
             </div>
-          </div>
+          </div></div>
 
           <div id="fin-panel-onsite" class="fin-panel" style="display:none;">
             <div
@@ -1766,10 +1653,10 @@
                   Person
                   (EUR):</label>
                 <div style="display:flex; align-items:center; gap:1rem;">
-                  <input type="range" id="onsite-spend-slider" min="30" max="150" step="5" value="65"
+                  <input type="range" id="onsite-spend-slider" min="0" max="300" step="5" value="65"
                     oninput="updateOnsiteSpend(this.value, 'slider')" style="flex:1;">
-                  <input type="number" id="onsite-spend-input" value="65" min="30" max="150"
-                    onchange="updateOnsiteSpend(this.value, 'input')"
+                  <input type="number" id="onsite-spend-input" value="65" min="0" max="300"
+                    oninput="updateOnsiteSpend(this.value, 'input')"
                     style="width:75px; padding:0.4rem; border:1px solid var(--border-color); border-radius:6px; font-weight:700; text-align:center;">
                   <span>€ / Tag</span>
                 </div>
@@ -1780,7 +1667,7 @@
                     <strong id="onsite-daily-eur">260 €</strong>
                   </div>
                   <div style="display:flex; justify-content:space-between; font-size:1.05rem;">
-                    <span><strong>Gesamtbudget 20 Tage:</strong></span>
+                    <span><strong id="onsite-total-label">Gesamtbudget 20 Tage:</strong></span>
                     <strong id="onsite-total-trip" style="color:var(--primary);">5.200 € (~8.374 AUD)</strong>
                   </div>
                 </div>
@@ -1935,17 +1822,13 @@
 
         <!-- VIEW 5: 📖 ERLEBNISSE -->
         <div id="view-erlebnisse" class="app-view">
-          <div class="view-header">
-            <h2 class="view-header-title">📖 Reiseerlebnisse, Journal &amp; Erinnerungen</h2>
-            <p class="view-header-subtitle">Persönliches Reisetagebuch, Fotogalerie, Outback Bucket List &amp; Wildlife
-              Tracker</p>
-          </div>
+          <div class="view-header"><h2 class="view-header-title">Erlebnisse</h2><p class="view-header-subtitle">Ausflüge planen. Erinnerungen festhalten.</p></div>
 
           <!-- Subnav Navigation Tabs für Erlebnisse -->
-          <div class="subnav-pills">
+          <div class="subnav-pills"><button type="button" class="subnav-pill exp-subnav-btn" data-tab="activities" onclick="switchExpTab('activities')"><i class="fa-solid fa-compass" aria-hidden="true"></i> Ausflüge</button>
             <button type="button" class="subnav-pill exp-subnav-btn active" data-tab="journal"
               onclick="switchExpTab('journal')">
-              <i class="fa-solid fa-book-open"></i> Reisejournal (Tage 1–20)
+              <i class="fa-solid fa-book-open"></i> Reisejournal
             </button>
             <button type="button" class="subnav-pill exp-subnav-btn" data-tab="photos" onclick="switchExpTab('photos')">
               <i class="fa-solid fa-camera"></i> Fotogalerie &amp; Alben
@@ -1964,6 +1847,7 @@
           </div>
 
           <!-- Erlebnisse Panels -->
+          <div id="exp-panel-activities" class="exp-panel" style="display:none;"><div id="manage-activities" class="manage-page"><p role="status">Ausflüge werden geladen …</p></div></div>
           <div id="exp-panel-journal" class="exp-panel">
             <section id="journal" class="section-spaced org-section journal-section">
               <div class="org-section-header">
@@ -2142,7 +2026,7 @@
                     <label for="photos-filter-day"
                       style="font-size:0.85rem; font-weight:700; color:var(--text-muted);"><i
                         class="fa-solid fa-filter"></i> Nach Reisetag:</label>
-                    <select id="photos-filter-day" class="org-form-select" style="min-width:210px;"
+                    <select data-photo-filter id="photos-filter-day" class="org-form-select" style="min-width:210px;"
                       onchange="filterPhotosByDay(this.value)">
                       <option value="all">Alle Fotos anzeigen</option>
                       <!-- Populated dynamically: Tag 1 bis Tag 20 -->
@@ -2185,7 +2069,7 @@
               </div>
 
               <div style="margin-bottom:1.25rem;">
-                <select id="photos-filter-day" class="org-form-select" onchange="filterPhotosByDay(this.value)"
+                <select data-photo-filter id="photos-filter-day--2" data-shared-id="photos-filter-day" class="org-form-select" onchange="filterPhotosByDay(this.value)"
                   style="max-width:280px;">
                   <option value="all">Alle Fotos anzeigen</option>
                   <!-- Populated by JS -->
@@ -2371,11 +2255,7 @@
 
         <!-- VIEW 6: ⋮ MEHR -->
         <div id="view-mehr" class="app-view">
-          <div class="view-header">
-            <h2 class="view-header-title">⋮ Spezialbereiche, Drohne, Wetter &amp; Tools</h2>
-            <p class="view-header-subtitle">Drone Pilot Hub, Live-Wetterberichte, 000-Notfallkontakte, Roadtrip-Playlist
-              &amp; Aussie-Helfer</p>
-          </div>
+          <div class="view-header"><h2 class="view-header-title">Mehr</h2><p class="view-header-subtitle">Karten und nützliche Begleiter für unterwegs.</p></div>
 
           <!-- Erlebnisse Direct Access Shortcut for Mobile & Desktop -->
           <div class="more-erlebnisse-card" onclick="showView('erlebnisse')"
@@ -2403,7 +2283,7 @@
           <div class="subnav-pills">
             <button type="button" class="subnav-pill more-subnav-btn active" data-tab="drone"
               onclick="switchMoreTab('drone')">
-              <i class="fa-solid fa-paper-plane"></i> Drone Pilot Hub 🛸
+              <i class="fa-solid fa-paper-plane"></i> Drohnenkarte
             </button>
             <button type="button" class="subnav-pill more-subnav-btn" data-tab="weather"
               onclick="switchMoreTab('weather')">
@@ -2423,9 +2303,17 @@
           </div>
 
           <!-- Mehr Panels -->
-          <div id="more-panel-drone" class="more-panel">
-            <section id="drone-hub" class="section-spaced">
-              <h2 class="section-title">Drone Pilot Hub 🛸</h2>
+          <div id="more-panel-drone" class="more-panel"><div id="manage-drone-container" class="manage-page">
+ <div class="manage-header"><div><span class="trip-eyebrow">EINE NEUE PERSPEKTIVE</span><h2>Drohnenkarte</h2><p>Gespeicherte Spots entlang deiner Reise.</p></div><button type="button" class="trip-primary-button" data-manage="create" data-kind="drone">+ Drohnen-Spot hinzufügen</button></div>
+ <div class="manage-drone-workspace"><div id="manage-drone-map" aria-label="Karte der gespeicherten Drohnen-Spots"></div>
+ <div class="manage-drone-layers trip-glass"><label><input type="checkbox" data-drone-layer="route" checked> Reise anzeigen</label><label><input type="checkbox" data-drone-layer="spots" checked> Drohnen-Spots</label><label><input type="checkbox" data-drone-layer="favorites"> Nur Favoriten</label><label><input id="manage-zone-toggle" data-drone-layer="zones" type="checkbox" disabled aria-describedby="manage-zones-info"> Flugzonen</label></div>
+ <div class="manage-drone-sidebar trip-glass"><h3>Deine Spots</h3><div id="manage-drone-spots"></div></div>
+ <div class="manage-drone-controls"><button type="button" class="trip-icon-button trip-glass" data-manage="drone-plus" aria-label="Drohnenkarte vergrößern">+</button><button type="button" class="trip-icon-button trip-glass" data-manage="drone-minus" aria-label="Drohnenkarte verkleinern">−</button><button type="button" class="trip-icon-button trip-glass" data-manage="drone-fit" aria-label="Reise und Drohnen-Spots zentrieren"><i class="fa-solid fa-crosshairs" aria-hidden="true"></i></button></div>
+ <p id="manage-map-status" class="manage-drone-status" role="status"></p></div>
+ <p id="manage-zones-info" class="manage-notice">Keine verlässliche Flugzonenquelle angebunden. Diese Karte gibt keine Flugfreigabe.</p><p class="manage-muted">Reiseverbindungen sind Luftlinien. Flugzonen können sich ändern. Prüfe vor jedem Flug die aktuellen offiziellen Informationen.</p>
+ </div><div class="manage-legacy" hidden inert>
+            <section id="legacy-drone-hub" class="section-spaced">
+              <h2 class="section-title">Drohnenkarte</h2>
               <p class="section-lead">
                 Offizielle Flugregeln, interaktive Luftraumzonen und Pre-Flight-Checkliste für den sicheren
                 Drohneneinsatz
@@ -2452,7 +2340,7 @@
               </div>
 
               <!-- Interaktive Luftraum- & Flugzonenkarte (Akkordeon-Slide mit Lazy-Loading) -->
-              <details class="clean-slide" id="drone-map-slide" ontoggle="handleDroneMapToggle(this)">
+              <details class="clean-slide" id="legacy-drone-map-slide" ontoggle="handleDroneMapToggle(this)">
                 <summary>
                   <div class="slide-icon-title">
                     <i class="fa-solid fa-map-location-dot" style="color: var(--primary);"></i>
@@ -2506,7 +2394,7 @@
 
                   <!-- Karten-Container (Leaflet, kein X-Frame-Block, flüssiges Rendering) -->
                   <div style="position: relative; width: 100%;">
-                    <div id="drone-airspace-map"></div>
+                    <div id="legacy-drone-airspace-map"></div>
                     <div class="drone-map-overlay-tip">
                       <i class="fa-solid fa-satellite-dish"></i> CASA &amp; OpenStreetMap Luftraum-Explorer • Klicke auf
                       Zonen
@@ -2698,7 +2586,7 @@
                 </div>
               </div>
             </section>
-          </div>
+          </div></div>
 
           <div id="more-panel-weather" class="more-panel" style="display:none;">
             <section id="weather" class="section-spaced">
@@ -2921,12 +2809,12 @@
                         Sydney Wetter</div>
                       <div
                         style="font-size:0.95rem; font-weight:700; display:flex; align-items:center; gap:0.4rem; margin-top:0.2rem;">
-                        <span id="weather-temp-sydney">--°C</span>
-                        <span id="weather-cond-sydney"
+                        <span id="weather-temp-sydney--2" data-shared-id="weather-temp-sydney">--°C</span>
+                        <span id="weather-cond-sydney--2" data-shared-id="weather-cond-sydney"
                           style="font-size:0.8rem; color:var(--text-muted); font-weight:500;">--</span>
                         <button type="button" class="btn-icon-action" style="height:26px; width:26px; padding:0;"
                           onclick="fetchLiveWeather(true)" title="Wetter aktualisieren">
-                          <i class="fa-solid fa-arrows-rotate" id="weather-refresh-icon"></i>
+                          <i class="fa-solid fa-arrows-rotate" id="weather-refresh-icon--2" data-shared-id="weather-refresh-icon"></i>
                         </button>
                       </div>
                     </div>
@@ -3020,7 +2908,7 @@
                       </p>
                     </div>
                     <div class="tool-btn-row" style="margin-top: 0;">
-                      <a id="link-photos" href="#" target="_blank" class="btn-tool photos" style="margin: 0;">
+                      <a id="link-photos--2" data-shared-id="link-photos" href="#" target="_blank" class="btn-tool photos" style="margin: 0;">
                         <i class="fa-solid fa-images"></i> Geschütztes Google Album
                       </a>
                     </div>
@@ -3507,7 +3395,7 @@
       </div>
 
       <!-- Category Filter Chips -->
-      <div class="search-cat-chips" id="search-category-chips">
+      <div class="search-cat-chips" id="search-category-chips"><button type="button" class="search-chip" data-cat="expenses" onclick="filterSearchByCategory('expenses')">Ausgaben</button><button type="button" class="search-chip" data-cat="drone" onclick="filterSearchByCategory('drone')">Drohnen-Spots</button>
         <button type="button" class="search-chip active" data-cat="all" onclick="filterSearchByCategory('all')">Alle
           Treffer</button>
         <button type="button" class="search-chip" data-cat="days" onclick="filterSearchByCategory('days')"><i
@@ -3681,95 +3569,45 @@
        SCRIPTS – konsolidiertes, schlankes Loading-Order
        ========================================================================= -->
   <!-- 1. Reisetage-Datenspeicher & Timeline-Renderer (Single Source of Truth) -->
-  <script src="js/trip-store.js"></script>
+  <script src="js/persistence.js?v=693c8733bcb9"></script>
+  <script src="js/session.js?v=f10e972dff58"></script>
+  <script src="js/trip-store.js?v=261da5b8d7af"></script>
   <!-- 2. Karten-Geodaten & Routen -->
-  <script src="js/tripMasterData.js"></script>
-  <script src="js/tripData.js"></script>
+  <script src="js/tripMasterData.js?v=58ad749efcf0"></script>
+  <script src="js/tripData.js?v=6ce761a867ec"></script>
   <!-- 3. UI-Komponenten, Router & Reise-App -->
-  <script src="js/components.js"></script>
-  <script src="js/router.js"></script>
-  <script src="js/reiseApp.js"></script>
+  <script src="js/components.js?v=fd379f0318c9"></script>
+  <script src="js/router.js?v=42c6d1df2caf"></script>
+  <script src="js/reiseApp.js?v=6b902ba2875b"></script>
   <!-- 4. Kern-Applikationslogik -->
-  <script src="js/app.js"></script>
+  <script src="js/app.js?v=bed661ab1c39"></script>
 
-  <!-- 5. Cinematic Hero (5-Sek Fade) & Liquid Glass Dock (Initialisierung) -->
-  <script>
-    (function () {
-      'use strict';
 
-      /* -----------------------------------------------------------------------
-         HERO: Ken Burns (5 s) → Static Image Fade
-      ----------------------------------------------------------------------- */
-      function initHero() {
-        var animated = document.getElementById('hero-animated');
-        var staticLayer = document.getElementById('hero-static');
-        if (!animated || !staticLayer) return;
+  <dialog id="trip-editor" class="trip-editor" aria-labelledby="trip-editor-title">
+    <header class="trip-editor-header"><div><span class="trip-eyebrow">DEIN REISEPLAN</span><h2 id="trip-editor-title">Stopp bearbeiten</h2></div><button type="button" class="trip-icon-button" id="trip-editor-close" aria-label="Editor schließen"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></header>
+    <form id="trip-editor-form">
+      <div id="trip-editor-fields" class="trip-editor-fields"></div>
+      <p id="trip-editor-error" class="trip-form-error" role="alert" tabindex="-1"></p>
+      <footer class="trip-editor-footer"><button type="button" id="trip-editor-delete" class="trip-danger-button" hidden>Löschen</button><span></span><button type="button" id="trip-editor-cancel" class="trip-secondary-button">Abbrechen</button><button type="submit" id="trip-editor-save" class="trip-primary-button">Speichern</button></footer>
+    </form>
+  </dialog>
+  <dialog id="trip-confirm" class="trip-confirm trip-glass" aria-labelledby="trip-confirm-title" aria-describedby="trip-confirm-text">
+    <h2 id="trip-confirm-title">Wirklich löschen?</h2><p id="trip-confirm-text"></p>
+    <div><button type="button" id="trip-confirm-no" class="trip-secondary-button" autofocus>Abbrechen</button><button type="button" id="trip-confirm-yes" class="trip-danger-button">Löschen</button></div>
+  </dialog>
+  <script src="js/trip/repository.js?v=c3ec41579d34"></script>
+  <script src="js/trip/map-adapter.js?v=5e3b2363aae9"></script>
+  <script src="js/trip/components.js?v=b4924ab8eed0"></script>
+  <script src="js/trip/editor.js?v=58520b1eb243"></script>
+  <script src="js/trip/page.js?v=69185a2fba2e"></script>
 
-        // After 5 s: fade the Ken-Burns layer out, fade the static layer in
-        setTimeout(function () {
-          animated.classList.add('hero-fade-out');
-          staticLayer.classList.add('hero-fade-in');
-        }, 5000);
-      }
 
-      /* -----------------------------------------------------------------------
-         DOCK: Show only on Dashboard view
-      ----------------------------------------------------------------------- */
-      function updateDockVisibility() {
-        var dock = document.getElementById('liquid-glass-dock');
-        if (!dock) return;
-        var dashActive = document.getElementById('view-dashboard');
-        if (dashActive && dashActive.classList.contains('active')) {
-          dock.classList.add('dock-visible');
-        } else {
-          dock.classList.remove('dock-visible');
-        }
-      }
-
-      /* -----------------------------------------------------------------------
-         DOCK: Sync "Next Event" title with TripStore / DOM
-      ----------------------------------------------------------------------- */
-      function updateDockNextEvent() {
-        var dockTitle = document.getElementById('dock-next-title');
-        if (!dockTitle) return;
-        // Mirror whatever the cockpit sets
-        var sourceEl = document.getElementById('cockpit-next-title');
-        if (sourceEl && sourceEl.textContent.trim()) {
-          var text = sourceEl.textContent.trim();
-          // Shorten to ~40 chars for compact dock display
-          dockTitle.textContent = text.length > 42 ? text.slice(0, 40) + '…' : text;
-        }
-      }
-
-      /* -----------------------------------------------------------------------
-         INIT on DOMContentLoaded
-      ----------------------------------------------------------------------- */
-      document.addEventListener('DOMContentLoaded', function () {
-        initHero();
-
-        // Show dock initially if dashboard is active
-        setTimeout(updateDockVisibility, 900);
-
-        // Sync dock next-event text once data arrives
-        setTimeout(updateDockNextEvent, 1200);
-
-        // Observe view changes: hook into showView if available
-        var origShowView = window.showView;
-        if (typeof origShowView === 'function') {
-          window.showView = function (viewName, skipHistory) {
-            origShowView.call(this, viewName, skipHistory);
-            setTimeout(function () {
-              updateDockVisibility();
-              if (viewName === 'dashboard') initHero();
-            }, 60);
-          };
-        } else {
-          // Fallback: poll once per second
-          setInterval(updateDockVisibility, 1000);
-        }
-      });
-    }());
-  </script>
+<dialog id="manage-editor" class="trip-editor" aria-labelledby="manage-editor-title"><header class="trip-editor-header"><div><span class="trip-eyebrow">ALLES AN EINEM ORT</span><h2 id="manage-editor-title">Eintrag bearbeiten</h2></div><button type="button" id="manage-close" class="trip-icon-button" aria-label="Editor schließen">×</button></header><form id="manage-form"><div id="manage-fields" class="trip-editor-fields"></div><p id="manage-error" class="trip-form-error" role="alert" tabindex="-1"></p><div id="manage-detail-actions" hidden></div><footer class="trip-editor-footer"><button type="button" id="manage-delete" class="trip-danger-button" hidden>Löschen</button><span></span><button type="button" id="manage-cancel" class="trip-secondary-button">Abbrechen</button><button type="submit" id="manage-save" class="trip-primary-button">Speichern</button></footer></form></dialog>
+<dialog id="manage-confirm" class="trip-confirm trip-glass" aria-labelledby="manage-confirm-title" aria-describedby="manage-confirm-text"><h2 id="manage-confirm-title">Eintrag löschen?</h2><p id="manage-confirm-text"></p><div><button type="button" id="manage-confirm-no" class="trip-secondary-button" autofocus>Abbrechen</button><button type="button" id="manage-confirm-yes" class="trip-danger-button">Löschen</button></div></dialog>
+<div id="manage-live" class="manage-live" role="status" aria-live="polite"></div>
+<script src="js/management/repository.js?v=f567a43dee8b"></script><script src="js/management/ui.js?v=d91fa0046bb0"></script><script src="js/management/editor.js?v=8fb1877561ac"></script><script src="js/management/drone-map.js?v=1a70049a3c48"></script><script src="js/management/page.js?v=38b96ea12b27"></script>
+  <!-- 5. Bildauftakt und Liquid-Glass-Navigation -->
+  <script src="js/home.js?v=2694589ca6e1"></script>
 </body>
 
 </html>

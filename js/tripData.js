@@ -5057,7 +5057,6 @@
 };
 
   // 10. CIPHER VAULT (AES-256-GCM verschlüsselte Ressourcen)
-  const CIPHER_VAULT = "ThR/FNJqnlHxJA5qHW+zJb1NJ8p4bioKKh0+Sm2OM+pap2SPauSZNMWRADsI6aGmEA3tlarePe7OtB74DXc+UmTYv/CgUm4SI/EfECdfi+ZxQVkkWEnxHPYGeF4yCSKssokh3YpdcXHu4/GhXhlfTZZCTYQP97YLwjqMQuP3PnP20TAAt0JhuA+/xGCGfQpoEYwY1r4g7gDo1MzH95ja/aoEdN1A34kRpRZj5X7nyRkd";
 
   return {
     tripData,
@@ -5081,6 +5080,6 @@
     airspaceFeatures,
     DEFAULT_FALLBACK_WEATHER,
     STORAGE_KEYS,
-    CIPHER_VAULT
+    CIPHER_VAULT: null
   };
 }));

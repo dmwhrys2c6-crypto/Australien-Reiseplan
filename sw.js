@@ -3,40 +3,51 @@
    Offline-Verfügbarkeit für Reisedaten, Assets, Schriftarten & Karten-Tiles
    ========================================================================= */
 
-const CACHE_NAME = 'aus-roadtrip-v2.0.0';
+const CACHE_NAME = 'aus-roadtrip-49495e280863';
 
 // Statische Kern-Assets für die App-Shell
 const PRECACHE_ASSETS = [
-  './',
-  './index.html',
-  './css/app.css',
-  './js/tripData.js',
-  './js/components.js',
-  './js/router.js',
-  './js/app.js',
-  './manifest.json',
-  './favicon.svg',
-  './icon-192.png',
-  './icon-512.png',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-  'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
-  'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js'
+  "./",
+  "./index.html",
+  "./css/app.css?v=b08246712910",
+  "./css/hero-dock.css?v=eb408cb35dcc",
+  "./css/trip.css?v=6d82ecdf5fc8",
+  "./css/management.css?v=56091d09dd23",
+  "./js/persistence.js?v=693c8733bcb9",
+  "./js/session.js?v=f10e972dff58",
+  "./js/trip-store.js?v=261da5b8d7af",
+  "./js/tripMasterData.js?v=58ad749efcf0",
+  "./js/tripData.js?v=6ce761a867ec",
+  "./js/components.js?v=fd379f0318c9",
+  "./js/router.js?v=42c6d1df2caf",
+  "./js/reiseApp.js?v=6b902ba2875b",
+  "./js/app.js?v=bed661ab1c39",
+  "./js/trip/repository.js?v=c3ec41579d34",
+  "./js/trip/map-adapter.js?v=5e3b2363aae9",
+  "./js/trip/components.js?v=b4924ab8eed0",
+  "./js/trip/editor.js?v=58520b1eb243",
+  "./js/trip/page.js?v=69185a2fba2e",
+  "./js/management/repository.js?v=f567a43dee8b",
+  "./js/management/ui.js?v=d91fa0046bb0",
+  "./js/management/editor.js?v=8fb1877561ac",
+  "./js/management/drone-map.js?v=1a70049a3c48",
+  "./js/management/page.js?v=38b96ea12b27",
+  "./js/home.js?v=2694589ca6e1",
+  "./data/trip-days.json",
+  "./manifest.json",
+  "./favicon.svg",
+  "./icon-192.png",
+  "./icon-512.png"
 ];
 
 // Install: Cache vorbereiten & sofort aktivieren
 self.addEventListener('install', (event) => {
-  self.skipWaiting();
+
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      // Precache core assets with resilient error handling
-      return Promise.allSettled(
-        PRECACHE_ASSETS.map((url) =>
-          cache.add(url).catch((err) => {
-            console.warn('[SW] Could not precache:', url, err.message);
-          })
-        )
-      );
+      // Install only after the entire versioned local shell is available.
+      return cache.addAll(PRECACHE_ASSETS).then(() => self.skipWaiting());
+
     })
   );
 });
@@ -47,7 +58,7 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames
-          .filter((name) => name !== CACHE_NAME)
+          .filter((name) => name.startsWith('aus-roadtrip-') && name !== CACHE_NAME)
           .map((name) => {
             console.log('[SW] Deleting old cache:', name);
             return caches.delete(name);
@@ -67,20 +78,27 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Session responses contain secrets and must never enter the HTTP cache.
+  if (url.pathname === '/api/session' || url.pathname === '/login' || url.pathname === '/js/login.js') {
+    event.respondWith(fetch(request));
+    return;
+  }
+
   // 1. Navigation / HTML Seiten (App-Shell) -> Network-First mit Cache-Fallback
   if (request.mode === 'navigate' || request.destination === 'document') {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          if (response && response.status === 200) {
+          if (response && response.status === 200 && new URL(response.url).pathname !== '/login') {
             const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+            event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.put(request, clone)));
           }
           return response;
         })
         .catch(async () => {
           console.log('[SW] Offline: serving cached index.html for navigation');
-          const cached = await caches.match('./index.html') || await caches.match('/');
+          const shell = await caches.open(CACHE_NAME);
+          const cached = await shell.match('./index.html') || await shell.match('/');
           if (cached) return cached;
           return new Response('Offline: Australien Roadtrip App verfügbar aus Cache.', {
             headers: { 'Content-Type': 'text/html; charset=utf-8' }
@@ -104,7 +122,7 @@ self.addEventListener('fetch', (event) => {
           })
           .catch(() => {
             // Wenn offline und kein Tile im Cache -> leeres transparentes PNG oder gecachter Response
-            return cachedResponse || new Response('', { status: 200, headers: { 'Content-Type': 'image/png' } });
+            return cachedResponse || new Response('Offline tile', {status:503});
           });
         return cachedResponse || fetchPromise;
       })
@@ -119,7 +137,8 @@ self.addEventListener('fetch', (event) => {
         const timeoutId = setTimeout(async () => {
           const cached = await caches.match(request);
           if (cached) {
-            resolve(cached);
+            const data = await cached.json();
+            resolve(new Response(JSON.stringify({...data, stale:true, offline:true}), {headers:{'Content-Type':'application/json'}}));
           } else {
             resolve(new Response(JSON.stringify({ offline: true }), {
               headers: { 'Content-Type': 'application/json' }
@@ -140,7 +159,8 @@ self.addEventListener('fetch', (event) => {
             clearTimeout(timeoutId);
             const cached = await caches.match(request);
             if (cached) {
-              resolve(cached);
+              const data = await cached.json();
+            resolve(new Response(JSON.stringify({...data, stale:true, offline:true}), {headers:{'Content-Type':'application/json'}}));
             } else {
               resolve(new Response(JSON.stringify({ offline: true }), {
                 headers: { 'Content-Type': 'application/json' }
@@ -156,12 +176,6 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
       if (cachedResponse) {
-        // Im Hintergrund auffrischen (Stale-While-Revalidate für nicht-fingerprinted Assets)
-        fetch(request).then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200) {
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, networkResponse));
-          }
-        }).catch(() => { /* Offline – ignorieren */ });
 
         return cachedResponse;
       }
@@ -180,7 +194,7 @@ self.addEventListener('fetch', (event) => {
         .catch(() => {
           // Letzter Ausweg bei Bildern wenn offline: transparente Dummy-Antwort
           if (request.destination === 'image') {
-            return new Response('', { status: 200, headers: { 'Content-Type': 'image/svg+xml' } });
+            return new Response('Offline image', {status:503});
           }
           return new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
         });
