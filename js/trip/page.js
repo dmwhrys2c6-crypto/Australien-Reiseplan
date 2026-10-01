@@ -56,8 +56,10 @@
     if(document.body.classList.contains('is-trip')!==active)document.body.classList.toggle('is-trip',active);
     if(!active){mapVisible=false;return;}
     const nav=document.querySelector('.app-header'),bottom=document.querySelector('.mobile-bottom-nav');
-    const top=nav.getBoundingClientRect().height;
-    const bottomHeight=getComputedStyle(bottom).display==='none'?0:bottom.getBoundingClientRect().height;
+    const floatingHeader=document.querySelector('.trip-floating-header');
+    const top=nav?nav.getBoundingClientRect().height:48;
+    const bottomHeight=(!bottom||getComputedStyle(bottom).display==='none')?0:bottom.getBoundingClientRect().height;
+    if(floatingHeader) document.documentElement.style.setProperty('--trip-header-height',floatingHeader.getBoundingClientRect().height+'px');
     document.documentElement.style.setProperty('--trip-navbar-height',top+'px');
     document.documentElement.style.setProperty('--trip-bottom-nav-height',bottomHeight+'px');
     if(ready&&!document.body.classList.contains('is-locked')) {map.render(groups(),state.stopId,!mapVisible);map.resize();mapVisible=true;}

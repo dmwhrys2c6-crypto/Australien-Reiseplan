@@ -7898,6 +7898,7 @@ function switchExpTab(tabKey) {
 
 // Mehr Sub-Tabs
 function switchMoreTab(tabKey) {
+  if (tabKey === 'playlist') tabKey = 'tools';
   if (!document.getElementById('more-panel-' + tabKey)) tabKey = 'drone';
   document.querySelectorAll('.more-subnav-btn').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-tab') === tabKey);
@@ -7905,7 +7906,10 @@ function switchMoreTab(tabKey) {
   document.querySelectorAll('.more-panel').forEach(panel => {
     panel.style.display = panel.id === 'more-panel-' + tabKey ? 'block' : 'none';
   });
-
+  const playlist = document.getElementById('playlist');
+  if (playlist) {
+    playlist.style.display = (tabKey === 'tools') ? '' : 'none';
+  }
 }
 
 // Global Hash Router

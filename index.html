@@ -20,10 +20,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="css/app.css?v=2b4efbe21b5c">
-  <link rel="stylesheet" href="css/hero-dock.css?v=85c5b83082b9">
-  <link rel="stylesheet" href="css/trip.css?v=e4c814557094">
-  <link rel="stylesheet" href="css/management.css?v=51299138b16e">
-  <link rel="stylesheet" href="css/design-system.css?v=636ed5b532af">
+  <link rel="stylesheet" href="css/hero-dock.css?v=904fb692ea1b">
+  <link rel="stylesheet" href="css/trip.css?v=ab1ecefb8aa5">
+  <link rel="stylesheet" href="css/management.css?v=c0d3bd4c0897">
+  <link rel="stylesheet" href="css/design-system.css?v=0dff006645a3">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
@@ -125,10 +125,9 @@
     <!-- STARTSEITE: Bildauftakt und kompakte Reise-Navigation -->
     <div id="view-dashboard" class="app-view active">
       <section id="hero-cinematic" class="hero-cinematic glass-container glass-hero" aria-label="Australien Roadtrip 2027">
-        <div id="hero-static" class="hero-layer hero-static" aria-hidden="true"></div>
-        <div id="hero-animated" class="hero-layer hero-animated" aria-hidden="true">
-          <div class="hero-kb-slide"></div>
-        </div>
+        <video autoplay loop muted playsinline class="hero-bg-video">
+          <source src="assets/video/veo-australia.mp4" type="video/mp4">
+        </video>
         <div class="hero-gradient-overlay" aria-hidden="true"></div>
         <div class="hero-content">
           <p class="hero-eyebrow">UNSER ROADTRIP · 21. MÄRZ – 9. APRIL</p>
@@ -518,39 +517,41 @@
           </nav>
         </header>
 
-        <!-- Subtly integrated Quick Category Filter Chips -->
-        <div class="category-quick-grid category-quick-chips glass-filter-bar" aria-label="Schnellfilter">
-          <button type="button" class="category-quick-tile category-quick-chip glass-pill" data-org-cat="flights" onclick="filterOrgCategory('flights')">
-            <span class="tile-icon">✈️</span>
-            <span class="tile-title">Flüge</span>
-            <span class="tile-badge">3 Etappen</span>
-          </button>
-          <button type="button" class="category-quick-tile category-quick-chip glass-pill" data-org-cat="hotels" onclick="filterOrgCategory('hotels')">
-            <span class="tile-icon">🏨</span>
-            <span class="tile-title">Unterkünfte</span>
-            <span class="tile-badge">20/20 gebucht</span>
-          </button>
-          <button type="button" class="category-quick-tile category-quick-chip glass-pill" data-org-cat="car" onclick="filterOrgCategory('car')">
-            <span class="tile-icon">🚗</span>
-            <span class="tile-title">Mietwagen</span>
-            <span class="tile-badge">3 Fahrzeuge</span>
-          </button>
-          <button type="button" class="category-quick-tile category-quick-chip glass-pill" data-org-cat="activities" onclick="filterOrgCategory('activities')">
-            <span class="tile-icon">🥾</span>
-            <span class="tile-title">Aktivitäten</span>
-            <span class="tile-badge">Whitsundays &amp; GBR</span>
-          </button>
-          <button type="button" class="category-quick-tile category-quick-chip glass-pill" data-org-cat="packing" onclick="filterOrgCategory('packing')">
-            <span class="tile-icon">🎒</span>
-            <span class="tile-title">Packliste</span>
-            <span class="tile-badge" data-packing-progress id="org-badge-packing-progress">0% gepackt</span>
-          </button>
-          <button type="button" class="category-quick-tile category-quick-chip glass-pill" data-org-cat="bookings" onclick="filterOrgCategory('bookings')">
-            <span class="tile-icon">📑</span>
-            <span class="tile-title">Buchungen</span>
-            <span class="tile-badge">Alle Buchungen</span>
-          </button>
-        </div>
+        <!-- Floating Glass Pill Dock / Schnellfilter (gleiche Struktur wie Finanzen) -->
+        <nav class="subpage-nav-dock glass-nav-wrap" aria-label="Kategorien und Filter">
+          <div class="subnav-pills subpage-pills glass-card glass-dock" role="tablist">
+            <button type="button" class="subnav-pill subpage-pill glass-pill category-quick-tile category-quick-chip" data-org-cat="flights" onclick="filterOrgCategory('flights')">
+              <i class="fa-solid fa-plane-departure" aria-hidden="true"></i>
+              <span>Flüge</span>
+              <span class="subpage-pill-badge glass-pill">3 Etappen</span>
+            </button>
+            <button type="button" class="subnav-pill subpage-pill glass-pill category-quick-tile category-quick-chip" data-org-cat="hotels" onclick="filterOrgCategory('hotels')">
+              <i class="fa-solid fa-hotel" aria-hidden="true"></i>
+              <span>Unterkünfte</span>
+              <span class="subpage-pill-badge glass-pill">20/20 gebucht</span>
+            </button>
+            <button type="button" class="subnav-pill subpage-pill glass-pill category-quick-tile category-quick-chip" data-org-cat="car" onclick="filterOrgCategory('car')">
+              <i class="fa-solid fa-car" aria-hidden="true"></i>
+              <span>Mietwagen</span>
+              <span class="subpage-pill-badge glass-pill">3 Fahrzeuge</span>
+            </button>
+            <button type="button" class="subnav-pill subpage-pill glass-pill category-quick-tile category-quick-chip" data-org-cat="activities" onclick="filterOrgCategory('activities')">
+              <i class="fa-solid fa-person-hiking" aria-hidden="true"></i>
+              <span>Aktivitäten</span>
+              <span class="subpage-pill-badge glass-pill">Whitsundays &amp; GBR</span>
+            </button>
+            <button type="button" class="subnav-pill subpage-pill glass-pill category-quick-tile category-quick-chip" data-org-cat="packing" onclick="filterOrgCategory('packing')">
+              <i class="fa-solid fa-suitcase-rolling" aria-hidden="true"></i>
+              <span>Packliste</span>
+              <span class="subpage-pill-badge glass-pill" data-packing-progress id="org-badge-packing-progress">0% gepackt</span>
+            </button>
+            <button type="button" class="subnav-pill subpage-pill glass-pill category-quick-tile category-quick-chip" data-org-cat="bookings" onclick="filterOrgCategory('bookings')">
+              <i class="fa-solid fa-receipt" aria-hidden="true"></i>
+              <span>Buchungen</span>
+              <span class="subpage-pill-badge glass-pill">Alle Buchungen</span>
+            </button>
+          </div>
+        </nav>
 
         <div id="org-panel-documents" class="org-tab-panel subpage-glass-panel glass-card glass-section" role="tabpanel" style="display:none"><div id="manage-documents" class="manage-page"><p role="status">Dokumente werden geladen …</p></div></div>
         <!-- TAB PANEL 1: BUCHUNGEN -->
@@ -1904,7 +1905,6 @@
             <section id="more-panel-drone" class="more-panel glass-card glass-section"><div class="glass-section-heading"><div><span class="glass-eyebrow">FLUGPLANUNG VOR ORT</span><h2>Drohnenkarten &amp; Bestimmungen</h2><p>Aktuelle Karten und Regeln direkt bei den Anbietern prüfen.</p></div></div><div class="glass-balanced-grid">
  <article class="glass-card glass-section"><span class="glass-row-icon"><i class="fa-solid fa-map-location-dot" aria-hidden="true"></i></span><h3>CASA · OpenSky Drohnenkarte</h3><p>OpenSky von Wing ist eine CASA-geprüfte Drohnen-App. CASA veröffentlicht die geprüften Apps und die australischen Sicherheitsregeln.</p><div class="glass-filter-bar"><a class="glass-pill glass-action-primary" href="https://wing.com/opensky" target="_blank" rel="noopener noreferrer">OpenSky öffnen ↗</a><a class="glass-pill" href="https://www.casa.gov.au/knowyourdrone/drone-safety-apps" target="_blank" rel="noopener noreferrer">CASA-Apps &amp; Regeln ↗</a></div></article>
  <article class="glass-card glass-section"><span class="glass-row-icon"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></span><h3>Sphere Drones Airspace Maps</h3><p>Das Airspace Advisory Tool von Sphere bietet Karten und Hinweise für die Flugplanung in Australien.</p><a class="glass-pill glass-action-primary" href="https://www.spheredrones.com.au/resources/tools/airspace-advisory" target="_blank" rel="noopener noreferrer">Airspace Maps öffnen ↗</a></article></div></section>
-<section id="playlist" class="glass-card glass-section playlist-widget"><div class="glass-section-heading"><div><span class="glass-eyebrow">DER SOUNDTRACK ZUR REISE</span><h2>Roadtrip-Playlist</h2></div><a class="glass-pill" href="https://open.spotify.com/playlist/7qhWRytqvcU5rjD9p6vNRH" target="_blank" rel="noopener noreferrer">In Spotify öffnen ↗</a></div><iframe title="Spotify Roadtrip-Playlist" src="https://open.spotify.com/embed/playlist/7qhWRytqvcU5rjD9p6vNRH?utm_source=generator" width="100%" height="352" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></section>
 
           <div id="more-panel-weather" class="more-panel subpage-glass-panel glass-card glass-section" style="display:none">
             <section id="weather" class="section-spaced">
@@ -2292,6 +2292,7 @@
 
               </div>
             </section>
+            <section id="playlist" class="glass-card glass-section playlist-widget"><div class="glass-section-heading"><div><span class="glass-eyebrow">DER SOUNDTRACK ZUR REISE</span><h2>Roadtrip-Playlist</h2></div><a class="glass-pill" href="https://open.spotify.com/playlist/7qhWRytqvcU5rjD9p6vNRH" target="_blank" rel="noopener noreferrer">In Spotify öffnen ↗</a></div><iframe title="Spotify Roadtrip-Playlist" src="https://open.spotify.com/embed/playlist/7qhWRytqvcU5rjD9p6vNRH?utm_source=generator" width="100%" height="352" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></section>
           </div>
           </div>
         </div>
@@ -2797,7 +2798,7 @@
   <script src="js/router.js?v=ebb76f5fd504"></script>
   <script src="js/reiseApp.js?v=2c5dfc9e1c6d"></script>
   <!-- 4. Kern-Applikationslogik -->
-  <script src="js/app.js?v=45a61ce3f14e"></script>
+  <script src="js/app.js?v=e357692d9636"></script>
 
   <dialog id="trip-editor" class="trip-editor glass-card" aria-labelledby="trip-editor-title">
     <header class="trip-editor-header"><div><span class="trip-eyebrow glass-eyebrow">DEIN REISEPLAN</span><h2 id="trip-editor-title">Stopp bearbeiten</h2></div><button type="button" class="trip-icon-button" id="trip-editor-close" aria-label="Editor schließen"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></header>
@@ -2815,7 +2816,7 @@
   <script src="js/trip/map-adapter.js?v=1bd2da8b7ee4"></script>
   <script src="js/trip/components.js?v=833314db286d"></script>
   <script src="js/trip/editor.js?v=61ae22ce8ae4"></script>
-  <script src="js/trip/page.js?v=0b3d747dea3f"></script>
+  <script src="js/trip/page.js?v=1201f98d7e1d"></script>
 
 <dialog id="manage-editor" class="trip-editor glass-card" aria-labelledby="manage-editor-title"><header class="trip-editor-header"><div><span class="trip-eyebrow glass-eyebrow">ALLES AN EINEM ORT</span><h2 id="manage-editor-title">Eintrag bearbeiten</h2></div><button type="button" id="manage-close" class="trip-icon-button" aria-label="Editor schließen">×</button></header><form id="manage-form" class="glass-editor-form"><div id="manage-fields" class="trip-editor-fields"></div><p id="manage-error" class="trip-form-error" role="alert" tabindex="-1"></p><div id="manage-detail-actions" class="glass-detail-actions" hidden></div><footer class="trip-editor-footer glass-modal-footer"><button type="button" id="manage-delete" class="trip-danger-button glass-pill glass-action-danger" hidden>Löschen</button><span></span><button type="button" id="manage-cancel" class="trip-secondary-button glass-pill">Abbrechen</button><button type="submit" id="manage-save" class="trip-primary-button glass-pill glass-action-primary">Speichern</button></footer></form></dialog>
 <dialog id="manage-confirm" class="trip-confirm glass-card" aria-labelledby="manage-confirm-title" aria-describedby="manage-confirm-text"><h2 id="manage-confirm-title">Eintrag löschen?</h2><p id="manage-confirm-text"></p><div><button type="button" id="manage-confirm-no" class="trip-secondary-button glass-pill" autofocus>Abbrechen</button><button type="button" id="manage-confirm-yes" class="trip-danger-button glass-pill glass-action-danger">Löschen</button></div></dialog>
@@ -2824,7 +2825,7 @@
   <script src="js/journal/repository.js?v=2dc36fd4f416"></script>
   <script src="js/journal/upload.js?v=1bbf9c488e89"></script>
   <!-- 5. Bildauftakt und Liquid-Glass-Navigation -->
-  <script src="js/home.js?v=2694589ca6e1"></script>
+  <script src="js/home.js?v=dcdefae13bd4"></script>
 </body>
 
 </html>

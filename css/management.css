@@ -23,8 +23,16 @@ body.is-management .brand-flag,
 body:not(.is-home) .brand-flag {font-size: 1.45rem;}
 
 /* Desktop Navigation: Liquid Glass Capsule (matching Startseite Dock) */
-body.is-management .desktop-nav,
-body:not(.is-home) .desktop-nav {padding: 4px;gap: 3px;display: inline-flex;align-items: center;}
+@media (min-width: 769px) {
+  body.is-management .desktop-nav,
+  body:not(.is-home) .desktop-nav {padding: 4px;gap: 3px;display: inline-flex;align-items: center;}
+}
+@media (max-width: 768px) {
+  body.is-management .desktop-nav,
+  body:not(.is-home) .desktop-nav {display: none !important;}
+  body:not(.is-home) .app-header {min-height: 48px;}
+  body:not(.is-home) .header-inner {min-height: 48px;padding: 6px 14px;}
+}
 
 body.is-management .nav-tab,
 body:not(.is-home) .nav-tab {font-size: 0.74rem;padding: 8px 14px;min-height: 38px;font-weight: 500;font-family: var(--font-body);display: inline-flex;align-items: center;gap: 6px;cursor: pointer;white-space: nowrap;transition: all 0.18s ease;text-decoration: none;}
@@ -52,7 +60,7 @@ body:not(.is-home) .btn-icon-action:hover {transform: translateY(-1px);}
 
 /* Mobile Bottom Navigation (Liquid Glass Bar) */
 body.is-management .mobile-bottom-nav,
-body:not(.is-home) .mobile-bottom-nav {height: calc(62px + env(safe-area-inset-bottom));}
+body:not(.is-home) .mobile-bottom-nav {height: calc(52px + env(safe-area-inset-bottom));}
 
 /* -------------------------------------------------------------------------
    2. The Reusable Subpage Shell (.subpage-canvas)
@@ -307,12 +315,40 @@ body.dark-theme.is-management .app-header {border-bottom-color: rgba(255, 255, 2
   .manage-row-tail {width: 100%;justify-content: space-between;}
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   body.is-management .app-main {padding: 6px;}
-  .subpage-canvas {padding: 20px 14px 70px;}
-  .subpage-headline {font-size: 2rem;}
-  .category-quick-grid.category-quick-chips {gap: 6px;}
+  .subpage-canvas {padding: 16px 12px 64px;}
+  .subpage-headline {font-size: 1.85rem;}
+  .subpage-nav-dock {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    margin-bottom: 12px;
+  }
+  .subpage-pills,
+  body.is-management .subnav-pills,
+  body.is-management .org-subnav-tabs {
+    display: inline-flex;
+    flex-shrink: 0;
+    min-width: max-content;
+    padding: 4px;
+    gap: 3px;
+  }
+  .subpage-pill,
+  body.is-management .subnav-pill,
+  body.is-management .org-tab-btn,
   .category-quick-chip,
-  .category-quick-tile {padding: 5px 12px;font-size: 0.7rem;}
+  .category-quick-tile {
+    min-height: 36px;
+    padding: 0 10px;
+    font-size: 0.7rem;
+    gap: 5px;
+  }
+  .subpage-pill-badge {
+    font-size: 0.58rem;
+    padding: 1px 6px;
+  }
 }
 }

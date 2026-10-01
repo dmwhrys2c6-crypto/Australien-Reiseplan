@@ -19,6 +19,15 @@ body.is-home #view-dashboard {animation: none;}
   overflow: hidden; isolation: isolate; border-radius: 28px;
   background: #233e50;
 }
+.hero-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
 .hero-layer { position: absolute; inset: 0; pointer-events: none; }
 .hero-static, .hero-kb-slide {
   background-image: url('https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&w=2400&q=85');
@@ -74,30 +83,90 @@ body.is-home #view-dashboard {animation: none;}
   .dock-pill {padding: 0 9px;}
   .dock-next-title { max-width: 170px; }
 }
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   body.is-home .app-main {padding: 0;}
-  body.is-home .app-header {top: calc(20px + env(safe-area-inset-top));left: 20px;right: 20px;}
-  body.is-home .header-inner {gap: 10px;}
+  body.is-home .app-header {top: calc(16px + env(safe-area-inset-top));left: 16px;right: 16px;}
+  body.is-home .header-inner {gap: 8px;}
   body.is-home .header-actions {gap: 6px;}
   body.is-home .btn-icon-action {width: 32px;height: 32px;font-size: .75rem;}
-  body.is-home .brand-title {font-size: .68rem;}
-  body.is-home .brand-subtitle {font-size: .58rem;}
+  body.is-home .brand-title {font-size: .72rem;}
+  body.is-home .brand-subtitle {font-size: .56rem;}
   body.is-home .brand-flag {display: none;}
-  .hero-cinematic { height: 100svh; min-height: 540px; border-radius: 0; }
+  .hero-cinematic { height: 100svh; min-height: 520px; border-radius: 0; }
   .hero-static, .hero-kb-slide { background-position: 58% center; }
-  .hero-content { left: 28px; right: 20px; bottom: max(27%, 190px); }
-  .hero-headline { font-size: clamp(64px, 18vw, 100px); }
-  .hero-eyebrow { font-size: .55rem; margin-bottom: 18px; letter-spacing: .12em; }
-  .hero-subline { font-size: .7rem; line-height: 1.6; max-width: 230px; margin-top: 20px; }
-  .hero-location { right: 22px; bottom: calc(155px + env(safe-area-inset-bottom)); font-size: .58rem; }
-  .liquid-glass-dock {bottom: calc(16px + env(safe-area-inset-bottom));width: calc(100% - 32px);max-width: 420px;flex-direction: column;align-items: stretch;gap: 5px;padding: 9px;}
-  .dock-next-event { padding: 0 7px 6px; }
-  .dock-next-title { max-width: 240px; }
-  .dock-next-arrow { margin-left: auto; }
-  .dock-divider { width: auto; height: 1px; margin: 0 7px; }
-  .dock-pills {display: grid;grid-template-columns: .75fr 1.55fr 1fr 1fr;gap: 2px;}
-  .dock-pill {flex-direction: column;gap: 5px;padding: 7px 2px;font-size: .53rem;min-height: 48px;}
-  .dock-pill i {font-size: .8rem;}
+  .hero-content { left: 24px; right: 20px; bottom: max(28%, 200px); }
+  .hero-headline { font-size: clamp(56px, 15vw, 84px); }
+  .hero-eyebrow { font-size: .54rem; margin-bottom: 14px; letter-spacing: .12em; }
+  .hero-subline { font-size: .75rem; line-height: 1.5; max-width: 250px; margin-top: 16px; }
+  .hero-location { right: 20px; bottom: calc(150px + env(safe-area-inset-bottom)); font-size: .58rem; }
+  .liquid-glass-dock {
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    width: calc(100% - 24px);
+    max-width: min(440px, calc(100vw - 24px));
+    box-sizing: border-box;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding: 6px 10px;
+  }
+  .dock-next-event {
+    padding: 2px 6px;
+    min-height: 36px;
+    gap: 8px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+  .dock-event-icon {
+    width: 28px;
+    height: 28px;
+    font-size: .72rem;
+  }
+  .dock-next-prefix {
+    font-size: .5rem;
+  }
+  .dock-next-title {
+    max-width: calc(100vw - 120px);
+    font-size: .65rem;
+  }
+  .dock-next-arrow {
+    margin-left: auto;
+    font-size: .55rem;
+  }
+  .dock-divider {
+    width: 100%;
+    height: 1px;
+    margin: 0;
+  }
+  .dock-pills {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+  }
+  .dock-pill {
+    flex-direction: column;
+    gap: 3px;
+    padding: 6px 2px;
+    min-height: 42px;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    font-size: .52rem;
+  }
+  .dock-pill i {
+    font-size: .75rem;
+  }
+  .dock-pill span {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+  }
 }
 @media (max-height: 650px) and (min-width: 641px) {
   .hero-cinematic { min-height: 420px; }
