@@ -45,12 +45,16 @@
     "accommodation": "Langstreckenflug (Übernachtung an Bord / Flugzeug)",
     "stageRoute": [
       [
-        -33.9461,
-        151.1772
+        48.1103,
+        16.5697
       ],
       [
-        -33.8688,
-        151.2093
+        1.3502,
+        103.994
+      ],
+      [
+        -33.9461,
+        151.1772
       ]
     ],
     "activities": [
@@ -371,8 +375,8 @@
       151.1772
     ],
     "destCoords": [
-      -28.6384,
-      153.6366
+      -28.63855,
+      153.63634
     ],
     "center": [
       -28.75,
@@ -397,8 +401,8 @@
         153.585
       ],
       [
-        -28.6384,
-        153.6366
+        -28.63855,
+        153.63634
       ]
     ],
     "activities": [
@@ -434,8 +438,8 @@
         "id": 6,
         "region": "byron",
         "coords": [
-          -28.6384,
-          153.6366
+          -28.63855,
+          153.63634
         ]
       }
     ]
@@ -810,8 +814,8 @@
       153.0251
     ],
     "destCoords": [
-      -26.398,
-      153.093
+      -26.39708,
+      153.08975
     ],
     "center": [
       -26.7,
@@ -836,8 +840,8 @@
         153.0667
       ],
       [
-        -26.398,
-        153.093
+        -26.39708,
+        153.08975
       ],
       [
         -26.381,
@@ -905,8 +909,8 @@
     "start": "Noosa Heads",
     "destination": "Hervey Bay (Nightcap at Kondari Resort)",
     "startCoords": [
-      -26.398,
-      153.093
+      -26.39708,
+      153.08975
     ],
     "destCoords": [
       -25.2986,
@@ -923,8 +927,8 @@
     "accommodation": "Nightcap at Kondari Resort, Hervey Bay (Hervey Bay, QLD)",
     "stageRoute": [
       [
-        -26.398,
-        153.093
+        -26.39708,
+        153.08975
       ],
       [
         -25.908,
@@ -984,14 +988,14 @@
     "title": "K’gari (Fraser Island) & Nachtbus nach Norden",
     "location": "K’gari (Fraser Island) & Nachtbus (QLD)",
     "start": "Hervey Bay Fähranleger",
-    "destination": "K’gari (Lake McKenzie & Maheno Wreck) → Nachtbus",
+    "destination": "Airlie Beach Busstation",
     "startCoords": [
       -25.2986,
       152.8535
     ],
     "destCoords": [
-      -25.449,
-      153.058
+      -20.2675,
+      148.718
     ],
     "center": [
       -25.35,
@@ -1080,8 +1084,8 @@
       148.718
     ],
     "destCoords": [
-      -20.272,
-      148.714
+      -20.27514,
+      148.72339
     ],
     "center": [
       -20.268,
@@ -1098,8 +1102,8 @@
         148.718
       ],
       [
-        -20.272,
-        148.714
+        -20.27514,
+        148.72339
       ]
     ],
     "activities": [
@@ -1112,7 +1116,7 @@
     ],
     "accommodationDetails": {
       "name": "Coral Sea Vista Apartments",
-      "address": "20 The Esplanade, Airlie Beach QLD 4802",
+      "address": "5 Hermitage Drive, Airlie Beach QLD 4802",
       "location": "Airlie Beach (QLD)",
       "checkIn": "ab 14:00 Uhr (Gepäckabgabe morgens)",
       "checkOut": "bis 10:00 Uhr (am 05.04.)",
@@ -1153,8 +1157,8 @@
       148.718
     ],
     "destCoords": [
-      -20.285,
-      149.038
+      -20.2459,
+      149.0205
     ],
     "center": [
       -20.28,
@@ -1175,8 +1179,8 @@
         148.85
       ],
       [
-        -20.285,
-        149.038
+        -20.2459,
+        149.0205
       ]
     ],
     "activities": [
@@ -1189,7 +1193,7 @@
     ],
     "accommodationDetails": {
       "name": "Coral Sea Vista Apartments",
-      "address": "20 The Esplanade, Airlie Beach QLD 4802",
+      "address": "5 Hermitage Drive, Airlie Beach QLD 4802",
       "location": "Airlie Beach (QLD)",
       "checkIn": "Bereits eingecheckt",
       "checkOut": "bis 10:00 Uhr (am 05.04.)",
@@ -1212,8 +1216,8 @@
         "id": 18,
         "region": "islands",
         "coords": [
-          -20.285,
-          149.038
+          -20.2459,
+          149.0205
         ]
       }
     ]
@@ -1266,7 +1270,7 @@
     ],
     "accommodationDetails": {
       "name": "Coral Sea Vista Apartments",
-      "address": "20 The Esplanade, Airlie Beach QLD 4802",
+      "address": "5 Hermitage Drive, Airlie Beach QLD 4802",
       "location": "Airlie Beach (QLD)",
       "checkIn": "Bereits eingecheckt",
       "checkOut": "Morgen bis 10:00 Uhr",
@@ -1307,8 +1311,8 @@
       148.552
     ],
     "destCoords": [
-      -37.816,
-      144.938
+      -37.81498,
+      144.93802
     ],
     "center": [
       -37.818,
@@ -1329,8 +1333,8 @@
         144.841
       ],
       [
-        -37.816,
-        144.938
+        -37.81498,
+        144.93802
       ],
       [
         -37.8205,
@@ -1347,7 +1351,7 @@
     ],
     "accommodationDetails": {
       "name": "Vibe Hotel Melbourne Docklands",
-      "address": "44 Aquitania Way, Docklands VIC 3008",
+      "address": "443 Docklands Drive, Docklands VIC 3008",
       "location": "Melbourne Docklands (VIC)",
       "checkIn": "ab 14:00 Uhr",
       "checkOut": "bis 11:00 Uhr (am 09.04.)",
@@ -1384,8 +1388,8 @@
     "start": "Vibe Hotel Docklands",
     "destination": "Hosier Lane CBD & St. Kilda Pier",
     "startCoords": [
-      -37.816,
-      144.938
+      -37.81498,
+      144.93802
     ],
     "destCoords": [
       -37.8645,
@@ -1402,8 +1406,8 @@
     "accommodation": "Vibe Hotel Docklands, Melbourne",
     "stageRoute": [
       [
-        -37.816,
-        144.938
+        -37.81498,
+        144.93802
       ],
       [
         -37.8163,
@@ -1429,7 +1433,7 @@
     ],
     "accommodationDetails": {
       "name": "Vibe Hotel Melbourne Docklands",
-      "address": "44 Aquitania Way, Docklands VIC 3008",
+      "address": "443 Docklands Drive, Docklands VIC 3008",
       "location": "Melbourne Docklands (VIC)",
       "checkIn": "Bereits eingecheckt",
       "checkOut": "bis 11:00 Uhr (am 09.04.)",
@@ -1545,7 +1549,7 @@
     ],
     "accommodationDetails": {
       "name": "Vibe Hotel Melbourne Docklands",
-      "address": "44 Aquitania Way, Docklands VIC 3008",
+      "address": "443 Docklands Drive, Docklands VIC 3008",
       "location": "Melbourne Docklands (VIC)",
       "checkIn": "Bereits eingecheckt",
       "checkOut": "bis 11:00 Uhr (am 09.04.)",
@@ -1596,8 +1600,8 @@
     "start": "Vibe Hotel Docklands",
     "destination": "Brighton Beach & Fitzroy",
     "startCoords": [
-      -37.816,
-      144.938
+      -37.81498,
+      144.93802
     ],
     "destCoords": [
       -37.7985,
@@ -1614,8 +1618,8 @@
     "accommodation": "Vibe Hotel Docklands, Melbourne",
     "stageRoute": [
       [
-        -37.816,
-        144.938
+        -37.81498,
+        144.93802
       ],
       [
         -37.85,
@@ -1645,7 +1649,7 @@
     ],
     "accommodationDetails": {
       "name": "Vibe Hotel Melbourne Docklands",
-      "address": "44 Aquitania Way, Docklands VIC 3008",
+      "address": "443 Docklands Drive, Docklands VIC 3008",
       "location": "Melbourne Docklands (VIC)",
       "checkIn": "Bereits eingecheckt",
       "checkOut": "Morgen bis 11:00 Uhr",
@@ -1795,12 +1799,16 @@
     "accommodation": "Langstreckenflug (Übernachtung an Bord / Flugzeug)",
     "stageRoute": [
       [
-        -33.9461,
-        151.1772
+        48.1103,
+        16.5697
       ],
       [
-        -33.8688,
-        151.2093
+        1.3502,
+        103.994
+      ],
+      [
+        -33.9461,
+        151.1772
       ]
     ],
     "activities": [
@@ -1988,8 +1996,8 @@
       151.1772
     ],
     "destCoords": [
-      -28.6384,
-      153.6366
+      -28.63855,
+      153.63634
     ],
     "center": [
       -28.75,
@@ -2014,8 +2022,8 @@
         153.585
       ],
       [
-        -28.6384,
-        153.6366
+        -28.63855,
+        153.63634
       ]
     ],
     "activities": [
@@ -2249,8 +2257,8 @@
       153.0251
     ],
     "destCoords": [
-      -26.398,
-      153.093
+      -26.39708,
+      153.08975
     ],
     "center": [
       -26.7,
@@ -2275,8 +2283,8 @@
         153.0667
       ],
       [
-        -26.398,
-        153.093
+        -26.39708,
+        153.08975
       ],
       [
         -26.381,
@@ -2300,8 +2308,8 @@
     "start": "Noosa Heads",
     "destination": "Hervey Bay (Nightcap at Kondari Resort)",
     "startCoords": [
-      -26.398,
-      153.093
+      -26.39708,
+      153.08975
     ],
     "destCoords": [
       -25.2986,
@@ -2318,8 +2326,8 @@
     "accommodation": "Nightcap at Kondari Resort, Hervey Bay (Hervey Bay, QLD)",
     "stageRoute": [
       [
-        -26.398,
-        153.093
+        -26.39708,
+        153.08975
       ],
       [
         -25.908,
@@ -2349,14 +2357,14 @@
     "title": "K’gari (Fraser Island) & Nachtbus nach Norden",
     "location": "K’gari (Fraser Island) & Nachtbus (QLD)",
     "start": "Hervey Bay Fähranleger",
-    "destination": "K’gari (Lake McKenzie & Maheno Wreck) → Nachtbus",
+    "destination": "Airlie Beach Busstation",
     "startCoords": [
       -25.2986,
       152.8535
     ],
     "destCoords": [
-      -25.449,
-      153.058
+      -20.2675,
+      148.718
     ],
     "center": [
       -25.35,
@@ -2415,8 +2423,8 @@
       148.718
     ],
     "destCoords": [
-      -20.272,
-      148.714
+      -20.27514,
+      148.72339
     ],
     "center": [
       -20.268,
@@ -2433,8 +2441,8 @@
         148.718
       ],
       [
-        -20.272,
-        148.714
+        -20.27514,
+        148.72339
       ]
     ],
     "activities": [
@@ -2458,8 +2466,8 @@
       148.718
     ],
     "destCoords": [
-      -20.285,
-      149.038
+      -20.2459,
+      149.0205
     ],
     "center": [
       -20.28,
@@ -2480,8 +2488,8 @@
         148.85
       ],
       [
-        -20.285,
-        149.038
+        -20.2459,
+        149.0205
       ]
     ],
     "activities": [
@@ -2552,8 +2560,8 @@
       148.552
     ],
     "destCoords": [
-      -37.816,
-      144.938
+      -37.81498,
+      144.93802
     ],
     "center": [
       -37.818,
@@ -2574,8 +2582,8 @@
         144.841
       ],
       [
-        -37.816,
-        144.938
+        -37.81498,
+        144.93802
       ],
       [
         -37.8205,
@@ -2599,8 +2607,8 @@
     "start": "Vibe Hotel Docklands",
     "destination": "Hosier Lane CBD & St. Kilda Pier",
     "startCoords": [
-      -37.816,
-      144.938
+      -37.81498,
+      144.93802
     ],
     "destCoords": [
       -37.8645,
@@ -2617,8 +2625,8 @@
     "accommodation": "Vibe Hotel Docklands, Melbourne",
     "stageRoute": [
       [
-        -37.816,
-        144.938
+        -37.81498,
+        144.93802
       ],
       [
         -37.8163,
@@ -2723,8 +2731,8 @@
     "start": "Vibe Hotel Docklands",
     "destination": "Brighton Beach & Fitzroy",
     "startCoords": [
-      -37.816,
-      144.938
+      -37.81498,
+      144.93802
     ],
     "destCoords": [
       -37.7985,
@@ -2741,8 +2749,8 @@
     "accommodation": "Vibe Hotel Docklands, Melbourne",
     "stageRoute": [
       [
-        -37.816,
-        144.938
+        -37.81498,
+        144.93802
       ],
       [
         -37.85,
@@ -2943,7 +2951,7 @@
   },
   "13": {
     "name": "Coral Sea Vista Apartments",
-    "address": "20 The Esplanade, Airlie Beach QLD 4802",
+    "address": "5 Hermitage Drive, Airlie Beach QLD 4802",
     "location": "Airlie Beach (QLD)",
     "checkIn": "ab 14:00 Uhr (Gepäckabgabe morgens)",
     "checkOut": "bis 10:00 Uhr (am 05.04.)",
@@ -2953,7 +2961,7 @@
   },
   "14": {
     "name": "Coral Sea Vista Apartments",
-    "address": "20 The Esplanade, Airlie Beach QLD 4802",
+    "address": "5 Hermitage Drive, Airlie Beach QLD 4802",
     "location": "Airlie Beach (QLD)",
     "checkIn": "Bereits eingecheckt",
     "checkOut": "bis 10:00 Uhr (am 05.04.)",
@@ -2963,7 +2971,7 @@
   },
   "15": {
     "name": "Coral Sea Vista Apartments",
-    "address": "20 The Esplanade, Airlie Beach QLD 4802",
+    "address": "5 Hermitage Drive, Airlie Beach QLD 4802",
     "location": "Airlie Beach (QLD)",
     "checkIn": "Bereits eingecheckt",
     "checkOut": "Morgen bis 10:00 Uhr",
@@ -2973,7 +2981,7 @@
   },
   "16": {
     "name": "Vibe Hotel Melbourne Docklands",
-    "address": "44 Aquitania Way, Docklands VIC 3008",
+    "address": "443 Docklands Drive, Docklands VIC 3008",
     "location": "Melbourne Docklands (VIC)",
     "checkIn": "ab 14:00 Uhr",
     "checkOut": "bis 11:00 Uhr (am 09.04.)",
@@ -2983,7 +2991,7 @@
   },
   "17": {
     "name": "Vibe Hotel Melbourne Docklands",
-    "address": "44 Aquitania Way, Docklands VIC 3008",
+    "address": "443 Docklands Drive, Docklands VIC 3008",
     "location": "Melbourne Docklands (VIC)",
     "checkIn": "Bereits eingecheckt",
     "checkOut": "bis 11:00 Uhr (am 09.04.)",
@@ -2993,7 +3001,7 @@
   },
   "18": {
     "name": "Vibe Hotel Melbourne Docklands",
-    "address": "44 Aquitania Way, Docklands VIC 3008",
+    "address": "443 Docklands Drive, Docklands VIC 3008",
     "location": "Melbourne Docklands (VIC)",
     "checkIn": "Bereits eingecheckt",
     "checkOut": "bis 11:00 Uhr (am 09.04.)",
@@ -3003,7 +3011,7 @@
   },
   "19": {
     "name": "Vibe Hotel Melbourne Docklands",
-    "address": "44 Aquitania Way, Docklands VIC 3008",
+    "address": "443 Docklands Drive, Docklands VIC 3008",
     "location": "Melbourne Docklands (VIC)",
     "checkIn": "Bereits eingecheckt",
     "checkOut": "Morgen bis 11:00 Uhr",
@@ -3185,8 +3193,8 @@
     "id": 6,
     "region": "byron",
     "coords": [
-      -28.6384,
-      153.6366
+      -28.63855,
+      153.63634
     ]
   },
   {
@@ -3353,8 +3361,8 @@
     "id": 18,
     "region": "islands",
     "coords": [
-      -20.285,
-      149.038
+      -20.2459,
+      149.0205
     ]
   },
   {
@@ -3803,7 +3811,7 @@
     "bookingRef": "BKG-CS-99120",
     "date": "2027-04-02",
     "time": "14:00",
-    "location": "20 The Esplanade, Airlie Beach QLD 4802",
+    "location": "5 Hermitage Drive, Airlie Beach QLD 4802",
     "cost": 468,
     "currency": "EUR",
     "link": "https://www.booking.com/hotel/au/coral-sea-vista-apartments.de.html",
@@ -3867,7 +3875,7 @@
     "bookingRef": "VIB-MEL-40291",
     "date": "2027-04-05",
     "time": "14:00",
-    "location": "44 Aquitania Way, Docklands VIC 3008",
+    "location": "443 Docklands Drive, Docklands VIC 3008",
     "cost": 643,
     "currency": "EUR",
     "link": "https://vibehotels.com",
@@ -4631,8 +4639,8 @@
       153.0667
     ],
     [
-      -26.398,
-      153.093
+      -26.39708,
+      153.08975
     ],
     [
       -25.908,

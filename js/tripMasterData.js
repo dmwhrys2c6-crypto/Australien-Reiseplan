@@ -16,7 +16,7 @@
   'use strict';
 
   return {
-  "version": 3,
+  "version": 4,
   "exportedAt": "2026-09-30T10:31:17.274Z",
   "tripMeta": {
     "id": "aus-roadtrip-2027",
@@ -91,12 +91,16 @@
     },
     "stageRoute": [
       [
-        -33.9461,
-        151.1772
+        48.1103,
+        16.5697
       ],
       [
-        -33.8688,
-        151.2093
+        1.3502,
+        103.994
+      ],
+      [
+        -33.9461,
+        151.1772
       ]
     ],
     "spotIds": [],
@@ -287,8 +291,8 @@
       151.1772
     ],
     "destCoords": [
-      -28.6384,
-      153.6366
+      -28.63855,
+      153.63634
     ],
     "centerCoords": [
       -33.9461,
@@ -319,8 +323,8 @@
         153.585
       ],
       [
-        -28.6384,
-        153.6366
+        -28.63855,
+        153.63634
       ]
     ],
     "spotIds": [
@@ -595,8 +599,8 @@
         153.0667
       ],
       [
-        -26.398,
-        153.093
+        -26.39708,
+        153.08975
       ],
       [
         -26.381,
@@ -642,8 +646,8 @@
     },
     "stageRoute": [
       [
-        -26.398,
-        153.093
+        -26.39708,
+        153.08975
       ],
       [
         -25.908,
@@ -669,15 +673,15 @@
     "date": "2027-04-01",
     "title": "K’gari (Fraser Island) & Nachtbus nach Norden",
     "location": "K'gari",
-    "startLocation": "Lake McKenzie & Maheno Wreck (K’gari)",
-    "destLocation": "K’gari (Lake McKenzie & Maheno Wreck) → Nachtbus",
+    "startLocation": "Hervey Bay Fähranleger",
+    "destLocation": "Airlie Beach Busstation",
     "startCoords": [
-      -25.449,
-      153.058
+      -25.2986,
+      152.8535
     ],
     "destCoords": [
-      -25.449,
-      153.058
+      -20.2675,
+      148.718
     ],
     "centerCoords": [
       -25.449,
@@ -732,14 +736,14 @@
     "title": "Ankunft Airlie Beach & Whitsundays Helikopter-Rundflug",
     "location": "Hervey Bay / Airlie Beach",
     "startLocation": "Airlie Beach Esplanade & Coral Sea Marina",
-    "destLocation": "Airlie Beach Esplanade & Coral Sea Marina",
+    "destLocation": "Coral Sea Vista Apartments",
     "startCoords": [
       -20.2675,
       148.718
     ],
     "destCoords": [
-      -20.2675,
-      148.718
+      -20.27514,
+      148.72339
     ],
     "centerCoords": [
       -20.2675,
@@ -762,8 +766,8 @@
         148.718
       ],
       [
-        -20.272,
-        148.714
+        -20.27514,
+        148.72339
       ]
     ],
     "spotIds": [
@@ -784,8 +788,8 @@
       148.718
     ],
     "destCoords": [
-      -20.285,
-      149.038
+      -20.2459,
+      149.0205
     ],
     "centerCoords": [
       -20.2675,
@@ -812,8 +816,8 @@
         148.85
       ],
       [
-        -20.285,
-        149.038
+        -20.2459,
+        149.0205
       ]
     ],
     "spotIds": [
@@ -912,8 +916,8 @@
         144.841
       ],
       [
-        -37.816,
-        144.938
+        -37.81498,
+        144.93802
       ],
       [
         -37.8205,
@@ -934,16 +938,16 @@
     "startLocation": "Vibe Hotel Docklands",
     "destLocation": "St. Kilda Pier (Zwergpinguin-Kolonie)",
     "startCoords": [
-      -37.816,
-      144.938
+      -37.81498,
+      144.93802
     ],
     "destCoords": [
       -37.8645,
       144.968
     ],
     "centerCoords": [
-      -37.816,
-      144.938
+      -37.81498,
+      144.93802
     ],
     "zoom": 12,
     "distance": "ca. 10 km",
@@ -958,8 +962,8 @@
     },
     "stageRoute": [
       [
-        -37.816,
-        144.938
+        -37.81498,
+        144.93802
       ],
       [
         -37.8163,
@@ -1274,10 +1278,10 @@
     "title": "Boarding Flug Scoot TR 12 nach Singapur (SIN)",
     "category": "flight",
     "description": "Flug von Wien (VIE) Richtung Sydney (SYD). Reisedauer: 11 Std. 40 Min. Über Nacht nach Singapur. 3 Std. 15 Min. Zwischenstopp in Singapur (SIN). Reisedauer: 7 Std. 55 Min. nach Sydney.",
-    "locationName": "Sydney Kingsford Smith Airport (SYD)",
+    "locationName": "Flughafen Wien-Schwechat (VIE)",
     "coords": [
-      -33.9461,
-      151.1772
+      48.1103,
+      16.5697
     ],
     "region": "Wien / Singapur",
     "transportMode": "plane",
@@ -1294,10 +1298,10 @@
     "title": "Zwischenstopp Singapur Changi Jewel & Weiterflug nach Sydney",
     "category": "flight",
     "description": "Flug von Wien (VIE) Richtung Sydney (SYD). Reisedauer: 11 Std. 40 Min. Über Nacht nach Singapur. 3 Std. 15 Min. Zwischenstopp in Singapur (SIN). Reisedauer: 7 Std. 55 Min. nach Sydney.",
-    "locationName": "Sydney Kingsford Smith Airport (SYD)",
+    "locationName": "Singapore Changi Airport (SIN)",
     "coords": [
-      -33.9461,
-      151.1772
+      1.3502,
+      103.994
     ],
     "region": "Wien / Singapur",
     "transportMode": "plane",
@@ -1334,10 +1338,10 @@
     "title": "Hotel Check-in The Ultimo (Chinatown / Haymarket)",
     "category": "transport",
     "description": "Ankunft am Abend in Sydney, Hotel-Check-in & entspanntes Abendessen am Darling Harbour & Barangaroo Promenade.",
-    "locationName": "Sydney",
+    "locationName": "The Ultimo Sydney",
     "coords": [
-      -33.8695,
-      151.201
+      -33.8807,
+      151.2034
     ],
     "region": "Sydney",
     "transportMode": "car",
@@ -1556,8 +1560,8 @@
     "description": "Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Fahrt nach Byron Bay, Check-in und Spätnachmittag am Cape Byron Lighthouse.",
     "locationName": "Cape Byron Lighthouse",
     "coords": [
-      -28.6384,
-      153.6366
+      -28.63855,
+      153.63634
     ],
     "region": "byron",
     "transportMode": "plane",
@@ -1576,8 +1580,8 @@
     "description": "Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Fahrt nach Byron Bay, Check-in und Spätnachmittag am Cape Byron Lighthouse.",
     "locationName": "Cape Byron Lighthouse",
     "coords": [
-      -28.6384,
-      153.6366
+      -28.63855,
+      153.63634
     ],
     "region": "byron",
     "transportMode": "plane",
@@ -1596,8 +1600,8 @@
     "description": "Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Fahrt nach Byron Bay, Check-in und Spätnachmittag am Cape Byron Lighthouse.",
     "locationName": "Cape Byron Lighthouse",
     "coords": [
-      -28.6384,
-      153.6366
+      -28.63855,
+      153.63634
     ],
     "region": "byron",
     "transportMode": "walk",
@@ -1679,7 +1683,7 @@
       -28.643,
       153.612
     ],
-    "region": "Dorrigo / Byron Bay",
+    "region": "Brisbane",
     "transportMode": "car",
     "durationMinutes": 120,
     "isCompleted": false,
@@ -1714,10 +1718,10 @@
     "title": "Check-in Hotel Rambla @ South City Square Brisbane",
     "category": "transport",
     "description": "Fahrt gen Norden. Zwischenstopp an der Gold Coast: Aussichtspunkt Burleigh Heads oder SkyPoint Q1 Tower. Weiterfahrt nach Brisbane, Check-in und Abend an den belebten Howard Smith Wharves unter der Story Bridge.",
-    "locationName": "Dorrigo / Byron Bay",
+    "locationName": "Rambla at Story House, Kangaroo Point",
     "coords": [
-      -27.4608,
-      153.036
+      -27.4842,
+      153.0382
     ],
     "region": "Dorrigo / Byron Bay",
     "transportMode": "car",
@@ -2054,10 +2058,10 @@
     "title": "Abfahrt ganztägige 4WD-Explorer-Tour nach K'gari (Fraser Island)",
     "category": "transport",
     "description": "Ganztägige geführte 4WD-Tour auf K’gari: Lake McKenzie (glasklarer Süßwassersee), 75 Mile Beach Sand-Highway, Maheno Shipwreck & Eli Creek. Abends Mietwagenabgabe in Hervey Bay und Greyhound-Nachtbus nach Airlie Beach.",
-    "locationName": "Lake McKenzie & Maheno Wreck (K’gari)",
+    "locationName": "Hervey Bay Fähranleger",
     "coords": [
-      -25.449,
-      153.058
+      -25.2986,
+      152.8535
     ],
     "region": "islands",
     "transportMode": "ferry",
@@ -2094,10 +2098,10 @@
     "title": "Fahrt über den 75 Mile Beach Highway zum Maheno Schiffswrack",
     "category": "transport",
     "description": "Ganztägige geführte 4WD-Tour auf K’gari: Lake McKenzie (glasklarer Süßwassersee), 75 Mile Beach Sand-Highway, Maheno Shipwreck & Eli Creek. Abends Mietwagenabgabe in Hervey Bay und Greyhound-Nachtbus nach Airlie Beach.",
-    "locationName": "Lake McKenzie & Maheno Wreck (K’gari)",
+    "locationName": "Maheno Shipwreck, K’gari",
     "coords": [
-      -25.449,
-      153.058
+      -25.26703,
+      153.23823
     ],
     "region": "islands",
     "transportMode": "car",
@@ -2114,10 +2118,10 @@
     "title": "Rückkehr Hervey Bay & Mietwagen-Rückgabe",
     "category": "transport",
     "description": "Ganztägige geführte 4WD-Tour auf K’gari: Lake McKenzie (glasklarer Süßwassersee), 75 Mile Beach Sand-Highway, Maheno Shipwreck & Eli Creek. Abends Mietwagenabgabe in Hervey Bay und Greyhound-Nachtbus nach Airlie Beach.",
-    "locationName": "K’gari (Lake McKenzie & Maheno Wreck) → Nachtbus",
+    "locationName": "Hervey Bay",
     "coords": [
-      -25.449,
-      153.058
+      -25.2986,
+      152.8535
     ],
     "region": "K'gari",
     "transportMode": "car",
@@ -2134,10 +2138,10 @@
     "title": "Einstieg in den Greyhound Nachtbus nach Airlie Beach",
     "category": "sightseeing",
     "description": "Ganztägige geführte 4WD-Tour auf K’gari: Lake McKenzie (glasklarer Süßwassersee), 75 Mile Beach Sand-Highway, Maheno Shipwreck & Eli Creek. Abends Mietwagenabgabe in Hervey Bay und Greyhound-Nachtbus nach Airlie Beach.",
-    "locationName": "K’gari (Lake McKenzie & Maheno Wreck) → Nachtbus",
+    "locationName": "Hervey Bay Greyhound Bus Stop",
     "coords": [
-      -25.449,
-      153.058
+      -25.2986,
+      152.8535
     ],
     "region": "K'gari",
     "transportMode": "walk",
@@ -2171,13 +2175,13 @@
     "dayId": "day-13",
     "dayNumber": 13,
     "time": "10:00",
-    "title": "Frühes Check-in / Gepäckabgabe Whitsunday Terraces Resort",
+    "title": "Frühes Check-in / Gepäckabgabe Coral Sea Vista Apartments",
     "category": "transport",
     "description": "Morgens Ankunft mit dem Bus in Airlie Beach. Check-in in den Apartments, Schlaf nachholen & Strandlagune erkunden. Am Nachmittag: Spektakulärer Helikopter- / Rundflug über das berühmte Heart Reef & Whitehaven Beach.",
-    "locationName": "Hervey Bay / Airlie Beach",
+    "locationName": "Coral Sea Vista Apartments, Airlie Beach",
     "coords": [
-      -20.2675,
-      148.718
+      -20.27514,
+      148.72339
     ],
     "region": "Hervey Bay / Airlie Beach",
     "transportMode": "car",
@@ -2254,10 +2258,10 @@
     "title": "Wanderung zum weltberühmten Hill Inlet Aussichtspunkt",
     "category": "sightseeing",
     "description": "Ganztägige Katamaran-Tour zu den Whitsunday Islands: Traumstrand Whitehaven Beach, Hill Inlet Lookout (Sandwirbel) & Schnorcheln am Great Barrier Reef.",
-    "locationName": "Hill Inlet Lookout & Whitehaven Beach",
+    "locationName": "Hill Inlet Lookout",
     "coords": [
-      -20.285,
-      149.038
+      -20.2459,
+      149.0205
     ],
     "region": "islands",
     "transportMode": "walk",
@@ -2294,10 +2298,10 @@
     "title": "Rückkehr nach Airlie Beach & Sundowner Drinks",
     "category": "restaurant",
     "description": "Ganztägige Katamaran-Tour zu den Whitsunday Islands: Traumstrand Whitehaven Beach, Hill Inlet Lookout (Sandwirbel) & Schnorcheln am Great Barrier Reef.",
-    "locationName": "Hill Inlet Lookout & Whitehaven Beach",
+    "locationName": "Coral Sea Marina, Airlie Beach",
     "coords": [
-      -20.285,
-      149.038
+      -20.2675,
+      148.718
     ],
     "region": "islands",
     "transportMode": "walk",
@@ -2394,10 +2398,10 @@
     "title": "Flug Jetstar JQ 843 direkt nach Melbourne (MEL)",
     "category": "flight",
     "description": "Flug von Proserpine (PPP) nach Melbourne (MEL). Check-in in den Docklands und erster Abend am beleuchteten Yarra River, Federation Square & Southbank.",
-    "locationName": "Melbourne Southbank & Yarra River",
+    "locationName": "Melbourne Tullamarine Airport (MEL)",
     "coords": [
-      -37.8205,
-      144.964
+      -37.669,
+      144.841
     ],
     "region": "melbourne",
     "transportMode": "plane",
@@ -2411,13 +2415,13 @@
     "dayId": "day-16",
     "dayNumber": 16,
     "time": "15:00",
-    "title": "Check-in Hotel The Sebel Melbourne Docklands",
+    "title": "Check-in Vibe Hotel Melbourne Docklands",
     "category": "transport",
     "description": "Flug von Proserpine (PPP) nach Melbourne (MEL). Check-in in den Docklands und erster Abend am beleuchteten Yarra River, Federation Square & Southbank.",
-    "locationName": "Melbourne Southbank & Yarra River",
+    "locationName": "Vibe Hotel Melbourne Docklands",
     "coords": [
-      -37.8205,
-      144.964
+      -37.81498,
+      144.93802
     ],
     "region": "melbourne",
     "transportMode": "car",
@@ -2456,10 +2460,10 @@
     "description": "Graffiti-Laneways (Hosier Lane, AC/DC Lane), weltberühmte Café-Kultur, Queen Victoria Market, Royal Botanic Gardens. Abends: Sonnenuntergang & Zwergpinguine am St. Kilda Pier.",
     "locationName": "Vibe Hotel Docklands",
     "coords": [
-      -37.816,
-      144.938
+      -37.81498,
+      144.93802
     ],
-    "region": "Great Ocean Road",
+    "region": "Melbourne",
     "transportMode": "train",
     "durationMinutes": 270,
     "isCompleted": false,
@@ -2694,10 +2698,10 @@
     "title": "Check-out & Transfer zum Flughafen Melbourne Tullamarine (MEL)",
     "category": "flight",
     "description": "Letzter Aussie-Flat-White am Morgen, Transfer zum Flughafen Melbourne Tullamarine (MEL) und Rückflug nach Wien. Ende eines unvergesslichen Abenteuers!",
-    "locationName": "Melbourne",
+    "locationName": "Vibe Hotel Melbourne Docklands",
     "coords": [
-      -37.8304,
-      144.98
+      -37.81498,
+      144.93802
     ],
     "region": "Melbourne",
     "transportMode": "plane",
@@ -2808,8 +2812,8 @@
       "id": 6,
       "region": "byron",
       "coords": [
-        -28.6384,
-        153.6366
+        -28.63855,
+        153.63634
       ]
     },
     {
@@ -2976,8 +2980,8 @@
       "id": 18,
       "region": "islands",
       "coords": [
-        -20.285,
-        149.038
+        -20.2459,
+        149.0205
       ]
     },
     {
@@ -3136,7 +3140,10 @@
       "type": "hotel",
       "priceAud": 0,
       "priceEur": 0,
-      "coords": null
+      "coords": [
+        -33.8807,
+        151.2034
+      ]
     },
     {
       "id": "acc-3",
@@ -3151,7 +3158,10 @@
       "type": "hotel",
       "priceAud": 0,
       "priceEur": 0,
-      "coords": null
+      "coords": [
+        -33.8807,
+        151.2034
+      ]
     },
     {
       "id": "acc-4",
@@ -3166,7 +3176,10 @@
       "type": "hotel",
       "priceAud": 0,
       "priceEur": 0,
-      "coords": null
+      "coords": [
+        -33.8807,
+        151.2034
+      ]
     },
     {
       "id": "acc-5",
@@ -3202,7 +3215,7 @@
       "id": "acc-7",
       "dayNumber": 7,
       "name": "Rambla at Story House",
-      "address": "Woolloongabba / Kangaroo Point, Brisbane QLD",
+      "address": "65 Linton St, Kangaroo Point QLD 4169",
       "location": "Brisbane City (QLD)",
       "checkIn": "ab 14:00 Uhr",
       "checkOut": "bis 10:00 Uhr (am 30.03.)",
@@ -3211,13 +3224,16 @@
       "type": "hotel",
       "priceAud": 0,
       "priceEur": 0,
-      "coords": null
+      "coords": [
+        -27.4842,
+        153.0382
+      ]
     },
     {
       "id": "acc-8",
       "dayNumber": 8,
       "name": "Rambla at Story House",
-      "address": "Woolloongabba / Kangaroo Point, Brisbane QLD",
+      "address": "65 Linton St, Kangaroo Point QLD 4169",
       "location": "Brisbane City (QLD)",
       "checkIn": "Bereits eingecheckt",
       "checkOut": "bis 10:00 Uhr (am 30.03.)",
@@ -3226,13 +3242,16 @@
       "type": "hotel",
       "priceAud": 0,
       "priceEur": 0,
-      "coords": null
+      "coords": [
+        -27.4842,
+        153.0382
+      ]
     },
     {
       "id": "acc-9",
       "dayNumber": 9,
       "name": "Rambla at Story House",
-      "address": "Woolloongabba / Kangaroo Point, Brisbane QLD",
+      "address": "65 Linton St, Kangaroo Point QLD 4169",
       "location": "Brisbane City (QLD)",
       "checkIn": "Bereits eingecheckt",
       "checkOut": "Morgen bis 10:00 Uhr",
@@ -3241,7 +3260,10 @@
       "type": "hotel",
       "priceAud": 0,
       "priceEur": 0,
-      "coords": null
+      "coords": [
+        -27.4842,
+        153.0382
+      ]
     },
     {
       "id": "acc-10",
@@ -3292,7 +3314,7 @@
       "id": "acc-13",
       "dayNumber": 13,
       "name": "Coral Sea Vista Apartments",
-      "address": "20 The Esplanade, Airlie Beach QLD 4802",
+      "address": "5 Hermitage Drive, Airlie Beach QLD 4802",
       "location": "Airlie Beach (QLD)",
       "checkIn": "ab 14:00 Uhr (Gepäckabgabe morgens)",
       "checkOut": "bis 10:00 Uhr (am 05.04.)",
@@ -3301,13 +3323,16 @@
       "type": "hotel",
       "priceAud": 0,
       "priceEur": 0,
-      "coords": null
+      "coords": [
+        -20.27514,
+        148.72339
+      ]
     },
     {
       "id": "acc-14",
       "dayNumber": 14,
       "name": "Coral Sea Vista Apartments",
-      "address": "20 The Esplanade, Airlie Beach QLD 4802",
+      "address": "5 Hermitage Drive, Airlie Beach QLD 4802",
       "location": "Airlie Beach (QLD)",
       "checkIn": "Bereits eingecheckt",
       "checkOut": "bis 10:00 Uhr (am 05.04.)",
@@ -3316,13 +3341,16 @@
       "type": "hotel",
       "priceAud": 0,
       "priceEur": 0,
-      "coords": null
+      "coords": [
+        -20.27514,
+        148.72339
+      ]
     },
     {
       "id": "acc-15",
       "dayNumber": 15,
       "name": "Coral Sea Vista Apartments",
-      "address": "20 The Esplanade, Airlie Beach QLD 4802",
+      "address": "5 Hermitage Drive, Airlie Beach QLD 4802",
       "location": "Airlie Beach (QLD)",
       "checkIn": "Bereits eingecheckt",
       "checkOut": "Morgen bis 10:00 Uhr",
@@ -3331,13 +3359,16 @@
       "type": "hotel",
       "priceAud": 0,
       "priceEur": 0,
-      "coords": null
+      "coords": [
+        -20.27514,
+        148.72339
+      ]
     },
     {
       "id": "acc-16",
       "dayNumber": 16,
       "name": "Vibe Hotel Melbourne Docklands",
-      "address": "44 Aquitania Way, Docklands VIC 3008",
+      "address": "443 Docklands Drive, Docklands VIC 3008",
       "location": "Melbourne Docklands (VIC)",
       "checkIn": "ab 14:00 Uhr",
       "checkOut": "bis 11:00 Uhr (am 09.04.)",
@@ -3346,13 +3377,16 @@
       "type": "hotel",
       "priceAud": 0,
       "priceEur": 0,
-      "coords": null
+      "coords": [
+        -37.81498,
+        144.93802
+      ]
     },
     {
       "id": "acc-17",
       "dayNumber": 17,
       "name": "Vibe Hotel Melbourne Docklands",
-      "address": "44 Aquitania Way, Docklands VIC 3008",
+      "address": "443 Docklands Drive, Docklands VIC 3008",
       "location": "Melbourne Docklands (VIC)",
       "checkIn": "Bereits eingecheckt",
       "checkOut": "bis 11:00 Uhr (am 09.04.)",
@@ -3361,13 +3395,16 @@
       "type": "hotel",
       "priceAud": 0,
       "priceEur": 0,
-      "coords": null
+      "coords": [
+        -37.81498,
+        144.93802
+      ]
     },
     {
       "id": "acc-18",
       "dayNumber": 18,
       "name": "Vibe Hotel Melbourne Docklands",
-      "address": "44 Aquitania Way, Docklands VIC 3008",
+      "address": "443 Docklands Drive, Docklands VIC 3008",
       "location": "Melbourne Docklands (VIC)",
       "checkIn": "Bereits eingecheckt",
       "checkOut": "bis 11:00 Uhr (am 09.04.)",
@@ -3376,13 +3413,16 @@
       "type": "hotel",
       "priceAud": 0,
       "priceEur": 0,
-      "coords": null
+      "coords": [
+        -37.81498,
+        144.93802
+      ]
     },
     {
       "id": "acc-19",
       "dayNumber": 19,
       "name": "Vibe Hotel Melbourne Docklands",
-      "address": "44 Aquitania Way, Docklands VIC 3008",
+      "address": "443 Docklands Drive, Docklands VIC 3008",
       "location": "Melbourne Docklands (VIC)",
       "checkIn": "Bereits eingecheckt",
       "checkOut": "Morgen bis 11:00 Uhr",
@@ -3391,7 +3431,10 @@
       "type": "hotel",
       "priceAud": 0,
       "priceEur": 0,
-      "coords": null
+      "coords": [
+        -37.81498,
+        144.93802
+      ]
     },
     {
       "id": "acc-20",
@@ -4347,8 +4390,8 @@
           153.0667
         ],
         [
-          -26.398,
-          153.093
+          -26.39708,
+          153.08975
         ],
         [
           -25.908,

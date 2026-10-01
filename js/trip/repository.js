@@ -10,6 +10,16 @@
   };
   const TRANSPORT_MODES = { car:'Auto', plane:'Flugzeug', ferry:'Fähre', walk:'Zu Fuß', train:'Zug', other:'Sonstiges' };
   const aliases = { tour: 'activity', beach: 'activity', hike: 'activity', food: 'restaurant', drive: 'transport', plane: 'flight' };
+  const coordinateMigrations = {
+    'act-1-3':[-33.9461,151.1772], 'act-1-4':[-33.9461,151.1772], 'act-2-2':[-33.8695,151.201],
+    'act-5-4':[[-28.6384,153.6366],[-28.6384,153.6383]], 'act-7-3':[-27.4608,153.036], 'act-12-1':[-25.449,153.058],
+    'act-12-3':[-25.449,153.058], 'act-12-4':[-25.449,153.058], 'act-12-5':[-25.449,153.058],
+    'act-13-2':[-20.2675,148.718], 'act-14-2':[-20.285,149.038], 'act-14-4':[-20.285,149.038],
+    'act-16-2':[-37.8205,144.964], 'act-16-3':[-37.8205,144.964], 'act-17-1':[-37.816,144.938],
+    'act-20-2':[-37.8304,144.98]
+  };
+  const sameCoords = (left, right) => Array.isArray(left) && Array.isArray(right) && left.length === 2 && left.every((value,index) => value === right[index]);
+  const matchesMigration = (coords, migration) => Array.isArray(migration?.[0]) ? migration.some(candidate => sameCoords(coords,candidate)) : sameCoords(coords,migration);
   const normalizeTransport = value => ({flight:'plane',transport:'car',drive:'car',boat:'ferry'}[value] || (TRANSPORT_MODES[value] ? value : 'walk'));
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
   const safeUrl = value => { try { const url = new URL(value); return ['https:', 'http:'].includes(url.protocol) ? url.href : ''; } catch { return ''; } };
@@ -120,7 +130,7 @@
         const highest = Math.max(0,...days.map(d => d.dayNumber));
         if ((Number(storage?.getItem('aus_trip_day_sequence_v1')) || 0) < highest) storage?.setItem('aus_trip_day_sequence_v1', String(highest));
         days.forEach(day => {
-          if (day.stopModelVersion === 4) return;
+          if (day.stopModelVersion === 7) return;
           changed = true;
           const geo = master.days?.find(d => d.dayNumber === day.dayNumber);
           day.region=day.region || geo?.region || geo?.location || 'Unterwegs';
@@ -128,26 +138,29 @@
           const used = new Set();
           day.activities = (day.activities || []).map((activity, i) => {
             const reference = master.activities?.find(a => a.dayNumber === day.dayNumber && a.title === activity.title);
+            const canonicalReference = reference || master.activities?.find(a => a.id === activity.id);
+            const storedCoordinates = activity.coords || (Number.isFinite(activity.latitude) && Number.isFinite(activity.longitude) ? [activity.latitude,activity.longitude] : null);
+            const migrateCoordinates = matchesMigration(storedCoordinates, coordinateMigrations[activity.id]) && canonicalReference?.coords;
             const sight = matchLocation(activity.title, sights);
             if (sight) used.add(sight.id || sight.name);
-            let position = activity.coords || reference?.coords || sight?.coords || null;
+            let position = (migrateCoordinates ? canonicalReference.coords : activity.coords) || canonicalReference?.coords || sight?.coords || null;
             if (!position && /Flughafen Wien|Wien-Schwechat/i.test(activity.title)) position = geo?.startCoords;
             if (!position && /Landung.*Sydney|Kingsford Smith/i.test(activity.title)) position = geo?.destCoords;
             if (!position) position = i === (day.activities?.length || 1)-1 ? geo?.destCoords : geo?.startCoords;
-            return normalizeStop({ ...reference, ...activity, id:activity.id || 'act-' + day.dayNumber + '-' + (i+1),
+            return normalizeStop({ ...canonicalReference, ...activity, id:activity.id || 'act-' + day.dayNumber + '-' + (i+1),
               coords:position, latitude:position?.[0] ?? activity.latitude ?? null, longitude:position?.[1] ?? activity.longitude ?? null,
-              locationName:activity.locationName || reference?.locationName || sight?.name || geo?.location || day.region || day.title,
-              region:activity.region || reference?.region || day.region || geo?.region || geo?.location,
-              transportMode:activity.transportMode || reference?.transportMode || day.transportType,
-              durationMinutes:activity.durationMinutes || reference?.durationMinutes || 60,
-              type:activity.type || reference?.category || activity.category || 'other' }, day, i, metadata?.id);
+              locationName:(migrateCoordinates ? canonicalReference.locationName : activity.locationName) || canonicalReference?.locationName || sight?.name || geo?.location || day.region || day.title,
+              region:(migrateCoordinates ? canonicalReference.region : activity.region) || canonicalReference?.region || day.region || geo?.region || geo?.location,
+              transportMode:activity.transportMode || canonicalReference?.transportMode || day.transportType,
+              durationMinutes:activity.durationMinutes || canonicalReference?.durationMinutes || 60,
+              type:activity.type || canonicalReference?.category || activity.category || 'other' }, day, i, metadata?.id);
           });
           sights.filter(s => !used.has(s.id || s.name)).forEach(s => {
             day.activities.push(normalizeStop({ id:'stop-' + day.id + '-' + (s.id || uid('sight')), title:s.name,
               type:'sightseeing', coords:s.coords, locationName:s.name, region:s.region || day.region, transportMode:'walk', durationMinutes:60, description:s.highlight || '', notes:s.directions || '',
               bookingUrl:s.mapsUrl || '' }, day, day.activities.length, metadata?.id));
           });
-          day.stopModelVersion = 4;
+          day.stopModelVersion = 7;
         });
         if (changed) commit(days);
         return this;
@@ -176,7 +189,7 @@
         if (!data.title?.trim() || !validDate(data.date)) throw new Error('Bitte Titel und gültiges Datum angeben.');
         const days = readDays();
         const day = { ...data, id:uid('day'), dayNumber:nextDayNumber(),
-          order:days.length, stopModelVersion:4, activities:[], sights:[], highlights:[], budgetItems:[], accommodation:null };
+          order:days.length, stopModelVersion:7, activities:[], sights:[], highlights:[], budgetItems:[], accommodation:null };
         const position=data.order==null?days.length:Number(data.order);
         if(!Number.isInteger(position)||position<0||position>days.length)throw new Error('Ungültige Tagesposition.');
         days.splice(position,0,day);commit(days); return clone(day);

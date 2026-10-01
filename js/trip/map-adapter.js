@@ -1,12 +1,17 @@
 /* Leaflet adapter: basemap, route rendering and location picking stay isolated here. */
 (function (root) {
   'use strict';
-  const TILE_URL='https://tile.openstreetmap.de/{z}/{x}/{y}.png';
-  const TILE_ATTRIBUTION='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap-Mitwirkende</a>';
+  const TILE_URL='https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+  const TILE_OPTIONS={attribution:'&copy; OpenStreetMap &copy; CARTO',subdomains:'abcd',maxZoom:20};
   const MODES={
-    car:{icon:'car-side',label:'Auto',color:'#176b87'},plane:{icon:'plane',label:'Flug',color:'#5367a6'},
-    ferry:{icon:'ship',label:'Fähre',color:'#16889c'},walk:{icon:'person-walking',label:'Zu Fuß',color:'#49765c'},
-    train:{icon:'train',label:'Zug',color:'#865a92'},other:{icon:'route',label:'Route',color:'#657386'}
+    car:{icon:'car-side',label:'Auto',color:'#007aff'},plane:{icon:'plane',label:'Flug',color:'#007aff'},
+    ferry:{icon:'ship',label:'Fähre',color:'#1687a7'},walk:{icon:'person-walking',label:'Zu Fuß',color:'#5b7184'},
+    train:{icon:'train',label:'Zug',color:'#007aff'},other:{icon:'route',label:'Route',color:'#5b7184'}
+  };
+  const CATEGORIES={
+    flight:{icon:'plane',color:'#007aff'},hotel:{icon:'hotel',color:'#af52de'},restaurant:{icon:'utensils',color:'#ff9500'},
+    sightseeing:{icon:'camera',color:'#ff3b30'},activity:{icon:'person-hiking',color:'#34c759'},event:{icon:'calendar-day',color:'#af52de'},
+    transport:{icon:'car-side',color:'#0a84ff'},train:{icon:'train',color:'#5856d6'},other:{icon:'location-dot',color:'#5b7184'}
   };
 
   root.createTripMap=function(container,onSelect,onStatus){
@@ -15,7 +20,8 @@
     const reducedMotion=()=>root.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
     const modeOf=stop=>['car','plane','ferry','walk','train'].includes(stop.transportMode)?stop.transportMode:
       ({flight:'plane',transport:'car',activity:'walk'}[stop.type]||'other');
-    const stopIcon=(stop,active)=>{const meta=MODES[modeOf(stop)];return L.divIcon({className:'trip-marker-wrap',
+    const markerMeta=stop=>CATEGORIES[stop.type]||CATEGORIES[stop.category]||MODES[modeOf(stop)]||CATEGORIES.other;
+    const stopIcon=(stop,active)=>{const meta=markerMeta(stop);return L.divIcon({className:'trip-marker-wrap',
       html:`<span class="trip-marker ${active?'is-active':''}" style="--marker-color:${meta.color}"><i class="fa-solid fa-${meta.icon}" aria-hidden="true"></i></span>`,
       iconSize:[40,40],iconAnchor:[20,20]});};
     const pickerIcon=()=>L.divIcon({className:'trip-marker-wrap',html:'<span class="trip-marker trip-picker-marker is-active"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></span>',iconSize:[44,44],iconAnchor:[22,40]});
@@ -23,9 +29,9 @@
     function init(){
       if(map)return true;
       if(!root.L){onStatus('error','Die Kartenbibliothek konnte nicht geladen werden. Tagesplan und Bearbeitung bleiben verfügbar.');return false;}
-      map=L.map(container,{zoomControl:false,scrollWheelZoom:true,minZoom:2,maxZoom:19,preferCanvas:true}).setView([-28.5,149],5);
+      map=L.map(container,{zoomControl:false,scrollWheelZoom:true,minZoom:2,maxZoom:20,preferCanvas:true}).setView([-28.5,149],5);
       routeLayer=L.featureGroup().addTo(map);markerLayer=L.featureGroup().addTo(map);pickerLayer=L.featureGroup().addTo(map);
-      tileLayer=L.tileLayer(TILE_URL,{attribution:TILE_ATTRIBUTION,maxZoom:19}).addTo(map);
+      tileLayer=L.tileLayer(TILE_URL,TILE_OPTIONS).addTo(map);
       let loaded=false;
       tileLayer.on('loading',()=>{if(!loaded)onStatus('loading','Karte wird geladen …');});
       tileLayer.on('tileload',()=>{loaded=true;onStatus('ready','');});
@@ -53,7 +59,7 @@
     }
     function drawSegment(from,to,mode){
       const meta=MODES[mode]||MODES.other,points=mode==='plane'?curvedFlight(from,to):mode==='ferry'?wavyFerry(from,to):[from,to];
-      L.polyline(points,{className:`trip-route-line is-${mode}`,color:meta.color,weight:mode==='walk'?4:5,opacity:.82,lineCap:'round',dashArray:mode==='plane'?'10 12':mode==='walk'?'2 9':null,interactive:true})
+      L.polyline(points,{className:`trip-route-line is-${mode}`,color:meta.color,weight:mode==='walk'?4:5,opacity:.8,lineCap:'round',lineJoin:'round',dashArray:mode==='plane'?'6, 8':mode==='walk'?'2, 9':null,interactive:true})
         .bindTooltip(meta.label,{sticky:true}).addTo(routeLayer);
       const middle=points[Math.floor(points.length/2)];
       L.marker(middle,{interactive:false,keyboard:false,icon:L.divIcon({className:'trip-route-mode-wrap',html:`<span class="trip-route-mode" style="--route-color:${meta.color}" aria-hidden="true"><i class="fa-solid fa-${meta.icon}"></i></span>`,iconSize:[30,30],iconAnchor:[15,15]})}).addTo(routeLayer);
@@ -91,8 +97,11 @@
           const located=group.stops.filter(model.coords);
           located.forEach((stop,index)=>{
             const marker=L.marker([stop.latitude,stop.longitude],{icon:stopIcon(stop,stop.id===activeId),title:`Tag ${group.number} · Stopp ${index+1}: ${stop.title}`,keyboard:true}).addTo(markerLayer);
-            marker.bindTooltip(`<strong>${model.escape(stop.title)}</strong><br>${model.escape(stop.locationName||stop.region||'')}`,{direction:'top',offset:[0,-14]});
-            marker.on('click',event=>{event.originalEvent?.stopPropagation();onSelect(stop.id);});
+            const meta=markerMeta(stop),location=model.escape(stop.locationName||stop.region||'Standort');
+            marker.bindPopup(`<article class="trip-map-popup"><span class="trip-map-popup-label"><i class="fa-solid fa-${meta.icon}" aria-hidden="true"></i> Tag ${group.number} · Stopp ${index+1}</span><strong>${model.escape(stop.title)}</strong><span class="trip-map-popup-location"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> ${location}</span></article>`,{offset:[0,-12],closeButton:false});
+            const activate=event=>{event.originalEvent?.stopPropagation();onSelect(stop.id);};
+            marker.on('click',activate);
+            marker.on('keypress',event=>{if(['Enter',' '].includes(event.originalEvent?.key)||[13,32].includes(event.originalEvent?.keyCode))activate(event);});
             markers.set(stop.id,{marker,stop});
             if(index>0){const previous=located[index-1];drawSegment([previous.latitude,previous.longitude],[stop.latitude,stop.longitude],modeOf(stop));}
           });
@@ -103,7 +112,7 @@
         markers.forEach(({marker,stop},key)=>marker.setIcon(stopIcon(stop,key===id)));
         const entry=markers.get(id);if(!entry||!map)return;
         map.setView(entry.marker.getLatLng(),Math.max(map.getZoom(),13),{animate:!reducedMotion()});
-        map.panBy(container.clientWidth<760?[0,100]:[-Math.min(container.clientWidth*.2,260),0],{animate:false});entry.marker.openTooltip();
+        map.panBy(container.clientWidth<760?[0,100]:[-Math.min(container.clientWidth*.2,260),0],{animate:false});entry.marker.openPopup();
       },
       startPicking(initial,onChange){
         if(!init())return false;

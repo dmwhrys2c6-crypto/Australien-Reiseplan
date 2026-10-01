@@ -342,10 +342,31 @@ body.is-home .mobile-bottom-nav { display: none; }
 .trip-day-card { width: 100%; color: var(--glass-text); }
 .trip-day-card-date { color: var(--glass-text); }
 .trip-marker {
-  width: 40px; height: 40px; color: var(--marker-color); background: rgba(255,255,255,.94);
-  border: 1px solid rgba(255,255,255,.9); box-shadow: 0 5px 16px rgba(32,48,66,.2);
+  width: 40px; height: 40px; color: var(--marker-color); background: rgba(255,255,255,.96);
+  border: 1.5px solid rgba(255,255,255,.8); box-shadow: 0 4px 14px rgba(0,0,0,.16);
 }
-.trip-marker.is-active { transform: scale(1.16); outline: 4px solid color-mix(in srgb, var(--marker-color) 18%, transparent); }
+.trip-marker::after {
+  content: ''; position: absolute; inset: -7px; border: 2px solid color-mix(in srgb, var(--marker-color) 34%, transparent);
+  border-radius: 50%; opacity: 0; transform: scale(.72); pointer-events: none;
+}
+.trip-marker.is-active { transform: scale(1.16); outline: 3px solid color-mix(in srgb, var(--marker-color) 16%, transparent); }
+.trip-marker.is-active::after { animation: tripMarkerPulse 1.8s ease-out infinite; }
+@keyframes tripMarkerPulse {
+  0% { opacity: .68; transform: scale(.72); }
+  72%, 100% { opacity: 0; transform: scale(1.18); }
+}
+.trip-workspace .leaflet-popup-content-wrapper {
+  color: var(--glass-text); background: rgba(255,255,255,.85); border: 1px solid rgba(255,255,255,.6);
+  border-radius: 16px; box-shadow: 0 10px 30px rgba(26,42,58,.18);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+}
+.trip-workspace .leaflet-popup-content { margin: 0; min-width: 190px; }
+.trip-workspace .leaflet-popup-tip-container { display: none; }
+.trip-map-popup { display: grid; gap: 6px; padding: 13px 15px; font-family: var(--font-body); }
+.trip-map-popup strong { color: #172535; font-size: .78rem; line-height: 1.35; }
+.trip-map-popup-label { color: var(--marker-color,#007aff); font-size: .58rem; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; }
+.trip-map-popup-location { color: #607284; font-size: .64rem; line-height: 1.4; }
+.trip-map-popup :is(.trip-map-popup-label,.trip-map-popup-location) i { width: 14px; text-align: center; }
 .trip-picker-marker { color: var(--glass-accent); border-radius: 50% 50% 50% 8px; transform: rotate(-45deg); }
 .trip-picker-marker i { transform: rotate(45deg); }
 .trip-route-mode {
@@ -380,3 +401,4 @@ body.is-home .mobile-bottom-nav { display: none; }
   .trip-location-picker-actions { grid-column: 1 / -1; justify-content: flex-end; }
   .trip-region { padding: 12px; }
 }
+@media (prefers-reduced-motion: reduce) { .trip-marker.is-active::after { animation: none; opacity: .5; transform: scale(1); } }
