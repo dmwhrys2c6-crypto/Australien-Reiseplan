@@ -637,7 +637,7 @@
         <!-- TAB PANEL 2: PACKLISTE -->
         <div id="org-panel-packing" class="org-tab-panel subpage-glass-panel" role="tabpanel" style="display:none;">
           <!-- Fortschrittsanzeige -->
-          <div class="packing-progress-card">
+          <div class="packing-progress-card liquid-glass-card">
             <div class="packing-progress-header">
               <div class="packing-progress-title">
                 <i class="fa-solid fa-list-check" style="color:var(--primary);"></i>
@@ -2976,11 +2976,6 @@
 
   </main>
 
-  <footer
-    style="text-align:center; padding:2rem 1rem 6rem; color:var(--text-muted); font-size:0.85rem; border-top:1px solid var(--border-color); margin-top:4rem;">
-    <p>Gute Reise! 🦘🇦🇺 Erstellt für den 4-Personen Australien Roadtrip 2027.</p>
-  </footer>
-
   <!-- =========================================================================
        MODALS & OVERLAYS
        ========================================================================= -->
@@ -3073,8 +3068,17 @@
           </div>
 
           <div class="org-form-group">
-            <label for="bkg-form-cost" class="org-form-label">Kosten (Gesamt für Gruppe)</label>
+            <label for="bkg-form-cost" class="org-form-label">Preis</label>
             <input type="number" id="bkg-form-cost" class="org-form-input" placeholder="0" min="0" step="0.01">
+          </div>
+
+          <div class="org-form-group">
+            <label for="bkg-form-price-type" class="org-form-label">Preisberechnung (4 Personen)</label>
+            <select id="bkg-form-price-type" class="org-form-select">
+              <option value="total" selected>Gesamtkosten</option>
+              <option value="per_person">Pro Person</option>
+              <option value="two_persons">Für 2 Personen</option>
+            </select>
           </div>
 
           <div class="org-form-group">
@@ -3356,16 +3360,18 @@
     role="dialog" aria-modal="true" aria-labelledby="global-search-input" style="display:none;">
     <div class="search-modal-container">
       <div class="search-modal-header">
-        <div class="search-input-wrap">
-          <i class="fa-solid fa-magnifying-glass search-input-icon"></i>
-          <input type="text" id="global-search-input" class="search-modal-input"
-            placeholder="Suche nach Reisetag, Ort, Aktivität, Hotel, Buchung, Journal..." autocomplete="off"
-            spellcheck="false" oninput="onGlobalSearchInput(this.value)" onkeydown="onGlobalSearchKeydown(event)">
-          <button type="button" id="search-clear-btn" class="search-clear-btn" onclick="clearGlobalSearch()"
-            style="display:none;" aria-label="Eingabe löschen">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
+        <form id="global-search-form" class="global-search-form" onsubmit="event.preventDefault(); return false;" style="display:flex; flex:1; align-items:center;">
+          <div class="search-input-wrap" style="width:100%;">
+            <i class="fa-solid fa-magnifying-glass search-input-icon"></i>
+            <input type="text" id="global-search-input" class="search-modal-input"
+              placeholder="Suche nach Reisetag, Ort, Aktivität, Hotel, Buchung, Journal..." autocomplete="off"
+              spellcheck="false" oninput="onGlobalSearchInput(this.value)" onkeydown="onGlobalSearchKeydown(event)">
+            <button type="button" id="search-clear-btn" class="search-clear-btn" onclick="clearGlobalSearch()"
+              style="display:none;" aria-label="Eingabe löschen">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </form>
         <button type="button" class="search-close-btn" onclick="closeGlobalSearch()" aria-label="Suche schließen">
           <kbd>ESC</kbd>
         </button>

@@ -13,19 +13,29 @@
 
 :root {
   /* Liquid Glass Tokens derived directly from the Startseite Dock */
-  --glass-bg: rgba(245, 249, 255, 0.72);
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.45);
+  --glass-blur: blur(20px) saturate(170%);
+  --glass-shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
+  --glass-radius: 20px;
   --glass-bg-hover: rgba(255, 255, 255, 0.45);
-  --glass-border: rgba(255, 255, 255, 0.65);
   --glass-border-highlight: rgba(255, 255, 255, 0.85);
-  --glass-blur: blur(28px) saturate(150%);
-  --glass-shadow: 0 12px 38px rgba(0, 20, 40, 0.18);
-  --glass-radius: 22px;
   --glass-radius-panel: 28px;
+  --surface-blur: blur(28px) saturate(150%);
   --surface-overlay: linear-gradient(180deg, rgba(12, 25, 37, 0.65) 0%, rgba(12, 25, 37, 0.88) 320px, rgba(12, 25, 37, 0.96) 650px, #0c1925 100%);
   --surface-text: #ffffff;
   --surface-text-muted: rgba(255, 255, 255, 0.78);
   --pill-active-bg: #171e27;
   --pill-active-text: #ffffff;
+}
+
+.liquid-glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--glass-radius);
 }
 
 body.dark-theme {
@@ -242,12 +252,24 @@ body:not(.is-home) .bottom-nav-item.active {
   color: var(--surface-text);
 }
 
-/* Organisation Canvas: Coastal eucalyptus landscape */
-#view-organisation .subpage-canvas {
-  background-image:
-    var(--surface-overlay),
-    radial-gradient(ellipse at 50% 0%, rgba(35, 75, 110, 0.35) 0%, transparent 70%),
-    url('https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&w=2400&q=80');
+/* Organisation Canvas: Kühles Graublau/Slate */
+#organisation-tab,
+#view-organisation,
+#view-organisation .subpage-canvas,
+#organization {
+  background: radial-gradient(circle at 50% 10%, #d8e0e8 0%, #cbd5e1 100%) !important;
+}
+
+#view-organisation .subpage-headline {
+  color: #172535;
+}
+
+#view-organisation .subpage-eyebrow {
+  color: #475569;
+}
+
+#view-organisation .subpage-subline {
+  color: #334155;
 }
 
 /* Finanzen Canvas: Deep sapphire dusk sky */
@@ -432,12 +454,19 @@ body.is-management .active .org-tab-count-badge {
    5. Subtle Organisation Quick Category Filter Chips
    ------------------------------------------------------------------------- */
 .category-quick-grid.category-quick-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  display: flex !important;
+  gap: 12px !important;
+  overflow-x: auto !important;
+  padding: 8px 4px !important;
+  align-items: center !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
   margin: 0 0 20px;
-  padding: 0 0 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  border-bottom: 1px solid rgba(0, 20, 40, 0.08);
+}
+
+.category-quick-grid.category-quick-chips::-webkit-scrollbar {
+  display: none !important;
 }
 
 .category-quick-chip,
@@ -445,19 +474,22 @@ body.is-management .active .org-tab-count-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 15px;
-  min-height: 36px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  color: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  padding: 8px 16px;
+  min-height: 38px;
+  border-radius: 9999px !important;
+  background: var(--glass-bg, rgba(255, 255, 255, 0.65)) !important;
+  border: var(--glass-border, 1px solid rgba(255, 255, 255, 0.45)) !important;
+  box-shadow: var(--glass-shadow, 0 10px 30px rgba(15, 23, 42, 0.07)) !important;
+  color: #172535 !important;
+  backdrop-filter: var(--glass-blur, blur(20px) saturate(170%)) !important;
+  -webkit-backdrop-filter: var(--glass-blur, blur(20px) saturate(170%)) !important;
   font-family: var(--font-body);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.18s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .category-quick-chip .tile-icon,
@@ -1403,3 +1435,350 @@ body.dark-theme.is-management .crud-modal-card {
     font-size: 0.7rem;
   }
 }
+
+/* =========================================================================
+   AUFGABEN 1-6: LIQUID GLASS EXTENSIONS & UNIFICATION
+   ========================================================================= */
+
+/* Filter-Pills Styling & Manage Filters */
+.category-quick-chip:hover,
+.category-quick-tile:hover,
+.manage-filters .trip-day-pill:hover {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(255, 255, 255, 0.95) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.1) !important;
+}
+
+.category-quick-chip.active,
+.category-quick-tile.active,
+.manage-filters .trip-day-pill.is-active {
+  background: #171e27 !important;
+  color: #ffffff !important;
+  border-color: #171e27 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
+}
+
+.category-quick-chip.active .tile-badge,
+.category-quick-tile.active .tile-badge {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+.manage-filters {
+  display: flex !important;
+  gap: 12px !important;
+  overflow-x: auto !important;
+  padding: 8px 4px !important;
+  align-items: center !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+.manage-filters::-webkit-scrollbar {
+  display: none !important;
+}
+
+.manage-filters .trip-day-pill {
+  border-radius: 9999px !important;
+  background: var(--glass-bg, rgba(255, 255, 255, 0.65)) !important;
+  backdrop-filter: var(--glass-blur, blur(20px) saturate(170%)) !important;
+  -webkit-backdrop-filter: var(--glass-blur, blur(20px) saturate(170%)) !important;
+  border: var(--glass-border, 1px solid rgba(255, 255, 255, 0.45)) !important;
+  box-shadow: var(--glass-shadow, 0 10px 30px rgba(15, 23, 42, 0.07)) !important;
+  color: #172535 !important;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Empty State Repair */
+.manage-empty {
+  padding: 3rem 1.5rem !important;
+  text-align: center !important;
+  margin: 1.5rem 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.manage-empty button,
+.manage-empty .trip-primary-button,
+.manage-empty .trip-secondary-button {
+  margin: 1.25rem auto 0 auto !important;
+}
+
+/* Layout Stretching (Eliminating Bottom Gap) */
+body.is-management .app-main,
+#view-organisation,
+#view-organisation .subpage-canvas,
+#organization {
+  min-height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+#org-panel-bookings,
+#manage-bookings,
+#manage-bookings .manage-list {
+  flex: 1 0 auto !important;
+}
+
+/* Modals Detailansicht Liquid Glass */
+#manage-editor.trip-editor,
+.trip-editor,
+.org-modal {
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  background: rgba(255, 255, 255, 0.75) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15) !important;
+}
+
+.manage-detail-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 8px 0 16px 0;
+}
+
+.manage-detail-price-prominent {
+  font-family: var(--font-heading);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: #172535;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.manage-detail-price-badge {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #006d68;
+  background: rgba(0, 109, 104, 0.1);
+  border: 1px solid rgba(0, 109, 104, 0.22);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+#manage-detail-actions {
+  display: flex !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+  justify-content: flex-end !important;
+  padding: 16px 24px calc(16px + env(safe-area-inset-bottom)) !important;
+}
+
+/* Modal Inputs & Buttons Liquid Glass */
+.trip-editor-fields input,
+.trip-editor-fields textarea,
+.trip-editor-fields select,
+.org-form-input,
+.org-form-select,
+.org-form-textarea {
+  background: rgba(255, 255, 255, 0.65) !important;
+  border: 1px solid rgba(0, 20, 40, 0.14) !important;
+  border-radius: 14px !important;
+  padding: 10px 14px !important;
+  font-family: var(--font-body) !important;
+  font-size: 0.82rem !important;
+  color: #172535 !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03) !important;
+  transition: all 0.18s ease !important;
+}
+
+.trip-editor-fields input:focus,
+.trip-editor-fields textarea:focus,
+.trip-editor-fields select:focus,
+.org-form-input:focus,
+.org-form-select:focus,
+.org-form-textarea:focus {
+  outline: none !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: #171e27 !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08) !important;
+}
+
+.trip-primary-button,
+.btn-org-action.primary {
+  border-radius: 9999px !important;
+  background: #171e27 !important;
+  color: #ffffff !important;
+  border: 1px solid #171e27 !important;
+  padding: 10px 20px !important;
+  font-family: var(--font-body) !important;
+  font-weight: 600 !important;
+  font-size: 0.82rem !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15) !important;
+  transition: all 0.18s ease !important;
+  cursor: pointer !important;
+}
+
+.trip-primary-button:hover,
+.btn-org-action.primary:hover {
+  background: #334155 !important;
+  border-color: #334155 !important;
+  transform: translateY(-1px) !important;
+}
+
+.trip-secondary-button,
+.btn-org-action.secondary {
+  border-radius: 9999px !important;
+  background: rgba(255, 255, 255, 0.65) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(0, 20, 40, 0.15) !important;
+  color: #172535 !important;
+  padding: 10px 18px !important;
+  font-family: var(--font-body) !important;
+  font-weight: 500 !important;
+  font-size: 0.82rem !important;
+  transition: all 0.18s ease !important;
+  cursor: pointer !important;
+}
+
+.trip-secondary-button:hover,
+.btn-org-action.secondary:hover {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(0, 20, 40, 0.25) !important;
+  transform: translateY(-1px) !important;
+}
+
+.trip-danger-button,
+.btn-org-action.danger {
+  border-radius: 9999px !important;
+  background: rgba(239, 68, 68, 0.1) !important;
+  border: 1px solid rgba(239, 68, 68, 0.25) !important;
+  color: #dc2626 !important;
+  padding: 10px 18px !important;
+  font-family: var(--font-body) !important;
+  font-weight: 600 !important;
+  font-size: 0.82rem !important;
+  transition: all 0.18s ease !important;
+  cursor: pointer !important;
+}
+
+.trip-danger-button:hover,
+.btn-org-action.danger:hover {
+  background: rgba(239, 68, 68, 0.2) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Interactive Packing List visual unification with Buchungen & Voucher */
+.packing-progress-card {
+  background: var(--glass-bg, rgba(255, 255, 255, 0.65)) !important;
+  backdrop-filter: var(--glass-blur, blur(20px) saturate(170%)) !important;
+  -webkit-backdrop-filter: var(--glass-blur, blur(20px) saturate(170%)) !important;
+  border: var(--glass-border, 1px solid rgba(255, 255, 255, 0.45)) !important;
+  box-shadow: var(--glass-shadow, 0 10px 30px rgba(15, 23, 42, 0.07)) !important;
+  border-radius: var(--glass-radius, 20px) !important;
+  padding: 22px 24px !important;
+  margin-bottom: 22px !important;
+}
+
+.packing-progress-track {
+  height: 10px !important;
+  border-radius: 999px !important;
+  background: rgba(0, 20, 40, 0.06) !important;
+  overflow: hidden !important;
+  margin: 12px 0 10px !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+}
+
+.packing-progress-fill {
+  height: 100% !important;
+  border-radius: 999px !important;
+  background: linear-gradient(90deg, #0284c7 0%, #0ea5e9 100%) !important;
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.4) !important;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.packing-cat-section {
+  margin-bottom: 1.5rem !important;
+}
+
+.packing-cat-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 10px !important;
+  padding: 0 4px !important;
+}
+
+.packing-cat-name {
+  font-family: var(--font-heading) !important;
+  font-size: 1.05rem !important;
+  font-weight: 600 !important;
+  color: #172535 !important;
+}
+
+.packing-item-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 14px !important;
+  background: rgba(255, 255, 255, 0.65) !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  border-radius: 18px !important;
+  padding: 12px 18px !important;
+  margin-bottom: 8px !important;
+  box-shadow: 0 2px 10px rgba(0, 20, 40, 0.03) !important;
+  transition: all 0.18s ease !important;
+}
+
+.packing-item-row:hover {
+  background: rgba(255, 255, 255, 0.94) !important;
+  box-shadow: 0 6px 20px rgba(0, 20, 40, 0.08) !important;
+  transform: translateY(-1px) !important;
+}
+
+.packing-item-row.is-packed {
+  opacity: 0.65 !important;
+  background: rgba(255, 255, 255, 0.45) !important;
+}
+
+.packing-item-title {
+  font-family: var(--font-body) !important;
+  font-size: 0.88rem !important;
+  font-weight: 600 !important;
+  color: #172535 !important;
+}
+
+.packing-item-meta {
+  font-size: 0.72rem !important;
+  color: #5a6e82 !important;
+  display: flex !important;
+  gap: 6px !important;
+  align-items: center !important;
+}
+
+.packing-cb-box {
+  width: 22px !important;
+  height: 22px !important;
+  border-radius: 8px !important;
+  border: 1.5px solid rgba(0, 20, 40, 0.2) !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.18s ease !important;
+}
+
+.packing-cb-input:checked ~ .packing-cb-box {
+  background: #171e27 !important;
+  border-color: #171e27 !important;
+  color: #ffffff !important;
+}
+

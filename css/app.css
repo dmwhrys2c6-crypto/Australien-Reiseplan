@@ -4,6 +4,12 @@
    ========================================================================= */
 
 :root {
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.45);
+  --glass-blur: blur(20px) saturate(170%);
+  --glass-shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
+  --glass-radius: 20px;
+
   --primary: #006d68;
   --primary-dark: #004b47;
   --primary-light: #e6f4f3;
@@ -32,6 +38,15 @@
   --radius-xl: 20px;
   --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.liquid-glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--glass-radius);
 }
 
 body.dark-theme {

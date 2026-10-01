@@ -4109,7 +4109,13 @@ const localStorage = window.Persistence.wrap(window.localStorage);
 
     // Von der Karte zum Reiseplan: Öffnet den passenden Tag, scrollt dorthin und hebt Tag + Spot hervor
     function jumpToDayAndHighlight(dayNum, spotId) {
-      if (window.TripPage) { showView('reise'); window.TripPage.selectDayNumber(dayNum); return; }
+      if (window.TripPage) {
+        showView('reise');
+        window.TripPage.selectDayNumber(dayNum);
+        const dayEl = document.getElementById('day-' + dayNum) || document.getElementById('trip-day-' + dayNum);
+        if (dayEl) dayEl.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
       isSyncingFromMap = true;
       if (typeof showView === 'function') {
         showView('reise', true);
@@ -6701,17 +6707,26 @@ const localStorage = window.Persistence.wrap(window.localStorage);
     };
 
     function loadUserBookings() {
+      function migrateBookings(list) {
+        return (list || []).map(b => {
+          const priceType = b.priceType || 'total';
+          const rawPrice = parseFloat(b.cost ?? b.price) || 0;
+          const totalAmount = b.totalAmount !== undefined ? b.totalAmount : (priceType === 'per_person' ? rawPrice * 4 : (priceType === 'two_persons' ? rawPrice * 2 : rawPrice));
+          const perPersonAmount = b.perPersonAmount !== undefined ? b.perPersonAmount : (totalAmount / 4);
+          return { ...b, priceType, totalAmount, perPersonAmount };
+        });
+      }
       try {
         const raw = localStorage.getItem(BOOKINGS_STORAGE_KEY);
         if (raw !== null) {
           const parsed = JSON.parse(raw);
           if (Array.isArray(parsed)) {
-            userBookings = parsed;
+            userBookings = migrateBookings(parsed);
             return;
           }
         }
       } catch (e) { }
-      userBookings = JSON.parse(JSON.stringify(DEFAULT_BOOKINGS_LIST));
+      userBookings = migrateBookings(JSON.parse(JSON.stringify(DEFAULT_BOOKINGS_LIST)));
       if (!saveUserBookings()) return;
     }
 
@@ -6868,8 +6883,8 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         const statusIcon = b.status === 'confirmed' ? 'fa-circle-check' : (b.status === 'pending' ? 'fa-clock' : 'fa-lightbulb');
 
         const currencySymbol = b.currency === 'AUD' ? 'A$' : '€';
-        const costVal = parseFloat(b.cost) || 0;
-        const perPerson = Math.round((costVal / 4) * 100) / 100;
+        const costVal = parseFloat(b.totalAmount ?? b.cost ?? b.price) || 0;
+        const perPerson = b.perPersonAmount !== undefined ? b.perPersonAmount : Math.round((costVal / 4) * 100) / 100;
 
         let dateDisplay = b.date || '';
         if (b.date && b.date.includes('-')) {
@@ -7039,6 +7054,8 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           document.getElementById('bkg-form-time').value = b.time || '';
           document.getElementById('bkg-form-location').value = b.location || '';
           document.getElementById('bkg-form-cost').value = b.cost !== undefined ? b.cost : '';
+          const priceTypeEl = document.getElementById('bkg-form-price-type');
+          if (priceTypeEl) priceTypeEl.value = b.priceType || 'total';
           document.getElementById('bkg-form-currency').value = b.currency || 'EUR';
           document.getElementById('bkg-form-status').value = b.status || 'confirmed';
           document.getElementById('bkg-form-link').value = b.link || '';
@@ -7057,6 +7074,8 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         document.getElementById('bkg-form-day').value = 0;
         document.getElementById('bkg-form-status').value = 'confirmed';
         document.getElementById('bkg-form-currency').value = 'EUR';
+        const priceTypeEl = document.getElementById('bkg-form-price-type');
+        if (priceTypeEl) priceTypeEl.value = 'total';
         if (delBtn) {
           delBtn.style.display = 'none';
           delete delBtn.dataset.bookingId;
@@ -7086,7 +7105,11 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       const date = document.getElementById('bkg-form-date').value;
       const time = document.getElementById('bkg-form-time').value;
       const location = document.getElementById('bkg-form-location').value.trim();
-      const cost = parseFloat(document.getElementById('bkg-form-cost').value) || 0;
+      const priceType = document.getElementById('bkg-form-price-type')?.value || 'total';
+      const rawCost = parseFloat(document.getElementById('bkg-form-cost').value) || 0;
+      const totalAmount = priceType === 'per_person' ? rawCost * 4 : (priceType === 'two_persons' ? rawCost * 2 : rawCost);
+      const perPersonAmount = totalAmount / 4;
+      const cost = totalAmount;
       const currency = document.getElementById('bkg-form-currency').value || 'EUR';
       const status = document.getElementById('bkg-form-status').value || 'confirmed';
       const link = document.getElementById('bkg-form-link').value.trim();
@@ -7103,14 +7126,14 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         if (idx !== -1) {
           userBookings[idx] = {
             ...userBookings[idx],
-            category, dayNum, name, provider, bookingRef, date, time, location, cost, currency, status, link, notes
+            category, dayNum, name, provider, bookingRef, date, time, location, priceType, cost, totalAmount, perPersonAmount, currency, status, link, notes
           };
         }
       } else {
         // Neu anlegen
         const newBooking = {
           id: 'bkg-custom-' + Date.now(),
-          category, dayNum, name, provider, bookingRef, date, time, location, cost, currency, status, link, notes
+          category, dayNum, name, provider, bookingRef, date, time, location, priceType, cost, totalAmount, perPersonAmount, currency, status, link, notes
         };
         userBookings.unshift(newBooking);
       }
@@ -8329,7 +8352,11 @@ const localStorage = window.Persistence.wrap(window.localStorage);
             title: `Tag ${d.day}: ${d.title}`,
             subtitle: `${d.date} · ${d.location} · ${d.distance}`,
             keywords: `${d.start} ${d.destination} ${d.driveTime} ${d.transportType} ${d.accommodation} ${d.activities.join(' ')}`,
-            action: () => jumpToDayAndHighlight(d.day)
+            action: () => {
+              jumpToDayAndHighlight(d.day);
+              const target = document.getElementById('day-' + d.day) || document.getElementById('trip-day-' + d.day);
+              if (target) target.scrollIntoView({ behavior: 'smooth' });
+            }
           });
         });
       }
@@ -8364,6 +8391,8 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           action: () => {
             if (typeof focusDayOnMap === 'function') focusDayOnMap(p.day);
             jumpToDayAndHighlight(p.day);
+            const target = document.getElementById('day-' + p.day) || document.getElementById('trip-day-' + p.day);
+            if (target) target.scrollIntoView({ behavior: 'smooth' });
           }
         });
       });
@@ -8382,7 +8411,11 @@ const localStorage = window.Persistence.wrap(window.localStorage);
                 title: act,
                 subtitle: `Tag ${d.day} (${d.date}) · ${d.location}`,
                 keywords: `${act} ${d.title} ${d.location}`,
-                action: () => jumpToDayAndHighlight(d.day)
+                action: () => {
+                  jumpToDayAndHighlight(d.day);
+                  const target = document.getElementById('day-' + d.day) || document.getElementById('trip-day-' + d.day);
+                  if (target) target.scrollIntoView({ behavior: 'smooth' });
+                }
               });
             });
           }
@@ -8403,6 +8436,8 @@ const localStorage = window.Persistence.wrap(window.localStorage);
             keywords: `${b.name} ${b.provider || ''} ${b.bookingRef || ''} ${b.location || ''} ${b.notes || ''} ${b.category || ''}`,
             action: () => {
               openBookingsForDay(b.dayNum || 0);
+              const target = document.getElementById('booking-card-' + b.id) || document.getElementById('manage-bookings') || document.getElementById('organization');
+              if (target) target.scrollIntoView({ behavior: 'smooth' });
             }
           });
         });
@@ -8433,6 +8468,8 @@ const localStorage = window.Persistence.wrap(window.localStorage);
             const booking = window.ManagementPage?.repo?.get('booking').find(b => b.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(hotelName));
             if (booking) window.ManagementPage.openEntity('booking', booking.id);
             else openBookingsForDay(h.day);
+            const target = document.getElementById('manage-editor') || document.getElementById('organization');
+            if (target) target.scrollIntoView({ behavior: 'smooth' });
           }
         });
       });
@@ -8451,7 +8488,11 @@ const localStorage = window.Persistence.wrap(window.localStorage);
               title: `Journal Tag ${j.day}: ${j.title || 'Tagebucheintrag'}`,
               subtitle: `${j.mood ? j.mood + ' · ' : ''}${(j.text || '').substring(0, 75)}...`,
               keywords: `${j.title} ${j.text || ''} ${j.notes || ''} ${j.specialExp || ''} ${(j.highlights || []).join(' ')}`,
-              action: () => jumpToJournalDay(j.day)
+              action: () => {
+                jumpToJournalDay(j.day);
+                const target = document.getElementById('journal') || document.getElementById('view-erlebnisse');
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+              }
             });
           }
         });
@@ -8470,7 +8511,11 @@ const localStorage = window.Persistence.wrap(window.localStorage);
             title: p.name,
             subtitle: `${p.quantity || '1x'} · ${p.note ? p.note : (isDoc ? 'Reisedokument' : 'Pack-Gegenstand')}`,
             keywords: `${p.name} ${p.note || ''} ${p.category || ''}`,
-            action: () => openPackingList(p.category)
+            action: () => {
+              openPackingList(p.category);
+              const target = document.getElementById('org-tab-content-packing') || document.getElementById('organization');
+              if (target) target.scrollIntoView({ behavior: 'smooth' });
+            }
           });
         });
       }
@@ -8644,7 +8689,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       container.innerHTML = results.map((item, idx) => {
         const highlightedTitle = highlightSearchTerm(item.title, queryStr);
         return `
-          <div class="search-result-item" id="search-item-${idx}" onclick="executeSearchResult(${idx})" role="option" aria-selected="false">
+          <div class="search-result-item" id="search-item-${idx}" onclick="executeSearchResult(${idx}, event)" role="option" aria-selected="false">
             <div class="search-result-icon ${item.iconClass || ''}">
               <i class="fa-solid ${item.icon || 'fa-circle-dot'}"></i>
             </div>
@@ -8683,14 +8728,22 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       }
     }
 
-    function executeSearchResult(index) {
+    function executeSearchResult(index, event) {
+      if (event) {
+        if (typeof event.preventDefault === 'function') event.preventDefault();
+        if (typeof event.stopPropagation === 'function') event.stopPropagation();
+      }
       const item = currentRenderedSearchResults[index];
       if (!item) return;
 
       closeGlobalSearch();
 
       if (typeof item.action === 'function') {
-        item.action();
+        try {
+          item.action();
+        } catch (err) {
+          console.error('Fehler beim Ausführen der Suchaktion:', err);
+        }
       }
     }
 
@@ -8711,9 +8764,9 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       } else if (event.key === 'Enter') {
         event.preventDefault();
         if (activeSearchIndex >= 0 && activeSearchIndex < currentRenderedSearchResults.length) {
-          executeSearchResult(activeSearchIndex);
+          executeSearchResult(activeSearchIndex, event);
         } else if (currentRenderedSearchResults.length > 0) {
-          executeSearchResult(0);
+          executeSearchResult(0, event);
         }
       } else if (event.key === 'Escape') {
         closeGlobalSearch();
@@ -8780,6 +8833,17 @@ const localStorage = window.Persistence.wrap(window.localStorage);
 
     function initGlobalSearch() {
       buildGlobalSearchIndex();
+      const form = document.getElementById('global-search-form');
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          if (activeSearchIndex >= 0 && activeSearchIndex < (currentRenderedSearchResults?.length || 0)) {
+            executeSearchResult(activeSearchIndex, e);
+          } else if ((currentRenderedSearchResults?.length || 0) > 0) {
+            executeSearchResult(0, e);
+          }
+        });
+      }
     }
 
     // =========================================================================
