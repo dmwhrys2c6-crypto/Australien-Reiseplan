@@ -256,8 +256,13 @@ body:not(.is-home) .bottom-nav-item.active {
 #organisation-tab,
 #view-organisation,
 #view-organisation .subpage-canvas,
-#organization {
+#organization,
+body.is-management #view-organisation,
+body.is-management #organization,
+body.is-management #organisation-tab {
   background: radial-gradient(circle at 50% 10%, #d8e0e8 0%, #cbd5e1 100%) !important;
+  background-image: radial-gradient(circle at 50% 10%, #d8e0e8 0%, #cbd5e1 100%) !important;
+  overflow: visible !important;
 }
 
 #view-organisation .subpage-headline {
@@ -568,7 +573,6 @@ body.is-management .active .org-tab-count-badge {
 }
 
 /* Reset old section wrappers so they don't create nested boxes */
-body.is-management #organization,
 body.is-management .org-section,
 body.is-management .journal-section {
   padding: 0;

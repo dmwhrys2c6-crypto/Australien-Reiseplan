@@ -49,6 +49,17 @@
   border-radius: var(--glass-radius);
 }
 
+#organisation-tab,
+#view-organisation,
+#view-organisation .subpage-canvas,
+#organization,
+body.is-management #view-organisation,
+body.is-management #organization,
+body.is-management #organisation-tab {
+  background: radial-gradient(circle at 50% 10%, #d8e0e8 0%, #cbd5e1 100%) !important;
+  background-image: radial-gradient(circle at 50% 10%, #d8e0e8 0%, #cbd5e1 100%) !important;
+}
+
 body.dark-theme {
   --primary: #14b8a6;
   --primary-dark: #0d9488;
