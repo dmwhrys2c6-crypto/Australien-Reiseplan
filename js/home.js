@@ -11,7 +11,57 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let imageReady = true;
   let started = false;
+  let videoPlayedOnce = false;
   let stopTimer;
+
+  const DEFAULT_DAYS = [
+    { day: 0, date: '2027-03-20', title: 'Fahrt nach Wien & Vorübernachtung' },
+    { day: 1, date: '2027-03-21', title: 'Flug ab Wien-Schwechat' },
+    { day: 2, date: '2027-03-22', title: 'Ankunft in Sydney & Darling Harbour' },
+    { day: 3, date: '2027-03-23', title: 'Sydney – Klassiker am Hafen & Manly Ferry' },
+    { day: 4, date: '2027-03-24', title: 'Sydney – Coastal Walk & Trendviertel' },
+    { day: 5, date: '2027-03-25', title: 'Flug nach Ballina / Byron Bay' },
+    { day: 6, date: '2027-03-26', title: 'Byron Bay – Surfen & Kajak' },
+    { day: 7, date: '2027-03-27', title: 'Byron Bay ➔ Gold Coast ➔ Brisbane' },
+    { day: 8, date: '2027-03-28', title: 'Brisbane City & South Bank' },
+    { day: 9, date: '2027-03-29', title: 'Australia Zoo (Beerwah)' },
+    { day: 10, date: '2027-03-30', title: 'Fahrt nach Noosa & Glass House Mountains' },
+    { day: 11, date: '2027-03-31', title: 'Rainbow Beach & Carlo Sand Blow ➔ Hervey Bay' },
+    { day: 12, date: '2027-04-01', title: 'K’gari (Fraser Island) & Greyhound Nachtbus' },
+    { day: 13, date: '2027-04-02', title: 'Airlie Beach & Whitsundays Helikopter' },
+    { day: 14, date: '2027-04-03', title: 'Whitsundays Segeln & Whitehaven Beach' },
+    { day: 15, date: '2027-04-04', title: 'Airlie Beach Erholung & Cedar Creek Falls' },
+    { day: 16, date: '2027-04-05', title: 'Flug nach Melbourne' },
+    { day: 17, date: '2027-04-06', title: 'Melbourne City, Laneways & St. Kilda Pinguine' },
+    { day: 18, date: '2027-04-07', title: 'Great Ocean Road Tagestour (Twelve Apostles)' },
+    { day: 19, date: '2027-04-08', title: 'Melbourne Brighton Beach & Fitzroy Rooftop' },
+    { day: 20, date: '2027-04-09', title: 'Melbourne Ausklang & Heimflug nach Wien' }
+  ];
+
+  function getCalendarEvent() {
+    let days = null;
+    if (window.repo && typeof window.repo.trip?.getDays === 'function') {
+      days = window.repo.trip.getDays();
+    } else if (Array.isArray(window.TRIP_DAYS) && window.TRIP_DAYS.length) {
+      days = window.TRIP_DAYS;
+    } else {
+      days = DEFAULT_DAYS;
+    }
+
+    const todayStr = new Date().toISOString().slice(0, 10);
+    let target = days.find(function (d) { return d.date >= todayStr; });
+    if (!target) {
+      target = days[days.length - 1] || DEFAULT_DAYS[0];
+    }
+
+    const dayNum = target.dayNumber !== undefined ? target.dayNumber : (target.day !== undefined ? target.day : 0);
+    return {
+      dayNum: dayNum,
+      title: target.title || 'Fahrt nach Wien & Vorübernachtung',
+      fullTitle: 'Tag ' + dayNum + ' · ' + (target.title || 'Fahrt nach Wien & Vorübernachtung'),
+      id: target.id
+    };
+  }
 
   function stopIntro() {
     clearTimeout(stopTimer);
@@ -26,9 +76,9 @@
     dock.inert = !visible;
 
     if (video) {
-      if (visible && !reducedMotion.matches) {
+      if (visible && !reducedMotion.matches && !videoPlayedOnce) {
         const p = video.play();
-        if (p !== undefined) p.catch(() => {});
+        if (p !== undefined) p.catch(function () {});
       } else {
         video.pause();
       }
@@ -47,22 +97,61 @@
   }
 
   function syncNextEvent() {
-    const fullTitle = source.textContent.trim();
-    title.textContent = fullTitle.replace(/^Tag (\d+):\s*/, 'Tag $1 · ').split(/[➔→]/)[0].trim();
-    document.getElementById('dock-next-event-btn').setAttribute('aria-label', fullTitle + ' – Tagesplan öffnen');
+    const cal = getCalendarEvent();
+    const fullSource = source ? source.textContent.trim() : '';
+    let displayTitle = '';
+
+    if (fullSource && fullSource.toLowerCase().includes('tag')) {
+      displayTitle = fullSource.replace(/^Tag\s*(\d+)[:·\s]*/i, 'Tag $1 · ').split(/[➔→]/)[0].trim();
+    } else {
+      displayTitle = cal.fullTitle;
+    }
+
+    if (title) {
+      title.textContent = displayTitle;
+    }
+
+    const nextBtn = document.getElementById('dock-next-event-btn');
+    if (nextBtn) {
+      nextBtn.setAttribute('aria-label', displayTitle + ' – Tagesplan öffnen');
+      nextBtn.onclick = function () {
+        if (typeof window.jumpToCurrentOrNextDay === 'function') {
+          window.jumpToCurrentOrNextDay();
+        } else if (window.TripPage && typeof window.TripPage.selectDayNumber === 'function') {
+          if (typeof window.showView === 'function') window.showView('reise');
+          window.TripPage.selectDayNumber(cal.dayNum);
+        } else if (typeof window.jumpToDay === 'function') {
+          if (typeof window.showView === 'function') window.showView('reise');
+          window.jumpToDay(cal.dayNum);
+        }
+      };
+    }
+  }
+
+  if (video) {
+    video.addEventListener('ended', function () {
+      videoPlayedOnce = true;
+      video.pause();
+    });
   }
 
   new MutationObserver(syncHome).observe(dashboard, { attributes: true, attributeFilter: ['class'] });
   new MutationObserver(syncHome).observe(document.body, { attributes: true, attributeFilter: ['class'] });
-  new MutationObserver(syncNextEvent).observe(source, { childList: true, subtree: true, characterData: true });
+  if (source) {
+    new MutationObserver(syncNextEvent).observe(source, { childList: true, subtree: true, characterData: true });
+  }
+
   reducedMotion.addEventListener('change', function () {
     if (reducedMotion.matches) {
       stopIntro();
       if (video) video.pause();
-    } else if (dashboard.classList.contains('active')) {
-      if (video) video.play().catch(() => {});
+    } else if (dashboard.classList.contains('active') && !videoPlayedOnce) {
+      if (video) video.play().catch(function () {});
     }
   });
+
+  // Re-check calendar every minute
+  setInterval(syncNextEvent, 60000);
 
   // Das CSS-Bild wird als Fallback vorgeladen
   const heroImgUrl = hero ? getComputedStyle(hero).getPropertyValue('--hero-image-url').trim().replace(/^['"]|['"]$/g, '') : '';

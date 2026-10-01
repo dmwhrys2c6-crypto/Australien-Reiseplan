@@ -1419,6 +1419,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
     // INTELLIGENTER LIVE-REISESTATUS (HERO) & TAGESPLAN-STEUERUNG
     // =========================================================================
     const TRIP_DAYS = [
+      { day: 0, date: '2027-03-20', title: 'Fahrt nach Wien & Vorübernachtung' },
       { day: 1, date: '2027-03-21', title: 'Abreise aus Wien nach Sydney' },
       { day: 2, date: '2027-03-22', title: 'Ankunft in Sydney & Darling Harbour' },
       { day: 3, date: '2027-03-23', title: 'Sydney – Klassiker am Hafen & Manly Ferry' },
@@ -1509,19 +1510,19 @@ const localStorage = window.Persistence.wrap(window.localStorage);
     }
 
     function determineCurrentTripState() {
-      if (dashboardSimMode === 'pre') return { phase: 'pre', dayNum: 1 };
+      if (dashboardSimMode === 'pre') return { phase: 'pre', dayNum: 0 };
       if (dashboardSimMode === 'post') return { phase: 'post', dayNum: 20 };
       if (dashboardSimMode === 'during') return { phase: 'during', dayNum: dashboardSimDay };
 
       // AUTOMATISCHE ERMITTLUNG NACH ECHTEM DATUM
       const now = new Date();
-      // Start: 21. März 2027 10:00 Uhr Wien (UTC+1)
-      const tripStart = new Date("2027-03-21T10:00:00+01:00");
+      // Start: 20. März 2027 (Tag 0: Fahrt nach Wien & Vorübernachtung)
+      const tripStart = new Date("2027-03-20T00:00:00+01:00");
       // Ende: 09. April 2027 23:59:59 australische Zeit (10.04.2027 00:00 AEST)
       const tripEnd = new Date("2027-04-10T00:00:00+10:00");
 
       if (now < tripStart) {
-        return { phase: 'pre', dayNum: 1, diffMs: tripStart.getTime() - now.getTime() };
+        return { phase: 'pre', dayNum: 0, diffMs: tripStart.getTime() - now.getTime() };
       } else if (now >= tripEnd) {
         return { phase: 'post', dayNum: 20 };
       } else {
@@ -1541,7 +1542,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         }
 
         let found = TRIP_DAYS.find(d => d.date === dateStr);
-        let dayNum = found ? found.day : 1;
+        let dayNum = found ? found.day : 0;
         return { phase: 'during', dayNum };
       }
     }
@@ -1563,8 +1564,8 @@ const localStorage = window.Persistence.wrap(window.localStorage);
     }
 
     function jumpToCurrentOrNextDay() {
-      const state = (typeof determineCurrentTripState === 'function') ? determineCurrentTripState() : { phase: 'pre', dayNum: 1 };
-      const targetDay = (state.phase === 'during' && state.dayNum) ? state.dayNum : 1;
+      const state = (typeof determineCurrentTripState === 'function') ? determineCurrentTripState() : { phase: 'pre', dayNum: 0 };
+      const targetDay = (state.phase === 'during' && state.dayNum !== undefined) ? state.dayNum : 0;
       showView('reise');
       setTimeout(() => jumpToDay(targetDay), 120);
     }
@@ -1598,8 +1599,11 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       }
 
       // 2. Determine current or next day
-      const currentDayNum = (state.phase === 'during' && state.dayNum) ? state.dayNum : 1;
-      const d = allDays[currentDayNum - 1] || allDays[0];
+      const currentDayNum = (state.phase === 'during' && state.dayNum !== undefined) ? state.dayNum : 0;
+      const d = allDays.find(x => x.day === currentDayNum || x.dayNumber === currentDayNum) ||
+                TRIP_DAYS.find(x => x.day === currentDayNum) ||
+                allDays[0];
+      const dDay = (d && d.day !== undefined) ? d.day : ((d && d.dayNumber !== undefined) ? d.dayNumber : currentDayNum);
 
       // 3. Update "ALS NÄCHSTES" section
       const titleEl = document.getElementById('cockpit-next-title');
@@ -1609,7 +1613,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       const btnEl = document.getElementById('cockpit-btn-open-day');
 
       if (titleEl && d) {
-        titleEl.textContent = `Tag ${d.day}: ${d.title}`;
+        titleEl.textContent = `Tag ${dDay}: ${d.title}`;
       }
       if (destEl && d) {
         destEl.innerHTML = `<i class="fa-solid fa-map-pin"></i> <span>Ziel: ${escapeHtml(d.destination || d.start || 'Australien')}</span>`;
@@ -1628,12 +1632,12 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         actsEl.innerHTML = `<i class="fa-solid fa-compass"></i> <span>${escapeHtml(actSummary)}</span>`;
       }
       if (dayNumEl && d) {
-        dayNumEl.textContent = state.phase === 'post' ? 'Reise beendet' : `Tag ${d.day} von 20`;
+        dayNumEl.textContent = state.phase === 'post' ? 'Reise beendet' : `Tag ${dDay} von 20`;
       }
       if (btnEl && d) {
         btnEl.onclick = () => {
           showView('reise');
-          setTimeout(() => jumpToDay(d.day), 120);
+          setTimeout(() => jumpToDay(dDay), 120);
         };
       }
 

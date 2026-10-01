@@ -20,10 +20,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="css/app.css?v=2b4efbe21b5c">
-  <link rel="stylesheet" href="css/hero-dock.css?v=904fb692ea1b">
+  <link rel="stylesheet" href="css/hero-dock.css?v=c2665cdf7d1f">
   <link rel="stylesheet" href="css/trip.css?v=ab1ecefb8aa5">
   <link rel="stylesheet" href="css/management.css?v=c0d3bd4c0897">
-  <link rel="stylesheet" href="css/design-system.css?v=0dff006645a3">
+  <link rel="stylesheet" href="css/design-system.css?v=686416ca46f6">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
@@ -125,12 +125,12 @@
     <!-- STARTSEITE: Bildauftakt und kompakte Reise-Navigation -->
     <div id="view-dashboard" class="app-view active">
       <section id="hero-cinematic" class="hero-cinematic glass-container glass-hero" aria-label="Australien Roadtrip 2027">
-        <video autoplay loop muted playsinline class="hero-bg-video">
+        <video autoplay muted playsinline class="hero-bg-video">
           <source src="assets/video/veo-australia.mp4" type="video/mp4">
         </video>
         <div class="hero-gradient-overlay" aria-hidden="true"></div>
-        <div class="hero-content">
-          <p class="hero-eyebrow">UNSER ROADTRIP · 21. MÄRZ – 9. APRIL</p>
+        <div class="hero-content glass-card hero-content-glass">
+          <p class="hero-eyebrow">UNSER ROADTRIP · 20. MÄRZ – 09. APRIL</p>
           <h1 class="hero-headline">Australien<br><em>2027.</em></h1>
           <p class="hero-subline">20 Tage. 4 Menschen. Ein großes Abenteuer.</p>
         </div>
@@ -138,33 +138,18 @@
       </section>
 
       <!-- Der vorhandene Dashboard-Updater liefert das nächste Ereignis. -->
-      <span id="cockpit-next-title" hidden>Tag 1: Abreise aus Wien</span>
+      <span id="cockpit-next-title" hidden>Tag 0 · Fahrt nach Wien &amp; Vorübernachtung</span>
 
       <div class="liquid-glass-dock glass-card glass-dock" id="liquid-glass-dock" role="navigation" aria-label="Reise-Schnellnavigation" inert>
         <button type="button" class="dock-next-event" id="dock-next-event-btn" onclick="jumpToCurrentOrNextDay()"
           aria-label="Nächsten Tagesplan öffnen">
-          <span class="dock-event-icon" aria-hidden="true"><i class="fa-solid fa-plane-departure"></i></span>
+          <span class="dock-event-icon" aria-hidden="true"><i class="fa-solid fa-car"></i></span>
           <span class="dock-next-label">
             <span class="dock-next-prefix">Nächstes Ereignis</span>
             <span class="dock-next-title" id="dock-next-title">Tag 0 · Fahrt nach Wien &amp; Vorübernachtung</span>
           </span>
           <i class="fa-solid fa-arrow-up-right-from-square dock-next-arrow" aria-hidden="true"></i>
         </button>
-        <div class="dock-divider" aria-hidden="true"></div>
-        <nav class="dock-pills" aria-label="Reisebereiche">
-          <button type="button" class="dock-pill glass-pill" id="dock-btn-reise" data-view="reise" onclick="showView('reise')">
-            <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i><span>Reise</span>
-          </button>
-          <button type="button" class="dock-pill glass-pill" id="dock-btn-organisation" data-view="organisation" onclick="showView('organisation')">
-            <i class="fa-solid fa-clipboard-list" aria-hidden="true"></i><span>Reiseorganisation</span>
-          </button>
-          <button type="button" class="dock-pill glass-pill" id="dock-btn-finanzen" data-view="finanzen" onclick="showView('finanzen')">
-            <i class="fa-solid fa-wallet" aria-hidden="true"></i><span>Finanzen</span>
-          </button>
-          <button type="button" class="dock-pill glass-pill" id="dock-btn-erlebnisse" data-view="erlebnisse" onclick="showView('erlebnisse')">
-            <i class="fa-solid fa-compass" aria-hidden="true"></i><span>Erlebnisse</span>
-          </button>
-        </nav>
       </div>
     </div>
 
@@ -2798,7 +2783,7 @@
   <script src="js/router.js?v=ebb76f5fd504"></script>
   <script src="js/reiseApp.js?v=2c5dfc9e1c6d"></script>
   <!-- 4. Kern-Applikationslogik -->
-  <script src="js/app.js?v=e357692d9636"></script>
+  <script src="js/app.js?v=cd78db629bc5"></script>
 
   <dialog id="trip-editor" class="trip-editor glass-card" aria-labelledby="trip-editor-title">
     <header class="trip-editor-header"><div><span class="trip-eyebrow glass-eyebrow">DEIN REISEPLAN</span><h2 id="trip-editor-title">Stopp bearbeiten</h2></div><button type="button" class="trip-icon-button" id="trip-editor-close" aria-label="Editor schließen"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></header>
@@ -2821,11 +2806,11 @@
 <dialog id="manage-editor" class="trip-editor glass-card" aria-labelledby="manage-editor-title"><header class="trip-editor-header"><div><span class="trip-eyebrow glass-eyebrow">ALLES AN EINEM ORT</span><h2 id="manage-editor-title">Eintrag bearbeiten</h2></div><button type="button" id="manage-close" class="trip-icon-button" aria-label="Editor schließen">×</button></header><form id="manage-form" class="glass-editor-form"><div id="manage-fields" class="trip-editor-fields"></div><p id="manage-error" class="trip-form-error" role="alert" tabindex="-1"></p><div id="manage-detail-actions" class="glass-detail-actions" hidden></div><footer class="trip-editor-footer glass-modal-footer"><button type="button" id="manage-delete" class="trip-danger-button glass-pill glass-action-danger" hidden>Löschen</button><span></span><button type="button" id="manage-cancel" class="trip-secondary-button glass-pill">Abbrechen</button><button type="submit" id="manage-save" class="trip-primary-button glass-pill glass-action-primary">Speichern</button></footer></form></dialog>
 <dialog id="manage-confirm" class="trip-confirm glass-card" aria-labelledby="manage-confirm-title" aria-describedby="manage-confirm-text"><h2 id="manage-confirm-title">Eintrag löschen?</h2><p id="manage-confirm-text"></p><div><button type="button" id="manage-confirm-no" class="trip-secondary-button glass-pill" autofocus>Abbrechen</button><button type="button" id="manage-confirm-yes" class="trip-danger-button glass-pill glass-action-danger">Löschen</button></div></dialog>
 <div id="manage-live" class="manage-live" role="status" aria-live="polite"></div>
-<script src="js/management/repository.js?v=284e225486c8"></script><script src="js/management/ui.js?v=a8afe8280c83"></script><script src="js/management/editor.js?v=acfc42f53cb2"></script><script src="js/management/finance.js?v=1cca521ea3ef"></script><script src="js/management/page.js?v=bdb8a0426911"></script>
+<script src="js/management/repository.js?v=284e225486c8"></script><script src="js/management/ui.js?v=a8afe8280c83"></script><script src="js/management/editor.js?v=acfc42f53cb2"></script><script src="js/management/finance.js?v=1cca521ea3ef"></script><script src="js/management/page.js?v=cb95dfd929e2"></script>
   <script src="js/journal/repository.js?v=2dc36fd4f416"></script>
   <script src="js/journal/upload.js?v=1bbf9c488e89"></script>
   <!-- 5. Bildauftakt und Liquid-Glass-Navigation -->
-  <script src="js/home.js?v=dcdefae13bd4"></script>
+  <script src="js/home.js?v=e1e3b3d7862f"></script>
 </body>
 
 </html>
