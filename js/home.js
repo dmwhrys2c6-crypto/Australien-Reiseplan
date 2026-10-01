@@ -8,10 +8,12 @@
   const source = document.getElementById('cockpit-next-title');
   const title = document.getElementById('dock-next-title');
   const video = hero ? hero.querySelector('video') : null;
+  const mobileViewport = window.matchMedia('(max-width: 768px)');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let imageReady = true;
   let started = false;
   let videoPlayedOnce = false;
+  let wasHome = dashboard.classList.contains('active');
   let stopTimer;
 
   const DEFAULT_DAYS = [
@@ -68,9 +70,34 @@
     hero?.classList.add('hero-settled');
   }
 
+  function selectVideoSource() {
+    if (!video) return;
+    const desiredSource = mobileViewport.matches ? video.dataset.mobileSrc : video.dataset.desktopSrc;
+    if (!desiredSource) return;
+    const desiredUrl = new URL(desiredSource, document.baseURI).href;
+    if (video.currentSrc === desiredUrl || video.src === desiredUrl) return;
+    video.pause();
+    video.src = desiredSource;
+    video.load();
+  }
+
   function syncHome() {
     const home = dashboard.classList.contains('active');
     const visible = home && !document.body.classList.contains('is-locked');
+
+    // Eine neue Rückkehr zur Startseite ist eine neue Wiedergabe-Sitzung.
+    if (!home && wasHome) {
+      clearTimeout(stopTimer);
+      started = false;
+      videoPlayedOnce = false;
+      hero?.classList.remove('hero-playing', 'hero-settled');
+      if (video) {
+        video.pause();
+        video.currentTime = 0;
+      }
+    }
+    wasHome = home;
+
     document.body.classList.toggle('is-home', home);
     dock.classList.toggle('dock-visible', visible);
     dock.inert = !visible;
@@ -129,6 +156,11 @@
   }
 
   if (video) {
+    video.addEventListener('canplay', function () {
+      if (dashboard.classList.contains('active') && !document.body.classList.contains('is-locked') && !reducedMotion.matches && !videoPlayedOnce) {
+        video.play().catch(function () {});
+      }
+    });
     video.addEventListener('ended', function () {
       videoPlayedOnce = true;
       video.pause();
@@ -150,6 +182,12 @@
     }
   });
 
+  mobileViewport.addEventListener('change', function () {
+    videoPlayedOnce = false;
+    selectVideoSource();
+    syncHome();
+  });
+
   // Re-check calendar every minute
   setInterval(syncNextEvent, 60000);
 
@@ -162,6 +200,7 @@
     image.src = heroImgUrl;
   }
 
+  selectVideoSource();
   syncNextEvent();
   syncHome();
 }());

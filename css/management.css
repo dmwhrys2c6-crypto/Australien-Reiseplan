@@ -350,5 +350,29 @@ body.dark-theme.is-management .app-header {border-bottom-color: rgba(255, 255, 2
     font-size: 0.58rem;
     padding: 1px 6px;
   }
+
+  /* Organisation: alle Bereiche bleiben ohne horizontales Abschneiden erreichbar. */
+  #view-organisation .subpage-header .subpage-nav-dock {
+    overflow: visible;
+    padding: 0;
+  }
+  #view-organisation .org-subnav-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    gap: 4px;
+    padding: 7px;
+    box-sizing: border-box;
+  }
+  #view-organisation .org-tab-btn {
+    flex: 0 1 auto;
+    max-width: 100%;
+  }
+  #view-organisation .org-tab-btn > span:not(.subpage-pill-badge) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 }

@@ -155,9 +155,9 @@ span.glass-pill { min-height: 0; padding: 4px 10px; font-size: .68rem; }
 a { color: var(--glass-accent); }
 /* Page geometry remains independent of the shared surfaces. */
 .glass-hero { background: var(--glass-slate); box-shadow: none; }
-.glass-hero .hero-layer, .glass-hero .hero-gradient-overlay { display: none; }
-.glass-hero :is(.hero-content,.hero-headline,.hero-headline em,.hero-eyebrow,.hero-subline,.hero-location) { color: var(--glass-text); }
-.glass-hero :is(.hero-eyebrow,.hero-subline,.hero-location) { color: var(--glass-muted); }
+.glass-hero .hero-gradient-overlay { display: block; }
+.glass-hero :is(.hero-content,.hero-headline,.hero-headline em) { color: #fff; }
+.glass-hero :is(.hero-eyebrow,.hero-subline,.hero-location) { color: rgba(255,255,255,.9); }
 .app-header { background: var(--glass-bg); border-bottom: var(--glass-border); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); box-shadow: none; }
 .app-header :is(.brand-title,.brand-subtitle,.btn-icon-action) { color: var(--glass-text); }
 .btn-icon-action { background: var(--glass-bg-subtle); border: var(--glass-border); box-shadow: none; border-radius: 50%; }

@@ -11,10 +11,13 @@
   function notifyError(error) {status.textContent=error.message||String(error);status.hidden=false;}
   function run(action) {try {return action();}catch(error){notifyError(error);}}
   function sheetState(value) {
-    state.sheet=value;sheet.dataset.state=value;
-    document.getElementById('trip-sheet-handle').setAttribute('aria-label',`${value==='collapsed'?'Tagesplan öffnen':value==='expanded'?'Tagesplan verkleinern':'Tagesplan erweitern'}`);
+    state.sheet=value;sheet.dataset.state=value;workspace.dataset.sheetState=value;
+    const handle=document.getElementById('trip-sheet-handle'),expandButton=document.getElementById('trip-sheet-expand');
+    handle.setAttribute('aria-label',`${value==='collapsed'?'Tagesplan öffnen':value==='expanded'?'Tagesplan verkleinern':'Tagesplan erweitern'}`);
+    handle.setAttribute('aria-expanded',String(value==='expanded'));
     body.inert=value==='collapsed';body.setAttribute('aria-hidden',String(value==='collapsed'));
-    document.getElementById('trip-sheet-expand').setAttribute('aria-label',value==='expanded'?'Tagesplan verkleinern':'Tagesplan erweitern');
+    expandButton.setAttribute('aria-label',value==='expanded'?'Tagesplan verkleinern':'Tagesplan erweitern');
+    expandButton.setAttribute('aria-expanded',String(value==='expanded'));
     if(ready)render(false);
   }
   function groups() {
@@ -39,7 +42,7 @@
   }
   function selectDay(id) {
     state.dayId=id;state.stopId=null;if(state.sheet==='collapsed')state.sheet='default';
-    sheet.dataset.state=state.sheet;body.inert=false;body.setAttribute('aria-hidden','false');render();
+    sheet.dataset.state=state.sheet;workspace.dataset.sheetState=state.sheet;body.inert=false;body.setAttribute('aria-hidden','false');render();
     daysBar.querySelector('.is-active')?.scrollIntoView({block:'nearest',inline:'nearest',behavior:'smooth'});
   }
   function selectStop(id,fromMap=false) {
@@ -156,7 +159,7 @@
         document.getElementById('trip-map-retry').hidden=phase!=='error';
       });
       editor=root.createTripEditor(repository,(result,kind)=>{if(kind==='day'&&result)selectDay(result.id);else if(kind==='stop'&&result){state.dayId=result.dayId;state.stopId=result.id;render();}},startLocationPicker);
-      repository.subscribe(()=>render());ready=true;status.hidden=true;render();syncLayout();
+      repository.subscribe(()=>render());ready=true;status.hidden=true;workspace.dataset.sheetState=state.sheet;render();syncLayout();
       if(state.pendingDay)root.TripPage.selectDayNumber(state.pendingDay);
       const match=location.hash.match(/(?:day|tag)-(\d+)/);if(match)root.TripPage.selectDayNumber(Number(match[1]));
     }catch(error){notifyError(error);document.getElementById('trip-data-retry').hidden=false;}
