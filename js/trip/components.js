@@ -11,19 +11,19 @@
     const located=stops.filter(M.coords),distance=stops.slice(1).reduce((sum,stop,index)=>sum+(M.distance(stops[index],stop)||0),0);
     return `${stops.length} Stopps · ${located.length} auf der Karte${distance?' · '+Math.round(distance)+' km Luftlinie':''}`;
   }
-  function card(stop,index,active,expanded){
+  function card(stop,index,active){
     const location=stop.locationName||(M.coords(stop)?stop.region||'Kartenstandort':'Standort ergänzen'),image=M.safeUrl(stop.image),transport=mode(stop);
     return `<article class="trip-stop-card ${active?'is-selected':''} glass-row-item" data-stop="${e(stop.id)}" id="trip-stop-${e(stop.id)}">
-      <div class="trip-stop-time"><strong>${e(timeText(stop))}</strong><span>${e(M.TYPES[stop.type]||'Sonstiges')}</span></div>
       <div class="trip-stop-row">
         <button type="button" class="trip-drag-handle" draggable="true" data-drag-stop="${e(stop.id)}" aria-label="${e(stop.title)} verschieben; Pfeiltasten zum Sortieren" title="Ziehen oder Pfeiltasten zum Sortieren">${icon('grip-vertical')}</button>
-        <button type="button" class="trip-stop-select" data-action="select-stop" data-id="${e(stop.id)}" aria-pressed="${active}">
+        <button type="button" class="trip-stop-select" data-action="select-stop" data-id="${e(stop.id)}" aria-expanded="${active}" aria-controls="trip-stop-detail-${e(stop.id)}">
           ${image?`<img src="${e(image)}" alt="" loading="lazy" onerror="this.hidden=true">`:`<span class="trip-stop-number">${index+1}</span>`}
-          <span><strong>${e(stop.title)}</strong><small>${e(location)}</small><small class="trip-stop-mode">${icon(transport[0])} ${e(transport[1])} · ${e(timeText(stop))}</small></span>
+          <span><strong>${e(stop.title)}</strong><small class="trip-stop-mode">${e(location)} · ${icon(transport[0])} ${e(transport[1])} · ${e(timeText(stop))} · ${e(M.TYPES[stop.type]||'Sonstiges')}</small></span>
+          ${icon(active?'chevron-up':'chevron-down')}
         </button>
         ${button('edit-stop','Stopp bearbeiten','pen',`data-id="${e(stop.id)}"`)}
       </div>
-      ${(expanded||active)?`<div class="trip-stop-detail">
+      ${active?`<div class="trip-stop-detail" id="trip-stop-detail-${e(stop.id)}">
         ${stop.description?`<p>${e(stop.description)}</p>`:''}
         ${stop.notes?`<p>${icon('note-sticky')} ${e(stop.notes)}</p>`:''}
         <span>${icon(transport[0])} ${e(transport[1])}</span>
@@ -34,14 +34,14 @@
       </div>`:''}
     </article>`;
   }
-  function groupedTimeline(day,stops,selected,expanded){
+  function groupedTimeline(day,stops,selected){
     if(!stops.length)return `<div class="trip-empty glass-card">${icon('location-dot')}<h3>Ein Tag voller Möglichkeiten.</h3><p>Für diesen Tag sind noch keine Stopps geplant.</p><button type="button" class="trip-primary-button glass-pill glass-action-primary" data-action="add-stop">Ersten Stopp hinzufügen</button></div>`;
     const regions=new Map();
     stops.forEach(stop=>{const region=stop.region||day.region||stop.locationName||'Unterwegs';if(!regions.has(region))regions.set(region,[]);regions.get(region).push(stop);});
     let globalIndex=0;
     return [...regions.entries()].map(([region,items])=>`<section class="trip-region glass-card" aria-labelledby="region-${e(day.id)}-${globalIndex}">
       <header class="trip-region-header"><span class="trip-region-icon">${icon('location-dot')}</span><div><span>STADT / REGION</span><h3 id="region-${e(day.id)}-${globalIndex}">${e(region)}</h3></div></header>
-      <div class="trip-region-stops">${items.map(stop=>{const index=globalIndex++,previous=stops[index-1],distance=previous?M.distance(previous,stop):null;return`${distance!=null?`<div class="trip-transport">${icon(mode(stop)[0])} ${e(mode(stop)[1])} · ${distance.toFixed(1)} km Luftlinie</div>`:''}${card(stop,index,selected===stop.id,expanded)}${selected===stop.id&&root.ManagementPage?`<div class="manage-stop-links">${root.ManagementPage.related(stop.id)}</div>`:''}`;}).join('')}</div>
+      <div class="trip-region-stops">${items.map(stop=>{const index=globalIndex++,previous=stops[index-1],distance=previous?M.distance(previous,stop):null;return`${distance!=null?`<div class="trip-transport">${icon(mode(stop)[0])} ${e(mode(stop)[1])} · ${distance.toFixed(1)} km Luftlinie</div>`:''}${card(stop,index,selected===stop.id)}${selected===stop.id&&root.ManagementPage?`<div class="manage-stop-links">${root.ManagementPage.related(stop.id)}</div>`:''}`;}).join('')}</div>
     </section>`).join('')+`<button type="button" class="trip-add-stop glass-pill" data-action="add-stop">${icon('plus')} Stopp hinzufügen</button>`;
   }
   root.TripComponents={

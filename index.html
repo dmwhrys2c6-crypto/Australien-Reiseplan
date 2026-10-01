@@ -20,10 +20,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="css/app.css?v=2b4efbe21b5c">
-  <link rel="stylesheet" href="css/hero-dock.css?v=acbf0e0c9823">
-  <link rel="stylesheet" href="css/trip.css?v=54b8249a1b81">
+  <link rel="stylesheet" href="css/hero-dock.css?v=58dfb45a5fb4">
+  <link rel="stylesheet" href="css/trip.css?v=a0884ed251a6">
   <link rel="stylesheet" href="css/management.css?v=33ca1b99e570">
-  <link rel="stylesheet" href="css/design-system.css?v=5c0b6757fede">
+  <link rel="stylesheet" href="css/design-system.css?v=b472053cea14">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
@@ -2577,12 +2577,12 @@
 
   <div id="global-search-modal" class="search-modal-backdrop" onclick="if(event.target === this) closeGlobalSearch()"
     role="dialog" aria-modal="true" aria-labelledby="global-search-input" style="display:none">
-    <div class="search-modal-container">
+    <div class="search-modal-container glass-card">
       <div class="search-modal-header">
         <form id="global-search-form" class="global-search-form" onsubmit="event.preventDefault(); return false;" style="display:flex; flex:1; align-items:center">
           <div class="search-input-wrap" style="width:100%">
             <i class="fa-solid fa-magnifying-glass search-input-icon"></i>
-            <input type="text" id="global-search-input" class="search-modal-input"
+            <input type="text" id="global-search-input" class="search-modal-input glass-field"
               placeholder="Suche nach Reisetag, Ort, Aktivität, Hotel, Buchung, Journal..." autocomplete="off"
               spellcheck="false" oninput="onGlobalSearchInput(this.value)" onkeydown="onGlobalSearchKeydown(event)">
             <button type="button" id="search-clear-btn" class="search-clear-btn" onclick="clearGlobalSearch()"
@@ -2782,7 +2782,7 @@
   <script src="js/router.js?v=ebb76f5fd504"></script>
   <script src="js/reiseApp.js?v=2c5dfc9e1c6d"></script>
   <!-- 4. Kern-Applikationslogik -->
-  <script src="js/app.js?v=cd78db629bc5"></script>
+  <script src="js/app.js?v=d9b03f2bf659"></script>
 
   <dialog id="trip-editor" class="trip-editor glass-card" aria-labelledby="trip-editor-title">
     <header class="trip-editor-header"><div><span class="trip-eyebrow glass-eyebrow">DEIN REISEPLAN</span><h2 id="trip-editor-title">Stopp bearbeiten</h2></div><button type="button" class="trip-icon-button" id="trip-editor-close" aria-label="Editor schließen"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></header>
@@ -2798,9 +2798,9 @@
   </dialog>
   <script src="js/trip/repository.js?v=93a0a6fc97f5"></script>
   <script src="js/trip/map-adapter.js?v=1bd2da8b7ee4"></script>
-  <script src="js/trip/components.js?v=833314db286d"></script>
+  <script src="js/trip/components.js?v=3d4ab1ecc2c4"></script>
   <script src="js/trip/editor.js?v=61ae22ce8ae4"></script>
-  <script src="js/trip/page.js?v=3d6cd01c550f"></script>
+  <script src="js/trip/page.js?v=4164c0d79a3a"></script>
 
 <dialog id="manage-editor" class="trip-editor glass-card" aria-labelledby="manage-editor-title"><header class="trip-editor-header"><div><span class="trip-eyebrow glass-eyebrow">ALLES AN EINEM ORT</span><h2 id="manage-editor-title">Eintrag bearbeiten</h2></div><button type="button" id="manage-close" class="trip-icon-button" aria-label="Editor schließen">×</button></header><form id="manage-form" class="glass-editor-form"><div id="manage-fields" class="trip-editor-fields"></div><p id="manage-error" class="trip-form-error" role="alert" tabindex="-1"></p><div id="manage-detail-actions" class="glass-detail-actions" hidden></div><footer class="trip-editor-footer glass-modal-footer"><button type="button" id="manage-delete" class="trip-danger-button glass-pill glass-action-danger" hidden>Löschen</button><span></span><button type="button" id="manage-cancel" class="trip-secondary-button glass-pill">Abbrechen</button><button type="submit" id="manage-save" class="trip-primary-button glass-pill glass-action-primary">Speichern</button></footer></form></dialog>
 <dialog id="manage-confirm" class="trip-confirm glass-card" aria-labelledby="manage-confirm-title" aria-describedby="manage-confirm-text"><h2 id="manage-confirm-title">Eintrag löschen?</h2><p id="manage-confirm-text"></p><div><button type="button" id="manage-confirm-no" class="trip-secondary-button glass-pill" autofocus>Abbrechen</button><button type="button" id="manage-confirm-yes" class="trip-danger-button glass-pill glass-action-danger">Löschen</button></div></dialog>

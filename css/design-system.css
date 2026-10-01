@@ -159,11 +159,25 @@ a { color: var(--glass-accent); }
 .glass-hero :is(.hero-content,.hero-headline,.hero-headline em) { color: #fff; }
 .glass-hero :is(.hero-eyebrow,.hero-subline,.hero-location) { color: rgba(255,255,255,.9); }
 .app-header { background: var(--glass-bg); border-bottom: var(--glass-border); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); box-shadow: none; }
+body.is-home { overflow:hidden; }
+body.is-home .app-main { height:100svh; padding:0; }
+body.is-home #view-dashboard { height:100svh; }
+body.is-home .app-header { position:absolute; top:12px; left:16px; right:16px; width:auto; margin:0; background:transparent; border:0; backdrop-filter:none; -webkit-backdrop-filter:none; }
+body.is-home .header-inner { position:relative; max-width:none; min-height:44px; padding:0; justify-content:center; }
+body.is-home .app-brand { display:none; }
+body.is-home .header-actions { position:absolute; right:0; top:50%; transform:translateY(-50%); }
+body.is-home .hero-cinematic { height:100svh; min-height:100svh; border-radius:0; }
 .app-header :is(.brand-title,.brand-subtitle,.btn-icon-action) { color: var(--glass-text); }
 .btn-icon-action { background: var(--glass-bg-subtle); border: var(--glass-border); box-shadow: none; border-radius: 50%; }
 .mobile-bottom-nav { background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-top: var(--glass-border); box-shadow: none; }
 .glass-card:is(dialog,[role="dialog"]) { background: var(--glass-bg); border: var(--glass-border); color: var(--glass-text); }
 .glass-card::backdrop { background: var(--glass-overlay); backdrop-filter: blur(4px); }
+#global-search-modal { background:rgba(23,37,53,.28); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
+.search-modal-container.glass-card { background:var(--glass-bg); border:var(--glass-border); box-shadow:var(--glass-shadow); backdrop-filter:blur(28px); -webkit-backdrop-filter:blur(28px); border-radius:22px; }
+.search-modal-container .search-modal-header,
+.search-modal-container .search-cat-chips,
+.search-modal-container .search-modal-footer { background:rgba(255,255,255,.16); }
+.search-modal-container .search-modal-input { background:var(--glass-bg-subtle); border:var(--glass-border); color:var(--glass-text); }
 .glass-modal-footer { background: transparent; border-top: 1px solid var(--glass-divider); }
 .glass-detail-actions { display: flex; flex-wrap: wrap; gap: 10px; padding: 16px 24px; justify-content: flex-end; }
 .glass-detail-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin: 8px 0 20px; }
@@ -277,7 +291,8 @@ body.is-home .mobile-bottom-nav { display: none; }
   border-radius: 999px; padding: 10px 16px; margin-right: 10px; font: inherit; cursor: pointer;
 }
 @media (max-width: 768px) {
-  .mobile-bottom-nav { position: fixed; top: auto; bottom: 0; left: 0; right: 0; width: 100%; height: calc(52px + env(safe-area-inset-bottom, 0px)); gap: 0; padding: 2px 4px calc(2px + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; }
+  body.is-home .app-header { top:calc(10px + env(safe-area-inset-top)); left:10px; right:10px; }
+  .mobile-bottom-nav { position:fixed; top:auto; bottom:max(6px,env(safe-area-inset-bottom,0px)); left:6px; right:6px; width:auto; height:52px; gap:0; padding:2px 4px; box-sizing:border-box; border-radius:18px; }
   .mobile-bottom-nav .bottom-nav-item { flex: 1; min-width: 0; padding: 3px 0; flex-direction: column; gap: 2px; font-size: .58rem; }
   .mobile-bottom-nav .bottom-nav-item i { font-size: .95rem; }
 }
@@ -306,7 +321,8 @@ body.is-home .mobile-bottom-nav { display: none; }
 .trip-header-content h1, .trip-sheet-top h2, .trip-region h3 { color: var(--glass-text); }
 .trip-header-content p, .trip-sheet-top p, .trip-eyebrow, .trip-route-note { color: var(--glass-muted); }
 .trip-route-note { background: var(--glass-bg); border: var(--glass-border); backdrop-filter: var(--glass-blur); }
-.trip-stop-card { padding: 14px 16px; margin: 0; background: var(--glass-bg-subtle); }
+.trip-stop-card { display: block; width: 100%; box-sizing: border-box; padding: 4px 0; margin: 0; background: var(--glass-bg-subtle); }
+#view-mehr :is(.scroll-reveal,.scroll-tab) { opacity:1!important; transform:none!important; pointer-events:auto!important; transition:none!important; animation:none!important; }
 .trip-stop-card.is-selected { background: var(--glass-hover); border-color: rgba(var(--primary-rgb),.32); }
 .trip-stop-time, .trip-stop-select small, .trip-stop-detail, .trip-transport { color: var(--glass-muted); }
 .trip-stop-time span, .trip-stop-mode { color: var(--glass-accent); }

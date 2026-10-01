@@ -162,7 +162,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         '.drone-status-banner'
       ];
       const generalElements = Array.from(document.querySelectorAll(generalSelectors.join(', ')))
-        .filter(el => !el.classList.contains('timeline-item') && !el.classList.contains('overview-stat-tab'));
+        .filter(el => !el.classList.contains('timeline-item') && !el.classList.contains('overview-stat-tab') && !el.closest('#view-mehr'));
 
       generalElements.forEach(el => {
         el.classList.add('scroll-reveal');

@@ -47,6 +47,7 @@
   }
   function selectStop(id,fromMap=false) {
     const stop=repository.getStop(id);if(!stop)return;
+    if(!fromMap&&state.stopId===id){state.stopId=null;render(false,false);return;}
     const changedDay=state.dayId!==stop.dayId;
     if(changedDay)state.dayId=stop.dayId;
     state.stopId=id;

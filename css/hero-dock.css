@@ -1,9 +1,12 @@
 @layer legacy {
 /* Visueller Reiseauftakt. Video und Standbild können dieselben Layer nutzen. */
 .app-brand { border: 0; background: transparent; padding: 0; font: inherit; text-align: left; }
-body.is-home .app-main {max-width: none;padding: 12px;}
-body.is-home .app-header {position: absolute;top: 30px;left: 32px;right: 32px;}
-body.is-home .header-inner {max-width: none;padding: 0;}
+body.is-home {overflow:hidden;}
+body.is-home .app-main {max-width:none;height:100svh;padding:0;}
+body.is-home .app-header {position:absolute;top:12px;left:16px;right:16px;}
+body.is-home .header-inner {position:relative;max-width:none;min-height:44px;padding:0;justify-content:center;}
+body.is-home .app-brand {display:none;}
+body.is-home .header-actions {position:absolute;right:0;top:50%;transform:translateY(-50%);}
 body.is-home .desktop-nav {display: inline-flex;}
 body.is-home .mobile-bottom-nav {display: none;}
 body.is-home #trip-status-banner, body.is-home > footer {display: none;}
@@ -12,12 +15,12 @@ body.is-home .brand-subtitle {font-size: .65rem;}
 body.is-home .brand-flag {font-size: 1.35rem;}
 body.is-home .btn-icon-action {width: 38px;padding: 0;}
 body.is-home .btn-icon-action span, body.is-home .btn-icon-action kbd {display: none;}
-body.is-home #view-dashboard {animation: none;}
+body.is-home #view-dashboard {height:100svh;animation:none;}
 #view-dashboard .hero-cinematic { margin: 0; }
 .hero-cinematic {
   --hero-image-url: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&w=2400&q=85';
-  position: relative; height: calc(100svh - 24px); min-height: 560px;
-  overflow: hidden; isolation: isolate; border-radius: 28px;
+  position: relative; height:100svh; min-height:100svh;
+  overflow: hidden; isolation: isolate; border-radius:0;
   background: #233e50;
 }
 .hero-bg-video {
@@ -139,7 +142,7 @@ body.is-home #view-dashboard {animation: none;}
 }
 @media (max-width: 768px) {
   body.is-home .app-main {padding: 0;}
-  body.is-home .app-header {top: calc(16px + env(safe-area-inset-top));left: 16px;right: 16px;}
+  body.is-home .app-header {top:calc(10px + env(safe-area-inset-top));left:10px;right:10px;}
   body.is-home .desktop-nav {display: none;}
   body.is-home .mobile-bottom-nav {display: flex;}
   body.is-home .header-inner {gap: 8px;}
@@ -148,7 +151,7 @@ body.is-home #view-dashboard {animation: none;}
   body.is-home .brand-title {font-size: .72rem;}
   body.is-home .brand-subtitle {font-size: .56rem;}
   body.is-home .brand-flag {display: none;}
-  .hero-cinematic { height: 100svh; min-height: 520px; border-radius: 0; }
+  .hero-cinematic { height:100svh; min-height:100svh; border-radius:0; }
   .hero-static, .hero-kb-slide { background-position: 58% center; }
   .hero-content {
     left: 16px;
@@ -162,7 +165,7 @@ body.is-home #view-dashboard {animation: none;}
   .hero-subline { font-size: .76rem; line-height: 1.45; max-width: 280px; margin-top: 10px; }
   .hero-location { right: 20px; bottom: calc(115px + env(safe-area-inset-bottom, 0px)); font-size: .6rem; }
   .liquid-glass-dock {
-    bottom: calc(66px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(64px + max(6px, env(safe-area-inset-bottom, 0px)));
     width: auto;
     max-width: calc(100% - 32px);
     box-sizing: border-box;
