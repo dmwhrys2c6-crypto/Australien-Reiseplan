@@ -6,6 +6,16 @@ function context(){const ctx=vm.createContext({console,JSON,Date,Math,Set,Map,Pr
 const ctx=context();ctx.TripStore.init([{dayNumber:1,date:'2027-03-21',title:'Sydney',activities:[],sights:[]},{dayNumber:2,date:'2027-03-22',title:'Küste',activities:[],sights:[]}]);
 const trip=ctx.createTripRepository(ctx.TripStore,storage,{tripMeta:{id:'test',title:'Test'}});const repo=ctx.createManagementRepository(trip,storage,{seed:()=>({totalBudget:1000,expenses:[{id:'old-exp',title:'Flug',amountEur:100,currency:'EUR',category:'flights',dayNum:1,date:'2027-03-21'}],bookings:[{id:'old-book',name:'Hotel',category:'hotels',date:'2027-03-21',cost:80,currency:'EUR',status:'confirmed',dayNum:1}]})});await repo.init();
 assert.equal(repo.get('expense')[0].category,'transport');assert.equal(repo.get('expense')[0].amount,100);assert.equal(repo.get('booking')[0].type,'hotel');assert.equal(repo.summary().spent,100);
+assert.equal(repo.get('booking')[0].priceType,'total');
+for(const [priceType,total,perPerson] of [['per_person',400,100],['total',100,25],['two_persons',200,50]]){
+ const b=repo.save('booking',{title:'Preisprüfung',type:'ticket',status:'pending',date:'2027-03-21',price:100,priceType,currency:'EUR'});
+ assert.equal(b.totalAmount,total);assert.equal(b.perPersonAmount,perPerson);
+ const expense=repo.expenseFrom('booking',b.id);assert.equal(expense.amount,total);
+ const reopened=ctx.createManagementRepository(trip,storage);await reopened.init();
+ assert.equal(reopened.get('booking').find(x=>x.id===b.id).price,100);
+ assert.equal(reopened.get('booking').find(x=>x.id===b.id).totalAmount,total);
+ repo.remove('expense',expense.id);repo.remove('booking',b.id);
+}
 const day=trip.getDays()[0],secondDay=trip.getDays()[1];
 const draft=repo.save('activity',{title:'Oper',category:'culture',price:30,currency:'EUR',latitude:-33.857,longitude:151.215,startTime:'09:00',endTime:'11:00',website:'https://example.com'});assert.equal(repo.get('activity').length,1);assert.equal(trip.getStops().length,0);
 const draftExpense=repo.expenseFrom('activity',draft.id);

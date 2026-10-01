@@ -8,7 +8,9 @@
     sightseeing: 'Sightseeing', activity: 'Aktivität', restaurant: 'Restaurant', hotel: 'Hotel',
     flight: 'Flug', train: 'Zug', transport: 'Transport', event: 'Event', other: 'Sonstiges'
   };
+  const TRANSPORT_MODES = { car:'Auto', plane:'Flugzeug', ferry:'Fähre', walk:'Zu Fuß', train:'Zug', other:'Sonstiges' };
   const aliases = { tour: 'activity', beach: 'activity', hike: 'activity', food: 'restaurant', drive: 'transport', plane: 'flight' };
+  const normalizeTransport = value => ({flight:'plane',transport:'car',drive:'car',boat:'ferry'}[value] || (TRANSPORT_MODES[value] ? value : 'walk'));
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
   const safeUrl = value => { try { const url = new URL(value); return ['https:', 'http:'].includes(url.protocol) ? url.href : ''; } catch { return ''; } };
   const coords = stop => Number.isFinite(stop.latitude) && Number.isFinite(stop.longitude) && Math.abs(stop.latitude) <= 90 && Math.abs(stop.longitude) <= 180;
@@ -28,8 +30,10 @@
       order: index, orderIndex: index, title: data.title || data.name || 'Stopp',
       type: aliases[data.type || data.category] || data.type || data.category || 'other',
       coords: lat != null && lng != null ? [lat, lng] : null,
-      locationName: data.locationName || '', latitude: lat, longitude: lng,
+      locationName: data.locationName || data.region || day.region || '', region:data.region || day.region || data.locationName || 'Unterwegs', latitude: lat, longitude: lng,
       startTime: data.startTime ?? data.time ?? '', time: data.startTime ?? data.time ?? '', endTime: data.endTime || '',
+      durationMinutes:Number.isFinite(Number(data.durationMinutes)) ? Number(data.durationMinutes) : 60,
+      transportMode:normalizeTransport(data.transportMode || aliases[data.type || data.category] || data.type || data.category || day.transportType),
       description: data.description || '', notes: data.notes || '', image: data.image || '',
       cost: data.cost ?? null, currency: data.currency || 'EUR', bookingUrl: data.bookingUrl || '',
       bookingReference: data.bookingReference || '', createdAt: data.createdAt || new Date().toISOString(),
@@ -46,7 +50,7 @@
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date || '')) return date || 'Datum offen';
     return new Intl.DateTimeFormat('de-AT', { weekday:'short', day:'numeric', month:'long' }).format(new Date(date + 'T12:00:00'));
   };
-  root.TripModel = { TYPES, escape, safeUrl, coords, distance, dateLabel, uid };
+  root.TripModel = { TYPES, TRANSPORT_MODES, escape, safeUrl, coords, distance, dateLabel, uid };
 
   const instances = new WeakMap();
   function createRepository(store, storage, master = {}) {
@@ -67,8 +71,12 @@
     function validateStop(data) {
       if (!String(data.title || '').trim()) throw new Error('Bitte einen Titel angeben.');
       if (!TYPES[data.type]) throw new Error('Bitte einen gültigen Typ wählen.');
+      if (!TRANSPORT_MODES[data.transportMode]) throw new Error('Bitte ein gültiges Verkehrsmittel wählen.');
+      if (!String(data.region || '').trim()) throw new Error('Bitte eine Stadt oder Region angeben.');
+      if (!String(data.locationName || '').trim()) throw new Error('Bitte einen Standort angeben.');
       if ((data.latitude == null) !== (data.longitude == null)) throw new Error('Breiten- und Längengrad gemeinsam angeben.');
       if (data.latitude != null && !coords(data)) throw new Error('Koordinaten liegen außerhalb des gültigen Bereichs.');
+      if (data.latitude == null) throw new Error('Bitte einen Standort auf der Karte wählen.');
       for (const time of [data.startTime, data.endTime]) if (time && !/^([01]\d|2[0-3]):[0-5]\d$/.test(time)) throw new Error('Bitte eine gültige Uhrzeit angeben.');
       if (data.endTime && data.startTime && data.endTime < data.startTime) throw new Error('Die Endzeit muss nach der Startzeit liegen. Für Übernachtung bitte zwei Stops verwenden.');
       if (data.cost != null && (!Number.isFinite(data.cost) || data.cost < 0)) throw new Error('Kosten müssen eine positive Zahl sein.');
@@ -86,33 +94,60 @@
         const savedMeta = storage?.getItem(META_KEY);
         if (savedMeta) metadata = JSON.parse(savedMeta);
         const days = readDays();
+        const seedDay = dayNumber => {
+          const source=master.days?.find(day=>day.dayNumber===dayNumber);
+          if(!source)return null;
+          const activities=(master.activities||[]).filter(activity=>activity.dayNumber===dayNumber).map(activity=>clone(activity));
+          return {...clone(source),date:source.date,id:source.id||'day-'+dayNumber,activities,sights:[],highlights:[],budgetItems:[],stopModelVersion:0};
+        };
+        let changed = false;
+        if(!days.some(day=>day.dayNumber===0)){
+          const dayZero=seedDay(0);
+          if(dayZero){days.unshift(dayZero);changed=true;}
+        }
+        const dayOne=days.find(day=>day.dayNumber===1);
+        if(dayOne&&dayOne.title==='Abreise aus Wien'){dayOne.title='Flug ab Wien-Schwechat';changed=true;}
+        const dayTen=days.find(day=>day.dayNumber===10);
+        if(dayTen&&/Glass House Mountains|Noosa/.test(dayTen.title)){
+          const brisbane=seedDay(10);
+          if(brisbane){Object.assign(dayTen,{...brisbane,id:dayTen.id,dayNumber:10});changed=true;}
+        }
+        const dayEleven=days.find(day=>day.dayNumber===11);
+        if(dayEleven&&/^Noosa/.test(dayEleven.title)){
+          const coastStage=seedDay(11);
+          if(coastStage){Object.assign(dayEleven,{...coastStage,id:dayEleven.id,dayNumber:11});changed=true;}
+        }
         const highest = Math.max(0,...days.map(d => d.dayNumber));
         if ((Number(storage?.getItem('aus_trip_day_sequence_v1')) || 0) < highest) storage?.setItem('aus_trip_day_sequence_v1', String(highest));
-        let changed = false;
         days.forEach(day => {
-          if (day.stopModelVersion === 1) return;
+          if (day.stopModelVersion === 4) return;
           changed = true;
           const geo = master.days?.find(d => d.dayNumber === day.dayNumber);
+          day.region=day.region || geo?.region || geo?.location || 'Unterwegs';
           const sights = day.sights || [];
           const used = new Set();
           day.activities = (day.activities || []).map((activity, i) => {
             const reference = master.activities?.find(a => a.dayNumber === day.dayNumber && a.title === activity.title);
             const sight = matchLocation(activity.title, sights);
             if (sight) used.add(sight.id || sight.name);
-            let position = activity.coords || sight?.coords || null;
-            // Only match explicit departure/arrival locations; never invent coordinates for general activities.
+            let position = activity.coords || reference?.coords || sight?.coords || null;
             if (!position && /Flughafen Wien|Wien-Schwechat/i.test(activity.title)) position = geo?.startCoords;
             if (!position && /Landung.*Sydney|Kingsford Smith/i.test(activity.title)) position = geo?.destCoords;
+            if (!position) position = i === (day.activities?.length || 1)-1 ? geo?.destCoords : geo?.startCoords;
             return normalizeStop({ ...reference, ...activity, id:activity.id || 'act-' + day.dayNumber + '-' + (i+1),
-              coords:position, locationName:activity.locationName || sight?.name || '',
+              coords:position, latitude:position?.[0] ?? activity.latitude ?? null, longitude:position?.[1] ?? activity.longitude ?? null,
+              locationName:activity.locationName || reference?.locationName || sight?.name || geo?.location || day.region || day.title,
+              region:activity.region || reference?.region || day.region || geo?.region || geo?.location,
+              transportMode:activity.transportMode || reference?.transportMode || day.transportType,
+              durationMinutes:activity.durationMinutes || reference?.durationMinutes || 60,
               type:activity.type || reference?.category || activity.category || 'other' }, day, i, metadata?.id);
           });
           sights.filter(s => !used.has(s.id || s.name)).forEach(s => {
             day.activities.push(normalizeStop({ id:'stop-' + day.id + '-' + (s.id || uid('sight')), title:s.name,
-              type:'sightseeing', coords:s.coords, locationName:s.name, description:s.highlight || '', notes:s.directions || '',
+              type:'sightseeing', coords:s.coords, locationName:s.name, region:s.region || day.region, transportMode:'walk', durationMinutes:60, description:s.highlight || '', notes:s.directions || '',
               bookingUrl:s.mapsUrl || '' }, day, day.activities.length, metadata?.id));
           });
-          day.stopModelVersion = 1;
+          day.stopModelVersion = 4;
         });
         if (changed) commit(days);
         return this;
@@ -141,7 +176,7 @@
         if (!data.title?.trim() || !validDate(data.date)) throw new Error('Bitte Titel und gültiges Datum angeben.');
         const days = readDays();
         const day = { ...data, id:uid('day'), dayNumber:nextDayNumber(),
-          order:days.length, stopModelVersion:1, activities:[], sights:[], highlights:[], budgetItems:[], accommodation:null };
+          order:days.length, stopModelVersion:4, activities:[], sights:[], highlights:[], budgetItems:[], accommodation:null };
         const position=data.order==null?days.length:Number(data.order);
         if(!Number.isInteger(position)||position<0||position>days.length)throw new Error('Ungültige Tagesposition.');
         days.splice(position,0,day);commit(days); return clone(day);

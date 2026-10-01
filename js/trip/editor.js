@@ -3,13 +3,14 @@
   const M=root.TripModel,e=M.escape;
   const field=(label,name,value='',type='text',attrs='')=>`<label>${label}<input name="${name}" type="${type}" value="${e(value??'')}" ${attrs}></label>`;
   const area=(label,name,value='')=>`<label class="trip-field-wide">${label}<textarea name="${name}" rows="3">${e(value)}</textarea></label>`;
-  root.createTripEditor=function(repository,onSaved) {
+  const TRANSPORT={car:'Auto',plane:'Flugzeug',ferry:'Fähre',walk:'Zu Fuß',train:'Zug',other:'Sonstiges'};
+  root.createTripEditor=function(repository,onSaved,locationPicker) {
     const dialog=document.getElementById('trip-editor');
     const form=document.getElementById('trip-editor-form');
     const fields=document.getElementById('trip-editor-fields');
     const error=document.getElementById('trip-editor-error');
     const deleteButton=document.getElementById('trip-editor-delete');
-    let kind,id,returnFocus,busy=false;
+    let kind,id,returnFocus,busy=false,picking=false;
     const confirmDialog=document.getElementById('trip-confirm');
     let confirmationResolve;
     function confirmDelete(message) {
@@ -40,7 +41,7 @@
       event.preventDefault(); if(busy)return;
       const values=Object.fromEntries(new FormData(form));
       if(kind==='stop') {
-        ['latitude','longitude','cost'].forEach(key=>values[key]=values[key]===''?null:Number(values[key]));
+        ['latitude','longitude','cost','durationMinutes'].forEach(key=>values[key]=values[key]===''?null:Number(values[key]));
         values.currency=values.currency.toUpperCase();
         perform(()=>id?repository.updateStop(id,values):repository.createStop(values.dayId,values));
       } else if(kind==='day') {
@@ -65,11 +66,13 @@
       if(type==='stop') {
         fields.innerHTML=`${field('Titel','title',data.title,'text','required maxlength="160" class="trip-title-input"')}
           <label>Typ<select name="type">${Object.entries(M.TYPES).map(([value,label])=>`<option value="${value}" ${(data.type||'sightseeing')===value?'selected':''}>${label}</option>`).join('')}</select></label>
-          <label class="trip-field-wide">Tag / Datum<select name="dayId" required>${days.map((d,i)=>`<option value="${e(d.id)}" ${(data.dayId||dayId)===d.id?'selected':''}>Tag ${i+1} · ${e(M.dateLabel(d.date))} · ${e(d.title)}</option>`).join('')}</select></label>
-          ${field('Startzeit','startTime',data.startTime,'time')}${field('Endzeit','endTime',data.endTime,'time')}
-          <div class="trip-field-wide">${field('Standort','locationName',data.locationName,'text','maxlength="240" placeholder="z. B. Sydney Opera House"')}</div>
+          <label class="trip-field-wide">Tag / Datum<select name="dayId" required>${days.map(d=>`<option value="${e(d.id)}" ${(data.dayId||dayId)===d.id?'selected':''}>Tag ${e(d.dayNumber)} · ${e(M.dateLabel(d.date))} · ${e(d.title)}</option>`).join('')}</select></label>
+          ${field('Ankunftszeit','startTime',data.startTime,'time')}${field('Dauer in Minuten','durationMinutes',data.durationMinutes,'number','min="0" step="5"')}
+          <label>Verkehrsmittel<select name="transportMode">${Object.entries(TRANSPORT).map(([value,label])=>`<option value="${value}" ${(data.transportMode||'walk')===value?'selected':''}>${label}</option>`).join('')}</select></label>
+          ${field('Stadt / Region','region',data.region,'text','required maxlength="120" placeholder="z. B. Brisbane"')}
+          <div class="trip-field-wide">${field('Standort','locationName',data.locationName,'text','required maxlength="240" placeholder="z. B. Sydney Opera House"')}</div>
           ${field('Latitude','latitude',data.latitude,'number','step="any" min="-90" max="90"')}${field('Longitude','longitude',data.longitude,'number','step="any" min="-180" max="180"')}
-          <p class="trip-field-hint trip-field-wide">Koordinaten sind optional. Ohne Standort erscheint der Stopp nur im Tagesplan.</p>
+          <div class="trip-field-wide trip-location-actions"><button type="button" class="glass-pill trip-location-pick-button" data-editor-action="pick-location"><i class="fa-solid fa-location-crosshairs" aria-hidden="true"></i> Standort auf Karte wählen</button><p class="trip-field-hint">Ein Kartenklick setzt einen verschiebbaren Pin und übernimmt Koordinaten sowie Ortsname.</p></div>
           ${area('Beschreibung','description',data.description)}${area('Notizen','notes',data.notes)}
           <div class="trip-field-wide">${field('Bild-URL','image',data.image,'url','placeholder="https://…"')}</div>
           ${field('Kosten','cost',data.cost,'number','min="0" step="0.01"')}${field('Währung','currency',data.currency||'EUR','text','required pattern="[A-Za-z]{3}" maxlength="3"')}
@@ -82,10 +85,30 @@
         fields.innerHTML=`<div class="trip-field-wide">${field('Titel','title',data.title,'text','required maxlength="160"')}</div>
           ${field('Datum','date',data.date||nextDate,'date','required')}
           <label>Reihenfolge<select name="order">${Array.from({length:days.length+(id?0:1)},(_,i)=>`<option value="${i}" ${i===(id?days.findIndex(d=>d.id===id):days.length)?'selected':''}>Position ${i+1}</option>`).join('')}</select></label>
-          ${area('Beschreibung','summary',data.summary)}`;
+          <div class="trip-field-wide">${field('Stadt / Region','region',data.region,'text','required maxlength="120"')}</div>${area('Beschreibung','summary',data.summary)}`;
       } else fields.innerHTML=`<div class="trip-field-wide">${field('Reisetitel','title',data.title,'text','required maxlength="160"')}</div>${area('Untertitel','subtitle',data.subtitle)}${field('Standardwährung','currency',data.currency||'EUR','text','required pattern="[A-Z]{3}" maxlength="3"')}`;
       dialog.showModal();fields.querySelector('input')?.focus();
     }
+    fields.addEventListener('click',event=>{
+      const button=event.target.closest('[data-editor-action="pick-location"]');
+      if(!button||!locationPicker||picking)return;
+      const latitude=form.elements.latitude.value===''?null:Number(form.elements.latitude.value);
+      const longitude=form.elements.longitude.value===''?null:Number(form.elements.longitude.value);
+      const previous={latitude:form.elements.latitude.value,longitude:form.elements.longitude.value,locationName:form.elements.locationName.value};
+      picking=true;dialog.close();
+      locationPicker({
+        initial:{latitude,longitude},
+        onChange(result){
+          form.elements.latitude.value=result.latitude;
+          form.elements.longitude.value=result.longitude;
+          if(result.locationName)form.elements.locationName.value=result.locationName;
+        },
+        onFinish(confirmed){
+          if(!confirmed){form.elements.latitude.value=previous.latitude;form.elements.longitude.value=previous.longitude;form.elements.locationName.value=previous.locationName;}
+          picking=false;dialog.showModal();button.focus();
+        }
+      });
+    });
     return {open,close,confirmDelete};
   };
 }(window));

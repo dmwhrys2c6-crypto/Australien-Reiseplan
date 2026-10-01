@@ -169,9 +169,9 @@ TripStore.renderTimeline(mockTimelineEl);
 testAssert(mockTimelineEl.innerHTML.includes('id="day-14"') || html.includes('id="day-14"'), 'Element #day-14 existiert im gerenderten DOM');
 testAssert(mockTimelineEl.innerHTML.includes('TAG 14 · WHITSUNDAYS') || html.includes('TAG 14 · WHITSUNDAYS'), 'Tag 14 hat Badge "TAG 14 · WHITSUNDAYS"');
 
-// 5. Test Zoom & Filter (6 Layer-System)
+// 5. Test Zoom & Filter (4 Layer-System)
 console.log('\n5. Test: Filter & Layer-System');
-const expectedLayers = ['destinations', 'highlights', 'accommodations', 'photospots', 'drones', 'nofly'];
+const expectedLayers = ['destinations', 'highlights', 'accommodations', 'photospots'];
 expectedLayers.forEach(layer => {
   testAssert(html.includes(`id="layer-chk-${layer}"`), `Layer Toggle Checkbox #layer-chk-${layer} existiert`);
 });

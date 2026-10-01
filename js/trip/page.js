@@ -6,7 +6,7 @@
   const sheet=document.getElementById('trip-sheet'),body=document.getElementById('trip-sheet-body');
   const header=document.getElementById('trip-header-content'),daysBar=document.getElementById('trip-day-selector');
   const status=document.getElementById('trip-status'),mapStatus=document.getElementById('trip-map-status');
-  let repository,editor,map,ready=false,dragId=null,touchDrag=null,mapVisible=false,sheetDragged=false;
+  let repository,editor,map,ready=false,dragId=null,touchDrag=null,mapVisible=false,sheetDragged=false,pickerSession=null;
   const state={dayId:null,stopId:null,sheet:'default'};
   function notifyError(error) {status.textContent=error.message||String(error);status.hidden=false;}
   function run(action) {try {return action();}catch(error){notifyError(error);}}
@@ -19,7 +19,7 @@
   }
   function groups() {
     const days=repository.getDays();
-    return days.filter(d=>state.dayId===null||d.id===state.dayId).map(d=>({id:d.id,number:days.findIndex(item=>item.id===d.id)+1,stops:repository.getStops(d.id)}));
+    return days.filter(d=>state.dayId===null||d.id===state.dayId).map(d=>({id:d.id,number:d.dayNumber,region:d.region,stops:repository.getStops(d.id)}));
   }
   function render(refit=true,updateMap=true) {
     if(!ready)return;
@@ -30,11 +30,11 @@
     daysBar.innerHTML=C.selector(days,state.dayId);daysBar.scrollLeft=scroll;
     const day=state.dayId?repository.getDay(state.dayId):null;
     const stops=repository.getStops(state.dayId);
-    document.getElementById('trip-sheet-heading').innerHTML=C.sheetHeading(day,days.findIndex(d=>d.id===state.dayId)+1,stops,days);
+    document.getElementById('trip-sheet-heading').innerHTML=C.sheetHeading(day,day?.dayNumber,stops,days);
     document.getElementById('trip-day-actions').hidden=!day;
-    body.innerHTML=day?C.timeline(stops,state.stopId,state.sheet==='expanded'):C.overview(days,repository,map);
+    body.innerHTML=day?C.timeline(day,stops,state.stopId,state.sheet==='expanded'):C.overview(days,repository,map);
     const missing=stops.filter(s=>!M.coords(s)).length;
-    document.getElementById('trip-route-note').textContent=`Verbindungen · Luftlinie${missing?' · '+missing+' Stops ohne Standort':''}`;
+    document.getElementById('trip-route-note').textContent=`Route nach Verkehrsmittel${missing?' · '+missing+' Stopps ohne Standort':''}`;
     if(updateMap&&view.classList.contains('active')&&!document.body.classList.contains('is-locked'))map.render(groups(),state.stopId,refit);
   }
   function selectDay(id) {
@@ -93,6 +93,8 @@
         case 'zoom-out':map.zoom(-1);break;
         case 'fit-map':map.fit();break;
         case 'retry-map':map.retry();break;
+        case 'confirm-location':finishLocationPicker(true);break;
+        case 'cancel-location':finishLocationPicker(false);break;
         case 'collapse-sheet':sheetState(state.sheet==='collapsed'?'default':'collapsed');break;
         case 'expand-sheet':sheetState(state.sheet==='expanded'?'default':'expanded');break;
         case 'cycle-sheet':if(sheetDragged){sheetDragged=false;break;}sheetState(state.sheet==='collapsed'?'default':state.sheet==='default'?'expanded':'default');break;
@@ -123,6 +125,25 @@
   window.addEventListener('resize',syncLayout);
   window.addEventListener('management:changed',()=>render(false));
   root.TripPage={selectDayNumber(number){if(!ready){state.pendingDay=number;return;}const day=repository.getDays().find(d=>d.dayNumber===Number(number));if(day)selectDay(day.id);},selectStop, getState:()=>({...state})};
+  function startLocationPicker(session) {
+    pickerSession=session;
+    const panel=document.getElementById('trip-location-picker');
+    const confirm=panel.querySelector('[data-action="confirm-location"]');
+    panel.hidden=false;confirm.disabled=true;
+    document.getElementById('trip-location-picker-status').textContent='Klicke auf die Karte, um einen Pin zu setzen.';
+    const started=map.startPicking(session.initial,(result,phase)=>{
+      session.onChange(result);confirm.disabled=false;
+      document.getElementById('trip-location-picker-status').textContent=phase==='loading'?'Ortsname wird ermittelt …':
+        phase==='error'?`${result.latitude}, ${result.longitude} · Ortsname bitte prüfen.`:
+        `${result.locationName||'Ausgewählter Standort'} · ${result.latitude}, ${result.longitude}`;
+    });
+    if(!started){panel.hidden=true;pickerSession=null;session.onFinish(false);}
+  }
+  function finishLocationPicker(confirmed){
+    if(!pickerSession)return;
+    const session=pickerSession;pickerSession=null;map.stopPicking();
+    document.getElementById('trip-location-picker').hidden=true;session.onFinish(confirmed);
+  }
   async function init() {
     try {
       repository=root.createTripRepository(root.TripStore,root.localStorage,root.TRIP_MASTER_DATA);
@@ -132,7 +153,7 @@
         document.getElementById('trip-map-status-text').textContent=text;
         document.getElementById('trip-map-retry').hidden=phase!=='error';
       });
-      editor=root.createTripEditor(repository,(result,kind)=>{if(kind==='day'&&result)selectDay(result.id);else if(kind==='stop'&&result){state.dayId=result.dayId;state.stopId=result.id;render();}});
+      editor=root.createTripEditor(repository,(result,kind)=>{if(kind==='day'&&result)selectDay(result.id);else if(kind==='stop'&&result){state.dayId=result.dayId;state.stopId=result.id;render();}},startLocationPicker);
       repository.subscribe(()=>render());ready=true;status.hidden=true;render();syncLayout();
       if(state.pendingDay)root.TripPage.selectDayNumber(state.pendingDay);
       const match=location.hash.match(/(?:day|tag)-(\d+)/);if(match)root.TripPage.selectDayNumber(Number(match[1]));

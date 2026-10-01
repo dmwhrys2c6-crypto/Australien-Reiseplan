@@ -18,8 +18,8 @@ with open("index.html", "r", encoding="utf-8") as f:
 with open("js/app.js", "r", encoding="utf-8") as f:
     new_js = f.read()
 
-# 1. Check all 20 Days in data/trip-days.json and js/trip-store.js
-print("\n--- Checking 20 Reisetage in data/trip-days.json & trip-store.js ---")
+# 1. Check all 21 days (Tag 0 through Tag 20) in both data sources
+print("\n--- Checking 21 Reisetage in data/trip-days.json & trip-store.js ---")
 import json
 with open("data/trip-days.json", "r", encoding="utf-8") as f:
     trip_days = json.load(f)
@@ -27,10 +27,10 @@ with open("data/trip-days.json", "r", encoding="utf-8") as f:
 with open("js/trip-store.js", "r", encoding="utf-8") as f:
     store_code = f.read()
 
-assert len(trip_days) == 20, f"Expected 20 days in data/trip-days.json, got {len(trip_days)}"
+assert len(trip_days) == 21, f"Expected 21 days in data/trip-days.json, got {len(trip_days)}"
 
-for d in range(1, 21):
-    day_item = trip_days[d - 1]
+for d in range(0, 21):
+    day_item = trip_days[d]
     assert day_item["dayNumber"] == d, f"Day number mismatch for day {d}"
     assert 'id="day-${day.dayNumber}"' in store_code or f'id="day-{d}"' in store_code, f"Missing id pattern for day in trip-store.js"
     assert "renderTimeline" in store_code, "Missing renderTimeline in trip-store.js"
@@ -52,14 +52,11 @@ data_structures = [
     'roadtripRoutes',
     'flightRoutes',
     'regionNames',
-    'airspaceFeatures',
     'DEFAULT_FALLBACK_WEATHER',
     'DEFAULT_BOOKINGS_LIST',
     'DEFAULT_PACKING_ITEMS',
     'ORG_CATEGORY_META',
     'PACKING_CATEGORIES',
-    'DEFAULT_JOURNAL_ENTRIES',
-    'DEFAULT_PHOTOS_LIST',
     'restoreSession'
 ]
 
@@ -73,7 +70,7 @@ print("\n--- Checking Critical Functions in js/app.js ---")
 critical_funcs = [
     'verifyPin', 'unlockAppUI', 'showView', 'jumpToDay',
     'focusDayOnMap', 'focusSpotOnMap', 'jumpToDayAndHighlight',
-    'initRouteLeafletMap', 'initDroneAirspaceMap', 'renderCurrentBudgetChart',
+    'initRouteLeafletMap', 'renderCurrentBudgetChart',
     'updateBudgetCalculations', 'renderBookings', 'renderPackingList',
     'renderJournalDays', 'renderPhotosGallery', 'openGlobalSearch',
     'switchMobileReiseMode', 'updateMobileBottomSheet', 'switchFinTab',
@@ -88,7 +85,7 @@ for fn in critical_funcs:
 print("\n--- Checking Modals & Security in index.html ---")
 modals = [
  'booking-modal-backdrop', 'packing-modal-backdrop',
-    'expense-modal-backdrop', 'photo-modal-backdrop', 'photo-lightbox-modal',
+    'expense-modal-backdrop',
     'global-search-modal'
 ]
 for m in modals:

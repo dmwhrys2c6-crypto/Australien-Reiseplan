@@ -15,9 +15,9 @@ ctx.TripStore.init([{dayNumber:1,date:'2027-03-21',title:'Wien',activities:[],si
 const repo=ctx.createTripRepository(ctx.TripStore,storage,{tripMeta:{id:'test-trip',title:'Testreise'}});
 await repo.init();
 const first=repo.getDays()[0];
-const stop=repo.createStop(first.id,{title:'Flughafen',type:'flight',latitude:48.11,longitude:16.57,startTime:'09:00',endTime:'10:00',notes:'Reisepass',cost:12,currency:'EUR',bookingReference:'REF-1',bookingUrl:'https://example.com'});
+const stop=repo.createStop(first.id,{title:'Flughafen',type:'flight',transportMode:'plane',region:'Wien',locationName:'Flughafen Wien',latitude:48.11,longitude:16.57,startTime:'09:00',endTime:'10:00',notes:'Reisepass',cost:12,currency:'EUR',bookingReference:'REF-1',bookingUrl:'https://example.com'});
 assert.equal(stop.dayId,first.id);assert.equal(stop.tripId,'test-trip');assert.equal(stop.order,0);assert.ok(stop.createdAt);
-const secondStop=repo.createStop(first.id,{title:'Ankunft',type:'flight',latitude:-33.94,longitude:151.17});
+const secondStop=repo.createStop(first.id,{title:'Ankunft',type:'flight',transportMode:'plane',region:'Sydney',locationName:'Sydney Airport',latitude:-33.94,longitude:151.17});
 repo.reorderStops(first.id,[secondStop.id,stop.id]);assert.equal(repo.getStops(first.id)[0].id,secondStop.id);
 assert.throws(()=>repo.reorderStops(first.id,[stop.id,stop.id]),/Reihenfolge/);
 repo.updateStop(stop.id,{title:'Airport Wien',endTime:'11:00',cost:15});assert.equal(repo.getStop(stop.id).cost,15);assert.equal(repo.getStop(stop.id).notes,'Reisepass');

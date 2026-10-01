@@ -107,19 +107,19 @@
         <div class="overlay-section-box">
           <div class="overlay-section-title">
             <span><i class="fa-solid fa-route"></i> Etappe &amp; Fahrzeit</span>
-            <span style="font-weight:600; text-transform:none; color:var(--primary); font-size:0.75rem;">${escapeHtml(day.date)}</span>
+            <span style="font-weight:600; text-transform:none; font-size:0.75rem">${escapeHtml(day.date)}</span>
           </div>
           ${(distText || timeText) ? `
-            <div style="font-size:0.8rem; font-weight:700; color:var(--text-color); display:flex; align-items:center; gap:8px;">
-              <span><i class="fa-solid fa-car-side" style="color:var(--primary);"></i> ${escapeHtml(day.startLocation || 'Start')} ➔ ${escapeHtml(day.destLocation || day.location || 'Ziel')}</span>
+            <div style="font-size:0.8rem; font-weight:700; display:flex; align-items:center; gap:8px">
+              <span><i class="fa-solid fa-car-side" style=""></i> ${escapeHtml(day.startLocation || 'Start')} ➔ ${escapeHtml(day.destLocation || day.location || 'Ziel')}</span>
             </div>
-            <div style="font-size:0.75rem; color:var(--text-muted); display:flex; gap:12px;">
+            <div style="font-size:0.75rem; display:flex; gap:12px">
               ${distText ? `<span><i class="fa-solid fa-road"></i> ${escapeHtml(distText)}</span>` : ''}
               ${timeText ? `<span><i class="fa-solid fa-clock"></i> ${escapeHtml(timeText)}</span>` : ''}
             </div>
           ` : ''}
           ${day.programSummary ? `
-            <p style="font-size:0.78rem; line-height:1.4; color:var(--text-muted); margin-top:4px;">
+            <p style="font-size:0.78rem; line-height:1.4; margin-top:4px">
               ${escapeHtml(day.programSummary)}
             </p>
           ` : ''}
@@ -136,12 +136,12 @@
             <i class="fa-solid fa-plus"></i> Hinzufügen
           </button>
         </div>
-        <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="display:flex; flex-direction:column; gap:6px">
     `;
 
     if (day.activities.length === 0) {
       bodyHtml += `
-        <div style="font-size:0.8rem; color:var(--text-muted); text-align:center; padding:12px 0;">
+        <div style="font-size:0.8rem; text-align:center; padding:12px 0">
           Noch keine Aktivitäten für diesen Tag geplant.
         </div>
       `;
@@ -153,7 +153,7 @@
             <span class="act-time-pill">${escapeHtml(act.time || '–:–')}</span>
             <div class="act-main-info">
               <div class="act-title-text">
-                <i class="fa-solid ${catMeta.icon}" style="color:${catMeta.color}; margin-right:4px; font-size:0.8rem;"></i>
+                <i class="fa-solid ${catMeta.icon}" style="margin-right:4px; font-size:0.8rem"></i>
                 ${escapeHtml(act.title)}
               </div>
               ${act.description ? `<div class="act-note-text">${escapeHtml(act.description)}</div>` : ''}
@@ -186,17 +186,17 @@
           <div class="overlay-section-title">
             <span><i class="fa-solid fa-camera"></i> Highlights &amp; Fotospots (${day.spots.length})</span>
           </div>
-          <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          <div style="display:flex; flex-wrap:wrap; gap:6px">
       `;
 
       day.spots.forEach(sp => {
         bodyHtml += `
           <button type="button" 
             class="compact-highlight-chip" 
-            style="cursor:pointer; display:inline-flex; align-items:center; gap:5px;"
+            style="cursor:pointer; display:inline-flex; align-items:center; gap:5px"
             onclick="focusSpotOnMap(${sp.id}, event)"
             title="Diesen Spot auf der Karte zentrieren">
-            <i class="fa-solid fa-location-dot" style="color:var(--primary); font-size:0.75rem;"></i>
+            <i class="fa-solid fa-location-dot" style="font-size:0.75rem"></i>
             <span>${escapeHtml(sp.name)}</span>
           </button>
         `;
@@ -215,15 +215,15 @@
         <div class="overlay-section-box">
           <div class="overlay-section-title">
             <span><i class="fa-solid fa-hotel"></i> Unterkunft</span>
-            ${acc.checkIn ? `<span style="font-size:0.72rem; color:var(--text-muted);">${escapeHtml(acc.checkIn)}</span>` : ''}
+            ${acc.checkIn ? `<span style="font-size:0.72rem">${escapeHtml(acc.checkIn)}</span>` : ''}
           </div>
-          <div style="font-size:0.84rem; font-weight:700; color:var(--text-color);">
+          <div style="font-size:0.84rem; font-weight:700">
             ${escapeHtml(acc.name)}
           </div>
-          ${acc.address ? `<div style="font-size:0.75rem; color:var(--text-muted);">${escapeHtml(acc.address)}</div>` : ''}
+          ${acc.address ? `<div style="font-size:0.75rem">${escapeHtml(acc.address)}</div>` : ''}
           ${acc.bookingUrl ? `
             <a href="${escapeHtml(acc.bookingUrl)}" target="_blank" rel="noopener" 
-               style="font-size:0.76rem; font-weight:700; color:var(--primary); display:inline-flex; align-items:center; gap:4px; margin-top:3px; text-decoration:none;">
+               style="font-size:0.76rem; font-weight:700; display:inline-flex; align-items:center; gap:4px; margin-top:3px; text-decoration:none">
               <i class="fa-solid fa-arrow-up-right-from-square"></i> ${escapeHtml(acc.bookingLabel || 'Buchungsdetails')}
             </a>
           ` : ''}

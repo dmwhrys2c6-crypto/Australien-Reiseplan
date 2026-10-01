@@ -1,63 +1,61 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import vm from 'node:vm';
 
-console.log('=== PHASE 2 VISUAL UNIFICATION VERIFICATION ===');
-
-// 1. Verify Startseite preservation
-const heroDockCss = fs.readFileSync('css/hero-dock.css', 'utf8');
-const indexHtml = fs.readFileSync('index.html', 'utf8');
-
-// Check that Startseite core classes exist and have not been altered
-assert.ok(heroDockCss.includes('body.is-home'), 'Startseite scope body.is-home must exist in hero-dock.css');
-assert.ok(heroDockCss.includes('.hero-cinematic'), 'Hero cinematic must exist in hero-dock.css');
-assert.ok(heroDockCss.includes('.liquid-glass-dock'), 'Liquid glass dock must exist in hero-dock.css');
-assert.ok(indexHtml.includes('id="hero-cinematic"'), 'Hero section must exist in index.html');
-assert.ok(indexHtml.includes('id="liquid-glass-dock"'), 'Dock must exist in index.html');
-console.log('✓ Startseite reference code & styles strictly preserved');
-
-// 2. Verify Trip CSS Unification
-const tripCss = fs.readFileSync('css/trip.css', 'utf8');
-assert.ok(tripCss.includes('body.is-trip .nav-tab i'), 'Nav tab icons must be explicitly handled in trip.css');
-assert.ok(!tripCss.includes('body.is-trip .nav-tab i { display:none; }') && !tripCss.includes('body.is-trip .nav-tab i {display:none;}'), 'Nav tab icons must NOT be hidden in trip.css');
-assert.ok(tripCss.includes('#171e27'), 'Active state in trip.css must match Startseite dock active color (#171e27)');
-assert.ok(tripCss.includes('blur(28px)'), 'Trip glass must use high quality 28px blur');
-console.log('✓ Reise-Tab (trip.css) visual unification verified');
-
-// 3. Verify Management CSS Unification (Organisation, Finanzen, Erlebnisse, Mehr)
-const mgmtCss = fs.readFileSync('css/management.css', 'utf8');
-assert.ok(mgmtCss.includes('body.is-management .nav-tab i'), 'Nav tab icons must be styled in management.css');
-assert.ok(!mgmtCss.includes('.nav-tab i {display:none;}') && !mgmtCss.includes('.nav-tab i { display:none; }'), 'Nav tab icons must NOT be hidden in management.css');
-assert.ok(mgmtCss.includes('blur(28px)'), 'Management surfaces must use high quality 28px blur');
-assert.ok(mgmtCss.includes('.packing-progress-card'), 'Packing card must be styled with liquid glass in management.css');
-assert.ok(mgmtCss.includes('#fin-panel-onsite > div'), 'Vor-Ort Reisekasse card must be styled with liquid glass');
-assert.ok(mgmtCss.includes('#fin-panel-fuel > div'), 'Fuel card must be styled with liquid glass');
-assert.ok(mgmtCss.includes('#fin-panel-groceries > div'), 'Groceries card must be styled with liquid glass');
-assert.ok(mgmtCss.includes('#fin-panel-currency > div'), 'Currency card must be styled with liquid glass');
-assert.ok(mgmtCss.includes('.manage-drone-workspace'), 'Drone workspace must be styled');
-assert.ok(mgmtCss.includes('.weather-widget-card'), 'Weather card must be styled');
-assert.ok(mgmtCss.includes('.org-modal'), 'Modals must have liquid glass styling');
-assert.ok(mgmtCss.includes('body.dark-theme.is-management'), 'Complete Dark mode styles must exist for management');
-console.log('✓ Organisation, Finanzen, Erlebnisse & Mehr (management.css) visual unification verified');
-
-// 4. Verify DOM structural integrity across all 6 views
-const views = ['dashboard', 'reise', 'organisation', 'finanzen', 'erlebnisse', 'mehr'];
-for (const v of views) {
-  assert.ok(indexHtml.includes(`id="view-${v}"`), `View ${v} must exist in index.html`);
+// Architecture guard: visual surfaces must have a single owner.
+const system = fs.readFileSync('css/design-system.css', 'utf8');
+for (const name of ['glass-container', 'glass-card', 'glass-row-item', 'glass-pill']) {
+  assert.match(system, new RegExp('\\.' + name + ' \\{'));
 }
-console.log('✓ All 6 independent views exist in DOM');
-
-// 5. Verify Modals remain intact
-const modals = [
-  'booking-modal-backdrop', 'packing-modal-backdrop',
-  'expense-modal-backdrop', 'photo-modal-backdrop', 'photo-lightbox-modal',
-  'global-search-modal', 'activity-modal-backdrop', 'day-modal-backdrop',
-  'manage-editor', 'trip-editor'
-];
-for (const m of modals) {
-  assert.ok(indexHtml.includes(`id="${m}"`), `Modal ${m} must exist in DOM`);
+for (const file of ['app', 'hero-dock', 'trip', 'management']) {
+  const source = fs.readFileSync('css/' + file + '.css', 'utf8');
+  assert.ok(source.startsWith('@layer legacy {'));
+  assert.doesNotMatch(source, /--glass-[\w-]+\s*:/, file + ' redefines a design token');
+  assert.doesNotMatch(source, /\bbox-shadow\s*:/, file + ' reintroduces a local shadow');
+  assert.doesNotMatch(source, /\.packing-[\w-]+/, file + ' reintroduces packing skins');
 }
-console.log('✓ All 10 modals and editor dialogs intact');
+const html = fs.readFileSync('index.html', 'utf8');
+assert.ok(html.includes('css/design-system.css'));
+for (const id of ['hero-cinematic', 'trip-workspace', 'organization']) {
+  const element = html.match(new RegExp('<[^>]*id="' + id + '"[^>]*>'))?.[0];
+  assert.ok(element?.includes('glass-container'), id + ' must use the shared page surface');
+}
 
-console.log('==================================================');
-console.log('ALL PHASE 2 VISUAL UNIFICATION CHECKS PASSED (100%)');
-console.log('==================================================');
+// Exercise actual packing filtering/rendering, rather than checking stylesheet strings alone.
+const nodes = Object.fromEntries(['org-packing-list-container', 'org-packing-chips-container',
+  'org-packing-progress-fill', 'org-packing-pct-text', 'org-badge-packing-progress', 'org-packing-status-badge']
+  .map(id => [id, {innerHTML: '', style: {}, parentElement: {setAttribute() {}}}]));
+let saved = 0;
+const escape = value => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('"', '&quot;');
+const context = vm.createContext({window: {}, console, Intl, document: {getElementById: id => nodes[id] || null, addEventListener() {}},
+  escapeHtml: escape, saveUserPacking() { saved++; return true; },
+  PACKING_CATEGORIES: [{key: 'docs', label: 'Dokumente', icon: 'fa-passport'}, {key: 'tech', label: 'Technik', icon: 'fa-plug'}],
+  userPacking: [{id: 'a', name: 'Reisepass', category: 'docs', quantity: '4x', note: '<Notiz>', packed: false},
+    {id: 'b', name: 'Adapter', category: 'tech', quantity: '2x', packed: true}],
+  currentPackingQuery: '', currentPackingCatFilter: 'all', currentPackingStatus: 'all'});
+context.window.TripModel = {escape, dateLabel: value => value};
+context.window.ManagementModel = {STATUS: {confirmed: 'Bestätigt'}, EXP_STATUS: {paid: 'Bezahlt'}, BOOKING_TYPES: {flight: 'Flug'}};
+vm.runInContext(fs.readFileSync('js/management/ui.js', 'utf8'), context);
+const source = fs.readFileSync('js/app.js', 'utf8');
+vm.runInContext(source.slice(source.indexOf('    function getFilteredPackingItems()'), source.indexOf('    function filterPackingByCategory(')), context);
+context.renderPackingList();
+assert.equal((nodes['org-packing-list-container'].innerHTML.match(/class="glass-row-item"/g) || []).length, 2);
+assert.ok(nodes['org-packing-list-container'].innerHTML.includes('&lt;Notiz>'));
+assert.ok(nodes['org-packing-list-container'].innerHTML.includes('class="glass-switch"'));
+context.currentPackingQuery = 'adapter'; context.renderPackingList(true);
+assert.ok(!nodes['org-packing-list-container'].innerHTML.includes('Reisepass'));
+assert.ok(nodes['org-packing-list-container'].innerHTML.includes('Adapter'));
+context.currentPackingStatus = 'open'; context.renderPackingList();
+assert.ok(nodes['org-packing-list-container'].innerHTML.includes('Keine passenden Einträge.'));
+context.currentPackingQuery = ''; context.currentPackingStatus = 'all'; context.currentPackingCatFilter = 'docs';
+assert.equal(context.getFilteredPackingItems().length, 1);
+context.togglePackingItem('a', true);
+assert.equal(saved, 1); assert.equal(context.userPacking[0].packed, true);
+assert.equal(nodes['org-packing-pct-text'].textContent, '2 / 2 (100%)');
+const booking = context.window.ManagementUI.list('booking', [{id:'flight',title:'Flug',type:'flight',date:'2027-03-21',price:100,status:'confirmed',currency:'EUR'}], {trip:{getDays:()=>[]}});
+assert.ok(booking.includes('class="glass-row-item"'));
+for (const name of ['glass-row-main', 'glass-row-icon', 'glass-row-copy', 'glass-row-tail']) {
+  assert.ok(booking.includes('class="' + name + '"'));
+  assert.ok(nodes['org-packing-list-container'].innerHTML.includes('class="' + name + '"'));
+}
+console.log('Shared design: one surface/token/shadow owner; common booking/packing rows; packing search, category/status filters, escaping, switches and persistence passed.');

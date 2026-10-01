@@ -512,9 +512,6 @@ const localStorage = window.Persistence.wrap(window.localStorage);
               if (details.id === 'budget-details-slide') {
                 setTimeout(renderCurrentBudgetChart, 60);
               }
-              if (details.id === 'drone-map-slide' && typeof handleDroneMapToggle === 'function') {
-                handleDroneMapToggle(details);
-              }
               if (typeof runScrollCheck === 'function') {
                 runScrollCheck();
               }
@@ -678,7 +675,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
 
       const items = daySuggestions[dayKey] || [];
       if (items.length === 0) {
-        listEl.innerHTML = `<li style="font-size: 0.8rem; color: var(--text-muted); font-style: italic;">Noch keine Vorschläge vorhanden.</li>`;
+        listEl.innerHTML = `<li style="font-size: 0.8rem; font-style: italic">Noch keine Vorschläge vorhanden.</li>`;
         return;
       }
 
@@ -760,11 +757,11 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         }
 
         const li = document.createElement('li');
-        li.className = `grocery-item ${item.done ? 'completed' : ''}`;
+        li.className = `glass-row-item grocery-item ${item.done ? 'completed' : ''}`;
         li.innerHTML = `
-          <div style="cursor:pointer; display:flex; align-items:center; gap:0.6rem;" onclick="toggleGrocery(${index})">
-            <input type="checkbox" ${item.done ? 'checked' : ''} style="pointer-events:none;">
-            <span>${escapeHtml(item.text)} ${priceAud > 0 ? `<small>(${priceAud.toFixed(2)} AUD)</small>` : ''}</span>
+          <div style="cursor:pointer; display:flex; align-items:center; gap:0.6rem" onclick="toggleGrocery(${index})">
+            <input type="checkbox" ${item.done ? 'checked' : ''} style="pointer-events:none">
+            <span>${escapeHtml(item.text)} ${priceAud > 0 ? `<small>(${(window.FinanceView?.amount(priceAud) ?? priceAud).toFixed(2)} AUD)</small>` : ''}</span>
           </div>
           <button class="grocery-del-btn" onclick="deleteGrocery(${index})"><i class="fa-solid fa-trash-can"></i></button>
         `;
@@ -803,26 +800,26 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         }
 
         const card = document.createElement('div');
-        card.className = 'fuel-entry-card';
-        card.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 0.65rem 0.85rem; background: var(--card-sub-bg); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 0.5rem; transition: background 0.2s;';
+        card.className = 'glass-row-item fuel-entry-card';
+        card.style.marginBottom = '8px';
 
         const payerClass = payer.toLowerCase();
         const dateStr = entry.date || new Date(entry.id || Date.now()).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
         const locationStr = entry.location ? ` • ${escapeHtml(entry.location)}` : '';
 
         card.innerHTML = `
-          <div style="display: flex; align-items: center; gap: 0.6rem; flex: 1; min-width: 0;">
+          <div style="display: flex; align-items: center; gap: 0.6rem; flex: 1; min-width: 0">
             <span class="payer-badge ${payerClass}">${escapeHtml(payer)}</span>
-            <div style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-              <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">
-                ${costAud.toFixed(2)} AUD <span style="font-size: 0.82rem; font-weight: 600; color: var(--text-muted);">(≈ ${costEur.toFixed(2)} €)</span>
+            <div style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+              <div style="font-weight: 700; font-size: 0.95rem">
+                ${(window.FinanceView?.amount(costAud) ?? costAud).toFixed(2)} AUD <span style="font-size: 0.82rem; font-weight: 600">(≈ ${(window.FinanceView?.amount(costEur) ?? costEur).toFixed(2)} €)</span>
               </div>
-              <div style="font-size: 0.75rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis;">
+              <div style="font-size: 0.75rem; overflow: hidden; text-overflow: ellipsis">
                 ${escapeHtml(dateStr)}${locationStr}
               </div>
             </div>
           </div>
-          <button class="fuel-del-btn" style="background: none; border: none; color: #ef4444; cursor: pointer; padding: 0.4rem 0.55rem; font-size: 1rem; opacity: 0.75;" onclick="deleteFuelEntry(${index})" title="Löschen">
+          <button class="fuel-del-btn" style="border: none; cursor: pointer; padding: 0.4rem 0.55rem; font-size: 1rem; opacity: 0.75" onclick="deleteFuelEntry(${index})" title="Löschen">
             <i class="fa-solid fa-trash-can"></i>
           </button>
         `;
@@ -831,8 +828,8 @@ const localStorage = window.Persistence.wrap(window.localStorage);
 
       if (fuelEntries.length === 0) {
         container.innerHTML = `
-          <div style="text-align: center; padding: 1.2rem; color: var(--text-muted); font-size: 0.84rem; background: var(--card-sub-bg); border-radius: 12px; border: 1px dashed var(--border-color);">
-            <i class="fa-solid fa-gas-pump" style="font-size: 1.5rem; margin-bottom: 0.4rem; opacity: 0.5; display: block; color: var(--secondary);"></i>
+          <div style="text-align: center; padding: 1.2rem; font-size: 0.84rem; border-radius: 12px">
+            <i class="fa-solid fa-gas-pump" style="font-size: 1.5rem; margin-bottom: 0.4rem; opacity: 0.5; display: block"></i>
             Noch keine Tankfüllungen eingetragen. Tragt jede Tankung ein – sie synchronisiert sich live über alle Handys und teilt fair durch 4!
           </div>
         `;
@@ -843,7 +840,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       if (countEl) countEl.innerText = `${fuelEntries.length} ${fuelEntries.length === 1 ? 'Eintrag' : 'Einträge'}`;
 
       const totalSumEl = document.getElementById('fuel-total-sum');
-      if (totalSumEl) totalSumEl.innerText = `${totalAud.toFixed(2)} AUD (${totalEur.toFixed(2)} €)`;
+      if (totalSumEl) totalSumEl.innerText = `${(window.FinanceView?.amount(totalAud) ?? totalAud).toFixed(2)} AUD (${(window.FinanceView?.amount(totalEur) ?? totalEur).toFixed(2)} €)`;
 
       const perPersonEl = document.getElementById('fuel-per-person');
       if (perPersonEl) perPersonEl.innerText = `${(totalAud / 4).toFixed(2)} AUD (${(totalEur / 4).toFixed(2)} €)`;
@@ -930,7 +927,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       if (topBtn) {
         topBtn.setAttribute('aria-pressed', String(isDark));
         topBtn.setAttribute('aria-label', isDark ? 'Light Mode aktivieren' : 'Dark Mode aktivieren');
-        topBtn.innerHTML = isDark ? '<i class="fa-solid fa-sun" style="color:var(--accent-gold);"></i>' : '<i class="fa-solid fa-moon"></i>';
+        topBtn.innerHTML = isDark ? '<i class="fa-solid fa-sun" style=""></i>' : '<i class="fa-solid fa-moon"></i>';
       }
       const drawerIcon = document.getElementById('drawer-theme-icon');
       const drawerLabel = document.getElementById('drawer-theme-label');
@@ -1724,9 +1721,9 @@ const localStorage = window.Persistence.wrap(window.localStorage);
               <div class="dash-card-body">
                 <div class="dash-card-primary-val">Tag 1: ${escapeHtml(day1.title)}</div>
                 <div class="dash-card-desc">
-                  <i class="fa-regular fa-clock" style="color:var(--primary);"></i> <strong>Datum:</strong> 21.03.2027 (Sonntag)<br>
-                  <i class="fa-solid fa-plane-departure" style="color:var(--primary);"></i> <strong>Start:</strong> ${escapeHtml(day1.start)}<br>
-                  <i class="fa-solid fa-location-dot" style="color:var(--secondary);"></i> <strong>Ziel:</strong> ${escapeHtml(day1.destination)}
+                  <i class="fa-regular fa-clock" style=""></i> <strong>Datum:</strong> 21.03.2027 (Sonntag)<br>
+                  <i class="fa-solid fa-plane-departure" style=""></i> <strong>Start:</strong> ${escapeHtml(day1.start)}<br>
+                  <i class="fa-solid fa-location-dot" style=""></i> <strong>Ziel:</strong> ${escapeHtml(day1.destination)}
                 </div>
                 <div class="dash-card-meta-row">
                   <span class="dash-meta-badge"><i class="fa-solid fa-plane"></i> Langstreckenflug</span>
@@ -1748,7 +1745,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           <div class="dash-card">
             <div>
               <div class="dash-card-header">
-                <div class="dash-card-icon" style="color:var(--secondary); background:rgba(217, 107, 39, 0.12);"><i class="fa-solid fa-flag-checkered"></i></div>
+                <div class="dash-card-icon" style="background:rgba(217, 107, 39, 0.12)"><i class="fa-solid fa-flag-checkered"></i></div>
                 <div class="dash-card-title">Nächstes Ziel</div>
               </div>
               <div class="dash-card-body">
@@ -1777,16 +1774,16 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           <div class="dash-card">
             <div>
               <div class="dash-card-header">
-                <div class="dash-card-icon" style="color:#0284c7; background:rgba(2, 132, 199, 0.12);"><i class="fa-solid fa-route"></i></div>
+                <div class="dash-card-icon" style="background:rgba(2, 132, 199, 0.12)"><i class="fa-solid fa-route"></i></div>
                 <div class="dash-card-title">Reise-Eckdaten</div>
               </div>
               <div class="dash-card-body">
                 <div class="dash-card-primary-val">20 Tage · 4 Personen</div>
                 <ul class="dash-card-list">
-                  <li onclick="focusDayOnMap(null)" style="cursor:pointer;" title="Klicken: Gesamte Route auf Karte ansehen"><i class="fa-solid fa-road"></i> <span><strong>ca. 2.100 km</strong> Mietwagenstrecke</span></li>
-                  <li onclick="jumpToDayAndHighlight(4)" style="cursor:pointer;" title="Klicken: Flüge im Reiseplan anzeigen"><i class="fa-solid fa-plane"></i> <span><strong>2 Inlandsflüge</strong> (SYD➔BNK &amp; PPP➔MEL)</span></li>
-                  <li onclick="focusDayOnMap(null)" style="cursor:pointer;" title="Klicken: Alle 27 Sightseeing-Spots auf Karte ansehen"><i class="fa-solid fa-camera"></i> <span><strong>27 Sightseeing-Spots</strong> &amp; Fototipps</span></li>
-                  <li onclick="openBudgetDetails('budget-charts-main-card')" style="cursor:pointer;" title="Klicken: Zum Budget-Bereich springen"><i class="fa-solid fa-wallet"></i> <span><strong>Budget:</strong> ca. 2.772 € p.P. (inkl. Taschengeld)</span></li>
+                  <li onclick="focusDayOnMap(null)" style="cursor:pointer" title="Klicken: Gesamte Route auf Karte ansehen"><i class="fa-solid fa-road"></i> <span><strong>ca. 2.100 km</strong> Mietwagenstrecke</span></li>
+                  <li onclick="jumpToDayAndHighlight(4)" style="cursor:pointer" title="Klicken: Flüge im Reiseplan anzeigen"><i class="fa-solid fa-plane"></i> <span><strong>2 Inlandsflüge</strong> (SYD➔BNK &amp; PPP➔MEL)</span></li>
+                  <li onclick="focusDayOnMap(null)" style="cursor:pointer" title="Klicken: Alle 27 Sightseeing-Spots auf Karte ansehen"><i class="fa-solid fa-camera"></i> <span><strong>27 Sightseeing-Spots</strong> &amp; Fototipps</span></li>
+                  <li onclick="openBudgetDetails('budget-charts-main-card')" style="cursor:pointer" title="Klicken: Zum Budget-Bereich springen"><i class="fa-solid fa-wallet"></i> <span><strong>Budget:</strong> ca. 2.772 € p.P. (inkl. Taschengeld)</span></li>
                 </ul>
               </div>
             </div>
@@ -1804,20 +1801,20 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           <div class="dash-card">
             <div>
               <div class="dash-card-header">
-                <div class="dash-card-icon" style="color:#0284c7; background:rgba(2,132,199,0.12);"><i class="fa-solid fa-cloud-sun"></i></div>
+                <div class="dash-card-icon" style="background:rgba(2,132,199,0.12)"><i class="fa-solid fa-cloud-sun"></i></div>
                 <div class="dash-card-title">Wetter am Ankunftsort</div>
               </div>
               <div class="dash-card-body">
                 <div class="dash-card-primary-val">Sydney (NSW)</div>
                 <div class="dash-weather-box">
-                  <div class="dash-weather-icon"><i class="fa-solid fa-sun" style="color:#f59e0b;"></i></div>
+                  <div class="dash-weather-icon"><i class="fa-solid fa-sun" style=""></i></div>
                   <div>
                     <div class="dash-weather-temp" id="dash-pre-temp">${document.getElementById('weather-temp-sydney') ? document.getElementById('weather-temp-sydney').innerText : '24°C'}</div>
                     <div class="dash-weather-meta">${document.getElementById('weather-cond-sydney') ? document.getElementById('weather-cond-sydney').innerText : 'Sonnig &amp; Mild'} · Ankunft Tag 2</div>
                   </div>
                 </div>
-                <div class="dash-card-desc" style="margin-top:0.6rem; font-size:0.82rem;">
-                  <i class="fa-solid fa-circle-info" style="color:var(--primary);"></i> Angenehme Herbsttemperaturen in New South Wales.
+                <div class="dash-card-desc" style="margin-top:0.6rem; font-size:0.82rem">
+                  <i class="fa-solid fa-circle-info" style=""></i> Angenehme Herbsttemperaturen in New South Wales.
                 </div>
               </div>
             </div>
@@ -1835,7 +1832,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           <div class="dash-card">
             <div>
               <div class="dash-card-header">
-                <div class="dash-card-icon" style="color:#10b981; background:rgba(16,185,129,0.12);"><i class="fa-solid fa-passport"></i></div>
+                <div class="dash-card-icon" style="background:rgba(16,185,129,0.12)"><i class="fa-solid fa-passport"></i></div>
                 <div class="dash-card-title">Reisevorbereitung</div>
               </div>
               <div class="dash-card-body">
@@ -2170,12 +2167,12 @@ const localStorage = window.Persistence.wrap(window.localStorage);
 
       const allActivitiesHtml = (dayData.activities && dayData.activities.length > 0)
         ? dayData.activities.map((a, idx) => `
-            <li onclick="jumpToDayAndHighlight(${dayData.day})" style="cursor:pointer;" title="Klicken: Im Tagesplan anzeigen">
-              <i class="fa-solid fa-${idx === 0 ? 'star' : 'circle-check'}" style="color:${idx === 0 ? 'var(--accent-gold)' : 'var(--primary)'};"></i>
+            <li onclick="jumpToDayAndHighlight(${dayData.day})" style="cursor:pointer" title="Klicken: Im Tagesplan anzeigen">
+              <i class="fa-solid fa-${idx === 0 ? 'star' : 'circle-check'}" style=""></i>
               <span>${escapeHtml(a)}</span>
             </li>
           `).concat(customActs.map(ca => `
-            <li onclick="jumpToDayAndHighlight(${dayData.day})" style="cursor:pointer; color:var(--primary);" title="Eigene Aktivität">
+            <li onclick="jumpToDayAndHighlight(${dayData.day})" style="cursor:pointer" title="Eigene Aktivität">
               <i class="fa-solid fa-plus-circle"></i>
               <span><strong>${escapeHtml(ca.time || 'Flexibel')}:</strong> ${escapeHtml(ca.text)}</span>
             </li>
@@ -2187,7 +2184,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       const spotsHtml = spotsForDay.length > 0
         ? `
           <div class="dash-spots-row">
-            <span style="font-size:0.7rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-right:0.2rem;">
+            <span style="font-size:0.7rem; font-weight:800; text-transform:uppercase; margin-right:0.2rem">
               <i class="fa-solid fa-camera"></i> Spots:
             </span>
             ${spotsForDay.map(s => `
@@ -2271,9 +2268,9 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           </div>
 
           <div class="banner-headline">Tag ${dayData.day}: ${escapeHtml(dayData.title)}</div>
-          
+
           <div class="banner-subline">
-            <i class="fa-solid fa-location-dot" style="color:#fef08a;"></i> <strong>Standort:</strong> ${escapeHtml(dayData.location)} · <strong>Tagesziel:</strong> ${escapeHtml(dayData.destination)}
+            <i class="fa-solid fa-location-dot" style=""></i> <strong>Standort:</strong> ${escapeHtml(dayData.location)} · <strong>Tagesziel:</strong> ${escapeHtml(dayData.destination)}
           </div>
 
           <!-- Gesamtfortschritt der Reise -->
@@ -2283,7 +2280,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
               <span><strong>${progressPercent}% abgeschlossen</strong> (Tag ${dayData.day} / 20)</span>
             </div>
             <div class="dash-progress-track">
-              <div class="dash-progress-fill" style="width: ${progressPercent}%;"></div>
+              <div class="dash-progress-fill" style="width: ${progressPercent}%"></div>
             </div>
             <div class="dash-progress-sub">
               <span>${dayData.day === 20 ? '🏁 Letzter Reisetag der Reise!' : `Noch <strong>${20 - dayData.day} Reisetage</strong> bis zum Rückflug`}</span>
@@ -2293,7 +2290,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
 
           <div class="banner-quick-actions">
             <button type="button" class="btn-banner-action" onclick="focusDayOnMap(${dayData.day}, event)">
-              <i class="fa-solid fa-map-location-dot" style="color:var(--primary);"></i> Etappe auf Karte ansehen
+              <i class="fa-solid fa-map-location-dot" style=""></i> Etappe auf Karte ansehen
             </button>
             <button type="button" class="btn-banner-action outline" onclick="jumpToDayAndHighlight(${dayData.day})">
               <i class="fa-solid fa-arrow-down"></i> Tagesplan Tag ${dayData.day} öffnen
@@ -2306,7 +2303,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           <div class="dash-card">
             <div>
               <div class="dash-card-header">
-                <div class="dash-card-icon" style="color:#0284c7; background:rgba(2, 132, 199, 0.12);"><i class="fa-solid fa-route"></i></div>
+                <div class="dash-card-icon" style="background:rgba(2, 132, 199, 0.12)"><i class="fa-solid fa-route"></i></div>
                 <div class="dash-card-title">Standort &amp; Fahrt</div>
               </div>
               <div class="dash-card-body">
@@ -2348,8 +2345,8 @@ const localStorage = window.Persistence.wrap(window.localStorage);
                   </div>
                 </div>
 
-                <div class="dash-card-desc" style="margin-top:0.4rem;">
-                  <i class="fa-solid fa-compass" style="color:var(--secondary);"></i> <strong>Nächster Ort / Halt:</strong> ${escapeHtml(nextRelevantPlace)}
+                <div class="dash-card-desc" style="margin-top:0.4rem">
+                  <i class="fa-solid fa-compass" style=""></i> <strong>Nächster Ort / Halt:</strong> ${escapeHtml(nextRelevantPlace)}
                 </div>
               </div>
             </div>
@@ -2367,7 +2364,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           <div class="dash-card">
             <div>
               <div class="dash-card-header">
-                <div class="dash-card-icon" style="color:var(--secondary); background:rgba(217,107,39,0.12);"><i class="fa-solid fa-list-check"></i></div>
+                <div class="dash-card-icon" style="background:rgba(217,107,39,0.12)"><i class="fa-solid fa-list-check"></i></div>
                 <div class="dash-card-title">Tagesprogramm</div>
               </div>
               <div class="dash-card-body">
@@ -2378,7 +2375,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
 
                 ${secondActivity ? `
                   <div class="dash-next-act">
-                    <i class="fa-solid fa-forward-step" style="color:var(--primary);"></i> <strong>Als nächstes:</strong> ${escapeHtml(secondActivity)}
+                    <i class="fa-solid fa-forward-step" style=""></i> <strong>Als nächstes:</strong> ${escapeHtml(secondActivity)}
                   </div>
                 ` : ''}
 
@@ -2400,13 +2397,13 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           <div class="dash-card">
             <div>
               <div class="dash-card-header">
-                <div class="dash-card-icon" style="color:#10b981; background:rgba(16,185,129,0.12);"><i class="fa-solid fa-bed"></i></div>
+                <div class="dash-card-icon" style="background:rgba(16,185,129,0.12)"><i class="fa-solid fa-bed"></i></div>
                 <div class="dash-card-title">Unterkunft &amp; Check-in</div>
               </div>
               <div class="dash-card-body">
-                <div class="dash-card-primary-val" style="font-size:1.05rem;">${escapeHtml(acc.name)}</div>
+                <div class="dash-card-primary-val" style="font-size:1.05rem">${escapeHtml(acc.name)}</div>
                 <div class="dash-card-desc">
-                  <i class="fa-solid fa-location-dot" style="color:var(--primary);"></i> ${escapeHtml(acc.address)}
+                  <i class="fa-solid fa-location-dot" style=""></i> ${escapeHtml(acc.address)}
                 </div>
 
                 <div class="checkin-times-pill-row">
@@ -2422,8 +2419,8 @@ const localStorage = window.Persistence.wrap(window.localStorage);
                   </div>
                 </div>
 
-                <div class="dash-meta-row" style="margin-top:0.4rem;">
-                  <span class="dash-meta-badge" style="background:rgba(16,185,129,0.12); color:#10b981; border-color:rgba(16,185,129,0.3);">
+                <div class="dash-meta-row" style="margin-top:0.4rem">
+                  <span class="dash-meta-badge" style="color:#10b981">
                     <i class="fa-solid fa-circle-check"></i> Vorab gebucht &amp; hinterlegt
                   </span>
                   <span class="dash-meta-badge">
@@ -2438,7 +2435,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
                   <i class="fa-solid fa-arrow-up-right-from-square"></i> ${escapeHtml(acc.bookingLabel)}
                 </a>
               ` : ''}
-              <button type="button" class="btn-dash-action" style="background:var(--primary-light); color:var(--primary); border:1px solid rgba(0,109,104,0.3);" onclick="openBookingsForDay(${dayData.day})" title="Buchungen zu Tag ${dayData.day} öffnen">
+              <button type="button" class="btn-dash-action" style="color:var(--primary)" onclick="openBookingsForDay(${dayData.day})" title="Buchungen zu Tag ${dayData.day} öffnen">
                 <i class="fa-solid fa-receipt"></i> Buchungsdetails
               </button>
               <button type="button" class="btn-dash-action secondary" onclick="openCheckinSlide('${escapeHtml(acc.name)}')">
@@ -2451,20 +2448,20 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           <div class="dash-card">
             <div>
               <div class="dash-card-header">
-                <div class="dash-card-icon" style="color:#0284c7; background:rgba(2,132,199,0.12);"><i class="fa-solid fa-cloud-sun"></i></div>
+                <div class="dash-card-icon" style="background:rgba(2,132,199,0.12)"><i class="fa-solid fa-cloud-sun"></i></div>
                 <div class="dash-card-title">Wetter vor Ort</div>
               </div>
               <div class="dash-card-body">
-                <div class="dash-card-primary-val" style="font-size:1.05rem;">${cityLabel}</div>
+                <div class="dash-card-primary-val" style="font-size:1.05rem">${cityLabel}</div>
                 <div class="dash-weather-box">
-                  <div class="dash-weather-icon"><i class="fa-solid fa-sun" style="color:#f59e0b;"></i></div>
+                  <div class="dash-weather-icon"><i class="fa-solid fa-sun" style=""></i></div>
                   <div>
                     <div class="dash-weather-temp">${liveTemp}</div>
                     <div class="dash-weather-meta">${liveCond} · Wind ${liveWind} · Feuchte ${liveHum}</div>
                   </div>
                 </div>
-                <div class="dash-card-desc" style="margin-top:0.6rem; font-size:0.8rem;">
-                  <i class="fa-solid fa-circle-info" style="color:var(--primary);"></i> ${weatherTip}
+                <div class="dash-card-desc" style="margin-top:0.6rem; font-size:0.8rem">
+                  <i class="fa-solid fa-circle-info" style=""></i> ${weatherTip}
                 </div>
               </div>
             </div>
@@ -2482,11 +2479,11 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           <div class="dash-card">
             <div>
               <div class="dash-card-header">
-                <div class="dash-card-icon" style="color:#d97706; background:rgba(217,119,6,0.12);"><i class="fa-solid fa-wallet"></i></div>
+                <div class="dash-card-icon" style="background:rgba(217,119,6,0.12)"><i class="fa-solid fa-wallet"></i></div>
                 <div class="dash-card-title">Budget &amp; Tagesausgaben</div>
               </div>
               <div class="dash-card-body">
-                <div class="dash-card-primary-val" style="font-size:1.05rem;">Heutige Kosten: ca. ${plannedExp.amount} € p.P.</div>
+                <div class="dash-card-primary-val" style="font-size:1.05rem">Heutige Kosten: ca. ${plannedExp.amount} € p.P.</div>
                 <div class="dash-card-desc">
                   <strong>Zweck:</strong> ${escapeHtml(plannedExp.label)}
                 </div>
@@ -2502,10 +2499,10 @@ const localStorage = window.Persistence.wrap(window.localStorage);
                       ${recordedDaySumEur > 0 ? recordedDaySumEur.toFixed(2) + ' € (' + recordedForDay.length + ' Beleg' + (recordedForDay.length > 1 ? 'e' : '') + ')' : '0,00 €'}
                     </strong>
                   </div>
-                  <div style="grid-column: 1 / -1;">
+                  <div style="grid-column: 1 / -1">
                     <span class="lbl">Verbleibend Vor-Ort (Taschengeld)</span>
-                    <strong style="color:var(--primary);">ca. ${remainingOnsite} € p.P.</strong>
-                    <span style="font-size:0.72rem; color:var(--text-muted); display:inline-block; margin-left:0.3rem;">(für noch ${20 - dayNum + 1} Tage)</span>
+                    <strong style="">ca. ${remainingOnsite} € p.P.</strong>
+                    <span style="font-size:0.72rem; display:inline-block; margin-left:0.3rem">(für noch ${20 - dayNum + 1} Tage)</span>
                   </div>
                 </div>
               </div>
@@ -2547,11 +2544,11 @@ const localStorage = window.Persistence.wrap(window.localStorage);
             20 unvergessliche Tage von Wien über Sydney, Byron Bay, Brisbane, Noosa, K'gari &amp; Whitsundays bis Melbourne und die Great Ocean Road.
           </div>
 
-          <div style="display:flex; flex-wrap:wrap; gap:0.6rem; margin-top:0.75rem;">
-            <button type="button" class="btn-dash-action" style="background:#ffffff; color:#0f172a; font-weight:800; border:none;" onclick="focusDayOnMap(null)">
-              <i class="fa-solid fa-map" style="color:var(--primary);"></i> Gesamte Reiseroute auf Karte ansehen
+          <div style="display:flex; flex-wrap:wrap; gap:0.6rem; margin-top:0.75rem">
+            <button type="button" class="btn-dash-action" style="color:#0f172a; font-weight:800" onclick="focusDayOnMap(null)">
+              <i class="fa-solid fa-map" style=""></i> Gesamte Reiseroute auf Karte ansehen
             </button>
-            <button type="button" class="btn-dash-action" style="background:rgba(255,255,255,0.2); color:#ffffff; border:1px solid rgba(255,255,255,0.4);" onclick="jumpToDayAndHighlight(1)">
+            <button type="button" class="btn-dash-action" style="color:#ffffff" onclick="jumpToDayAndHighlight(1)">
               <i class="fa-solid fa-calendar-days"></i> Reiseplan von Tag 1 an durchblättern
             </button>
           </div>
@@ -2566,7 +2563,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
                 <div class="dash-card-title">Reisedauer &amp; Etappen</div>
               </div>
               <div class="dash-card-body">
-                <div class="dash-card-primary-val">20 Reisetage absolviert</div>
+                <div class="dash-card-primary-val">21 Reisetage geplant</div>
                 <div class="dash-card-desc">
                   Reisezeitraum: <strong>21.03.2027 bis 09.04.2027</strong><br>
                   Besuchte Bundesstaaten: <strong>New South Wales, Queensland &amp; Victoria</strong>
@@ -2588,7 +2585,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           <div class="dash-card">
             <div>
               <div class="dash-card-header">
-                <div class="dash-card-icon" style="color:var(--secondary); background:rgba(217,107,39,0.12);"><i class="fa-solid fa-road"></i></div>
+                <div class="dash-card-icon" style="background:rgba(217,107,39,0.12)"><i class="fa-solid fa-road"></i></div>
                 <div class="dash-card-title">Gefahrene Kilometer</div>
               </div>
               <div class="dash-card-body">
@@ -2612,7 +2609,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           <div class="dash-card">
             <div>
               <div class="dash-card-header">
-                <div class="dash-card-icon" style="color:#10b981; background:rgba(16,185,129,0.12);"><i class="fa-solid fa-coins"></i></div>
+                <div class="dash-card-icon" style="background:rgba(16,185,129,0.12)"><i class="fa-solid fa-coins"></i></div>
                 <div class="dash-card-title">Gesamtausgaben &amp; Abrechnung</div>
               </div>
               <div class="dash-card-body">
@@ -2633,11 +2630,11 @@ const localStorage = window.Persistence.wrap(window.localStorage);
             </div>
           </div>
 
-          <!-- Card 4: Sightseeing & Bucket List -->
+          <!-- Card 4: Sightseeing-Highlights -->
           <div class="dash-card">
             <div>
               <div class="dash-card-header">
-                <div class="dash-card-icon" style="color:#8b5cf6; background:rgba(139,92,246,0.12);"><i class="fa-solid fa-camera"></i></div>
+                <div class="dash-card-icon" style="background:rgba(139,92,246,0.12)"><i class="fa-solid fa-camera"></i></div>
                 <div class="dash-card-title">Highlights &amp; Erinnerungen</div>
               </div>
               <div class="dash-card-body">
@@ -2648,9 +2645,6 @@ const localStorage = window.Persistence.wrap(window.localStorage);
               </div>
             </div>
             <div class="dash-card-actions">
-              <a href="#bucketlist" class="btn-dash-action secondary">
-                <i class="fa-solid fa-square-check"></i> Bucket List ansehen
-              </a>
               <button type="button" class="btn-dash-action secondary" onclick="focusSpotOnMap(18)">
                 <i class="fa-solid fa-umbrella-beach"></i> Whitehaven Beach Pin
               </button>
@@ -2685,7 +2679,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
             <div class="hero-status-card pre-trip" onclick="document.getElementById('dashboard').scrollIntoView({behavior:'smooth'})" role="button" tabindex="0" title="Klicken: Zum Reise-Dashboard springen">
               <div class="hero-status-tag"><i class="fa-solid fa-hourglass-half"></i> Countdown zum Abflug</div>
               <div class="hero-status-title">⏳ <span id="hero-countdown-span">Noch <strong>${days}</strong> Tage, <strong>${hours}</strong>:<strong>${minutes}</strong>:<strong>${seconds}</strong> bis zum Abflug in Wien 🇦🇹 ✈️ 🇦🇺</span></div>
-              <div class="hero-status-sub">Scoot Flug TR 12 · Abflug am 21. März 2027 um 10:00 Uhr · <span style="text-decoration:underline;">Zum Trip-Cockpit ➔</span></div>
+              <div class="hero-status-sub">Scoot Flug TR 12 · Abflug am 21. März 2027 um 10:00 Uhr · <span style="text-decoration:underline">Zum Trip-Cockpit ➔</span></div>
             </div>
           `;
         }
@@ -2697,7 +2691,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           <div class="hero-status-card during-trip" onclick="document.getElementById('dashboard').scrollIntoView({behavior:'smooth'})" role="button" tabindex="0" title="Klicken: Direkt zum Trip-Cockpit für Tag #${dayData.day} springen">
             <div class="hero-status-badge-live"><span class="live-dot-pulse"></span> LIVE REISESTATUS · Tag ${dayData.day} von 20 (${progressPercent}%)</div>
             <div class="hero-status-title">📍 LIVE HEUTE: Tag ${dayData.day} (${dayData.date}) | ${escapeHtml(dayData.title)}</div>
-            <div class="hero-status-sub" style="margin-top:0.35rem; font-size:0.86rem; opacity:0.95;">
+            <div class="hero-status-sub" style="margin-top:0.35rem; font-size:0.86rem; opacity:0.95">
               <span>🏁 ${escapeHtml(dayData.start)} ➔ ${escapeHtml(dayData.destination)}</span> · <span>${escapeHtml(dayData.distance)}</span>
             </div>
             <div class="hero-status-jump"><i class="fa-solid fa-compass"></i> Zum Trip-Cockpit öffnen ➔</div>
@@ -2709,7 +2703,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           <div class="hero-status-card post-trip" onclick="document.getElementById('dashboard').scrollIntoView({behavior:'smooth'})" role="button" tabindex="0" title="Klicken: Zur Reise-Rückschau im Dashboard springen">
             <div class="hero-status-tag"><i class="fa-solid fa-circle-check"></i> Reise abgeschlossen</div>
             <div class="hero-status-title">Trip erfolgreich beendet – Willkommen zurück in der Heimat! 🦘🇦🇺🎉</div>
-            <div class="hero-status-sub">20 Tage Roadtrip &amp; ca. 5.520 km in Australien absolviert · <span style="text-decoration:underline;">Zur Reise-Rückschau ➔</span></div>
+            <div class="hero-status-sub">20 Tage Roadtrip &amp; ca. 5.520 km in Australien absolviert · <span style="text-decoration:underline">Zur Reise-Rückschau ➔</span></div>
           </div>
         `;
       }
@@ -3056,10 +3050,10 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       const perPersonAud = totalAud / personsVal;
 
       preview.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
-          <div>Gesamt: <strong>${totalEur.toFixed(2)} €</strong> <span style="color:var(--text-muted); font-size:0.74rem;">(ca. ${totalAud.toFixed(2)} AUD)</span></div>
-          <div style="color:var(--primary); font-weight:800; font-size:0.9rem;">
-            👉 <strong>${perPersonEur.toFixed(2)} €</strong> p.P. <span style="font-size:0.72rem; font-weight:600; color:var(--text-muted);">(bei ${personsVal} Person${personsVal > 1 ? 'en' : ''})</span>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem">
+          <div>Gesamt: <strong>${totalEur.toFixed(2)} €</strong> <span style="font-size:0.74rem">(ca. ${totalAud.toFixed(2)} AUD)</span></div>
+          <div style="font-weight:800; font-size:0.9rem">
+            👉 <strong>${perPersonEur.toFixed(2)} €</strong> p.P. <span style="font-size:0.72rem; font-weight:600">(bei ${personsVal} Person${personsVal > 1 ? 'en' : ''})</span>
           </div>
         </div>
       `;
@@ -3169,8 +3163,8 @@ const localStorage = window.Persistence.wrap(window.localStorage);
 
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div style="text-align: center; padding: 2rem 1rem; color: var(--text-muted); font-size: 0.88rem;">
-            <i class="fa-solid fa-folder-open" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.6; display: block;"></i>
+          <div style="text-align: center; padding: 2rem 1rem; font-size: 0.88rem">
+            <i class="fa-solid fa-folder-open" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.6; display: block"></i>
             Keine Ausgaben für diesen Filter gefunden. Klicke auf <strong>Ausgabe hinzufügen</strong>, um eine neue Ausgabe zu erfassen.
           </div>
         `;
@@ -3183,7 +3177,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         return `
           <div class="expense-row-item" id="exp-row-${exp.id}">
             <div class="expense-item-left">
-              <div class="expense-cat-badge" style="background: ${catCfg.color}20; color: ${catCfg.color};" title="${escapeHtml(catCfg.label)}">
+              <div class="expense-cat-badge" style="color: ${catCfg.color}" title="${escapeHtml(catCfg.label)}">
                 <i class="fa-solid ${catCfg.icon}"></i>
               </div>
               <div class="expense-info-box">
@@ -3778,14 +3772,12 @@ const localStorage = window.Persistence.wrap(window.localStorage);
     let activeFocusedDay = null;
     let isSyncingFromMap = false;
 
-    // Phase 4: 6 Interaktive Kartenlayer (Reiseziele, Highlights, Unterkünfte, Fotospots, Drohnen, No-Fly-Zonen)
+    // Phase 4: 4 interaktive Kartenlayer (Reiseziele, Highlights, Unterkünfte, Fotospots)
     let routeLayers = {
       destinations: null,
       highlights: null,
       accommodations: null,
       photospots: null,
-      drones: null,
-      nofly: null
     };
 
     let routeLayerStates = {
@@ -3793,8 +3785,6 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       highlights: true,
       accommodations: false,
       photospots: false,
-      drones: false,
-      nofly: false
     };
 
     function toggleRouteMapLayer(layerName, isChecked) {
@@ -3824,7 +3814,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       const bar = document.getElementById('route-days-pills-bar');
       if (!bar) return;
       let html = `
-        <span style="font-size:0.74rem; font-weight:700; color:var(--text-muted); white-space:nowrap; margin-right:0.25rem;">
+        <span style="font-size:0.74rem; font-weight:700; white-space:nowrap; margin-right:0.25rem">
           <i class="fa-solid fa-calendar-day"></i> Etappe:
         </span>
         <button type="button" class="day-pill-btn ${activeFocusedDay === null ? 'active' : ''}" id="day-pill-all" onclick="focusDayOnMap(null, event)">
@@ -4028,9 +4018,9 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         stageInfo.innerHTML = `
           <div class="stage-info-header">
             <div class="stage-info-title">
-              <span class="timeline-day-badge" style="font-size:0.76rem; padding:0.2rem 0.55rem;">Tag ${dayData.day}</span>
+              <span class="timeline-day-badge" style="font-size:0.76rem; padding:0.2rem 0.55rem">Tag ${dayData.day}</span>
               <span>${escapeHtml(dayData.title)}</span>
-              <span style="font-size:0.78rem; font-weight:600; color:var(--text-muted);">(${escapeHtml(dayData.date)})</span>
+              <span style="font-size:0.78rem; font-weight:600">(${escapeHtml(dayData.date)})</span>
             </div>
             <button type="button" class="btn-stage-close" onclick="focusDayOnMap(null, event)" title="Etappenfokus aufheben">
               <i class="fa-solid fa-xmark"></i> Alle Etappen
@@ -4611,7 +4601,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
               </div>
               <h4 class="popup-title">${escapeHtml(hotel.name)}</h4>
               <div class="popup-highlight">${escapeHtml(hotel.address)}</div>
-              <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.5rem; line-height:1.4;">
+              <div style="font-size:0.75rem; margin-bottom:0.5rem; line-height:1.4">
                 <i class="fa-solid fa-clock"></i> Check-in: <strong>${escapeHtml(hotel.checkIn)}</strong><br>
                 <i class="fa-solid fa-right-from-bracket"></i> Check-out: <strong>${escapeHtml(hotel.checkOut)}</strong>
               </div>
@@ -4644,7 +4634,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
                 <span class="popup-region-tag">Fotospot</span>
               </div>
               <h4 class="popup-title">${escapeHtml(spot.name)}</h4>
-              <div class="popup-photo-tip" style="margin-top:0.4rem;">
+              <div class="popup-photo-tip" style="margin-top:0.4rem">
                 <i class="fa-solid fa-camera"></i>
                 <div>${spot.photoTip}</div>
               </div>
@@ -4658,77 +4648,11 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           L.marker(spot.coords, { icon: photoIcon }).bindPopup(photoPopup, { maxWidth: 300 }).addTo(routeLayers.photospots);
         });
 
-        // LAYER 5: 🛸 DROHNEN (Freigegebene Drohnen-Traumspots)
-        routeLayers.drones = L.layerGroup();
-        airspaceFeatures.filter(f => f.type === 'spot').forEach(droneSpot => {
-          const droneIcon = L.divIcon({
-            html: `<div class="drone-pin-bubble" title="${escapeHtml(droneSpot.title)}"><i class="fa-solid fa-paper-plane"></i></div>`,
-            className: 'custom-drone-pin',
-            iconSize: [28, 28],
-            iconAnchor: [14, 14],
-            popupAnchor: [0, -18]
-          });
-          const dronePopup = `
-            <div class="sight-map-popup">
-              <div class="popup-top-badge">
-                <span class="popup-day-tag" style="background:#dcfce7; color:#166534;"><i class="fa-solid fa-paper-plane"></i> Drohnenspot</span>
-                <span class="popup-region-tag">${escapeHtml(droneSpot.badgeText)}</span>
-              </div>
-              <h4 class="popup-title">${escapeHtml(droneSpot.title)}</h4>
-              <div class="popup-highlight">${escapeHtml(droneSpot.desc)}</div>
-              <div style="font-size:0.74rem; background:rgba(16,185,129,0.1); padding:0.4rem 0.6rem; border-radius:6px; color:#065f46;">
-                <i class="fa-solid fa-circle-check"></i> <strong>Regeln:</strong> Max. 120m Höhe, 30m Mindestabstand zu Personen.
-              </div>
-            </div>
-          `;
-          L.marker(droneSpot.coords, { icon: droneIcon }).bindPopup(dronePopup, { maxWidth: 310 }).addTo(routeLayers.drones);
-        });
-
-        // LAYER 6: 🚫 NO-FLY-ZONEN (Flughäfen & Nationalpark-Sperrzonen)
-        routeLayers.nofly = L.layerGroup();
-        airspaceFeatures.filter(f => f.type !== 'spot').forEach(feature => {
-          let layer;
-          if (feature.type === 'circle') {
-            layer = L.circle(feature.coords, {
-              radius: feature.radius,
-              color: feature.color,
-              fillColor: feature.fillColor,
-              fillOpacity: feature.fillOpacity,
-              weight: 2
-            });
-          } else if (feature.type === 'polygon') {
-            layer = L.polygon(feature.coords, {
-              color: feature.color,
-              fillColor: feature.fillColor,
-              fillOpacity: feature.fillOpacity,
-              weight: 2
-            });
-          }
-          if (layer) {
-            layer.bindPopup(`
-              <div class="sight-map-popup">
-                <div class="popup-top-badge">
-                  <span class="popup-day-tag" style="background:#fee2e2; color:#991b1b;"><i class="fa-solid fa-ban"></i> No-Fly-Zone</span>
-                  <span class="popup-region-tag">${escapeHtml(feature.badgeText)}</span>
-                </div>
-                <h4 class="popup-title">${escapeHtml(feature.title)}</h4>
-                <div class="popup-highlight">${escapeHtml(feature.desc)}</div>
-                <div style="font-size:0.74rem; background:rgba(239,68,68,0.1); padding:0.4rem 0.6rem; border-radius:6px; color:#991b1b;">
-                  <i class="fa-solid fa-triangle-exclamation"></i> <strong>CASA Vorschrift:</strong> Strenges Flugverbot! Hohe Geldstrafen bei Zuwiderhandlung.
-                </div>
-              </div>
-            `, { maxWidth: 310 });
-            layer.addTo(routeLayers.nofly);
-          }
-        });
-
         // Standardmäßig aktive Layer auf die Karte legen
         if (routeLayerStates.destinations) routeLayers.destinations.addTo(routeInteractiveMap);
         if (routeLayerStates.highlights) routeLayers.highlights.addTo(routeInteractiveMap);
         if (routeLayerStates.accommodations) routeLayers.accommodations.addTo(routeInteractiveMap);
         if (routeLayerStates.photospots) routeLayers.photospots.addTo(routeInteractiveMap);
-        if (routeLayerStates.drones) routeLayers.drones.addTo(routeInteractiveMap);
-        if (routeLayerStates.nofly) routeLayers.nofly.addTo(routeInteractiveMap);
 
         renderRouteDaysPills();
         setupTimelineMapSync();
@@ -4840,353 +4764,6 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       }
     }
 
-    // =========================================================================
-    // DRONE PILOT HUB: INTERAKTIVE LUFTRAUMKARTE (LEAFLET & LAZY-LOADING)
-    // =========================================================================
-    let droneAirspaceMap = null;
-    let droneUserMarker = null;
-
-    function handleDroneMapToggle(details) {
-      if (!details || !details.open) return;
-      if (droneAirspaceMap) {
-        setTimeout(() => {
-          droneAirspaceMap.invalidateSize();
-        }, 150);
-        return;
-      }
-      setTimeout(initDroneAirspaceMap, 60);
-    }
-
-    function initDroneAirspaceMap() {
-      const container = document.getElementById('drone-airspace-map');
-      if (!container || droneAirspaceMap) return;
-
-      if (typeof L === 'undefined') {
-        container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:0.9rem;text-align:center;padding:1rem;"><i class="fa-solid fa-map-location-dot" style="margin-right:0.5rem;color:var(--primary);"></i> Karten-Engine offline nicht verfügbar. Geodaten &amp; Zonenlisten unten einsehbar.</div>';
-        return;
-      }
-
-      // Initialisiere Leaflet-Karte zentriert auf die Ostküste Australien (Sydney bis Whitsundays)
-      droneAirspaceMap = L.map('drone-airspace-map', {
-        center: [-28.2, 153.2],
-        zoom: 6,
-        minZoom: 4,
-        maxZoom: 16,
-        scrollWheelZoom: false
-      });
-
-      // OSM Base Layer
-      const droneTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> | CASA Drone Safety',
-        maxZoom: 18
-      });
-      droneTileLayer.on('tileerror', () => {
-        // Graceful handling when offline without console clutter
-      });
-      droneTileLayer.addTo(droneAirspaceMap);
-
-      // Zonen-Definitionen (Rot: No-Fly, Gelb: Vorsicht/Schutz, Grün: Erlaubt/Traum-Spots)
-      const airspaceFeatures = [
-        // 🔴 5.5 km Kontrollzonen um Flughäfen
-        {
-          type: 'circle',
-          coords: [-33.9461, 151.1772],
-          radius: 5500,
-          color: '#ef4444',
-          fillColor: '#ef4444',
-          fillOpacity: 0.28,
-          title: 'Sydney Kingsford Smith Airport (SYD)',
-          badge: 'red',
-          badgeText: 'Strikte No-Fly Zone (5,5 km)',
-          desc: 'Kontrollierter Großflughafen. Absolutes Drohnenflugverbot im 5,5-km-Radius ohne Flugsicherungs-Freigabe!'
-        },
-        {
-          type: 'circle',
-          coords: [-28.8333, 153.5619],
-          radius: 5500,
-          color: '#ef4444',
-          fillColor: '#ef4444',
-          fillOpacity: 0.28,
-          title: 'Ballina Byron Gateway Airport (BNK)',
-          badge: 'red',
-          badgeText: 'Strikte No-Fly Zone (5,5 km)',
-          desc: '5,5 km Sperrzone um den Flughafen Ballina/Byron Bay. Regelmäßiger Jet- und Helikopterverkehr!'
-        },
-        {
-          type: 'circle',
-          coords: [-26.6033, 153.0911],
-          radius: 5500,
-          color: '#ef4444',
-          fillColor: '#ef4444',
-          fillOpacity: 0.28,
-          title: 'Sunshine Coast Airport (MCY)',
-          badge: 'red',
-          badgeText: 'Strikte No-Fly Zone (5,5 km)',
-          desc: '5,5 km Kontrollzone Maroochydore. Flüge im Anflugkorridor strengstens untersagt.'
-        },
-        {
-          type: 'circle',
-          coords: [-20.4950, 148.5522],
-          radius: 5500,
-          color: '#ef4444',
-          fillColor: '#ef4444',
-          fillOpacity: 0.28,
-          title: 'Whitsunday Coast Airport (PPP)',
-          badge: 'red',
-          badgeText: 'Strikte No-Fly Zone (5,5 km)',
-          desc: 'Proserpine Airport Kontrollzone. 5,5 km Sicherheitsabstand einhalten.'
-        },
-        {
-          type: 'circle',
-          coords: [-37.6690, 144.8410],
-          radius: 5500,
-          color: '#ef4444',
-          fillColor: '#ef4444',
-          fillOpacity: 0.28,
-          title: 'Melbourne Tullamarine Airport (MEL)',
-          badge: 'red',
-          badgeText: 'Strikte No-Fly Zone (5,5 km)',
-          desc: 'Internationaler Großflughafen. Drohnenflug ausnahmslos verboten.'
-        },
-
-        // 🔴 Nationalparks (Ausnahmsloses Drohnenflugverbot QPWS / NSW NPWS)
-        {
-          type: 'polygon',
-          coords: [
-            [-24.70, 153.15],
-            [-25.80, 153.10],
-            [-25.85, 153.00],
-            [-25.20, 152.95],
-            [-24.70, 153.15]
-          ],
-          color: '#dc2626',
-          fillColor: '#ef4444',
-          fillOpacity: 0.35,
-          title: "K'gari (Fraser Island) Nationalpark",
-          badge: 'red',
-          badgeText: 'Nationalpark: Drohnenverbot',
-          desc: 'Queensland Parks & Wildlife Service (QPWS): Drohnen sind auf der gesamten Insel K\'gari zum Schutz von Dingos und Vögeln verboten. Ranger verhängen Strafen bis 13.000 AUD!'
-        },
-        {
-          type: 'polygon',
-          coords: [
-            [-26.375, 153.085],
-            [-26.395, 153.125],
-            [-26.415, 153.115],
-            [-26.395, 153.080]
-          ],
-          color: '#dc2626',
-          fillColor: '#ef4444',
-          fillOpacity: 0.35,
-          title: 'Noosa Nationalpark & Headland',
-          badge: 'red',
-          badgeText: 'Nationalpark: Drohnenverbot',
-          desc: 'Beliebter Küstenpfad und Koala-Habitat. Absolutes Flugverbot im gesamten Parkgelände.'
-        },
-        {
-          type: 'polygon',
-          coords: [
-            [-33.60, 150.20],
-            [-33.85, 150.45],
-            [-33.95, 150.25],
-            [-33.70, 150.15]
-          ],
-          color: '#dc2626',
-          fillColor: '#ef4444',
-          fillOpacity: 0.35,
-          title: 'Blue Mountains Nationalpark',
-          badge: 'red',
-          badgeText: 'NSW NPWS: Drohnenverbot',
-          desc: 'Three Sisters, Jamison Valley & Wasserfälle: Gesetzliches Drohnenverbot auf allen Aussichtsplattformen und Wanderwegen.'
-        },
-        {
-          type: 'polygon',
-          coords: [
-            [-20.05, 148.85],
-            [-20.35, 149.08],
-            [-20.45, 148.95],
-            [-20.25, 148.75]
-          ],
-          color: '#dc2626',
-          fillColor: '#ef4444',
-          fillOpacity: 0.35,
-          title: 'Whitsunday Islands Nationalpark & Whitehaven Beach',
-          badge: 'red',
-          badgeText: 'Nationalpark: Drohnenverbot',
-          desc: 'Whitehaven Beach und die unbewohnten Whitsunday-Inseln sind geschützter Nationalpark. Flüge nur mit spezieller QPWS-Genehmigung erlaubt.'
-        },
-
-        // 🟡 Vorsicht / Meeresschutzgebiete
-        {
-          type: 'polygon',
-          coords: [
-            [-28.60, 153.58],
-            [-28.65, 153.66],
-            [-28.72, 153.62],
-            [-28.68, 153.55]
-          ],
-          color: '#d97706',
-          fillColor: '#f59e0b',
-          fillOpacity: 0.25,
-          title: 'Cape Byron Marine Park',
-          badge: 'yellow',
-          badgeText: 'Meeresschutz: Wal- & Delfinschutz',
-          desc: 'Auflagen: Mindestens 100 Meter Abstand zu Meeressäugern (Wale 300 m). Nicht über Brutkolonien von Seevögeln fliegen. Cape Byron Leuchtturm-Gelände meiden!'
-        },
-
-        // 🟢 Traum-Spots & Erlaubte Zonen
-        {
-          type: 'spot',
-          coords: [-28.8025, 153.5935],
-          color: '#10b981',
-          title: 'Lennox Head (Pat Morton Lookout)',
-          badge: 'green',
-          badgeText: 'Erlaubt (Crown Land)',
-          desc: 'Fantastischer Blick auf Surfer und die Bucht. Liegt außerhalb von Nationalparks. Regeln: Max. 120 m Höhe, min. 30 m Abstand zu Spaziergängern halten!'
-        },
-        {
-          type: 'spot',
-          coords: [-25.9080, 153.0964],
-          color: '#10b981',
-          title: 'Carlo Sand Blow (Rainbow Beach)',
-          badge: 'green',
-          badgeText: 'Erlaubter Traum-Spot',
-          desc: 'Riesige Sanddüne mit Blick auf Double Island Point und Tin Can Bay. Freies Gelände außerhalb des NP-Kerngebiets. Atemberaubende Drohnen-Panoramen zum Sonnenuntergang!'
-        },
-        {
-          type: 'spot',
-          coords: [-28.6650, 153.6210],
-          color: '#10b981',
-          title: 'Tallow Beach (Byron Bay Süd)',
-          badge: 'green',
-          badgeText: 'Freigegebener Strandabschnitt',
-          desc: 'Breiter Sandstrand südlich des Arakwal Nationalparks. Weitläufig, ideal bei ruhigem Wind. Immer 30 m Distanz zu Badegästen wahren.'
-        },
-        {
-          type: 'spot',
-          coords: [-20.2675, 148.7180],
-          color: '#10b981',
-          title: 'Airlie Beach Public Foreshore',
-          badge: 'green',
-          badgeText: 'Öffentlicher Uferbereich',
-          desc: 'Außerhalb des Whitsunday-Nationalparks. Hafen-Helipads beachten (min. 1 km Abstand) und Menschenmengen an der Lagoon meiden.'
-        },
-        {
-          type: 'spot',
-          coords: [-32.3310, 152.5400],
-          color: '#10b981',
-          title: 'Boomerang Beach & Pacific Palms',
-          badge: 'green',
-          badgeText: 'Erlaubter Küstenabschnitt',
-          desc: 'Spektakuläre Brandung und weitläufige Strände. Perfekt für Küstenaufnahmen am Vormittag bei wenig Wind.'
-        }
-      ];
-
-
-      // 📸 Integriere alle 27 Reiserouten-Sightseeing-Spots in die Luftraumkarte
-      ALL_SIGHTSEEING_SPOTS.forEach(spot => {
-        const spotPopup = `
-          <div class="drone-popup-title"><i class="fa-solid fa-camera" style="color:var(--secondary);"></i> ${spot.name}</div>
-          <span class="drone-popup-badge" style="background:#e0f2fe; color:#0369a1;">Tag ${spot.day} • Sightseeing-Spot</span>
-          <div class="drone-popup-body">
-            <strong>${spot.category}:</strong> ${spot.highlight}<br>
-            <em style="color:#d97706; display:block; margin-top:4px;">📸 Fotospot: ${spot.photoTip}</em>
-          </div>
-          <div style="margin-top:6px;">
-            <button type="button" class="btn-popup-jump" onclick="jumpToDayAndHighlight(${spot.day})">
-              <i class="fa-solid fa-calendar-day"></i> Zum Tagesplan Tag ${spot.day}
-            </button>
-          </div>
-        `;
-
-        L.circleMarker(spot.coords, {
-          radius: 6.5,
-          color: '#0284c7',
-          fillColor: '#38bdf8',
-          fillOpacity: 0.9,
-          weight: 2
-        }).addTo(droneAirspaceMap).bindPopup(spotPopup);
-      });
-
-      airspaceFeatures.forEach(item => {
-        let layer;
-        const popupHtml = `
-          <div class="drone-popup-title">${item.title}</div>
-          <span class="drone-popup-badge ${item.badge}">${item.badgeText}</span>
-          <div class="drone-popup-body">${item.desc}</div>
-        `;
-
-        if (item.type === 'circle') {
-          layer = L.circle(item.coords, {
-            radius: item.radius,
-            color: item.color,
-            fillColor: item.fillColor,
-            fillOpacity: item.fillOpacity,
-            weight: 2
-          }).addTo(droneAirspaceMap);
-        } else if (item.type === 'polygon') {
-          layer = L.polygon(item.coords, {
-            color: item.color,
-            fillColor: item.fillColor,
-            fillOpacity: item.fillOpacity,
-            weight: 2
-          }).addTo(droneAirspaceMap);
-        } else if (item.type === 'spot') {
-          layer = L.circleMarker(item.coords, {
-            radius: 8,
-            color: '#065f46',
-            fillColor: '#10b981',
-            fillOpacity: 0.9,
-            weight: 2
-          }).addTo(droneAirspaceMap);
-        }
-
-        if (layer) {
-          layer.bindPopup(popupHtml);
-        }
-      });
-
-      setTimeout(() => {
-        droneAirspaceMap.invalidateSize();
-      }, 200);
-    }
-
-    function locateDroneUserOnMap(event) {
-      if (event) event.preventDefault();
-      if (!droneAirspaceMap) return;
-
-      if (!navigator.geolocation) {
-        alert('Geolocation wird von deinem Browser nicht unterstützt.');
-        return;
-      }
-
-      navigator.geolocation.getCurrentPosition(
-        pos => {
-          const lat = pos.coords.latitude;
-          const lng = pos.coords.longitude;
-          if (droneUserMarker) {
-            droneUserMarker.setLatLng([lat, lng]);
-          } else {
-            droneUserMarker = L.marker([lat, lng], {
-              title: 'Dein Standort'
-            }).addTo(droneAirspaceMap);
-            droneUserMarker.bindPopup('<strong>📍 Dein aktueller Standort</strong><br><small>Prüfe Flugverbotszonen in deiner Umgebung.</small>').openPopup();
-          }
-          droneAirspaceMap.setView([lat, lng], 11);
-        },
-        err => {
-          alert('Standort konnte nicht ermittelt werden. Bitte prüfe deine GPS-Berechtigungen.');
-        },
-        { enableHighAccuracy: true, timeout: 10000 }
-      );
-    }
-
-    function resetDroneMapView(event) {
-      if (event) event.preventDefault();
-      if (!droneAirspaceMap) return;
-      droneAirspaceMap.setView([-28.2, 153.2], 6);
-    }
-
     function downloadEmergencyVCard() {
       const vcard = 'BEGIN:VCARD\r\nVERSION:3.0\r\nFN:🚨 Notruf Australien\r\nTEL;TYPE=CELL:000\r\nEND:VCARD';
       const a = document.createElement('a');
@@ -5254,7 +4831,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           const updateTime = document.getElementById('currency-update-time');
           if (updateTime) {
             const nowTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
-            updateTime.innerHTML = `<i class="fa-solid fa-cloud-arrow-down" style="color:var(--status-paid);"></i> ${data.source === 'fallback' ? 'Ersatzkurs' : data.stale ? 'Gespeicherter Kurs' : 'Kursstand'}: ${data.updatedAt ? escapeHtml(new Date(data.updatedAt).toLocaleString('de-AT')) : 'Datum unbekannt'}`;
+            updateTime.innerHTML = `<i class="fa-solid fa-cloud-arrow-down" style=""></i> ${data.source === 'fallback' ? 'Ersatzkurs' : data.stale ? 'Gespeicherter Kurs' : 'Kursstand'}: ${data.updatedAt ? escapeHtml(new Date(data.updatedAt).toLocaleString('de-AT')) : 'Datum unbekannt'}`;
           }
         } else {
           // OFFLINE-FALLBACK AUS LOCALSTORAGE
@@ -5284,7 +4861,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           const updateTime = document.getElementById('currency-update-time');
           if (updateTime) {
             const dateStr = savedTime ? new Date(savedTime).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'Gespeichert';
-            updateTime.innerHTML = `<i class="fa-solid fa-database" style="color:var(--accent-gold);"></i> Offline – zuletzt gespeicherte Daten werden angezeigt (${dateStr})`;
+            updateTime.innerHTML = `<i class="fa-solid fa-database" style=""></i> Offline – zuletzt gespeicherte Daten werden angezeigt (${dateStr})`;
           }
         }
       } catch (e) { }
@@ -5432,7 +5009,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
             const timeEl = document.getElementById('weather-last-updated');
             if (timeEl) {
               const dateStr = savedTime ? new Date(savedTime).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'Gespeichert';
-              timeEl.innerHTML = `<i class="fa-solid fa-database" style="color:var(--accent-gold);"></i> Offline – zuletzt gespeicherte Daten werden angezeigt (${dateStr})`;
+              timeEl.innerHTML = `<i class="fa-solid fa-database" style=""></i> Offline – zuletzt gespeicherte Daten werden angezeigt (${dateStr})`;
             }
             return true;
           }
@@ -5444,7 +5021,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       updateWeatherCityCard('melbourne', DEFAULT_FALLBACK_WEATHER.melbourne);
       const timeEl = document.getElementById('weather-last-updated');
       if (timeEl) {
-        timeEl.innerHTML = `<i class="fa-solid fa-cloud-sun" style="color:var(--text-muted);"></i> Offline – Richtwerte werden angezeigt`;
+        timeEl.innerHTML = `<i class="fa-solid fa-cloud-sun" style=""></i> Offline – Richtwerte werden angezeigt`;
       }
       return false;
     }
@@ -5522,7 +5099,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
 
           if (timeEl) {
             const nowTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
-            timeEl.innerHTML = `<i class="fa-solid fa-cloud-arrow-down" style="color:var(--status-paid);"></i> ${weatherData.stale ? 'Gespeichertes Wetter' : 'Messwerte'}: ${escapeHtml(weatherData.sydney.time || weatherData.updatedAt || 'Datum unbekannt')}`;
+            timeEl.innerHTML = `<i class="fa-solid fa-cloud-arrow-down" style=""></i> ${weatherData.stale ? 'Gespeichertes Wetter' : 'Messwerte'}: ${escapeHtml(weatherData.sydney.time || weatherData.updatedAt || 'Datum unbekannt')}`;
           }
         } else {
           applyOfflineWeatherFallback();
@@ -5545,7 +5122,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       const condEl = document.getElementById(`weather-cond-${cityKey}`);
       if (condEl && data.weatherCode !== undefined) {
         const info = getWeatherCodeInfo(data.weatherCode);
-        condEl.innerHTML = `<i class="${info.icon}" style="color: ${info.color}; font-size: 1.1rem;"></i> <span>${info.text}</span>`;
+        condEl.innerHTML = `<i class="${info.icon}" style="font-size: 1.1rem"></i> <span>${info.text}</span>`;
       }
 
       const appEl = document.getElementById(`weather-app-${cityKey}`);
@@ -5601,9 +5178,11 @@ const localStorage = window.Persistence.wrap(window.localStorage);
     function updateOnsiteSpendMetrics() {
       const daily = getOnsiteSpendAmount(), count = currentMemoryDays().length;
       const label = document.getElementById('onsite-total-label');
-      if (label) label.textContent = `Gesamtbudget ${count} Tage:`;
-      document.getElementById('onsite-daily-eur').textContent = `${(daily * 4).toLocaleString('de-AT')} €`;
-      document.getElementById('onsite-total-trip').textContent = `${(daily * 4 * count).toLocaleString('de-AT')} € (${count} Tage)`;
+      if (label) label.textContent = `Budget ${count} Tage${window.FinanceView?.getMode() === 'person' ? ' pro Person' : ' für 4 Personen'}:`;
+      const dailyLabel = document.getElementById('onsite-daily-label');
+      if (dailyLabel) dailyLabel.textContent = window.FinanceView?.getMode() === 'person' ? 'Ausgaben pro Tag / Person:' : 'Ausgaben pro Tag (4 Personen):';
+      document.getElementById('onsite-daily-eur').textContent = `${((window.FinanceView?.amount(daily * 4)) ?? daily * 4).toLocaleString('de-AT')} €`;
+      document.getElementById('onsite-total-trip').textContent = `${((window.FinanceView?.amount(daily * 4 * count)) ?? daily * 4 * count).toLocaleString('de-AT')} € (${count} Tage)`;
     }
 
     function initOnsiteSpend() {
@@ -5762,7 +5341,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
             <strong>Tag ${d.day} (${d.date}): ${escapeHtml(d.title)}</strong><br>
             • Geplant: <strong>${d.planned} €</strong><br>
             • Tatsächlich erfasst: <strong>${d.actual} €</strong><br>
-            <span style="font-size:0.7rem; color:#fef08a;">Klicken, um Tag im Reiseplan zu öffnen</span>
+            <span style="font-size:0.7rem">Klicken, um Tag im Reiseplan zu öffnen</span>
           `;
         })
         .on('mousemove', (event) => {
@@ -5893,7 +5472,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         .on('mouseenter', (event, d) => {
           if (!tooltip) return;
           tooltip.style.display = 'block';
-          const statusText = d.diff >= 0 ? `<span style="color:#10b981;">Noch ${d.diff} € im Budget</span>` : `<span style="color:#ef4444;">Um ${Math.abs(d.diff)} € überschritten</span>`;
+          const statusText = d.diff >= 0 ? `<span style="">Noch ${d.diff} € im Budget</span>` : `<span style="">Um ${Math.abs(d.diff)} € überschritten</span>`;
           tooltip.innerHTML = `
             <strong>${escapeHtml(d.label)}</strong><br>
             • Geplant: <strong>${d.planned} €</strong><br>
@@ -5961,10 +5540,10 @@ const localStorage = window.Persistence.wrap(window.localStorage);
                onmouseleave="resetChartHighlight()"
                onclick="highlightChartSlice(${idx})">
             <div class="legend-item-left">
-              <span class="legend-color-dot" style="background: ${cat.color};"></span>
+              <span class="legend-color-dot" style=""></span>
               <div>
-                <div class="legend-item-title"><i class="fa-solid ${cat.icon}" style="color: ${cat.color}; margin-right: 0.35rem; font-size: 0.85rem;"></i>${escapeHtml(cat.label)}</div>
-                <div style="font-size: 0.73rem; color: var(--text-muted);">${escapeHtml(cat.desc)}</div>
+                <div class="legend-item-title"><i class="fa-solid ${cat.icon}" style="margin-right: 0.35rem; font-size: 0.85rem"></i>${escapeHtml(cat.label)}</div>
+                <div style="font-size: 0.73rem">${escapeHtml(cat.desc)}</div>
               </div>
             </div>
             <div class="legend-item-right">
@@ -6144,7 +5723,6 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         const controlled = Boolean(navigator.serviceWorker.controller);
         navigator.serviceWorker.addEventListener('controllerchange', () => {
           if (!controlled) return;
-          if (journalDirty && !saveJournalEntry(currentJournalDay)) return;
           location.reload();
         });
         window.addEventListener('load', () => {
@@ -6695,6 +6273,8 @@ const localStorage = window.Persistence.wrap(window.localStorage);
     let userBookings = [];
     let userPacking = [];
     let currentPackingCatFilter = 'all';
+    let currentPackingQuery = '';
+    let currentPackingStatus = 'all';
 
     // Kategorien-Konfiguration für Icons und Labels
     const ORG_CATEGORY_META = {
@@ -6710,10 +6290,11 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       function migrateBookings(list) {
         return (list || []).map(b => {
           const priceType = b.priceType || 'total';
-          const rawPrice = parseFloat(b.cost ?? b.price) || 0;
+          const factor = priceType === 'per_person' ? 4 : priceType === 'two_persons' ? 2 : 1;
+          const rawPrice = parseFloat(b.price ?? (b.totalAmount != null ? b.totalAmount / factor : b.cost)) || 0;
           const totalAmount = b.totalAmount !== undefined ? b.totalAmount : (priceType === 'per_person' ? rawPrice * 4 : (priceType === 'two_persons' ? rawPrice * 2 : rawPrice));
           const perPersonAmount = b.perPersonAmount !== undefined ? b.perPersonAmount : (totalAmount / 4);
-          return { ...b, priceType, totalAmount, perPersonAmount };
+          return { ...b, price: rawPrice, priceType, totalAmount, perPersonAmount };
         });
       }
       try {
@@ -6864,11 +6445,11 @@ const localStorage = window.Persistence.wrap(window.localStorage);
 
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div class="org-empty-state" style="grid-column: 1 / -1;">
+          <div class="org-empty-state glass-card" style="grid-column: 1 / -1">
             <i class="fa-solid fa-receipt"></i>
             <h3>Keine Buchungen gefunden</h3>
             <p>Es gibt keine Buchungseinträge für die aktuellen Filterkriterien.</p>
-            <button type="button" class="btn-org-action secondary" onclick="resetBookingFilters()">
+            <button type="button" class="btn-org-action secondary glass-pill" onclick="resetBookingFilters()">
               <i class="fa-solid fa-rotate-left"></i> Filter zurücksetzen
             </button>
           </div>
@@ -6907,7 +6488,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
                       <i class="fa-solid fa-calendar-day"></i> Tag ${b.dayNum}
                     </button>
                   ` : `
-                    <span class="booking-day-pill" style="cursor:default;"><i class="fa-solid fa-earth-oceania"></i> Allgemein</span>
+                    <span class="booking-day-pill" style="cursor:default"><i class="fa-solid fa-earth-oceania"></i> Allgemein</span>
                   `}
                 </div>
                 <span class="booking-status-pill ${statusClass}">
@@ -6932,7 +6513,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
               <div class="booking-details-grid">
                 <div class="booking-detail-item">
                   <span class="booking-detail-label">Datum / Zeit</span>
-                  <span class="booking-detail-val"><i class="fa-regular fa-clock" style="color:var(--primary); font-size:0.75rem;"></i> ${escapeHtml(dateDisplay)}</span>
+                  <span class="booking-detail-val"><i class="fa-regular fa-clock" style="font-size:0.75rem"></i> ${escapeHtml(dateDisplay)}</span>
                 </div>
                 <div class="booking-detail-item">
                   <span class="booking-detail-label">Kosten (4 Pers.)</span>
@@ -6944,17 +6525,17 @@ const localStorage = window.Persistence.wrap(window.localStorage);
               </div>
 
               ${b.location ? `
-                <div class="booking-detail-item" style="margin-bottom:0.75rem;">
+                <div class="booking-detail-item" style="margin-bottom:0.75rem">
                   <span class="booking-detail-label">Ort / Adresse</span>
                   <span class="booking-detail-val" title="${escapeHtml(b.location)}">
-                    <i class="fa-solid fa-location-dot" style="color:var(--secondary); font-size:0.75rem;"></i> ${escapeHtml(b.location)}
+                    <i class="fa-solid fa-location-dot" style="font-size:0.75rem"></i> ${escapeHtml(b.location)}
                   </span>
                 </div>
               ` : ''}
 
               ${b.notes ? `
                 <div class="booking-notes-box">
-                  <i class="fa-solid fa-circle-info" style="color:var(--primary); margin-right:0.25rem;"></i> ${escapeHtml(b.notes)}
+                  <i class="fa-solid fa-circle-info" style="margin-right:0.25rem"></i> ${escapeHtml(b.notes)}
                 </div>
               ` : ''}
             </div>
@@ -7025,7 +6606,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         const btn = document.getElementById(btnId);
         if (!btn) return;
         const origHtml = btn.innerHTML;
-        btn.innerHTML = '<i class="fa-solid fa-check" style="color:#10b981;"></i> <span style="font-size:0.75rem; color:#10b981; font-weight:700;">Kopiert!</span>';
+        btn.innerHTML = '<i class="fa-solid fa-check" style=""></i> <span style="font-size:0.75rem; font-weight:700">Kopiert!</span>';
         setTimeout(() => { btn.innerHTML = origHtml; }, 2000);
       }
     }
@@ -7053,7 +6634,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           document.getElementById('bkg-form-date').value = b.date || '';
           document.getElementById('bkg-form-time').value = b.time || '';
           document.getElementById('bkg-form-location').value = b.location || '';
-          document.getElementById('bkg-form-cost').value = b.cost !== undefined ? b.cost : '';
+          document.getElementById('bkg-form-cost').value = b.price ?? b.cost ?? '';
           const priceTypeEl = document.getElementById('bkg-form-price-type');
           if (priceTypeEl) priceTypeEl.value = b.priceType || 'total';
           document.getElementById('bkg-form-currency').value = b.currency || 'EUR';
@@ -7126,14 +6707,14 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         if (idx !== -1) {
           userBookings[idx] = {
             ...userBookings[idx],
-            category, dayNum, name, provider, bookingRef, date, time, location, priceType, cost, totalAmount, perPersonAmount, currency, status, link, notes
+            category, dayNum, name, provider, bookingRef, date, time, location, price: rawCost, priceType, cost, totalAmount, perPersonAmount, currency, status, link, notes
           };
         }
       } else {
         // Neu anlegen
         const newBooking = {
           id: 'bkg-custom-' + Date.now(),
-          category, dayNum, name, provider, bookingRef, date, time, location, priceType, cost, totalAmount, perPersonAmount, currency, status, link, notes
+          category, dayNum, name, provider, bookingRef, date, time, location, price: rawCost, priceType, cost, totalAmount, perPersonAmount, currency, status, link, notes
         };
         userBookings.unshift(newBooking);
       }
@@ -7277,146 +6858,68 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       { key: 'misc', label: 'Sonstiges', icon: 'fa-suitcase' }
     ];
 
-    function renderPackingList() {
-      const listContainer = document.getElementById('org-packing-list-container');
-      const chipsContainer = document.getElementById('org-packing-chips-container');
-      const fillBar = document.getElementById('org-packing-progress-fill');
-      const pctText = document.getElementById('org-packing-pct-text');
-      const statusBadge = document.getElementById('org-packing-status-badge');
-      const badgeProgress = document.getElementById('org-badge-packing-progress');
-      if (!listContainer) return;
-
-      const totalItems = userPacking.length;
-      const packedItems = userPacking.filter(p => p.packed).length;
-      const percentage = totalItems > 0 ? Math.round((packedItems / totalItems) * 100) : 0;
-
-      // Fortschrittsanzeige aktualisieren
-      if (fillBar) fillBar.style.width = `${percentage}%`;
-      if (pctText) pctText.textContent = `${packedItems} / ${totalItems} (${percentage}%)`;
-      if (badgeProgress) badgeProgress.textContent = `${packedItems}/${totalItems} · ${percentage}%`;
-
-      if (statusBadge) {
-        if (percentage === 100) {
-          statusBadge.className = 'packing-status-badge complete';
-          statusBadge.innerHTML = '<i class="fa-solid fa-circle-check"></i> 🎉 Abflugbereit &amp; vollständig!';
-        } else if (percentage >= 75) {
-          statusBadge.className = 'packing-status-badge';
-          statusBadge.innerHTML = '<i class="fa-solid fa-plane-departure"></i> Fast reisefertig!';
-        } else if (percentage >= 40) {
-          statusBadge.className = 'packing-status-badge';
-          statusBadge.innerHTML = '<i class="fa-solid fa-box-open"></i> Guter Fortschritt!';
-        } else if (percentage > 0) {
-          statusBadge.className = 'packing-status-badge';
-          statusBadge.innerHTML = '<i class="fa-solid fa-person-walking-luggage"></i> Kofferpacken begonnen';
-        } else {
-          statusBadge.className = 'packing-status-badge';
-          statusBadge.innerHTML = '<i class="fa-solid fa-clock"></i> Koffer noch leer';
-        }
-      }
-
-      // Filter-Chips rendern
-      if (chipsContainer) {
-        let chipsHtml = `
-          <button type="button" class="packing-chip ${currentPackingCatFilter === 'all' ? 'active' : ''}" onclick="filterPackingByCategory('all')">
-            <i class="fa-solid fa-border-all"></i>
-            <span>Alle Artikel</span>
-            <span class="packing-chip-count">(${packedItems}/${totalItems})</span>
-          </button>
-        `;
-
-        PACKING_CATEGORIES.forEach(cat => {
-          const catTotal = userPacking.filter(p => p.category === cat.key).length;
-          const catPacked = userPacking.filter(p => p.category === cat.key && p.packed).length;
-          const isActive = currentPackingCatFilter === cat.key;
-          chipsHtml += `
-            <button type="button" class="packing-chip ${isActive ? 'active' : ''}" onclick="filterPackingByCategory('${cat.key}')">
-              <i class="fa-solid ${cat.icon}"></i>
-              <span>${cat.label}</span>
-              <span class="packing-chip-count">(${catPacked}/${catTotal})</span>
-            </button>
-          `;
-        });
-        chipsContainer.innerHTML = chipsHtml;
-      }
-
-      // Artikel nach Kategorien gruppieren
-      const catsToRender = currentPackingCatFilter === 'all'
-        ? PACKING_CATEGORIES
-        : PACKING_CATEGORIES.filter(c => c.key === currentPackingCatFilter);
-
-      let groupsHtml = '';
-
-      catsToRender.forEach(cat => {
-        const items = userPacking.filter(p => p.category === cat.key);
-        if (items.length === 0) return;
-
-        const catPacked = items.filter(p => p.packed).length;
-        const allPacked = catPacked === items.length && items.length > 0;
-
-        groupsHtml += `
-          <div class="packing-cat-section" id="packing-cat-sec-${cat.key}">
-            <div class="packing-cat-header">
-              <div class="packing-cat-title-wrap">
-                <i class="fa-solid ${cat.icon} packing-cat-icon"></i>
-                <div class="packing-cat-name">${cat.label}</div>
-              </div>
-              <span class="packing-cat-badge ${allPacked ? 'all-packed' : ''}">
-                ${allPacked ? '<i class="fa-solid fa-circle-check"></i> ' : ''}${catPacked} / ${items.length} gepackt
-              </span>
-            </div>
-
-            <ul class="packing-items-list">
-              ${items.map(item => `
-                <li class="packing-item-row ${item.packed ? 'is-packed' : ''}" id="packing-row-${item.id}">
-                  <div class="packing-item-left" onclick="togglePackingItem('${item.id}', ${!item.packed})">
-                    <div class="packing-cb-container">
-                      <input type="checkbox" class="packing-cb-input" id="pack-cb-${item.id}" ${item.packed ? 'checked' : ''} onclick="event.stopPropagation(); togglePackingItem('${item.id}', this.checked)">
-                      <div class="packing-cb-box">
-                        <i class="fa-solid fa-check" style="font-size:0.85rem;"></i>
-                      </div>
-                    </div>
-                    <div class="packing-item-details">
-                      <div class="packing-item-title">${escapeHtml(item.name)}</div>
-                      <div class="packing-item-meta">
-                        ${item.quantity ? `<span class="packing-qty-pill">${escapeHtml(item.quantity)}</span>` : ''}
-                        ${item.note ? `<span>${escapeHtml(item.note)}</span>` : ''}
-                        ${item.isCustom ? `<span style="color:var(--primary); font-weight:700;"><i class="fa-solid fa-user-pen"></i> Eigener Eintrag</span>` : ''}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="packing-item-right">
-                    ${item.link ? `
-                      <a href="${item.link}" class="btn-pack-link" title="${escapeHtml(item.linkLabel || 'Öffnen')}" onclick="${item.link === '#organization' ? "event.preventDefault(); switchOrgTab('bookings');" : ''}">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i> ${escapeHtml(item.linkLabel || 'Link')}
-                      </a>
-                    ` : ''}
-                    <button type="button" class="btn-pack-del" id="pack-del-btn-${item.id}" onclick="confirmOrDeletePacking('${item.id}', this, event)" title="Artikel löschen">
-                      <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                  </div>
-                </li>
-              `).join('')}
-            </ul>
-          </div>
-        `;
-      });
-
-      if (!groupsHtml) {
-        listContainer.innerHTML = `
-          <div class="org-empty-state">
-            <i class="fa-solid fa-suitcase"></i>
-            <h3>Keine Artikel in dieser Kategorie</h3>
-            <p>Füge über den Button oben eigene Artikel hinzu oder wähle "Alle Artikel".</p>
-            <button type="button" class="btn-org-action secondary" onclick="filterPackingByCategory('all')">
-              Alle Artikel anzeigen
-            </button>
-          </div>
-        `;
-      } else {
-        listContainer.innerHTML = groupsHtml;
-      }
+    function getFilteredPackingItems() {
+      const query = currentPackingQuery.trim().toLocaleLowerCase('de-AT');
+      return userPacking.filter(item =>
+        (currentPackingCatFilter === 'all' || item.category === currentPackingCatFilter) &&
+        (currentPackingStatus === 'all' || (currentPackingStatus === 'packed') === !!item.packed) &&
+        [item.name, item.quantity, item.note, PACKING_CATEGORIES.find(cat => cat.key === item.category)?.label]
+          .join(' ').toLocaleLowerCase('de-AT').includes(query));
     }
+
+    function renderPackingList(preserveControls = false) {
+      const U = window.ManagementUI;
+      const list = document.getElementById('org-packing-list-container');
+      if (!list || !U) return;
+      const total = userPacking.length, packed = userPacking.filter(item => item.packed).length;
+      const percentage = total ? Math.round(packed / total * 100) : 0;
+      const fill = document.getElementById('org-packing-progress-fill');
+      if (fill) { fill.style.width = percentage + '%'; fill.parentElement.setAttribute('aria-valuenow', String(percentage)); }
+      const progressText = document.getElementById('org-packing-pct-text');
+      if (progressText) progressText.textContent = `${packed} / ${total} (${percentage}%)`;
+      const progressBadge = document.getElementById('org-badge-packing-progress');
+      if (progressBadge) progressBadge.textContent = `${packed}/${total} · ${percentage}%`;
+      const status = document.getElementById('org-packing-status-badge');
+      if (status) {
+        status.className = 'glass-pill' + (total && packed === total ? ' complete' : '');
+        status.textContent = packed === total && total ? 'Abflugbereit' : packed ? 'Packen begonnen' : 'Koffer noch leer';
+      }
+      const controls = document.getElementById('org-packing-chips-container');
+      if (!preserveControls && controls) controls.innerHTML = U.filters('packing',
+        Object.fromEntries(PACKING_CATEGORIES.map(cat => [cat.key, cat.label])), currentPackingCatFilter, currentPackingQuery, currentPackingStatus);
+      const items = getFilteredPackingItems();
+      list.innerHTML = items.length ? `<div class="glass-list">${PACKING_CATEGORIES.map(cat => {
+        const group = items.filter(item => item.category === cat.key);
+        if (!group.length) return '';
+        return `<h3 class="glass-group-title" id="packing-cat-sec-${cat.key}">${escapeHtml(cat.label)}</h3>` + group.map(item => {
+          const id = escapeHtml(item.id), name = escapeHtml(item.name);
+          const link = item.link && /^(?:#[a-zA-Z0-9/-]+|https?:\/\/)/.test(item.link)
+            ? `<a class="glass-pill" href="${escapeHtml(item.link)}" onclick="${item.link === '#organization' ? "event.preventDefault(); switchOrgTab('bookings');" : ''}">${escapeHtml(item.linkLabel || 'Link')}</a>` : '';
+          return U.row({id:'packing-row-' + item.id, title:item.name, subtitle:[cat.label,item.quantity,item.note].filter(Boolean).join(' · '),
+            icon:cat.icon, interactive:false, tail:`<span class="glass-pill ${item.packed?'complete':''}">${item.packed?'Gepackt':'Noch offen'}</span><label class="glass-switch"><input type="checkbox" id="pack-cb-${id}" aria-label="${name} gepackt" ${item.packed?'checked':''} data-packing-toggle="${id}"><span class="glass-switch-track" aria-hidden="true"></span></label>${link}<button type="button" class="glass-icon-button" id="pack-del-btn-${id}" data-packing-delete="${id}" aria-label="${name} löschen"><i class="fa-solid fa-trash-can" aria-hidden="true"></i></button>`});
+        }).join('');
+      }).join('')}</div>` : `<div class="glass-card glass-empty"><span class="glass-eyebrow">RAUM FÜR DEINE PLÄNE</span><h3>Keine passenden Einträge.</h3><p>Passe deine Suche oder Filter an.</p><button type="button" class="glass-pill glass-action-primary" data-packing-reset>Filter zurücksetzen</button></div>`;
+    }
+    document.addEventListener('input', event => {
+      if (event.target.dataset.search !== 'packing') return;
+      currentPackingQuery = event.target.value;
+      renderPackingList(true);
+    });
+    document.addEventListener('change', event => {
+      if (event.target.dataset.statusFilter === 'packing') { currentPackingStatus = event.target.value; renderPackingList(); }
+      if (event.target.dataset.packingToggle) {
+        const id = event.target.dataset.packingToggle;
+        togglePackingItem(id, event.target.checked);
+        document.getElementById('pack-cb-' + id)?.focus();
+      }
+    });
+    document.addEventListener('click', event => {
+      const del = event.target.closest('[data-packing-delete]');
+      if (del) confirmOrDeletePacking(del.dataset.packingDelete, del, event);
+      if (event.target.closest('[data-packing-reset]')) {
+        currentPackingCatFilter = 'all'; currentPackingQuery = ''; currentPackingStatus = 'all'; renderPackingList();
+      }
+    });
 
     function togglePackingItem(itemId, isChecked) {
       const item = userPacking.find(p => p.id === itemId);
@@ -7529,9 +7032,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
     }
 
     function checkAllPackingList() {
-      const targetItems = currentPackingCatFilter === 'all'
-        ? userPacking
-        : userPacking.filter(p => p.category === currentPackingCatFilter);
+      const targetItems = getFilteredPackingItems();
 
       targetItems.forEach(p => p.packed = true);
       if (!saveUserPacking()) return;
@@ -7539,12 +7040,10 @@ const localStorage = window.Persistence.wrap(window.localStorage);
     }
 
     function resetPackingList() {
-      const targetDesc = currentPackingCatFilter === 'all' ? 'alle Artikel' : 'die Artikel dieser Kategorie';
+      const targetDesc = 'die angezeigten Artikel';
       if (!confirm(`Möchtest du ${targetDesc} wirklich als unbepackt zurücksetzen?`)) return;
 
-      const targetItems = currentPackingCatFilter === 'all'
-        ? userPacking
-        : userPacking.filter(p => p.category === currentPackingCatFilter);
+      const targetItems = getFilteredPackingItems();
 
       targetItems.forEach(p => p.packed = false);
       if (!saveUserPacking()) return;
@@ -7578,755 +7077,13 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       initGlobalSearch();
     }
 
-    // =========================================================================
-    // AUFGABE 4/5 – TEIL A: REISEJOURNAL LOGIK
-    // =========================================================================
-    const JOURNAL_STORAGE_KEY = 'aus_roadtrip_journal_2027';
-
-    const DEFAULT_JOURNAL_ENTRIES = {
-      1: {
-        day: 1,
-        title: 'Abreise aus Wien – Der Traum von Australien beginnt!',
-        mood: '🤩 Begeistert',
-        text: 'Nach Monaten der Vorfreude und des Packens ging es heute am Flughafen Wien-Schwechat los. Unser Langstreckenflug mit Scoot (TR 12) startete im modernen Boeing 787 Dreamliner. Der Zwischenstopp in Singapur war spektakulär – der Riesen-Indoor-Wasserfall im Jewel Changi Airport ist live noch beeindruckender als auf Fotos! Jetzt sind wir auf der letzten Etappe nach Sydney.',
-        highlights: ['Pünktlicher Abflug aus Wien', 'Jewel Changi Wasserfall im Transit', 'Vorfreude auf Down Under'],
-        specialExp: 'Flo hat im Transit fast das Boarding-Gate verwechselt, aber wir haben es mit viel Lachen noch rechtzeitig geschafft.',
-        notes: 'Kompressionsstrümpfe und Powerbank im Handgepäck waren Gold wert.',
-        links: 'https://www.singaporeair.com',
-        photoUrls: ['https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=1000&auto=format&fit=crop&q=80'],
-        updatedAt: '2027-03-21T18:00:00Z'
-      },
-      2: {
-        day: 2,
-        title: 'Touchdown in Sydney & erstes kühles Bier am Darling Harbour',
-        mood: '🤠 Abenteuerlustig',
-        text: 'Um 18:50 Uhr australischer Zeit endlich auf australischem Boden aufgesetzt! Die Einreise mit dem eVisitor 651 ging überraschend schnell durch die SmartGates. Kurzer Transfer zum Ultimo Hotel in Chinatown – super Lage! Nach dem Einchecken sind wir direkt zu Fuß an den Darling Harbour geschlendert. Erste warme Frühlingsbrise, beleuchtete Skyline und das erste lokale Bier: Unglaublich, wir sind wirklich in Australien!',
-        highlights: ['Reibungslose SmartGate-Einreise', 'Check-in The Ultimo', 'Erster Abendspaziergang am Darling Harbour'],
-        specialExp: 'Der erste Moment am Hafen mit Blick auf die Skyline – echte Gänsehaut.',
-        notes: 'Kreditkarte kontaktlos an den Drehkreuzen der Bahn funktioniert absolut reibungslos (keine extra Opal Card nötig).',
-        links: 'https://www.theultimo.com.au',
-        photoUrls: ['https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=1000&auto=format&fit=crop&q=80'],
-        updatedAt: '2027-03-22T21:30:00Z'
-      }
-    };
-
-    let userJournal = {};
-    let currentJournalDay = 1;
-    let journalAutosaveTimer = null;
-    let journalDirty = false;
-
-    function loadUserJournal() {
-      try {
-        const raw = localStorage.getItem(JOURNAL_STORAGE_KEY);
-        if (raw !== null) {
-          const parsed = JSON.parse(raw);
-          if (parsed && typeof parsed === 'object') {
-            userJournal = parsed;
-            return;
-          }
-        }
-      } catch (e) { }
-      userJournal = JSON.parse(JSON.stringify(DEFAULT_JOURNAL_ENTRIES));
-      saveUserJournal();
-    }
-
-    function saveUserJournal() {
-      try {
-        localStorage.setItem(JOURNAL_STORAGE_KEY, JSON.stringify(userJournal));
-        return true;
-      } catch (e) { return storageFailure(e); }
-    }
-
-    function switchJournalTab(tabName) {
-      const btnEntries = document.getElementById('journal-tab-btn-entries');
-      const btnPhotos = document.getElementById('journal-tab-btn-photos');
-      const panelEntries = document.getElementById('journal-panel-entries');
-      const panelPhotos = document.getElementById('journal-panel-photos');
-
-      if (!btnEntries || !btnPhotos || !panelEntries || !panelPhotos) return;
-
-      if (tabName === 'photos') {
-        btnEntries.classList.remove('active');
-        btnEntries.setAttribute('aria-selected', 'false');
-        panelEntries.style.display = 'none';
-
-        btnPhotos.classList.add('active');
-        btnPhotos.setAttribute('aria-selected', 'true');
-        panelPhotos.style.display = 'block';
-
-        renderPhotosGallery();
-      } else {
-        btnPhotos.classList.remove('active');
-        btnPhotos.setAttribute('aria-selected', 'false');
-        panelPhotos.style.display = 'none';
-
-        btnEntries.classList.add('active');
-        btnEntries.setAttribute('aria-selected', 'true');
-        panelEntries.style.display = 'block';
-
-        renderJournalDays();
-        selectJournalDay(currentJournalDay);
-      }
-    }
-
-    function renderJournalDays() {
-      const scroller = document.getElementById('journal-day-scroller');
-      if (!scroller) return;
-
-      scroller.innerHTML = currentMemoryDays().map(d => {
-        const entry = userJournal[d.day];
-        const hasEntry = !!(entry && (entry.title || entry.text));
-        const moodIcon = (entry && entry.mood) ? entry.mood.split(' ')[0] : '';
-        const isCurrent = d.day === currentJournalDay;
-        const dateFormatted = d.date.split('-').slice(1).reverse().join('.');
-
-        return `
-          <button type="button" class="journal-day-pill ${isCurrent ? 'active' : ''} ${hasEntry ? 'has-entry' : ''}" 
-                  id="journal-pill-day-${d.day}" 
-                  onclick="selectJournalDay(${d.day})"
-                  title="Tag ${d.day}: ${escapeHtml(d.title)}">
-            <span class="journal-pill-num">Tag ${d.day}</span>
-            <span class="journal-pill-date">${dateFormatted}</span>
-            <span class="journal-pill-mood">${moodIcon || (hasEntry ? '✍️' : '⚪')}</span>
-            ${hasEntry ? '<span class="journal-pill-dot" title="Eintrag vorhanden"></span>' : ''}
-          </button>
-        `;
-      }).join('');
-
-      const countEl = document.getElementById('journal-entries-count-badge');
-      if (countEl) {
-        const count = currentMemoryDays().filter(d => userJournal[d.day] && (userJournal[d.day].title || userJournal[d.day].text)).length;
-        countEl.textContent = `${count} / ${currentMemoryDays().length} ausgefüllt`;
-      }
-    }
-
-    function selectJournalDay(dayNum) {
-      if (journalDirty) {
-        clearTimeout(journalAutosaveTimer); journalAutosaveTimer = null;
-        if (!saveJournalEntry(currentJournalDay)) return;
-      }
-      const days = currentMemoryDays();
-      currentJournalDay = days.some(d => d.day === Number(dayNum)) ? Number(dayNum) : days[0]?.day || 0;
-
-      document.querySelectorAll('.journal-day-pill').forEach(pill => pill.classList.remove('active'));
-      const activePill = document.getElementById(`journal-pill-day-${currentJournalDay}`);
-      if (activePill) {
-        activePill.classList.add('active');
-        activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      }
-
-      renderJournalDayInfoCard(currentJournalDay);
-
-      const entry = userJournal[currentJournalDay] || {};
-      const dayData = currentMemoryDays().find(d => d.day === currentJournalDay) || currentMemoryDays()[0];
-
-      const titleInput = document.getElementById('journal-entry-title');
-      const textInput = document.getElementById('journal-entry-text');
-      const highlightsInput = document.getElementById('journal-entry-highlights');
-      const specialInput = document.getElementById('journal-entry-special');
-      const notesInput = document.getElementById('journal-entry-notes');
-      const linksInput = document.getElementById('journal-entry-links');
-
-      if (titleInput) titleInput.value = entry.title || (dayData ? `Tag ${dayData.day}: ${dayData.title}` : '');
-      if (textInput) textInput.value = entry.text || '';
-      if (highlightsInput) highlightsInput.value = Array.isArray(entry.highlights) ? entry.highlights.join(', ') : (entry.highlights || '');
-      if (specialInput) specialInput.value = entry.specialExp || '';
-      if (notesInput) notesInput.value = entry.notes || '';
-      if (linksInput) linksInput.value = entry.links || '';
-
-      setJournalMood(entry.mood || '', false);
-
-      const statusEl = document.getElementById('journal-autosave-indicator');
-      if (statusEl) {
-        statusEl.innerHTML = entry.updatedAt
-          ? `<i class="fa-solid fa-check" style="color:#10b981;"></i> <span>Gespeichert</span>`
-          : `<i class="fa-solid fa-pencil"></i> <span>Neuer Entwurf für Tag ${currentJournalDay}</span>`;
-      }
-    }
-
-    function renderJournalDayInfoCard(dayNum) {
-      const container = document.getElementById('journal-day-info-card');
-      if (!container) return;
-
-      const dayData = currentMemoryDays().find(d => d.day === dayNum) || currentMemoryDays()[0];
-      if (!dayData) { container.textContent = "Noch kein Reisetag angelegt."; return; }
-
-      container.innerHTML = `
-        <div class="journal-day-info-header">
-          <span class="journal-day-badge">Reisetag ${dayData.day}</span>
-          <span style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">${dayData.date}</span>
-        </div>
-        <div class="journal-day-title">${escapeHtml(dayData.title)}</div>
-        
-        <div class="journal-day-meta-row">
-          <div class="journal-day-meta-item">
-            <i class="fa-solid fa-route"></i>
-            <span><strong>Etappe:</strong> ${escapeHtml(dayData.location)}</span>
-          </div>
-          <div class="journal-day-meta-item">
-            <i class="fa-solid fa-road"></i>
-            <span><strong>Distanz / Dauer:</strong> ${escapeHtml(dayData.distance) || 'Nicht hinterlegt'}${dayData.driveTime ? ' (' + escapeHtml(dayData.driveTime) + ')' : ''}</span>
-          </div>
-          <div class="journal-day-meta-item">
-            <i class="fa-solid fa-hotel"></i>
-            <span><strong>Unterkunft:</strong> ${escapeHtml(dayData.accommodation)}</span>
-          </div>
-        </div>
-
-        <div class="journal-day-activities-title"><i class="fa-solid fa-list-check" style="color:var(--primary); margin-right:0.25rem;"></i> Geplante Aktivitäten:</div>
-        <ul class="journal-day-activities-list">
-          ${dayData.activities && dayData.activities.length ? dayData.activities.map(act => `<li>${escapeHtml(act)}</li>`).join('') : '<li>Freie Zeiteinteilung & Erholung</li>'}
-        </ul>
-
-        <button type="button" class="btn-journal-jump-plan" onclick="jumpToDayPlan(${dayData.day})" title="Diesen Tag im detaillierten Reiseplan anzeigen">
-          <i class="fa-solid fa-map-location-dot"></i> Zum detaillierten Tagesplan
-        </button>
-      `;
-    }
-
-    let currentSelectedMood = '';
-    function setJournalMood(mood, triggerSave = true) {
-      currentSelectedMood = mood;
-      document.querySelectorAll('#journal-mood-selector .journal-mood-chip').forEach(chip => {
-        if (chip.getAttribute('data-mood') === mood) {
-          chip.classList.add('active');
-        } else {
-          chip.classList.remove('active');
-        }
-      });
-      if (triggerSave) onJournalInput();
-    }
-
-    function onJournalInput() {
-      journalDirty = true;
-      const statusEl = document.getElementById('journal-autosave-indicator');
-      if (statusEl) {
-        statusEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:var(--accent-gold);"></i> <span>Änderungen ungespeichert...</span>`;
-      }
-      if (journalAutosaveTimer) clearTimeout(journalAutosaveTimer);
-      journalAutosaveTimer = setTimeout(() => {
-        journalAutosaveTimer = null;
-        saveJournalEntry(currentJournalDay, false);
-      }, 900);
-    }
-
-    function saveJournalEntry(dayNum, isManual = false) {
-      const day = parseInt(dayNum, 10) || currentJournalDay;
-      const titleInput = document.getElementById('journal-entry-title');
-      const textInput = document.getElementById('journal-entry-text');
-      const highlightsInput = document.getElementById('journal-entry-highlights');
-      const specialInput = document.getElementById('journal-entry-special');
-      const notesInput = document.getElementById('journal-entry-notes');
-      const linksInput = document.getElementById('journal-entry-links');
-
-      const title = titleInput ? titleInput.value.trim() : '';
-      const text = textInput ? textInput.value.trim() : '';
-      const highlightsRaw = highlightsInput ? highlightsInput.value.trim() : '';
-      const highlights = highlightsRaw ? highlightsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
-      const specialExp = specialInput ? specialInput.value.trim() : '';
-      const notes = notesInput ? notesInput.value.trim() : '';
-      const links = linksInput ? linksInput.value.trim() : '';
-
-      userJournal[day] = {
-        day,
-        title,
-        mood: currentSelectedMood,
-        text,
-        highlights,
-        specialExp,
-        notes,
-        links,
-        updatedAt: new Date().toISOString()
-      };
-
-      if (!saveUserJournal()) {
-        const status = document.getElementById('journal-autosave-indicator');
-        if (status) status.textContent = 'Speichern fehlgeschlagen. Deine Eingabe bleibt erhalten.';
-        return false;
-      }
-      renderJournalDays();
-
-      if (typeof buildGlobalSearchIndex === 'function') buildGlobalSearchIndex();
-
-      const statusEl = document.getElementById('journal-autosave-indicator');
-      if (statusEl) {
-        statusEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> <span>${isManual ? 'Eintrag erfolgreich gespeichert!' : 'Automatisch gespeichert'}</span>`;
-      }
-
-      if (isManual) {
-        const saveBtn = document.getElementById('journal-save-btn');
-        if (saveBtn) {
-          const orig = saveBtn.innerHTML;
-          saveBtn.innerHTML = '<i class="fa-solid fa-check"></i> Gespeichert!';
-          setTimeout(() => { saveBtn.innerHTML = orig; }, 1800);
-        }
-      }
-      journalDirty = false;
-      return true;
-    }
-
-    function confirmOrDeleteJournalEntry(dayNum, btn) {
-      if (!btn) {
-        deleteJournalEntry(dayNum, false);
-        return;
-      }
-      if (btn.dataset.confirming === 'true') {
-        resetActiveConfirmBtn();
-        deleteJournalEntry(dayNum, true);
-        return;
-      }
-      resetActiveConfirmBtn();
-      btn.dataset.confirming = 'true';
-      btn._origHtml = btn.innerHTML;
-      btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Wirklich leeren?';
-      btn.classList.add('confirm-delete-active');
-      activeConfirmBtn = btn;
-      activeConfirmTimeout = setTimeout(resetActiveConfirmBtn, 4500);
-    }
-
-    function deleteJournalEntry(dayNum, skipConfirm = false) {
-      const day = parseInt(dayNum, 10) || currentJournalDay;
-      if (!skipConfirm) {
-        let conf = false;
-        try { conf = window.confirm(`Möchtest du den Journal-Eintrag für Tag ${day} wirklich leeren?`); }
-        catch (e) { conf = true; }
-        if (!conf) return;
-      }
-      delete userJournal[day];
-      if (!saveUserJournal()) {
-        const status = document.getElementById('journal-autosave-indicator');
-        if (status) status.textContent = 'Speichern fehlgeschlagen. Deine Eingabe bleibt erhalten.';
-        return false;
-      }
-      clearTimeout(journalAutosaveTimer); journalAutosaveTimer = null; journalDirty = false;
-      renderJournalDays();
-      selectJournalDay(day);
-      if (typeof buildGlobalSearchIndex === 'function') buildGlobalSearchIndex();
-    }
-
-    function jumpToJournalDay(dayNum) {
-      showView('erlebnisse');
-      switchExpTab('journal');
-      const sec = document.getElementById('journal');
-      if (sec) {
-        switchJournalTab('entries');
-        selectJournalDay(dayNum);
-        sec.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-
-    function jumpToDayPlan(dayNum) {
-      if (typeof jumpToDayAndHighlight === 'function') {
-        jumpToDayAndHighlight(dayNum);
-      }
-    }
-
-    function initDayJournalButtons() {
-      TRIP_DAYS.forEach(d => {
-        const dayEl = document.getElementById('day-' + d.day);
-        if (!dayEl) return;
-        const headerBadges = dayEl.querySelector('.summary-header-row');
-        if (headerBadges && !dayEl.querySelector('.btn-day-journal-link')) {
-          const jBtn = document.createElement('button');
-          jBtn.type = 'button';
-          jBtn.className = 'btn-day-journal-link';
-          jBtn.title = `Tagebucheintrag für Tag ${d.day} öffnen`;
-          jBtn.innerHTML = `<i class="fa-solid fa-book-open"></i> Journal`;
-          jBtn.onclick = (e) => {
-            e.stopPropagation();
-            jumpToJournalDay(d.day);
-          };
-          const mapBtn = dayEl.querySelector('.btn-day-map-link');
-          if (mapBtn && mapBtn.parentNode) {
-            mapBtn.parentNode.insertBefore(jBtn, mapBtn.nextSibling);
-          } else {
-            headerBadges.appendChild(jBtn);
-          }
-        }
-      });
-    }
-
-    // =========================================================================
-    // AUFGABE 4/5 – TEIL B: FOTO-GALERIE & LIGHTBOX LOGIK
-    // =========================================================================
-    const PHOTOS_STORAGE_KEY = 'aus_roadtrip_photos_2027';
-
-    const DEFAULT_PHOTOS_LIST = [
-      {
-        id: 'photo-1',
-        dayNum: 2,
-        title: 'Sydney Opera House & Harbour Bridge',
-        location: 'Sydney Harbour, NSW',
-        url: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=1200&auto=format&fit=crop&q=80',
-        caption: 'Erster Blick auf die weltberühmte Oper im Abendlicht. Die Skyline spiegelt sich magisch im Hafenwasser.',
-        date: '2027-03-22'
-      },
-      {
-        id: 'photo-2',
-        dayNum: 3,
-        title: 'Manly Beach & Ocean Surf',
-        location: 'Manly, Sydney NSW',
-        url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&auto=format&fit=crop&q=80',
-        caption: 'Fahrt mit der Manly Ferry über den Hafen und die ersten echten Surfer am Pazifikstrand.',
-        date: '2027-03-23'
-      },
-      {
-        id: 'photo-3',
-        dayNum: 4,
-        title: 'Bondi to Coogee Coastal Walk',
-        location: 'Bondi Beach, NSW',
-        url: 'https://images.unsplash.com/photo-1517824806704-9040b037703b?w=1200&auto=format&fit=crop&q=80',
-        caption: 'Spektakuläre Sandsteinklippen, azurblaues Meer und der berühmte Bondi Icebergs Ocean Pool.',
-        date: '2027-03-24'
-      },
-      {
-        id: 'photo-4',
-        dayNum: 6,
-        title: 'Cape Byron Lighthouse am östlichsten Punkt',
-        location: 'Byron Bay, NSW',
-        url: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=1200&auto=format&fit=crop&q=80',
-        caption: 'Sonnenaufgang am östlichsten Punkt des australischen Festlands. Delfine direkt vor der Küste!',
-        date: '2027-03-26'
-      },
-      {
-        id: 'photo-5',
-        dayNum: 8,
-        title: 'Brisbane South Bank & Streets Beach',
-        location: 'Brisbane, QLD',
-        url: 'https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?w=1200&auto=format&fit=crop&q=80',
-        caption: 'Mitten in der Großstadt ein tropischer Sandstrand mit Blick auf die Skyline – typisch Queensland.',
-        date: '2027-03-28'
-      },
-      {
-        id: 'photo-6',
-        dayNum: 10,
-        title: 'Noosa National Park Coastal Track',
-        location: 'Noosa Heads, Sunshine Coast QLD',
-        url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&auto=format&fit=crop&q=80',
-        caption: 'Wanderung durch Eukalyptuswälder entlang türkisfarbener Buchten. Erster wilder Koala in den Baumkronen entdeckt!',
-        date: '2027-03-30'
-      },
-      {
-        id: 'photo-7',
-        dayNum: 12,
-        title: 'Lake McKenzie – K’gari (Fraser Island)',
-        location: 'K’gari (Fraser Island), QLD',
-        url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200&auto=format&fit=crop&q=80',
-        caption: 'Kristallklarer Süßwassersee aus reinem Regenwasser, umgeben von schneeweißem Quarzsand.',
-        date: '2027-04-01'
-      },
-      {
-        id: 'photo-8',
-        dayNum: 14,
-        title: 'Whitehaven Beach & Hill Inlet Whitsundays',
-        location: 'Whitsunday Islands, Great Barrier Reef QLD',
-        url: 'https://images.unsplash.com/photo-1589330273594-fade1ee91647?w=1200&auto=format&fit=crop&q=80',
-        caption: 'Das wirbelnde Sandmuster von Hill Inlet vom Katamaran Camira aus. Einer der schönsten Strände der Welt.',
-        date: '2027-04-03'
-      },
-      {
-        id: 'photo-9',
-        dayNum: 17,
-        title: 'Melbourne Laneways & Hosier Lane Street Art',
-        location: 'Melbourne CBD, VIC',
-        url: 'https://images.unsplash.com/photo-1514395462725-fb4566210144?w=1200&auto=format&fit=crop&q=80',
-        caption: 'Lebendige Kaffeekultur und weltberühmte Murals in den verwinkelten Gassen Melbournes.',
-        date: '2027-04-06'
-      },
-      {
-        id: 'photo-10',
-        dayNum: 18,
-        title: 'Twelve Apostles – Great Ocean Road',
-        location: 'Port Campbell National Park, VIC',
-        url: 'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=1200&auto=format&fit=crop&q=80',
-        caption: 'Gewaltige Kalksteinsäulen im tosenden Südpolarmeer bei Sonnenuntergang. Der krönende Roadtrip-Abschluss.',
-        date: '2027-04-07'
-      }
-    ];
-
-    let userPhotos = [];
-    let currentPhotosDayFilter = 'all';
-    let currentLightboxPhotoId = null;
-
-    function loadUserPhotos() {
-      try {
-        const raw = localStorage.getItem(PHOTOS_STORAGE_KEY);
-        if (raw !== null) {
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed)) {
-            userPhotos = parsed;
-            return;
-          }
-        }
-      } catch (e) { }
-      userPhotos = JSON.parse(JSON.stringify(DEFAULT_PHOTOS_LIST));
-      saveUserPhotos();
-    }
-
-    function saveUserPhotos() {
-      try {
-        localStorage.setItem(PHOTOS_STORAGE_KEY, JSON.stringify(userPhotos));
-        return true;
-      } catch (e) { return storageFailure(e); }
-    }
-
-    function renderPhotosGallery() {
-      const grid = document.getElementById('photos-grid');
-      const filters = document.querySelectorAll('[data-photo-filter]');
-      const countBadge = document.getElementById('photos-count-badge');
-      if (!grid) return;
-
-      filters.forEach(filterSelect => {
-        filterSelect.innerHTML = `<option value="all">Alle Fotos anzeigen (${userPhotos.length})</option><option value="0">Allgemeine Highlights</option>` + currentMemoryDays().map((d,i) => `<option value="${d.day}">Tag ${i+1}: ${escapeHtml(d.title)}</option>`).join('');
-        filterSelect.value = currentPhotosDayFilter;
-      });
-      const grids = [grid, document.getElementById('journal-inner-photos-grid')].filter(Boolean);
-      const paint = html => grids.forEach((target,i) => target.innerHTML = html.replace(/id="photo-(card|del-btn)-/g, `id="photo-$1-${i}-`));
-      if (countBadge) countBadge.textContent = `${userPhotos.length} Fotos`;
-
-      const extPhotosLink = document.getElementById('link-photos');
-      const journalExtBtn = document.getElementById('journal-photos-ext-btn');
-      if (extPhotosLink && journalExtBtn && extPhotosLink.href) {
-        journalExtBtn.href = extPhotosLink.href;
-      }
-
-      const photos = currentPhotosDayFilter === 'all'
-        ? userPhotos
-        : userPhotos.filter(p => String(p.dayNum) === String(currentPhotosDayFilter));
-
-      if (photos.length === 0) {
-        paint(`
-          <div class="org-empty-state" style="grid-column: 1 / -1;">
-            <i class="fa-solid fa-camera"></i>
-            <h3>Keine Fotos für diesen Reisetag</h3>
-            <p>Füge über den Button oben Foto-Links oder Alben hinzu.</p>
-            <button type="button" class="btn-org-action secondary" onclick="filterPhotosByDay('all')">
-              Alle Fotos anzeigen
-            </button>
-          </div>
-        `);
-        return;
-      }
-
-      paint(photos.map(p => `
-        <div class="photo-card" id="photo-card-${p.id}">
-          <div class="photo-thumb-wrap" onclick="openPhotoLightbox('${p.id}')" title="Klicken für Vollbild-Vorschau">
-            <img src="${escapeHtml(window.TripModel.safeUrl(p.url))}" alt="${escapeHtml(p.title)}" class="photo-thumb" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=600'">
-            <span class="photo-day-badge">${p.dayNum > 0 ? 'Tag ' + p.dayNum : 'Roadtrip'}</span>
-            <div class="photo-zoom-overlay"><i class="fa-solid fa-expand"></i></div>
-          </div>
-          <div class="photo-body">
-            <div class="photo-title">${escapeHtml(p.title)}</div>
-            ${p.location ? `<div class="photo-location"><i class="fa-solid fa-location-dot"></i> ${escapeHtml(p.location)}</div>` : ''}
-            <div class="photo-caption">${escapeHtml(p.caption || '')}</div>
-            <div class="photo-card-footer">
-              <button type="button" class="booking-card-btn" onclick="openPhotoModal('${p.id}')" title="Foto bearbeiten">
-                <i class="fa-solid fa-pen-to-square"></i> Bearbeiten
-              </button>
-              <button type="button" class="booking-card-btn btn-danger" id="photo-del-btn-${p.id}" onclick="confirmOrDeletePhoto('${p.id}', this, event)" title="Foto entfernen">
-                <i class="fa-solid fa-trash-can"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      `).join(''));
-    }
-
-    function filterPhotosByDay(dayVal) {
-      currentPhotosDayFilter = dayVal;
-      const select = document.getElementById('photos-filter-day');
-      if (select) select.value = dayVal;
-      renderPhotosGallery();
-    }
-
-    function openPhotoLightbox(photoId) {
-      const modal = document.getElementById('photo-lightbox-modal');
-      const img = document.getElementById('lightbox-img');
-      const titleEl = document.getElementById('lightbox-title');
-      const metaEl = document.getElementById('lightbox-meta');
-      const origLink = document.getElementById('lightbox-download-link');
-      if (!modal || !img) return;
-
-      const p = userPhotos.find(item => String(item.id) === String(photoId));
-      if (!p) return;
-
-      currentLightboxPhotoId = p.id;
-      img.src = window.TripModel.safeUrl(p.url) || '';
-      if (titleEl) titleEl.textContent = p.title;
-      if (metaEl) {
-        metaEl.textContent = `${p.dayNum > 0 ? 'Tag ' + p.dayNum + ' · ' : ''}${p.location ? p.location + ' · ' : ''}${p.caption || ''}`;
-      }
-      if (origLink) { const url = window.TripModel.safeUrl(p.url); origLink.hidden = !url; origLink.href = url || '#'; }
-
-      modal.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closePhotoLightbox() {
-      const modal = document.getElementById('photo-lightbox-modal');
-      if (modal) modal.style.display = 'none';
-      document.body.style.overflow = '';
-      currentLightboxPhotoId = null;
-    }
-
-    function navigateLightbox(dir) {
-      if (!currentLightboxPhotoId) return;
-      const filtered = currentPhotosDayFilter === 'all'
-        ? userPhotos
-        : userPhotos.filter(p => String(p.dayNum) === String(currentPhotosDayFilter));
-      if (filtered.length === 0) return;
-
-      const currentIndex = filtered.findIndex(p => p.id === currentLightboxPhotoId);
-      if (currentIndex === -1) return;
-
-      let nextIndex = currentIndex + dir;
-      if (nextIndex < 0) nextIndex = filtered.length - 1;
-      if (nextIndex >= filtered.length) nextIndex = 0;
-
-      openPhotoLightbox(filtered[nextIndex].id);
-    }
-
-    function openPhotoModal(photoId) {
-      const backdrop = document.getElementById('photo-modal-backdrop');
-      const form = document.getElementById('photo-modal-form');
-      const titleEl = document.getElementById('photo-modal-title');
-      const daySelect = document.getElementById('photo-form-day');
-      const delBtn = document.getElementById('photo-modal-delete-btn');
-      if (!backdrop || !form) return;
-
-      form.reset();
-      resetActiveConfirmBtn();
-
-      if (daySelect) {
-        daySelect.innerHTML = `
-          <option value="0">Allgemein / Roadtrip Highlights</option>
-          ${currentMemoryDays().map(d => `<option value="${d.day}">Tag ${d.day}: ${escapeHtml(d.title.split('–')[0].trim())}</option>`).join('')}
-        `;
-      }
-
-      if (photoId) {
-        const p = userPhotos.find(item => String(item.id) === String(photoId));
-        if (p) {
-          if (titleEl) titleEl.textContent = 'Foto-Referenz bearbeiten';
-          document.getElementById('photo-form-id').value = p.id;
-          if (daySelect) daySelect.value = p.dayNum !== undefined ? p.dayNum : 0;
-          document.getElementById('photo-form-title').value = p.title || '';
-          document.getElementById('photo-form-url').value = p.url || '';
-          document.getElementById('photo-form-location').value = p.location || '';
-          document.getElementById('photo-form-caption').value = p.caption || '';
-          if (delBtn) {
-            delBtn.style.display = 'inline-flex';
-            delBtn.dataset.photoId = p.id;
-          }
-        }
-      } else {
-        if (titleEl) titleEl.textContent = 'Foto-Referenz hinzufügen';
-        document.getElementById('photo-form-id').value = '';
-        if (daySelect) daySelect.value = currentJournalDay || 0;
-        if (delBtn) delBtn.style.display = 'none';
-      }
-
-      backdrop.style.display = 'flex';
-      backdrop.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closePhotoModal() {
-      resetActiveConfirmBtn();
-      const backdrop = document.getElementById('photo-modal-backdrop');
-      if (backdrop) {
-        backdrop.style.display = 'none';
-        backdrop.classList.remove('open');
-      }
-      document.body.style.overflow = '';
-    }
-
-    function savePhotoFromModal(event) {
-      if (event) event.preventDefault();
-
-      const id = document.getElementById('photo-form-id').value.trim();
-      const dayNum = parseInt(document.getElementById('photo-form-day').value, 10) || 0;
-      const title = document.getElementById('photo-form-title').value.trim();
-      const url = document.getElementById('photo-form-url').value.trim();
-      const location = document.getElementById('photo-form-location').value.trim();
-      const caption = document.getElementById('photo-form-caption').value.trim();
-
-      if (!title || !window.TripModel.safeUrl(url)) {
-        alert('Bitte gib einen Titel und eine gültige HTTP(S)-Foto-URL an.');
-        return;
-      }
-
-      if (id) {
-        const idx = userPhotos.findIndex(p => String(p.id) === String(id));
-        if (idx !== -1) {
-          userPhotos[idx] = { ...userPhotos[idx], dayNum, title, url, location, caption };
-        }
-      } else {
-        const newPhoto = {
-          id: 'photo-custom-' + Date.now(),
-          dayNum,
-          title,
-          url,
-          location,
-          caption,
-          date: new Date().toISOString().split('T')[0]
-        };
-        userPhotos.unshift(newPhoto);
-      }
-
-      if (!saveUserPhotos()) return;
-      renderPhotosGallery();
-      closePhotoModal();
-      if (typeof buildGlobalSearchIndex === 'function') buildGlobalSearchIndex();
-    }
-
-    function confirmOrDeletePhoto(photoId, btn, evt) {
-      if (evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
-      }
-      if (!btn) {
-        deletePhoto(photoId, false);
-        return;
-      }
-      if (btn.dataset.confirming === 'true') {
-        resetActiveConfirmBtn();
-        deletePhoto(photoId, true);
-        return;
-      }
-      resetActiveConfirmBtn();
-      btn.dataset.confirming = 'true';
-      btn._origHtml = btn.innerHTML;
-      btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Löschen?';
-      btn.classList.add('confirm-delete-active');
-      activeConfirmBtn = btn;
-      activeConfirmTimeout = setTimeout(resetActiveConfirmBtn, 4500);
-    }
-
-    function deletePhotoFromModal() {
-      const id = document.getElementById('photo-form-id').value.trim();
-      if (!id) return;
-      deletePhoto(id, false);
-      closePhotoModal();
-    }
-
-    function deletePhoto(photoId, skipConfirm = false) {
-      if (!photoId) return;
-      const strId = String(photoId);
-      const p = userPhotos.find(item => String(item.id) === strId);
-      const title = p ? p.title : 'dieses Foto';
-
-      if (!skipConfirm) {
-        let conf = false;
-        try { conf = window.confirm(`Möchtest du "${title}" wirklich aus der Galerie entfernen?`); }
-        catch (e) { conf = true; }
-        if (!conf) return;
-      }
-
-      userPhotos = userPhotos.filter(item => String(item.id) !== strId);
-      if (!saveUserPhotos()) return;
-      renderPhotosGallery();
-      if (typeof buildGlobalSearchIndex === 'function') buildGlobalSearchIndex();
+    // Compatibility entry points for routes, search and existing day links.
+    function renderJournalDays() { window.JournalUpload?.render(); }
+    function renderPhotosGallery() { window.JournalUpload?.render(); }
+    function selectJournalDay(day) { window.JournalUpload?.selectDay(day); }
+    function jumpToJournalDay(day) {
+      showView('erlebnisse'); switchExpTab('journal'); selectJournalDay(day);
+      document.getElementById('journal')?.scrollIntoView({behavior:'smooth',block:'start'});
     }
 
     // =========================================================================
@@ -8474,29 +7231,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         });
       });
 
-      // 6. Reisejournal
-      if (userJournal && typeof userJournal === 'object') {
-        Object.keys(userJournal).forEach(k => {
-          const j = userJournal[k];
-          if (j && (j.title || j.text)) {
-            index.push({
-              id: `journal-${j.day}`,
-              cat: 'journal',
-              catLabel: 'Reisejournal',
-              icon: 'fa-book-open',
-              iconClass: 'icon-journal',
-              title: `Journal Tag ${j.day}: ${j.title || 'Tagebucheintrag'}`,
-              subtitle: `${j.mood ? j.mood + ' · ' : ''}${(j.text || '').substring(0, 75)}...`,
-              keywords: `${j.title} ${j.text || ''} ${j.notes || ''} ${j.specialExp || ''} ${(j.highlights || []).join(' ')}`,
-              action: () => {
-                jumpToJournalDay(j.day);
-                const target = document.getElementById('journal') || document.getElementById('view-erlebnisse');
-                if (target) target.scrollIntoView({ behavior: 'smooth' });
-              }
-            });
-          }
-        });
-      }
+      index.push(...(window.JournalUpload?.searchIndex() || []));
 
       // 7. Packliste
       if (Array.isArray(userPacking)) {
@@ -8514,7 +7249,8 @@ const localStorage = window.Persistence.wrap(window.localStorage);
             action: () => {
               openPackingList(p.category);
               const target = document.getElementById('org-tab-content-packing') || document.getElementById('organization');
-              if (target) target.scrollIntoView({ behavior: 'smooth' });
+              const row = document.getElementById('packing-row-' + p.id);
+              if (row || target) (row || target).scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
           });
         });
@@ -8582,6 +7318,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
 
       if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
       searchDebounceTimer = setTimeout(() => {
+        searchDebounceTimer = null;
         performGlobalSearch(val);
       }, 120);
     }
@@ -8649,7 +7386,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           <div class="search-empty-state">
             <div class="search-empty-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
             <div class="search-empty-title">Was suchst du im Roadtrip-Reiseplan?</div>
-            <p style="font-size:0.84rem; margin:0 0 1rem 0;">Tippe nach Tagen, Städten, Aktivitäten, Flügen, Hotels, Journal oder Packliste:</p>
+            <p style="font-size:0.84rem; margin:0 0 1rem 0">Tippe nach Tagen, Städten, Aktivitäten, Flügen, Hotels, Journal oder Packliste:</p>
             <div class="search-empty-tips">
               <button type="button" class="search-tip-btn" onclick="executeQuickSearch('Sydney')">📍 Sydney</button>
               <button type="button" class="search-tip-btn" onclick="executeQuickSearch('Whitsundays')">🏝️ Whitsundays</button>
@@ -8669,9 +7406,9 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         if (metaBar) metaBar.style.display = 'none';
         container.innerHTML = `
           <div class="search-empty-state">
-            <div class="search-empty-icon"><i class="fa-solid fa-triangle-exclamation" style="color:var(--accent-gold);"></i></div>
+            <div class="search-empty-icon"><i class="fa-solid fa-triangle-exclamation" style=""></i></div>
             <div class="search-empty-title">Keine Treffer für "${escapeHtml(queryStr)}"</div>
-            <p style="font-size:0.84rem; margin:0 0 1rem 0;">Überprüfe die Schreibweise oder wähle "Alle Treffer", um alle Kategorien zu durchsuchen.</p>
+            <p style="font-size:0.84rem; margin:0 0 1rem 0">Überprüfe die Schreibweise oder wähle "Alle Treffer", um alle Kategorien zu durchsuchen.</p>
             <div class="search-empty-tips">
               <button type="button" class="search-tip-btn" onclick="filterSearchByCategory('all')">Alle Kategorien aktivieren</button>
               <button type="button" class="search-tip-btn" onclick="executeQuickSearch('Tag')">Alle Reisetage</button>
@@ -8748,6 +7485,14 @@ const localStorage = window.Persistence.wrap(window.localStorage);
     }
 
     function onGlobalSearchKeydown(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        if (searchDebounceTimer) {
+          clearTimeout(searchDebounceTimer);
+          searchDebounceTimer = null;
+          performGlobalSearch(document.getElementById('global-search-input')?.value || '');
+        }
+      }
       if (!currentRenderedSearchResults || currentRenderedSearchResults.length === 0) {
         if (event.key === 'Escape') closeGlobalSearch();
         return;
@@ -8808,28 +7553,10 @@ const localStorage = window.Persistence.wrap(window.localStorage);
           closeGlobalSearch();
           return;
         }
-        const lightbox = document.getElementById('photo-lightbox-modal');
-        if (lightbox && lightbox.style.display !== 'none') {
-          closePhotoLightbox();
-          return;
-        }
-      }
-
-      const lightbox = document.getElementById('photo-lightbox-modal');
-      if (lightbox && lightbox.style.display !== 'none') {
-        if (e.key === 'ArrowLeft') navigateLightbox(-1);
-        if (e.key === 'ArrowRight') navigateLightbox(1);
       }
     });
 
-    function initJournalAndPhotos() {
-      loadUserJournal();
-      loadUserPhotos();
-      renderJournalDays();
-      selectJournalDay(1);
-      renderPhotosGallery();
-      initDayJournalButtons();
-    }
+    function initJournalAndPhotos() { window.JournalUpload?.render(); }
 
     function initGlobalSearch() {
       buildGlobalSearchIndex();
@@ -8887,7 +7614,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         resetActiveConfirmBtn();
       }
     });
-  
+
 
 
 // =========================================================================
@@ -8896,7 +7623,7 @@ const localStorage = window.Persistence.wrap(window.localStorage);
 
 function showView(viewName, skipHistory) {
   const validViews = ['dashboard', 'reise', 'organisation', 'finanzen', 'erlebnisse', 'mehr'];
-  
+
   const aliasMap = {
     'home': 'dashboard',
     'route': 'reise',
@@ -8905,8 +7632,6 @@ function showView(viewName, skipHistory) {
     'organization': 'organisation',
     'journal': 'erlebnisse',
     'photos': 'erlebnisse',
-    'bucketlist': 'erlebnisse',
-    'wildlife': 'erlebnisse',
     'taste': 'erlebnisse',
     'drone-hub': 'mehr',
     'drone': 'mehr',
@@ -8969,9 +7694,7 @@ function showView(viewName, skipHistory) {
   } else if (target === 'erlebnisse') {
     renderJournalDays();
     renderPhotosGallery();
-    if (viewName === 'photos') switchExpTab('photos');
-    else if (viewName === 'bucketlist') switchExpTab('bucketlist');
-    else if (viewName === 'wildlife') switchExpTab('wildlife');
+    if (viewName === 'photos') switchExpTab('journal');
     else if (viewName === 'taste') switchExpTab('taste');
   } else if (target === 'mehr') {
     if (viewName === 'drone-hub' || viewName === 'drone') {
@@ -9000,7 +7723,7 @@ function showView(viewName, skipHistory) {
 function jumpToDay(dayNum) {
   if (window.TripPage) { showView('reise'); window.TripPage.selectDayNumber(dayNum); return; }
   showView('reise', true);
-  
+
   if (window.innerWidth <= 960) {
     switchMobileReiseMode('plan');
   }
@@ -9059,7 +7782,7 @@ function updateMobileBottomSheet(dayNum) {
   if (!sheet) return;
   const dayData = (typeof TRIP_DAYS_DATA !== 'undefined' ? TRIP_DAYS_DATA : []).find(d => d.day === dayNum) || { day: dayNum, title: 'Reisetag', date: '' };
   const spots = (typeof ALL_SIGHTSEEING_SPOTS !== 'undefined' ? ALL_SIGHTSEEING_SPOTS : []).filter(s => s.day === dayNum);
-  
+
   const titleEl = document.getElementById('bottom-sheet-day-title');
   const spotsEl = document.getElementById('bottom-sheet-spots-list');
   const actionBtn = document.getElementById('bottom-sheet-plan-btn');
@@ -9068,7 +7791,7 @@ function updateMobileBottomSheet(dayNum) {
   const spotsCountLabel = spots.length > 0 ? `${spots.length} HIGHLIGHT${spots.length > 1 ? 'S' : ''}` : escapeHtml(dayData.title || 'ETAPPE');
 
   if (titleEl) {
-    titleEl.innerHTML = `<strong>TAG ${dayData.day} · ${spotsCountLabel}</strong> <span style="font-size:0.75rem; color:var(--text-muted); margin-left:0.4rem;">${escapeHtml(dayData.date || '')}</span>`;
+    titleEl.innerHTML = `<strong>TAG ${dayData.day} · ${spotsCountLabel}</strong> <span style="font-size:0.75rem; margin-left:0.4rem">${escapeHtml(dayData.date || '')}</span>`;
   }
 
   if (spotsEl) {
@@ -9087,7 +7810,7 @@ function updateMobileBottomSheet(dayNum) {
         `;
       }).join('');
     } else {
-      spotsEl.innerHTML = `<span style="font-size:0.8rem; color:var(--text-muted);"><i class="fa-solid fa-route"></i> ${escapeHtml(dayData.drive || (dayData.transportType === 'flight' ? 'Flugreise' : 'Fahrtetappe'))}</span>`;
+      spotsEl.innerHTML = `<span style="font-size:0.8rem"><i class="fa-solid fa-route"></i> ${escapeHtml(dayData.drive || (dayData.transportType === 'flight' ? 'Flugreise' : 'Fahrtetappe'))}</span>`;
     }
   }
 
@@ -9131,6 +7854,11 @@ function filterOrgCategory(catKey) {
     return;
   }
   switchOrgTab('bookings');
+  if (window.ManagementPage?.repo) {
+    window.ManagementPage.filterBookings({flights:'flight',hotels:'hotel',car:'rentalcar',activities:'activity'}[catKey] || 'all');
+    document.getElementById('manage-bookings')?.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
   const filterSelect = document.getElementById('org-booking-filter-cat');
   if (filterSelect) {
     filterSelect.value = (catKey === 'bookings') ? 'all' : catKey;
@@ -9157,6 +7885,7 @@ function switchFinTab(tabKey) {
 
 // Erlebnisse Sub-Tabs
 function switchExpTab(tabKey) {
+  if (!document.getElementById('exp-panel-' + tabKey)) tabKey = 'journal';
   document.querySelectorAll('.exp-subnav-btn').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-tab') === tabKey);
   });
@@ -9164,25 +7893,19 @@ function switchExpTab(tabKey) {
     panel.style.display = panel.id === 'exp-panel-' + tabKey ? 'block' : 'none';
   });
   if (tabKey === 'journal') renderJournalDays();
-  if (tabKey === 'photos') renderPhotosGallery();
+
 }
 
 // Mehr Sub-Tabs
 function switchMoreTab(tabKey) {
+  if (!document.getElementById('more-panel-' + tabKey)) tabKey = 'drone';
   document.querySelectorAll('.more-subnav-btn').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-tab') === tabKey);
   });
   document.querySelectorAll('.more-panel').forEach(panel => {
     panel.style.display = panel.id === 'more-panel-' + tabKey ? 'block' : 'none';
   });
-  if (tabKey === 'drone' && !window.ManagementPage) {
-    setTimeout(() => {
-      const droneDetails = document.getElementById('drone-map-slide');
-      if (droneDetails) droneDetails.open = true;
-      initDroneAirspaceMap();
-      if (droneAirspaceMap) droneAirspaceMap.invalidateSize();
-    }, 150);
-  }
+
 }
 
 // Global Hash Router
@@ -9224,16 +7947,8 @@ window.ManagementLegacy = {
 
 window.addEventListener('trip-store:ready', () => {
   TripStore.subscribe('*', ({event}) => {
-    if (/^(days|day):/.test(event)) { renderJournalDays(); renderPhotosGallery(); selectJournalDay(currentJournalDay); updateOnsiteSpendMetrics(); }
+    if (/^(days|day):/.test(event)) { updateOnsiteSpendMetrics(); }
   });
-});
-
-window.addEventListener('beforeunload', event => {
-  if (!journalDirty) return;
-  clearTimeout(journalAutosaveTimer); journalAutosaveTimer = null;
-  if (!saveJournalEntry(currentJournalDay)) {
-    event.preventDefault(); event.returnValue = '';
-  }
 });
 
 function mirrorSharedDisplays() {

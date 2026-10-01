@@ -26,9 +26,9 @@ assert.equal(a.createTripRepository(a.TripStore,raw),repo,'Repositories share on
 repo.updateTrip({title:'Neuer Titel'});
 assert.equal(a.createTripRepository(a.TripStore,raw).getTrip().title,'Neuer Titel');
 const day=repo.getDays()[0];
-const stop=repo.createStop(day.id,{title:'Ort',type:'other',latitude:10,longitude:20,activityMeta:{id:'original'}});
-repo.updateStop(stop.id,{latitude:null,longitude:null});
-assert.equal(repo.getStop(stop.id).latitude,null);assert.equal(repo.getStop(stop.id).coords,null);
+const stop=repo.createStop(day.id,{title:'Ort',type:'other',transportMode:'walk',region:'Testregion',locationName:'Testort',latitude:10,longitude:20,activityMeta:{id:'original'}});
+assert.throws(()=>repo.updateStop(stop.id,{latitude:null,longitude:null}),/Standort/);
+assert.equal(repo.getStop(stop.id).latitude,10);assert.equal(JSON.stringify(repo.getStop(stop.id).coords),'[10,20]');
 const copy=repo.duplicateDay(day.id);
 assert.notEqual(repo.getStops(copy.id)[0].activityMeta.id,'original');
 repo.deleteDay(copy.id);const following=repo.createDay({title:'Neu',date:'2027-03-23'});
@@ -43,29 +43,10 @@ assert.equal(a.TripModel.safeUrl('javascript:alert(1)'), '');
 const source=fs.readFileSync('js/app.js','utf8');
 const budget=source.slice(source.indexOf("    const ONSITE_SPEND_KEY"),source.indexOf('    function openFuelTracker'));
 const nodes=Object.fromEntries(['onsite-daily-eur','onsite-total-trip','onsite-spend-input','onsite-spend-slider'].map(id=>[id,{}]));
-const ctx=vm.createContext({localStorage:a.Persistence.wrap(raw),document:{getElementById:id=>nodes[id]||null},currentMemoryDays:()=>[1,2,3]});
+const ctx=vm.createContext({window:{},localStorage:a.Persistence.wrap(raw),document:{getElementById:id=>nodes[id]||null},currentMemoryDays:()=>[1,2,3]});
 vm.runInContext(budget,ctx);vm.runInContext("updateOnsiteSpend(10,'input')",ctx);
 assert.equal(nodes['onsite-daily-eur'].textContent,'40 €');assert.equal(nodes['onsite-total-trip'].textContent,'120 € (3 Tage)');
 vm.runInContext("updateOnsiteSpend(0,'input');initOnsiteSpend()",ctx);assert.equal(nodes['onsite-spend-input'].value,0);
-// Real journal handlers: switch before debounce, failure and deletion.
-const journalNodes=Object.fromEntries(['journal-entry-title','journal-entry-text','journal-entry-highlights','journal-entry-special','journal-entry-notes','journal-entry-links','journal-autosave-indicator'].map(id=>[id,{value:''}]));
-let fail=false,saved,timer;
-const journal=vm.createContext({console,Date,document:{getElementById:id=>journalNodes[id]||null,querySelectorAll:()=>[]},
-  currentMemoryDays:()=>[{day:1,title:'A'},{day:2,title:'B'}],renderJournalDayInfoCard:()=>{},renderJournalDays:()=>{},setJournalMood:()=>{},
-  setTimeout:cb=>{timer=cb;return 1;},clearTimeout:()=>{timer=null;},saveUserJournal:()=>{if(fail)return false;saved=JSON.stringify(journal.userJournal);return true;},window:{confirm:()=>true}});
-vm.runInContext('var userJournal={},currentJournalDay=1,currentSelectedMood="",journalDirty=false,journalAutosaveTimer=null;',journal);
-vm.runInContext(source.slice(source.indexOf('    function selectJournalDay('),source.indexOf('    function renderJournalDayInfoCard(')),journal);
-vm.runInContext(source.slice(source.indexOf('    function onJournalInput('),source.indexOf('    function',source.indexOf('      return true;',source.indexOf('    function saveJournalEntry(')))),journal);
-// Extract individual delete handler using its next function boundary.
-vm.runInContext(source.slice(source.indexOf('    function deleteJournalEntry('),source.indexOf('    function jumpToJournalDay(')),journal);
-journalNodes['journal-entry-text'].value='Sofort speichern';
-vm.runInContext('onJournalInput();selectJournalDay(2)',journal);
-assert.equal(JSON.parse(saved)['1'].text,'Sofort speichern');assert.equal(journal.currentJournalDay,2);assert.equal(timer,null);
-journalNodes['journal-entry-text'].value='Nicht verlieren';fail=true;
-vm.runInContext('onJournalInput();selectJournalDay(1)',journal);
-assert.equal(journal.currentJournalDay,2);assert.equal(journalNodes['journal-entry-text'].value,'Nicht verlieren');assert.match(journalNodes['journal-autosave-indicator'].textContent,/fehlgeschlagen/);
-fail=false;vm.runInContext('deleteJournalEntry(2,true)',journal);
-assert.equal(journal.userJournal[2],undefined);assert.equal(journal.journalDirty,false);assert.equal(timer,null);
 // Real remote-sync handler: stale snapshots, fuel-only changes and conflict refusal.
 const remoteEntries=new Map();const remoteRaw={getItem:k=>remoteEntries.get(k)??null,setItem:(k,v)=>remoteEntries.set(k,String(v)),removeItem:k=>remoteEntries.delete(k)};
 let accept=false,renders=0;

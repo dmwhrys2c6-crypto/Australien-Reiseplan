@@ -80,7 +80,7 @@ const TripStore = storeCtx.TripStore;
 TripStore.init(masterCtx.TRIP_MASTER_DATA);
 
 const days = TripStore.getDays();
-assert(days.length === 20, 'TripStore loaded 20 days');
+assert(days.length === 21, 'TripStore loaded 21 days including Tag 0');
 const allActs = TripStore.getActivities();
 assert(allActs.length >= 75, `TripStore loaded ${allActs.length} activities (>= 75)`);
 

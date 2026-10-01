@@ -20,6 +20,6 @@ for identity, attrs in check.ids.items():
     if attrs.get('data-shared-id'):
         source=attrs['data-shared-id']
         assert source in check.ids and source != identity, f'Invalid shared display source: {identity}'
-for required in ['manage-finance','manage-expenses','manage-activities','manage-bookings','manage-documents','manage-drone-map','manage-editor','manage-confirm']:
+for required in ['manage-finance','manage-expenses','manage-activities','manage-bookings','manage-documents','memory-upload-form','manage-editor','manage-confirm']:
     assert required in check.ids, required
 print('Management DOM: six independent views, unique integration IDs and all functional panels passed.')

@@ -36,7 +36,7 @@
     return `
       <div class="ui-progress-wrapper" role="progressbar" aria-valuenow="${current}" aria-valuemin="0" aria-valuemax="${max}" aria-label="${label}">
         <div class="ui-progress-bar">
-          <div class="ui-progress-fill" style="width: ${pct}%;"></div>
+          <div class="ui-progress-fill" style="width: ${pct}%"></div>
         </div>
         <span class="ui-progress-label">${current}/${max} · ${pct}%</span>
       </div>
@@ -83,7 +83,7 @@
   UI.createKpiCard = function ({ id, label, value, subtext, icon, color = 'var(--primary)' }) {
     return `
       <div class="ui-kpi-card" ${id ? `id="${id}-card"` : ''}>
-        <div class="ui-kpi-label"><i class="fa-solid ${icon}" style="color:${color};"></i> ${label}</div>
+        <div class="ui-kpi-label"><i class="fa-solid ${icon}" style=""></i> ${label}</div>
         <div class="ui-kpi-val" ${id ? `id="${id}"` : ''}>${value}</div>
         <div class="ui-kpi-sub" ${id ? `id="${id}-sub"` : ''}>${subtext}</div>
       </div>

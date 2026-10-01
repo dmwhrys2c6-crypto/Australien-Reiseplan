@@ -1,7 +1,7 @@
 {
   "name": "Australien Roadtrip 2027 | Wien bis Melbourne",
   "short_name": "Australien 2027",
-  "description": "Interaktiver 20-Tage-Reiseplan, Budgetkalkulation, Reiseorganisation, Reisejournal, Fotogalerie & Offline-Reiseführer für 4 Personen.",
+  "description": "Interaktiver 21-Tage-Reiseplan, Budgetkalkulation, Reiseorganisation, Reisejournal, Fotogalerie & Offline-Reiseführer für 4 Personen.",
   "start_url": "./index.html",
   "id": "./",
   "scope": "./",
@@ -37,7 +37,7 @@
   ],
   "shortcuts": [
     {
-      "name": "20-Tage Reiseplan",
+      "name": "21-Tage Reiseplan",
       "short_name": "Reiseplan",
       "description": "Direkt zum 20-tägigen Roadtrip-Ablauf springen",
       "url": "./#reise",

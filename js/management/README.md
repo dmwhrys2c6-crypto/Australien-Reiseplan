@@ -7,7 +7,8 @@ Die sechs Haupttabs und der bestehende Router bleiben erhalten. Ausflüge ergän
 - `repository.js`: Migration, Datenmodelle, Validierung, Relations, CRUD und berechnete Finanzsummen.
 - `ui.js`: reine HTML-Renderer, Filter, Listen, Summary und Activity Cards; Texte werden escaped, URLs geprüft.
 - `editor.js`: ein konsistenter nativer Dialog für alle Editoren und Details. Desktop-Drawer und mobile Sheets verwenden die Reise-Stile. Separate Löschbestätigung, Fehler und Submit-Sperre.
-- `drone-map.js`: Leaflet-Adapter mit Reiseroute, Spots, Drag-Verschiebung und Provider-Schnittstelle für Flugzonen.
+- `finance.js`: gemeinsame Personenansicht und SVG-Ausgabenverteilung.
+- Drohnenkarten sind externe Direktlinks; gespeicherte Spot-Daten bleiben erhalten.
 - `page.js`: Auswahl, Filter, Suche, Routing-Integration und Verbindungen zu Tagesplan und Dashboard.
 - `css/management.css`: auf die neuen Bereiche begrenzte Erweiterung der vorhandenen Fonts, Akzentfarbe und Glass-Flächen. Dashboard bleibt visuell unverändert.
 
@@ -19,7 +20,7 @@ Booking: gemeinsame Basis mit id, tripId, dayId, stopId, title, type, provider, 
 
 Geplante Activities sind Projektionen der kanonischen TripStore-Stops. `activityMeta` enthält nur die zusätzliche Kategorie, Adresse, den Buchungsstatus und eine stabile Activity-ID. Titel, Ort, Zeiten, Koordinaten, Bild, Notizen und Kosten werden aus dem Stop gelesen. Unzugeordnete Ideen liegen in der Activity-Sammlung. Bei Zuordnung entsteht ein Stop; die stabile Activity-ID bleibt erhalten. Bestehende Stops können im Editor verknüpft werden; dabei werden die angezeigten Ausflugsdaten übernommen. Löschen eines zugeordneten Ausflugs entfernt seinen Stop nach Bestätigung.
 
-DroneSpot: id, tripId, dayId, stopId, title, category, latitude, longitude, date, notes, image, favorite, createdAt, updatedAt. Koordinaten sind editierbar und Marker verschiebbar.
+DroneSpot: id, tripId, dayId, stopId, title, category, latitude, longitude, date, notes, image, favorite, createdAt, updatedAt. Vorhandene Daten bleiben gespeichert; eine interaktive Karte wird nicht mehr eingebunden.
 
 Document: nur Metadaten und geprüfte HTTP(S)-Links, keine Dateiuploads oder erfundenen sensiblen Unterlagen.
 
@@ -33,7 +34,7 @@ Es gibt weiterhin keine persistente Server-Datenbank. Der vorhandene Express-Ser
 
 Finanzsummen verwenden ausschließlich die Budgetwährung. Andere Währungen werden separat gelistet und ausdrücklich nicht mit einem stillschweigend angenommenen Kurs addiert. Das Umrechnungswerkzeug der App bleibt verfügbar.
 
-Flugzonen: `FlightZoneProvider.load({tripId})` liefert `{available, zones, source, message}`. Der Standardprovider liefert keine Zonen und keine Flugfreigabe. Die frühere statische Luftraum-Demodarstellung bleibt verborgen. Ein zukünftiger Anbieter muss aktuelle, nachvollziehbare Daten liefern; erst dann wird der Layer verfügbar. Reiseverbindungen bleiben Luftlinien.
+Drohnenkarten und aktuelle Bestimmungen werden über Direktlinks zu OpenSky, CASA und Sphere geöffnet.
 
 ## Integration und Prüfungen
 

@@ -48,6 +48,6 @@ for (const route of routes) {
 ctx.Router.navigate('organisation', {sub: 'packing'}); ctx.showView('organisation'); assert.equal(location.hash, '#organisation/packing');
 ctx.Router.navigate('dashboard'); ctx.openPackingList('docs'); assert.equal(ctx.Router.getCurrentRoute(), 'organisation'); assert.deepEqual(calls.at(-1), ['packing', 'docs']);
 ctx.Router.navigate('dashboard'); ctx.openBookingsForDay(2); assert.equal(ctx.Router.getCurrentRoute(), 'organisation');
-ctx.Router.navigate('dashboard'); ctx.jumpToJournalDay(4); assert.equal(ctx.Router.getCurrentRoute(), 'erlebnisse'); assert.deepEqual(calls.slice(-3), [['exp', 'journal'], ['journal', 'entries'], ['day', 4]]);
+ctx.Router.navigate('dashboard'); ctx.jumpToJournalDay(4); assert.equal(ctx.Router.getCurrentRoute(), 'erlebnisse'); assert.deepEqual(calls.slice(-2), [['exp', 'journal'], ['day', 4]]);
 ctx.showView('dashboard'); assert.equal(dock.filter(n => n.classList.contains('active')).length, 0);
 console.log('Phase 1: actual theme handlers, blocked storage, view visibility, active navigation, subroute preservation and search helpers passed.');

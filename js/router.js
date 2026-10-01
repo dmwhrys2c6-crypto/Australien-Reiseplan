@@ -32,7 +32,7 @@
     reise: {
       path: '/reise',
       viewId: 'view-reise',
-      title: '20-Tage Reiseplan & Karte · Australien 2027',
+      title: '21-Tage Reiseplan & Karte · Australien 2027',
       label: 'Reise'
     },
     organisation: {

@@ -44,7 +44,7 @@ function assert(condition, message) {
 console.log('1. Store Initialization:');
 TripStore.init(masterData);
 const days = TripStore.getDays();
-assert(days.length === 20, `Store loaded exactly 20 days (got ${days.length})`);
+assert(days.length === 21, `Store loaded exactly 21 days including Tag 0 (got ${days.length})`);
 
 // 2. Read Day with Relations
 console.log('\n2. Read Day 14 with attached relations:');
@@ -108,12 +108,12 @@ const newDay21 = TripStore.createDay({
   title: 'Zusatztag Sydney Relaxing & Souvenirs',
   location: 'Sydney (NSW)'
 });
-assert(TripStore.getDays().length === 21, 'Trip days extended to 21');
+assert(TripStore.getDays().length === 22, 'Trip days extended by one day');
 assert(newDay21.dayNumber === 21, 'New day has dayNumber 21');
 
 // Delete Day 21
 TripStore.deleteDay(21);
-assert(TripStore.getDays().length === 20, 'Trip days cleanly restored to 20');
+assert(TripStore.getDays().length === 21, 'Trip days cleanly restored to 21');
 
 // 5. Spots CRUD
 console.log('\n5. Spots CRUD:');
@@ -135,7 +135,7 @@ const exportedJson = TripStore.exportMasterJSON();
 assert(typeof exportedJson === 'string' && exportedJson.length > 5000, 'Exported valid JSON master file');
 const importRes = TripStore.importMasterJSON(exportedJson);
 assert(importRes === true, 'Master JSON import succeeded');
-assert(TripStore.getDays().length === 20, 'Post-import day count verified');
+assert(TripStore.getDays().length === 21, 'Post-import day count verified');
 
 console.log('\n======================================================');
 console.log(`ALL ${testsPassed} TRIP STORE CRUD & REACTIVITY TESTS PASSED!`);
