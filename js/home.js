@@ -103,9 +103,8 @@
     dock.inert = !visible;
 
     if (video) {
-      if (visible && !reducedMotion.matches && !videoPlayedOnce) {
-        const p = video.play();
-        if (p !== undefined) p.catch(function () {});
+      if (visible && !reducedMotion.matches) {
+        safePlayVideo();
       } else {
         video.pause();
       }
@@ -155,17 +154,57 @@
     }
   }
 
-  if (video) {
-    video.addEventListener('canplay', function () {
-      if (dashboard.classList.contains('active') && !document.body.classList.contains('is-locked') && !reducedMotion.matches && !videoPlayedOnce) {
-        video.play().catch(function () {});
-      }
-    });
-    video.addEventListener('ended', function () {
-      videoPlayedOnce = true;
+  let gestureAttached = false;
+  function safePlayVideo() {
+    if (!video) return;
+    const home = dashboard.classList.contains('active');
+    const visible = home && !document.body.classList.contains('is-locked');
+    if (!visible || reducedMotion.matches) {
       video.pause();
+      return;
+    }
+    const p = video.play();
+    if (p !== undefined) {
+      p.then(function () {
+        hero?.classList.add('hero-video-playing');
+        hero?.classList.remove('hero-video-failed');
+      }).catch(function (err) {
+        console.warn('[HeroVideo] Autoplay prevented:', err.name || err);
+        hero?.classList.add('hero-video-failed');
+        if (!gestureAttached) {
+          gestureAttached = true;
+          const unlock = function () {
+            if (dashboard.classList.contains('active')) {
+              video.play().catch(function () {});
+            }
+            window.removeEventListener('touchstart', unlock, { passive: true });
+            window.removeEventListener('pointerdown', unlock, { passive: true });
+            window.removeEventListener('click', unlock, { passive: true });
+          };
+          window.addEventListener('touchstart', unlock, { passive: true, once: true });
+          window.addEventListener('pointerdown', unlock, { passive: true, once: true });
+          window.addEventListener('click', unlock, { passive: true, once: true });
+        }
+      });
+    }
+  }
+
+  if (video) {
+    video.muted = true;
+    video.playsInline = true;
+    video.loop = true;
+    video.addEventListener('canplay', function () {
+      safePlayVideo();
     });
   }
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') {
+      safePlayVideo();
+    } else if (video) {
+      video.pause();
+    }
+  });
 
   new MutationObserver(syncHome).observe(dashboard, { attributes: true, attributeFilter: ['class'] });
   new MutationObserver(syncHome).observe(document.body, { attributes: true, attributeFilter: ['class'] });

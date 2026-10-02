@@ -2524,27 +2524,82 @@ details.timeline-item:hover .compact-highlight-chip {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 0.75rem;
       background: var(--card-sub-bg);
-      padding: 0.75rem 0.9rem;
+      padding: 0.5rem 0.75rem;
       border-radius: 12px;
       border: 1px solid var(--border-color);
-      min-height: 48px;
+      min-height: 52px;
+      transition: opacity 0.2s ease, background-color 0.2s ease;
+    }
+
+    .grocery-check-target {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex: 1;
+      min-height: 44px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .grocery-custom-checkbox {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 2px solid var(--text-muted, #64748b);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .grocery-custom-checkbox i {
+      display: none;
+      font-size: 0.75rem;
+      color: #0b131e;
+    }
+
+    .grocery-item.completed {
+      opacity: 0.5;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .grocery-item.completed .grocery-custom-checkbox {
+      background: var(--primary, #14b8a6);
+      border-color: var(--primary, #14b8a6);
+    }
+
+    .grocery-item.completed .grocery-custom-checkbox i {
+      display: block;
+    }
+
+    .grocery-item.completed .grocery-item-title {
+      text-decoration: line-through;
+      color: var(--text-muted, #94a3b8);
     }
 
     .grocery-del-btn,
     .fuel-del-btn {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
       background: none;
       border: none;
       color: #ef4444;
       cursor: pointer;
-      padding: 0.5rem;
       font-size: 1.05rem;
       opacity: 0.75;
+      border-radius: 8px;
+      flex-shrink: 0;
+      transition: opacity 0.2s, background-color 0.2s;
     }
 
     .grocery-del-btn:hover,
     .fuel-del-btn:hover {
       opacity: 1;
+      background: rgba(239, 68, 68, 0.12);
     }
 
     /* Zahler Badges */

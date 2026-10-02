@@ -538,11 +538,32 @@ const localStorage = window.Persistence.wrap(window.localStorage);
     let syncSocket = null;
     let isApplyingRemote = false;
 
+    let syncRetryCount = 0;
+    let syncLifecycleAttached = false;
+
     function initCloudSync() {
       if (!navigator.onLine || !cryptoKey || !NTFY_API_URL) return;
+
+      if (!syncLifecycleAttached) {
+        syncLifecycleAttached = true;
+        window.addEventListener('online', () => {
+          syncRetryCount = 0;
+          initCloudSync();
+        });
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible' && (!syncSocket || syncSocket.readyState !== WebSocket.OPEN)) {
+            syncRetryCount = 0;
+            initCloudSync();
+          }
+        });
+      }
+
       try {
         if (syncSocket && syncSocket.readyState === WebSocket.OPEN) return;
         syncSocket = new WebSocket(NTFY_WS_URL);
+        syncSocket.onopen = () => {
+          syncRetryCount = 0;
+        };
         syncSocket.onmessage = async (event) => {
           try {
             const data = JSON.parse(event.data);
@@ -554,7 +575,9 @@ const localStorage = window.Persistence.wrap(window.localStorage);
         };
         syncSocket.onclose = () => {
           if (navigator.onLine) {
-            setTimeout(initCloudSync, 5000);
+            const delay = Math.min(30000, 1000 * Math.pow(1.5, syncRetryCount));
+            syncRetryCount++;
+            setTimeout(initCloudSync, delay);
           }
         };
       } catch (e) { }
@@ -588,17 +611,38 @@ const localStorage = window.Persistence.wrap(window.localStorage);
       if (!Array.isArray(payload.groceries) || !Array.isArray(payload.fuelEntries) || payload.groceries.some(x=>!x || typeof x.text!=='string') || payload.fuelEntries.some(x=>!x || !Number.isFinite(Number(x.costAud)))) return;
       const differs = fields.some(([key,,value]) => JSON.stringify(payload[key]) !== JSON.stringify(value));
       if (!differs) { localStorage.setItem('aus_sync_accepted_v2',payload.timestamp); return; }
-      const hasLocal = fields.some(([,,value]) => Object.keys(value).length > 0);
-      // Retain both versions before asking; cancelled conflicts never replace local data.
+
       localStorage.setItem('aus_sync_received_v2', JSON.stringify(payload));
-      if (hasLocal && !window.confirm('Es gibt abweichende Gruppendaten. Möchtest du die empfangene Version übernehmen? Deine aktuelle Version wird vorher lokal gesichert.')) return;
+      const hasLocal = fields.some(([,,value]) => Object.keys(value).length > 0);
+      if (hasLocal && typeof window !== 'undefined' && window.confirm && !window.confirm('Es gibt abweichende Gruppendaten. Möchtest du die empfangene Version übernehmen? Deine aktuelle Version wird vorher lokal gesichert.')) return;
       localStorage.setItem('aus_sync_backup_v2', JSON.stringify(Object.fromEntries(fields.map(([key,,value])=>[key,value]))));
       isApplyingRemote = true;
       try {
-        // Check all storage writes before updating the UI. A failed write stays visible as an error.
         localStorage.batch([...fields.map(([key,storageKey]) => [storageKey,JSON.stringify(payload[key])]),['aus_sync_accepted_v2',String(payload.timestamp)]]);
         groceries=payload.groceries;fuelEntries=payload.fuelEntries;checkboxStates=payload.checkboxStates;daySuggestions=payload.daySuggestions;
-        renderGroceries();renderFuel();applyCheckboxStatesToUI();applySubItemsPaidStateToUI();renderAllSuggestions();renderCustomActivities();updateBudgetCalculations();
+
+        // Non-destructive UI-Aktualisierung: Aktive Eingaben nicht zerstören
+        const activeEl = typeof document !== 'undefined' ? document.activeElement : null;
+        const isUserTyping = activeEl && ['INPUT', 'TEXTAREA', 'SELECT'].includes(activeEl.tagName);
+        if (isUserTyping) {
+          applyCheckboxStatesToUI();
+          applySubItemsPaidStateToUI();
+          updateBudgetCalculations();
+          activeEl.addEventListener('blur', () => {
+            renderGroceries();
+            renderFuel();
+            renderAllSuggestions();
+            renderCustomActivities();
+          }, { once: true });
+        } else {
+          renderGroceries();
+          renderFuel();
+          applyCheckboxStatesToUI();
+          applySubItemsPaidStateToUI();
+          renderAllSuggestions();
+          renderCustomActivities();
+          updateBudgetCalculations();
+        }
       } catch(error) { storageFailure(error); }
       finally { isApplyingRemote=false; }
     }
@@ -696,26 +740,30 @@ const localStorage = window.Persistence.wrap(window.localStorage);
 
     // EINKAUFSZETTEL
     function addGroceryItem() {
-      const input = document.getElementById('grocery-item-input');
-      const priceInput = document.getElementById('grocery-price-aud');
-      const payerSelect = document.getElementById('grocery-payer');
+      const input = document.getElementById('grocery-item-input') || document.getElementById('legacy-grocery-item-input');
+      const priceInput = document.getElementById('grocery-price-aud') || document.getElementById('legacy-grocery-price-aud');
+      const payerSelect = document.getElementById('grocery-payer') || document.getElementById('legacy-grocery-payer');
 
+      if (!input) return;
       const text = input.value.trim();
       if (!text) return;
 
-      const priceAud = parseFloat(priceInput.value) || 0;
+      const priceAud = parseFloat(priceInput ? priceInput.value : 0) || 0;
+      const payer = payerSelect ? payerSelect.value : (priceAud > 0 ? 'Gemeinsam' : null);
+
       groceries.unshift({
         id: Date.now(),
         text: text,
         priceAud: priceAud,
         priceEur: priceAud * currentAudToEurRate,
         exchangeRate: currentAudToEurRate,
-        payer: priceAud > 0 ? payerSelect.value : null,
+        payer: payer,
         done: false
       });
 
       input.value = '';
-      priceInput.value = '';
+      if (priceInput) priceInput.value = '';
+      input.focus();
       renderGroceries();
       broadcastState();
     }
@@ -743,35 +791,58 @@ const localStorage = window.Persistence.wrap(window.localStorage);
     }
 
     function renderGroceries() {
-      const container = document.getElementById('grocery-list-container');
-      if (!container) return;
-      container.innerHTML = '';
+      const containers = [
+        document.getElementById('grocery-list-container'),
+        document.getElementById('legacy-grocery-list-container')
+      ].filter(Boolean);
+
+      if (!containers.length) return;
 
       let payerTotals = { Tobi: 0, Lara: 0, Ker: 0, Flo: 0 };
 
-      groceries.forEach((item, index) => {
-        const priceAud = item.priceAud || 0;
-        const priceEur = item.exchangeRate ? priceAud * item.exchangeRate : priceAud * currentAudToEurRate;
-        if (priceAud > 0 && item.payer && payerTotals[item.payer === 'Kerstin' ? 'Ker' : item.payer] !== undefined) {
-          payerTotals[item.payer === 'Kerstin' ? 'Ker' : item.payer] += priceEur;
-        }
+      let html = '';
+      if (groceries.length === 0) {
+        html = '<li class="glass-row-item grocery-item" style="justify-content:center; color:var(--text-muted); font-size:0.88rem; padding:1.2rem; text-align:center;">Keine Artikel auf der Einkaufsliste. Füge oben neue Artikel hinzu!</li>';
+      } else {
+        groceries.forEach((item, index) => {
+          const priceAud = item.priceAud || 0;
+          const priceEur = item.exchangeRate ? priceAud * item.exchangeRate : priceAud * currentAudToEurRate;
+          if (priceAud > 0 && item.payer) {
+            const payerKey = item.payer === 'Kerstin' ? 'Ker' : item.payer;
+            if (payerTotals[payerKey] !== undefined) {
+              payerTotals[payerKey] += priceEur;
+            } else if (item.payer === 'Gemeinsam') {
+              const split = priceEur / 4;
+              payerTotals.Tobi += split;
+              payerTotals.Lara += split;
+              payerTotals.Ker += split;
+              payerTotals.Flo += split;
+            }
+          }
 
-        const li = document.createElement('li');
-        li.className = `glass-row-item grocery-item ${item.done ? 'completed' : ''}`;
-        li.innerHTML = `
-          <div style="cursor:pointer; display:flex; align-items:center; gap:0.6rem" onclick="toggleGrocery(${index})">
-            <input type="checkbox" ${item.done ? 'checked' : ''} style="pointer-events:none">
-            <span>${escapeHtml(item.text)} ${priceAud > 0 ? `<small>(${(window.FinanceView?.amount(priceAud) ?? priceAud).toFixed(2)} AUD)</small>` : ''}</span>
-          </div>
-          <button class="grocery-del-btn" onclick="deleteGrocery(${index})"><i class="fa-solid fa-trash-can"></i></button>
-        `;
-        container.appendChild(li);
+          html += `
+            <li class="glass-row-item grocery-item ${item.done ? 'completed' : ''}">
+              <div class="grocery-check-target" onclick="toggleGrocery(${index})" role="button" tabindex="0" aria-label="${item.done ? 'Als unerledigt markieren' : 'Als erledigt markieren'}">
+                <div class="grocery-custom-checkbox">
+                  <i class="fa-solid fa-check" aria-hidden="true"></i>
+                </div>
+                <span class="grocery-item-title">${escapeHtml(item.text)} ${priceAud > 0 ? `<small>(${(window.FinanceView?.amount(priceAud) ?? priceAud).toFixed(2)} AUD)</small>` : ''}</span>
+              </div>
+              <button type="button" class="grocery-del-btn" onclick="deleteGrocery(${index})" aria-label="Eintrag entfernen"><i class="fa-solid fa-trash-can"></i></button>
+            </li>
+          `;
+        });
+      }
+
+      containers.forEach(c => { c.innerHTML = html; });
+
+      ['Tobi', 'Lara', 'Ker', 'Flo'].forEach(name => {
+        const val = `${payerTotals[name].toFixed(2)} €`;
+        const el1 = document.getElementById(`grocery-${name.toLowerCase()}-sum`);
+        const el2 = document.getElementById(`legacy-grocery-${name.toLowerCase()}-sum`);
+        if (el1) el1.innerText = val;
+        if (el2) el2.innerText = val;
       });
-
-      document.getElementById('grocery-tobi-sum').innerText = `${payerTotals.Tobi.toFixed(2)} €`;
-      document.getElementById('grocery-lara-sum').innerText = `${payerTotals.Lara.toFixed(2)} €`;
-      document.getElementById('grocery-ker-sum').innerText = `${payerTotals.Ker.toFixed(2)} €`;
-      document.getElementById('grocery-flo-sum').innerText = `${payerTotals.Flo.toFixed(2)} €`;
     }
 
     // =========================================================================

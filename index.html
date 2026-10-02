@@ -19,16 +19,24 @@
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="css/app.css?v=2b4efbe21b5c">
+  <link rel="stylesheet" href="css/app.css?v=6dd777e7a532">
   <link rel="stylesheet" href="css/hero-dock.css?v=58dfb45a5fb4">
   <link rel="stylesheet" href="css/trip.css?v=4c8724245b96">
   <link rel="stylesheet" href="css/management.css?v=33ca1b99e570">
-  <link rel="stylesheet" href="css/design-system.css?v=1c7edc9d5fac">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="css/design-system.css?v=88428932d406">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
 <body>
+
+  <!-- =========================================================================
+       KONSISTENTER FULLSCREEN-HINTERGRUND (Mobile & Desktop)
+       100dvh & fixierte Ebene verhindern iOS Safari Adressleisten-Sprünge
+       ========================================================================= -->
+  <div class="app-fullscreen-backdrop" aria-hidden="true">
+    <div class="app-fullscreen-overlay"></div>
+  </div>
 
   <div id="offline-status-banner" class="offline-status-banner" style="display:none" role="status" aria-live="polite">
     <i class="fa-solid fa-plane-slash"></i>
@@ -125,8 +133,13 @@
     <!-- STARTSEITE: Bildauftakt und kompakte Reise-Navigation -->
     <div id="view-dashboard" class="app-view active">
       <section id="hero-cinematic" class="hero-cinematic glass-container glass-hero" aria-label="Australien Roadtrip 2027">
-        <video autoplay muted playsinline preload="auto" class="hero-bg-video" aria-hidden="true" tabindex="-1"
-          data-mobile-src="assets/video/mobile.mp4" data-desktop-src="assets/video/desktop.mp4"></video>
+        <video autoplay muted playsinline webkit-playsinline loop preload="auto" class="hero-bg-video" aria-hidden="true" tabindex="-1"
+          id="hero-video-player"
+          poster="https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&w=1920&q=80"
+          data-mobile-src="assets/video/mobile.mp4" data-desktop-src="assets/video/desktop.mp4">
+          <source src="assets/video/mobile.mp4" type="video/mp4" media="(max-width: 768px)">
+          <source src="assets/video/desktop.mp4" type="video/mp4">
+        </video>
         <div class="hero-gradient-overlay" aria-hidden="true"></div>
         <div class="hero-content" id="hero-content">
           <p class="hero-eyebrow">UNSER ROADTRIP · 20. MÄRZ – 09. APRIL</p>
@@ -1168,21 +1181,6 @@
                       aufteilen:
                     </p>
 
-                    <div class="quick-add-chips">
-                      <button type="button" class="chip-btn" onclick="quickAddGrocery('24er Pack Trinkwasser')">+ 24er
-                        Trinkwasser</button>
-                      <button type="button" class="chip-btn" onclick="quickAddGrocery('Eisbeutel für Kühlbox (Esky)')">+
-                        Eisbeutel (Esky)</button>
-                      <button type="button" class="chip-btn" onclick="quickAddGrocery('Toastbrot & Butter')">+ Toast &
-                        Butter</button>
-                      <button type="button" class="chip-btn" onclick="quickAddGrocery('BBQ Fleisch / Würstel')">+ BBQ
-                        Fleisch</button>
-                      <button type="button" class="chip-btn" onclick="quickAddGrocery('Bushman Mückenspray')">+
-                        Mückenspray</button>
-                      <button type="button" class="chip-btn" onclick="quickAddGrocery('Tim Tams Double Coat')">+ Tim
-                        Tams</button>
-                    </div>
-
                     <div class="grocery-input-group">
                       <div style="display: flex; gap: 0.5rem; width: 100%">
                         <input type="text" id="legacy-grocery-item-input" class="grocery-input"
@@ -1192,13 +1190,14 @@
                         <input type="number" id="legacy-grocery-price-aud" class="grocery-input" style="flex: 1"
                           placeholder="Betrag in AUD (optional)" step="0.01">
                         <select id="legacy-grocery-payer" class="grocery-input"
-                          style="width: 110px; flex: none; font-weight: 700">
+                          style="width: 120px; flex: none; font-weight: 700">
+                          <option value="Gemeinsam">👥 Alle</option>
                           <option value="Tobi">Tobi</option>
                           <option value="Lara">Lara</option>
                           <option value="Ker">Ker</option>
                           <option value="Flo">Flo</option>
                         </select>
-                        <button type="button" class="grocery-btn-add" onclick="addGroceryItem()"><i
+                        <button type="button" class="grocery-btn-add glass-pill glass-action-primary" onclick="addGroceryItem()"><i
                             class="fa-solid fa-plus"></i></button>
                       </div>
                     </div>
@@ -1662,45 +1661,25 @@
 
           <div id="fin-panel-groceries" class="fin-panel subpage-glass-panel glass-card glass-section" style="display:none">
             <div class="glass-card-inner glass-card">
-              <h3 style="margin-top:0"><i class="fa-solid fa-cart-shopping"></i>
-                Supermarkt
-                &amp; Einkaufsliste</h3>
-              <p style="font-size:0.9rem">Gemeinsame Einkaufsliste für Woolworths &amp; Coles
-                mit
-                Schnell-Hinzufügen-Chips.</p>
-              <div style="display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:1rem">
-                <button type="button" class="btn-icon-action" onclick="quickAddGrocery('Wasser 10L')">+ Wasser
-                  10L</button>
-                <button type="button" class="btn-icon-action" onclick="quickAddGrocery('Toastbrot & Marmelade')">+
-                  Toastbrot</button>
-                <button type="button" class="btn-icon-action" onclick="quickAddGrocery('Kaffee & Milch')">+ Kaffee &amp;
-                  Milch</button>
-                <button type="button" class="btn-icon-action" onclick="quickAddGrocery('Bananen & Äpfel')">+
-                  Obst</button>
-                <button type="button" class="btn-icon-action" onclick="quickAddGrocery('BBQ Würstchen & Steaks')">+ BBQ
-                  Fleisch</button>
-                <button type="button" class="btn-icon-action" onclick="quickAddGrocery('Sonnencreme SPF 50+')">+
-                  Sonnencreme</button>
-                <button type="button" class="btn-icon-action" onclick="quickAddGrocery('Mückenspray (Bushman)')">+
-                  Bushman
-                  Spray</button>
-              </div>
-              <div style="display:flex; gap:0.5rem; margin-bottom:1rem">
-                <input type="text" id="grocery-item-input" placeholder="Artikel eingeben..."
-                  style="flex:1; padding:0.6rem; border-radius:var(--radius-sm)"
-                  onkeypress="if(event.key==='Enter') addGroceryItem()">
-                <input type="number" id="grocery-price-aud" placeholder="Preis AUD" step="0.5"
-                  style="width:100px; padding:0.6rem; border-radius:var(--radius-sm)">
-                <select id="grocery-payer"
-                  style="padding:0.6rem; border-radius:var(--radius-sm)">
-                  <option value="Gemeinsam">Gemeinsam</option>
-                  <option value="Tobi">Tobi</option>
-                  <option value="Flo">Flo</option>
-                  <option value="Kerstin">Kerstin</option>
-                  <option value="Lara">Lara</option>
-                </select>
-                <button type="button" class="btn-org-action primary glass-pill glass-action-primary" onclick="addGroceryItem()"><i
-                    class="fa-solid fa-plus"></i></button>
+              <h3 style="margin-top:0"><i class="fa-solid fa-cart-shopping"></i> Supermarkt &amp; Einkaufsliste</h3>
+              <p style="font-size:0.9rem">Gemeinsame Einkaufsliste für Woolworths &amp; Coles.</p>
+              <div class="grocery-input-group">
+                <div style="display: flex; gap: 0.5rem; width: 100%">
+                  <input type="text" id="grocery-item-input" class="grocery-input" placeholder="Artikel eingeben..."
+                    onkeypress="if(event.key==='Enter') addGroceryItem()">
+                </div>
+                <div style="display: flex; gap: 0.5rem; width: 100%">
+                  <input type="number" id="grocery-price-aud" class="grocery-input" placeholder="Betrag in AUD (optional)" step="0.01" style="flex: 1">
+                  <select id="grocery-payer" class="grocery-input" style="width: 120px; flex: none; font-weight: 700">
+                    <option value="Gemeinsam">👥 Alle</option>
+                    <option value="Tobi">Tobi</option>
+                    <option value="Flo">Flo</option>
+                    <option value="Kerstin">Kerstin</option>
+                    <option value="Lara">Lara</option>
+                  </select>
+                  <button type="button" class="grocery-btn-add glass-pill glass-action-primary" onclick="addGroceryItem()"><i
+                      class="fa-solid fa-plus"></i></button>
+                </div>
               </div>
               <div id="grocery-list-container">
                 <!-- Dynamically populated -->
@@ -2782,7 +2761,7 @@
   <script src="js/router.js?v=ebb76f5fd504"></script>
   <script src="js/reiseApp.js?v=2c5dfc9e1c6d"></script>
   <!-- 4. Kern-Applikationslogik -->
-  <script src="js/app.js?v=d9b03f2bf659"></script>
+  <script src="js/app.js?v=e66b9d610439"></script>
 
   <dialog id="trip-editor" class="trip-editor glass-card" aria-labelledby="trip-editor-title">
     <header class="trip-editor-header"><div><span class="trip-eyebrow glass-eyebrow">DEIN REISEPLAN</span><h2 id="trip-editor-title">Stopp bearbeiten</h2></div><button type="button" class="trip-icon-button" id="trip-editor-close" aria-label="Editor schließen"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></header>
@@ -2805,11 +2784,11 @@
 <dialog id="manage-editor" class="trip-editor glass-card" aria-labelledby="manage-editor-title"><header class="trip-editor-header"><div><span class="trip-eyebrow glass-eyebrow">ALLES AN EINEM ORT</span><h2 id="manage-editor-title">Eintrag bearbeiten</h2></div><button type="button" id="manage-close" class="trip-icon-button" aria-label="Editor schließen">×</button></header><form id="manage-form" class="glass-editor-form"><div id="manage-fields" class="trip-editor-fields"></div><p id="manage-error" class="trip-form-error" role="alert" tabindex="-1"></p><div id="manage-detail-actions" class="glass-detail-actions" hidden></div><footer class="trip-editor-footer glass-modal-footer"><button type="button" id="manage-delete" class="trip-danger-button glass-pill glass-action-danger" hidden>Löschen</button><span></span><button type="button" id="manage-cancel" class="trip-secondary-button glass-pill">Abbrechen</button><button type="submit" id="manage-save" class="trip-primary-button glass-pill glass-action-primary">Speichern</button></footer></form></dialog>
 <dialog id="manage-confirm" class="trip-confirm glass-card" aria-labelledby="manage-confirm-title" aria-describedby="manage-confirm-text"><h2 id="manage-confirm-title">Eintrag löschen?</h2><p id="manage-confirm-text"></p><div><button type="button" id="manage-confirm-no" class="trip-secondary-button glass-pill" autofocus>Abbrechen</button><button type="button" id="manage-confirm-yes" class="trip-danger-button glass-pill glass-action-danger">Löschen</button></div></dialog>
 <div id="manage-live" class="manage-live" role="status" aria-live="polite"></div>
-<script src="js/management/repository.js?v=284e225486c8"></script><script src="js/management/ui.js?v=a8afe8280c83"></script><script src="js/management/editor.js?v=acfc42f53cb2"></script><script src="js/management/finance.js?v=1cca521ea3ef"></script><script src="js/management/page.js?v=cb95dfd929e2"></script>
+<script src="js/management/repository.js?v=284e225486c8"></script><script src="js/management/ui.js?v=a8afe8280c83"></script><script src="js/management/editor.js?v=b3df70d2b658"></script><script src="js/management/finance.js?v=1cca521ea3ef"></script><script src="js/management/page.js?v=cb95dfd929e2"></script>
   <script src="js/journal/repository.js?v=2dc36fd4f416"></script>
   <script src="js/journal/upload.js?v=1bbf9c488e89"></script>
   <!-- 5. Bildauftakt und Liquid-Glass-Navigation -->
-  <script src="js/home.js?v=6f14b8ed2056"></script>
+  <script src="js/home.js?v=8f5ab95d9546"></script>
 </body>
 
 </html>

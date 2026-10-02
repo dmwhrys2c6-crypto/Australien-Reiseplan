@@ -3,17 +3,17 @@
    Offline-Verfügbarkeit für Reisedaten, Assets, Schriftarten & Karten-Tiles
    ========================================================================= */
 
-const CACHE_NAME = 'aus-roadtrip-d3a141a4fc42';
+const CACHE_NAME = 'aus-roadtrip-acc023c6671d';
 
 // Statische Kern-Assets für die App-Shell
 const PRECACHE_ASSETS = [
   "./",
   "./index.html",
-  "./css/app.css?v=2b4efbe21b5c",
+  "./css/app.css?v=6dd777e7a532",
   "./css/hero-dock.css?v=58dfb45a5fb4",
   "./css/trip.css?v=4c8724245b96",
   "./css/management.css?v=33ca1b99e570",
-  "./css/design-system.css?v=1c7edc9d5fac",
+  "./css/design-system.css?v=88428932d406",
   "./js/persistence.js?v=693c8733bcb9",
   "./js/session.js?v=b84cab50341e",
   "./js/trip-store.js?v=3a473727a886",
@@ -22,7 +22,7 @@ const PRECACHE_ASSETS = [
   "./js/components.js?v=0e3ea73352fa",
   "./js/router.js?v=ebb76f5fd504",
   "./js/reiseApp.js?v=2c5dfc9e1c6d",
-  "./js/app.js?v=d9b03f2bf659",
+  "./js/app.js?v=e66b9d610439",
   "./js/trip/repository.js?v=ad4726c90f15",
   "./js/trip/map-adapter.js?v=dbb4cf8d3997",
   "./js/trip/components.js?v=3d4ab1ecc2c4",
@@ -30,12 +30,12 @@ const PRECACHE_ASSETS = [
   "./js/trip/page.js?v=4164c0d79a3a",
   "./js/management/repository.js?v=284e225486c8",
   "./js/management/ui.js?v=a8afe8280c83",
-  "./js/management/editor.js?v=acfc42f53cb2",
+  "./js/management/editor.js?v=b3df70d2b658",
   "./js/management/finance.js?v=1cca521ea3ef",
   "./js/management/page.js?v=cb95dfd929e2",
   "./js/journal/repository.js?v=2dc36fd4f416",
   "./js/journal/upload.js?v=1bbf9c488e89",
-  "./js/home.js?v=6f14b8ed2056",
+  "./js/home.js?v=8f5ab95d9546",
   "./data/trip-days.json",
   "./manifest.json",
   "./favicon.svg",

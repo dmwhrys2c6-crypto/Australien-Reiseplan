@@ -51,7 +51,55 @@ body.dark-theme {
   --glass-overlay: rgba(0, 0, 0, .35);
   --bg-main: #111c2a;
 }
-body { background: var(--glass-slate) fixed; color: var(--glass-text); font-family: var(--font-body); }
+body {
+  background: transparent;
+  color: var(--glass-text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* =========================================================================
+   KONSISTENTER FULLSCREEN-HINTERGRUND (Mobile & Desktop)
+   100dvh verhindert iOS Safari Adressleisten-Sprünge
+   ========================================================================= */
+.app-fullscreen-backdrop {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--app-bg-image, url('https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&w=2400&q=85'));
+  background-size: cover;
+  background-position: center 35%;
+  background-repeat: no-repeat;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 0.4s ease;
+}
+
+.app-fullscreen-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(11, 19, 30, 0.72) 0%,
+    rgba(15, 23, 42, 0.82) 40%,
+    rgba(15, 23, 42, 0.94) 100%
+  );
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+body.is-home .app-fullscreen-backdrop {
+  opacity: 0;
+}
+
+body:not(.is-home) .app-fullscreen-backdrop {
+  opacity: 1;
+}
+
 .app-main { max-width: none; padding: 12px; }
 .app-view { background: transparent; }
 .glass-container {
