@@ -1,8 +1,11 @@
 /* Leaflet adapter: basemap, route rendering and location picking stay isolated here. */
 (function (root) {
   'use strict';
-  const TILE_URL='https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
-  const TILE_OPTIONS={attribution:'&copy; OpenStreetMap &copy; CARTO',subdomains:'abcd',maxZoom:20};
+  const TILE_URL='https://tile.openstreetmap.de/{z}/{x}/{y}.png';
+  const TILE_OPTIONS={
+    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap-Mitwirkende</a>',
+    maxZoom:19
+  };
   const MODES={
     car:{icon:'car-side',label:'Auto',color:'#007aff'},plane:{icon:'plane',label:'Flug',color:'#007aff'},
     ferry:{icon:'ship',label:'Fähre',color:'#1687a7'},walk:{icon:'person-walking',label:'Zu Fuß',color:'#5b7184'},
@@ -29,7 +32,7 @@
     function init(){
       if(map)return true;
       if(!root.L){onStatus('error','Die Kartenbibliothek konnte nicht geladen werden. Tagesplan und Bearbeitung bleiben verfügbar.');return false;}
-      map=L.map(container,{zoomControl:false,scrollWheelZoom:true,minZoom:2,maxZoom:20,preferCanvas:true}).setView([-28.5,149],5);
+      map=L.map(container,{zoomControl:false,scrollWheelZoom:true,minZoom:2,maxZoom:19,preferCanvas:true}).setView([-28.5,149],5);
       routeLayer=L.featureGroup().addTo(map);markerLayer=L.featureGroup().addTo(map);pickerLayer=L.featureGroup().addTo(map);
       tileLayer=L.tileLayer(TILE_URL,TILE_OPTIONS).addTo(map);
       let loaded=false;

@@ -4,7 +4,8 @@ body.is-trip {overflow: hidden;}
 body.is-trip > footer, body.is-trip #trip-status-banner {display:none;}
 body.is-trip .app-main {max-width:none;padding:0;}
 body.is-trip #view-reise {animation:none;}
-body.is-trip .header-inner {max-width:none;min-height:68px;padding:10px 24px;gap:16px;}
+body.is-trip:not(.is-home) .header-inner {max-width:none;min-height:44px!important;padding:0!important;justify-content:center;gap:0;}
+body.is-trip .app-brand,body.is-trip .header-actions {display:none!important;}
 @media(min-width:961px) {
   body.is-trip .desktop-nav {padding:4px;gap:3px;display:inline-flex;align-items:center;}
 }
@@ -16,11 +17,11 @@ body.is-trip .brand-subtitle {font-size:.62rem;font-weight:500;}
 body.is-trip .header-actions .btn-icon-action span,body.is-trip .header-actions kbd {display:none;}
 body.is-trip .btn-icon-action {height:38px;width:38px;padding:0;display:inline-flex;align-items:center;justify-content:center;transition:all .18s ease;}
 #trip-legacy { display:none!important; }
-.trip-workspace {position:fixed;top:calc(var(--trip-navbar-height,68px) + 8px);bottom:calc(var(--trip-bottom-nav-height,0px) + 12px);left:12px;right:12px;overflow:hidden;isolation:isolate;font-family:var(--font-body);--trip-glass-bg:rgba(245,249,255,.72);--trip-muted:#6a7887;--trip-border:rgba(255,255,255,.65);}
+.trip-workspace {position:fixed;top:0;bottom:calc(var(--trip-bottom-nav-height,0px) + 12px);left:0;right:0;overflow:hidden;isolation:isolate;font-family:var(--font-body);--trip-glass-bg:rgba(245,249,255,.72);--trip-muted:#6a7887;--trip-border:rgba(255,255,255,.65);}
 #trip-map { position:absolute; inset:0; z-index:0; height:100%; width:100%; background:#dbe5e7; }
-#trip-map .leaflet-tile { filter:none; }
+#trip-map .leaflet-tile { filter:grayscale(.28) saturate(.76) brightness(1.04) contrast(.94); }
 #trip-map .leaflet-control-attribution { font-size:9px; background:rgba(255,255,255,.78); border-radius:7px 0 0 0; }
-.trip-floating-header { position:absolute; top:12px; left:24px; right:24px; z-index:500; min-height:48px; border-radius:18px; padding:6px 108px 6px 10px; box-sizing:border-box; }
+.trip-floating-header { position:absolute; top:76px; left:24px; right:24px; z-index:500; min-height:48px; border-radius:18px; padding:6px 108px 6px 10px; box-sizing:border-box; }
 .trip-header-content { position:absolute; top:6px; right:10px; display:flex; justify-content:flex-end; align-items:center; gap:4px; }
 .trip-header-content>div:first-child { display:none; }
 .trip-header-content h1 { font-family:var(--font-heading); color:#172535; font-weight:500; font-size:1.55rem; letter-spacing:-.035em; margin:3px 0 5px; line-height:1.1; }
@@ -113,14 +114,15 @@ body.is-trip .btn-icon-action {height:38px;width:38px;padding:0;display:inline-f
 .trip-form-error { font-size:.7rem; color:#b34848; margin:0 24px; line-height:1.6; }
 .trip-confirm { color:#172535; width:min(380px,calc(100% - 40px)); border-radius:24px; padding:24px; font-family:var(--font-body); }.trip-confirm p { font-size:.8rem; line-height:1.7; color:#6a7887; }.trip-confirm>div { display:flex; gap:10px; justify-content:flex-end; margin-top:22px; }
 @keyframes tripDrawerIn { from {opacity:0;transform:translateX(18px);} to {opacity:1;transform:translateX(0);} }
-@media(max-width:1100px) { body.is-trip .header-inner {padding:10px 18px;gap:12px;} body.is-trip .nav-tab {padding:9px 10px;font-size:.68rem;} }
+@media(max-width:1100px) { body.is-trip .nav-tab {padding:9px 10px;font-size:.68rem;} }
 @media(max-width:960px) {
+  body.is-trip .app-header {display:none;}
   body.is-trip .desktop-nav {display:none!important;}
   body.is-trip .mobile-bottom-nav {display:flex!important;position:fixed;top:auto;bottom:max(6px,env(safe-area-inset-bottom,0px));left:6px;right:6px;width:auto;height:52px;}
-  body.is-trip .header-inner {min-height:48px;padding:6px 14px;}
+  .trip-floating-header {top:6px;}
 }
 @media(max-width:760px) {
-  .trip-workspace {top:var(--trip-navbar-height,48px);bottom:calc(var(--trip-bottom-nav-height,52px) + max(6px,env(safe-area-inset-bottom,0px)));left:0;right:0;}
+  .trip-workspace {top:0;bottom:calc(var(--trip-bottom-nav-height,52px) + max(6px,env(safe-area-inset-bottom,0px)));left:0;right:0;}
   .trip-floating-header { top:6px; left:6px; right:6px; min-height:42px; padding:6px 78px 6px 7px; border-radius:15px; }
   .trip-header-content h1 { display:none; }
   .trip-header-content p,.trip-header-content .trip-eyebrow { display:none; }
