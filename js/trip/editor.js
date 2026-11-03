@@ -66,13 +66,13 @@
       if(type==='stop') {
         fields.innerHTML=`${field('Titel','title',data.title,'text','required maxlength="160" class="trip-title-input"')}
           <label>Typ<select name="type">${Object.entries(M.TYPES).map(([value,label])=>`<option value="${value}" ${(data.type||'sightseeing')===value?'selected':''}>${label}</option>`).join('')}</select></label>
-          <label class="trip-field-wide">Tag / Datum<select name="dayId" required>${days.map(d=>`<option value="${e(d.id)}" ${(data.dayId||dayId)===d.id?'selected':''}>Tag ${e(d.dayNumber)} · ${e(M.dateLabel(d.date))} · ${e(d.title)}</option>`).join('')}</select></label>
+          <label class="trip-field-wide">Tag / Datum<select name="dayId" required>${days.map(d=>`<option value="${e(d.id)}" ${(data.dayId||dayId)===d.id?'selected':''}>Tag ${e(d.dayNumber)}, ${e(M.dateLabel(d.date))}, ${e(d.title)}</option>`).join('')}</select></label>
           ${field('Ankunftszeit','startTime',data.startTime,'time')}${field('Dauer in Minuten','durationMinutes',data.durationMinutes,'number','min="0" step="5"')}
           <label>Verkehrsmittel<select name="transportMode">${Object.entries(TRANSPORT).map(([value,label])=>`<option value="${value}" ${(data.transportMode||'walk')===value?'selected':''}>${label}</option>`).join('')}</select></label>
           ${field('Stadt / Region','region',data.region,'text','required maxlength="120" placeholder="z. B. Brisbane"')}
           <div class="trip-field-wide">${field('Standort','locationName',data.locationName,'text','required maxlength="240" placeholder="z. B. Sydney Opera House"')}</div>
           ${field('Latitude','latitude',data.latitude,'number','step="any" min="-90" max="90"')}${field('Longitude','longitude',data.longitude,'number','step="any" min="-180" max="180"')}
-          <div class="trip-field-wide trip-location-actions"><button type="button" class="glass-pill trip-location-pick-button" data-editor-action="pick-location"><i class="fa-solid fa-location-crosshairs" aria-hidden="true"></i> Standort auf Karte wählen</button><p class="trip-field-hint">Ein Kartenklick setzt einen verschiebbaren Pin und übernimmt Koordinaten sowie Ortsname.</p></div>
+          <div class="trip-field-wide trip-location-actions"><button type="button" class="btn btn-ghost trip-location-pick-button" data-editor-action="pick-location"><i class="fa-solid fa-location-crosshairs" aria-hidden="true"></i> Standort auf Karte wählen</button><p class="trip-field-hint">Ein Kartenklick setzt einen verschiebbaren Pin und übernimmt Koordinaten sowie Ortsname.</p></div>
           ${area('Beschreibung','description',data.description)}${area('Notizen','notes',data.notes)}
           <div class="trip-field-wide">${field('Bild-URL','image',data.image,'url','placeholder="https://…"')}</div>
           ${field('Kosten','cost',data.cost,'number','min="0" step="0.01"')}${field('Währung','currency',data.currency||'EUR','text','required pattern="[A-Za-z]{3}" maxlength="3"')}

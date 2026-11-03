@@ -21,2521 +21,2444 @@
 
   // Embedded Fallback Data for offline / file:// protocol
   const FALLBACK_TRIP_DAYS = [
-  {
-    "dayNumber": 0,
-    "date": "2027-03-20",
-    "dayOfWeek": "Sa",
-    "title": "Fahrt nach Wien & Vorübernachtung",
-    "region": "Wien",
-    "routeBadge": "Anreise nach Wien",
-    "transportType": "car",
-    "highlights": [
-      "🚗 Anreise nach Wien",
-      "🛏️ Vorübernachtung nahe Flughafen Wien"
-    ],
-    "summary": "Entspannte Anreise nach Wien und Vorübernachtung in Flughafennähe, damit der Langstreckenflug am nächsten Morgen ohne Zeitdruck beginnt.",
-    "activities": [
-      {
-        "time": "16:00",
-        "title": "Ankunft Wien Hauptbahnhof",
-        "description": "Ankunft in Wien und kurzer Umstieg für die Weiterfahrt zum Flughafen.",
-        "locationName": "Wien Hauptbahnhof",
-        "coords": [
-          48.185,
-          16.3767
-        ],
-        "region": "Wien",
-        "transportMode": "car",
-        "durationMinutes": 30,
-        "type": "transport"
-      },
-      {
-        "time": "17:00",
-        "title": "Fahrt zum Flughafen Wien-Schwechat",
-        "description": "Transfer vom Wiener Stadtgebiet zum Flughafen Wien-Schwechat.",
-        "locationName": "Flughafen Wien-Schwechat",
-        "coords": [
-          48.1103,
-          16.5697
-        ],
-        "region": "Wien",
-        "transportMode": "car",
-        "durationMinutes": 30,
-        "type": "transport"
-      },
-      {
-        "time": "18:00",
-        "title": "Vorübernachtung am Flughafen Wien",
-        "description": "Check-in, Gepäck vorbereiten und ruhig in die Reise starten.",
-        "locationName": "Flughafen Wien-Schwechat",
-        "coords": [
-          48.1103,
-          16.5697
-        ],
-        "region": "Wien",
-        "transportMode": "walk",
-        "durationMinutes": 720,
-        "type": "hotel"
-      }
-    ],
-    "sights": [],
-    "accommodation": null,
-    "budgetItems": [],
-    "dayBadge": "TAG 0 · WIEN",
-    "dateBadge": "20. MÄRZ (Sa)",
-    "driveIcon": "fa-car",
-    "expandTrigger": "Details",
-    "flightInfo": null,
-    "hasBudgetSubcard": false,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 0,
       "date": "2027-03-20",
-      "title": "Ideen für Tag 0"
-    }
-  },
-  {
-    "dayNumber": 1,
-    "date": "2027-03-21",
-    "dayOfWeek": "So",
-    "title": "Flug ab Wien-Schwechat",
-    "routeBadge": "Langstreckenflug VIE → SYD",
-    "transportType": "plane",
-    "highlights": [
-      "✈️ Langstreckenflug VIE → SIN → SYD",
-      "🌏 Singapur Changi Jewel"
-    ],
-    "summary": "Flug von Wien (VIE) Richtung Sydney (SYD). Reisedauer: 11 Std. 40 Min. Über Nacht nach Singapur. 3 Std. 15 Min. Zwischenstopp in Singapur (SIN). Reisedauer: 7 Std. 55 Min. nach Sydney.",
-    "activities": [
-      {
-        "time": "07:30",
-        "title": "Letzter Gepäck-Check & Reisepässe bereitlegen",
-        "description": "Flug von Wien (VIE) Richtung Sydney (SYD). Reisedauer: 11 Std. 40 Min. Über Nacht nach Singapur. 3 Std. 15 Min. Zwischenstopp in Singapur (SIN). Reisedauer: 7 Std. 55 Min. nach Sydney.",
-        "locationName": "Flughafen Wien-Schwechat (VIE)",
-        "coords": [
-          48.1103,
-          16.5697
-        ],
-        "region": "Wien / Singapur",
-        "transportMode": "plane",
-        "durationMinutes": 150,
-        "type": "flight"
-      },
-      {
-        "time": "10:00",
-        "title": "Treffpunkt Flughafen Wien-Schwechat (VIE) Terminal 3",
-        "description": "Flug von Wien (VIE) Richtung Sydney (SYD). Reisedauer: 11 Std. 40 Min. Über Nacht nach Singapur. 3 Std. 15 Min. Zwischenstopp in Singapur (SIN). Reisedauer: 7 Std. 55 Min. nach Sydney.",
-        "locationName": "Flughafen Wien-Schwechat (VIE)",
-        "coords": [
-          48.1103,
-          16.5697
-        ],
-        "region": "Wien / Singapur",
-        "transportMode": "plane",
-        "durationMinutes": 90,
-        "type": "flight"
-      },
-      {
-        "time": "11:30",
-        "title": "Boarding Flug Scoot TR 12 nach Singapur (SIN)",
-        "description": "Flug von Wien (VIE) Richtung Sydney (SYD). Reisedauer: 11 Std. 40 Min. Über Nacht nach Singapur. 3 Std. 15 Min. Zwischenstopp in Singapur (SIN). Reisedauer: 7 Std. 55 Min. nach Sydney.",
-        "locationName": "Sydney Kingsford Smith Airport (SYD)",
-        "coords": [
-          -33.9461,
-          151.1772
-        ],
-        "region": "Wien / Singapur",
-        "transportMode": "plane",
-        "durationMinutes": 360,
-        "type": "flight"
-      },
-      {
-        "time": "23:45",
-        "title": "Zwischenstopp Singapur Changi Jewel & Weiterflug nach Sydney",
-        "description": "Flug von Wien (VIE) Richtung Sydney (SYD). Reisedauer: 11 Std. 40 Min. Über Nacht nach Singapur. 3 Std. 15 Min. Zwischenstopp in Singapur (SIN). Reisedauer: 7 Std. 55 Min. nach Sydney.",
-        "locationName": "Sydney Kingsford Smith Airport (SYD)",
-        "coords": [
-          -33.9461,
-          151.1772
-        ],
-        "region": "Wien / Singapur",
-        "transportMode": "plane",
-        "durationMinutes": 60,
-        "type": "flight"
+      "dayOfWeek": "Sa",
+      "title": "Fahrt nach Wien & Vorübernachtung",
+      "region": "Wien",
+      "routeBadge": "Anreise nach Wien",
+      "transportType": "car",
+      "highlights": [
+        "🚗 Anreise nach Wien",
+        "🛏️ Vorübernachtung nahe Flughafen Wien"
+      ],
+      "summary": "Entspannte Anreise nach Wien und Vorübernachtung in Flughafennähe, damit der Langstreckenflug am nächsten Morgen ohne Zeitdruck beginnt.",
+      "activities": [
+        {
+          "time": "16:00",
+          "title": "Ankunft Wien Hauptbahnhof",
+          "description": "Ankunft in Wien und kurzer Umstieg für die Weiterfahrt zum Flughafen.",
+          "locationName": "Wien Hauptbahnhof",
+          "coords": [
+            48.185,
+            16.3767
+          ],
+          "region": "Wien",
+          "transportMode": "car",
+          "durationMinutes": 30,
+          "type": "transport"
+        },
+        {
+          "time": "17:00",
+          "title": "Fahrt zum Flughafen Wien-Schwechat",
+          "description": "Transfer vom Wiener Stadtgebiet zum Flughafen Wien-Schwechat.",
+          "locationName": "Flughafen Wien-Schwechat",
+          "coords": [
+            48.1103,
+            16.5697
+          ],
+          "region": "Wien",
+          "transportMode": "car",
+          "durationMinutes": 30,
+          "type": "transport"
+        },
+        {
+          "time": "18:00",
+          "title": "Vorübernachtung am Flughafen Wien",
+          "description": "Check-in, Gepäck vorbereiten und ruhig in die Reise starten.",
+          "locationName": "Flughafen Wien-Schwechat",
+          "coords": [
+            48.1103,
+            16.5697
+          ],
+          "region": "Wien",
+          "transportMode": "walk",
+          "durationMinutes": 720,
+          "type": "hotel"
+        }
+      ],
+      "sights": [],
+      "accommodation": null,
+      "budgetItems": [],
+      "dayBadge": "TAG 0 · WIEN",
+      "dateBadge": "20. MÄRZ (Sa)",
+      "driveIcon": "fa-car",
+      "expandTrigger": "Details",
+      "flightInfo": null,
+      "hasBudgetSubcard": false,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-03-20",
+        "title": "Ideen für Tag 0"
       }
-    ],
-    "sights": [],
-    "accommodation": {
-      "cardTitle": "Hotel & Unterkunft",
-      "name": "Langstreckenflug Scoot TR 12",
-      "location": "Flugzeug / Transit",
-      "nights": 1,
-      "bookingLink": "",
-      "bookingLabel": "Flug TR 12 gebucht",
-      "mapsLink": "",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": false
     },
-    "budgetItems": [
-      {
-        "title": "Langstreckenflug Wien → Sydney (gebucht)",
-        "costEur": 453,
-        "status": "paid",
-        "statusText": "Bezahlt",
-        "costFormatted": "453 €"
-      }
-    ],
-    "dayBadge": "TAG 1 · WIEN → SYDNEY",
-    "dateBadge": "21. MÄRZ (So)",
-    "driveIcon": "fa-plane",
-    "expandTrigger": "Details",
-    "flightInfo": {
-      "title": "Fluginformationen",
-      "details": "Scoot - Economy Class - Boeing 787 - TR 12 / Abflug um 10:00 Uhr",
-      "statusText": "Flug gebucht & bezahlt"
-    },
-    "hasBudgetSubcard": true,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 1,
       "date": "2027-03-21",
-      "title": "Ideen & Vorschläge für Tag 1 Verschlüsselt"
-    },
-    "region": "Wien / Singapur"
-  },
-  {
-    "dayNumber": 2,
-    "date": "2027-03-22",
-    "dayOfWeek": "Mo",
-    "title": "Ankunft in Sydney (18:50 / Kingsford Smith Airport)",
-    "routeBadge": "Transfer: ca. 25 Min.",
-    "transportType": "car",
-    "highlights": [
-      "🛬 Ankunft Kingsford Smith Airport",
-      "🏙️ Darling Harbour & Barangaroo"
-    ],
-    "summary": "Ankunft am Abend in Sydney, Hotel-Check-in & entspanntes Abendessen am Darling Harbour & Barangaroo Promenade.",
-    "activities": [
-      {
-        "time": "18:50",
-        "title": "Landung Kingsford Smith Airport Sydney (SYD)",
-        "description": "Ankunft am Abend in Sydney, Hotel-Check-in & entspanntes Abendessen am Darling Harbour & Barangaroo Promenade.",
-        "locationName": "Kingsford Smith Airport (SYD)",
-        "coords": [
-          -33.9461,
-          151.1772
-        ],
-        "region": "Sydney",
-        "transportMode": "plane",
-        "durationMinutes": 85,
-        "type": "flight"
+      "dayOfWeek": "So",
+      "title": "Flug ab Wien-Schwechat",
+      "routeBadge": "Langstreckenflug VIE → SYD",
+      "transportType": "plane",
+      "highlights": [
+        "✈️ Langstreckenflug VIE → SIN → SYD",
+        "🌏 Singapur Changi Jewel"
+      ],
+      "summary": "Flug von Wien (VIE) Richtung Sydney (SYD). Reisedauer: 11 Std. 40 Min. Über Nacht nach Singapur. 3 Std. 15 Min. Zwischenstopp in Singapur (SIN). Reisedauer: 7 Std. 55 Min. nach Sydney.",
+      "activities": [
+        {
+          "time": "07:30",
+          "title": "Letzter Gepäck-Check & Reisepässe bereitlegen",
+          "description": "Flug von Wien (VIE) Richtung Sydney (SYD). Reisedauer: 11 Std. 40 Min. Über Nacht nach Singapur. 3 Std. 15 Min. Zwischenstopp in Singapur (SIN). Reisedauer: 7 Std. 55 Min. nach Sydney.",
+          "locationName": "Flughafen Wien-Schwechat (VIE)",
+          "coords": [
+            48.1103,
+            16.5697
+          ],
+          "region": "Wien / Singapur",
+          "transportMode": "plane",
+          "durationMinutes": 150,
+          "type": "flight"
+        },
+        {
+          "time": "10:00",
+          "title": "Treffpunkt Flughafen Wien-Schwechat (VIE) Terminal 3",
+          "description": "Flug von Wien (VIE) Richtung Sydney (SYD). Reisedauer: 11 Std. 40 Min. Über Nacht nach Singapur. 3 Std. 15 Min. Zwischenstopp in Singapur (SIN). Reisedauer: 7 Std. 55 Min. nach Sydney.",
+          "locationName": "Flughafen Wien-Schwechat (VIE)",
+          "coords": [
+            48.1103,
+            16.5697
+          ],
+          "region": "Wien / Singapur",
+          "transportMode": "plane",
+          "durationMinutes": 90,
+          "type": "flight"
+        },
+        {
+          "time": "11:30",
+          "title": "Boarding Flug Scoot TR 12 nach Singapur (SIN)",
+          "description": "Flug von Wien (VIE) Richtung Sydney (SYD). Reisedauer: 11 Std. 40 Min. Über Nacht nach Singapur. 3 Std. 15 Min. Zwischenstopp in Singapur (SIN). Reisedauer: 7 Std. 55 Min. nach Sydney.",
+          "locationName": "Sydney Kingsford Smith Airport (SYD)",
+          "coords": [
+            -33.9461,
+            151.1772
+          ],
+          "region": "Wien / Singapur",
+          "transportMode": "plane",
+          "durationMinutes": 360,
+          "type": "flight"
+        },
+        {
+          "time": "23:45",
+          "title": "Zwischenstopp Singapur Changi Jewel & Weiterflug nach Sydney",
+          "description": "Flug von Wien (VIE) Richtung Sydney (SYD). Reisedauer: 11 Std. 40 Min. Über Nacht nach Singapur. 3 Std. 15 Min. Zwischenstopp in Singapur (SIN). Reisedauer: 7 Std. 55 Min. nach Sydney.",
+          "locationName": "Sydney Kingsford Smith Airport (SYD)",
+          "coords": [
+            -33.9461,
+            151.1772
+          ],
+          "region": "Wien / Singapur",
+          "transportMode": "plane",
+          "durationMinutes": 60,
+          "type": "flight"
+        }
+      ],
+      "sights": [],
+      "accommodation": {
+        "cardTitle": "Hotel & Unterkunft",
+        "name": "Langstreckenflug Scoot TR 12",
+        "location": "Flugzeug / Transit",
+        "nights": 1,
+        "bookingLink": "",
+        "bookingLabel": "Flug TR 12 gebucht",
+        "mapsLink": "",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": false
       },
-      {
-        "time": "20:15",
-        "title": "Hotel Check-in The Ultimo (Chinatown / Haymarket)",
-        "description": "Ankunft am Abend in Sydney, Hotel-Check-in & entspanntes Abendessen am Darling Harbour & Barangaroo Promenade.",
-        "locationName": "Sydney",
-        "coords": [
-          -33.8695,
-          151.201
-        ],
-        "region": "Sydney",
-        "transportMode": "car",
-        "durationMinutes": 45,
-        "type": "transport"
+      "budgetItems": [
+        {
+          "title": "Langstreckenflug Wien → Sydney (gebucht)",
+          "costEur": 453,
+          "status": "paid",
+          "statusText": "Bezahlt",
+          "costFormatted": "453 €"
+        }
+      ],
+      "dayBadge": "TAG 1 · WIEN → SYDNEY",
+      "dateBadge": "21. MÄRZ (So)",
+      "driveIcon": "fa-plane",
+      "expandTrigger": "Details",
+      "flightInfo": {
+        "title": "Fluginformationen",
+        "details": "Scoot - Economy Class - Boeing 787 - TR 12 / Abflug um 10:00 Uhr",
+        "statusText": "Flug gebucht & bezahlt"
       },
-      {
-        "time": "21:00",
-        "title": "Late Dinner & Drinks an der Barangaroo Promenade",
-        "description": "Ankunft am Abend in Sydney, Hotel-Check-in & entspanntes Abendessen am Darling Harbour & Barangaroo Promenade.",
-        "locationName": "Darling Harbour & Barangaroo Promenade",
-        "coords": [
-          -33.8695,
-          151.201
-        ],
-        "region": "sydney",
-        "transportMode": "walk",
-        "durationMinutes": 60,
-        "type": "restaurant"
-      }
-    ],
-    "sights": [
-      {
-        "id": "spot-1",
-        "spotId": 1,
-        "name": "Darling Harbour & Barangaroo Promenade",
-        "highlight": "Flaniermeile & nächtliche Skyline mit erstklassigen Restaurants direkt am Wasser.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Entlang der Barangaroo Promenade mit Weitwinkel auf das beleuchtete Hafenbecken und die spiegelnden Skyline-Lichter.",
-        "photoTime": "",
-        "directions": "15 Min. Fußweg vom The Ultimo Hotel durch Chinatown Richtung Hafen.",
-        "mapsUrl": "https://maps.google.com/?q=Darling%2BHarbour%2BBarangaroo%2BSydney",
-        "coords": [
-          -33.8695,
-          151.201
-        ],
-        "region": "sydney"
-      }
-    ],
-    "accommodation": {
-      "cardTitle": "Hotel &amp; Unterkunft",
-      "rawHtml": "<strong>The Ultimo Sydney</strong> (Chinatown / Haymarket) – 2 Nächte gebucht",
-      "name": "The Ultimo Sydney",
-      "location": "Chinatown / Haymarket",
-      "nights": 2,
-      "bookingLink": "https://www.theultimo.com.au",
-      "bookingLabel": "Hotel Website",
-      "mapsLink": "https://www.google.com/maps/place/The+Ultimo+Sydney/@-33.8693468,151.2114793,5362m/data=!3m1!1e3!4m9!3m8!1s0x6b12ae2469c0cd19:0x753bb008d058e737!5m2!4m1!1i2!8m2!3d-33.8806794!4d151.2034411!16s%2Fg%2F1vyxjkt2?entry=ttu",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": true
+      "hasBudgetSubcard": true,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-03-21",
+        "title": "Ideen & Vorschläge für Tag 1 Verschlüsselt"
+      },
+      "region": "Wien / Singapur"
     },
-    "budgetItems": [
-      {
-        "title": "The Ultimo Sydney Hotel & Transfer",
-        "costEur": 150,
-        "status": "planned",
-        "statusText": "Geplant",
-        "costFormatted": "150 €"
-      }
-    ],
-    "dayBadge": "TAG 2 · SYDNEY",
-    "dateBadge": "22. MÄRZ (Mo)",
-    "driveIcon": "fa-car",
-    "expandTrigger": "Details & Hotel",
-    "flightInfo": null,
-    "hasBudgetSubcard": false,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 2,
       "date": "2027-03-22",
-      "title": "Ideen & Vorschläge für Sydney Abend Verschlüsselt"
+      "dayOfWeek": "Mo",
+      "title": "Ankunft in Sydney (18:50 / Kingsford Smith Airport)",
+      "routeBadge": "Transfer: ca. 25 Min.",
+      "transportType": "car",
+      "highlights": [
+        "🛬 Ankunft Kingsford Smith Airport",
+        "🏙️ Darling Harbour & Barangaroo"
+      ],
+      "summary": "Ankunft am Abend in Sydney, Hotel-Check-in & entspanntes Abendessen am Darling Harbour & Barangaroo Promenade.",
+      "activities": [
+        {
+          "time": "18:50",
+          "title": "Landung Kingsford Smith Airport Sydney (SYD)",
+          "description": "Ankunft am Abend in Sydney, Hotel-Check-in & entspanntes Abendessen am Darling Harbour & Barangaroo Promenade.",
+          "locationName": "Kingsford Smith Airport (SYD)",
+          "coords": [
+            -33.9461,
+            151.1772
+          ],
+          "region": "Sydney",
+          "transportMode": "plane",
+          "durationMinutes": 85,
+          "type": "flight"
+        },
+        {
+          "time": "20:15",
+          "title": "Hotel Check-in The Ultimo (Chinatown / Haymarket)",
+          "description": "Ankunft am Abend in Sydney, Hotel-Check-in & entspanntes Abendessen am Darling Harbour & Barangaroo Promenade.",
+          "locationName": "Sydney",
+          "coords": [
+            -33.8695,
+            151.201
+          ],
+          "region": "Sydney",
+          "transportMode": "car",
+          "durationMinutes": 45,
+          "type": "transport"
+        },
+        {
+          "time": "21:00",
+          "title": "Late Dinner & Drinks an der Barangaroo Promenade",
+          "description": "Ankunft am Abend in Sydney, Hotel-Check-in & entspanntes Abendessen am Darling Harbour & Barangaroo Promenade.",
+          "locationName": "Darling Harbour & Barangaroo Promenade",
+          "coords": [
+            -33.8695,
+            151.201
+          ],
+          "region": "sydney",
+          "transportMode": "walk",
+          "durationMinutes": 60,
+          "type": "restaurant"
+        }
+      ],
+      "sights": [
+        {
+          "id": "spot-1",
+          "spotId": 1,
+          "name": "Darling Harbour & Barangaroo Promenade",
+          "highlight": "Flaniermeile & nächtliche Skyline mit erstklassigen Restaurants direkt am Wasser.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Entlang der Barangaroo Promenade mit Weitwinkel auf das beleuchtete Hafenbecken und die spiegelnden Skyline-Lichter.",
+          "photoTime": "",
+          "directions": "15 Min. Fußweg vom The Ultimo Hotel durch Chinatown Richtung Hafen.",
+          "mapsUrl": "https://maps.google.com/?q=Darling%2BHarbour%2BBarangaroo%2BSydney",
+          "coords": [
+            -33.8695,
+            151.201
+          ],
+          "region": "sydney"
+        }
+      ],
+      "accommodation": {
+        "cardTitle": "Hotel &amp; Unterkunft",
+        "rawHtml": "<strong>The Ultimo Sydney</strong> (Chinatown / Haymarket) – 2 Nächte gebucht",
+        "name": "The Ultimo Sydney",
+        "location": "Chinatown / Haymarket",
+        "nights": 2,
+        "bookingLink": "https://www.theultimo.com.au",
+        "bookingLabel": "Hotel Website",
+        "mapsLink": "https://www.google.com/maps/place/The+Ultimo+Sydney/@-33.8693468,151.2114793,5362m/data=!3m1!1e3!4m9!3m8!1s0x6b12ae2469c0cd19:0x753bb008d058e737!5m2!4m1!1i2!8m2!3d-33.8806794!4d151.2034411!16s%2Fg%2F1vyxjkt2?entry=ttu",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": true
+      },
+      "budgetItems": [
+        {
+          "title": "The Ultimo Sydney Hotel & Transfer",
+          "costEur": 150,
+          "status": "planned",
+          "statusText": "Geplant",
+          "costFormatted": "150 €"
+        }
+      ],
+      "dayBadge": "TAG 2 · SYDNEY",
+      "dateBadge": "22. MÄRZ (Mo)",
+      "driveIcon": "fa-car",
+      "expandTrigger": "Details & Hotel",
+      "flightInfo": null,
+      "hasBudgetSubcard": false,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-03-22",
+        "title": "Ideen & Vorschläge für Sydney Abend Verschlüsselt"
+      },
+      "region": "Sydney"
     },
-    "region": "Sydney"
-  },
-  {
-    "dayNumber": 3,
-    "date": "2027-03-23",
-    "dayOfWeek": "Di",
-    "title": "Sydney – Klassiker am Hafen & Manly Ferry",
-    "routeBadge": "ÖPNV & Fähre",
-    "transportType": "walk",
-    "highlights": [
-      "🎭 Sydney Opera House & Botanic Gardens",
-      "🌉 Harbour Bridge & The Rocks"
-    ],
-    "summary": "Vormittags: Circular Quay, Sydney Opera House, Royal Botanic Garden & Mrs Macquarie’s Chair. Mittags: Historisches Viertel The Rocks und zu Fuß über die Sydney Harbour Bridge. Nachmittags: Fährfahrt nach Manly Beach & Sunset.",
-    "activities": [
-      {
-        "time": "09:00",
-        "title": "Brekkie & Flat White am Circular Quay mit Blick auf die Oper",
-        "description": "Vormittags: Circular Quay, Sydney Opera House, Royal Botanic Garden & Mrs Macquarie’s Chair. Mittags: Historisches Viertel The Rocks und zu Fuß über die Sydney Harbour Bridge. Nachmittags: Fährfahrt nach Manly Beach & Sunset.",
-        "locationName": "The Ultimo Sydney",
-        "coords": [
-          -33.8807,
-          151.2034
-        ],
-        "region": "Sydney",
-        "transportMode": "walk",
-        "durationMinutes": 210,
-        "type": "sightseeing"
-      },
-      {
-        "time": "12:30",
-        "title": "Historischer Bummel durch The Rocks & Spaziergang über die Harbour Bridge",
-        "description": "Vormittags: Circular Quay, Sydney Opera House, Royal Botanic Garden & Mrs Macquarie’s Chair. Mittags: Historisches Viertel The Rocks und zu Fuß über die Sydney Harbour Bridge. Nachmittags: Fährfahrt nach Manly Beach & Sunset.",
-        "locationName": "The Rocks & Harbour Bridge Pylon Walk",
-        "coords": [
-          -33.859,
-          151.2085
-        ],
-        "region": "sydney",
-        "transportMode": "walk",
-        "durationMinutes": 240,
-        "type": "sightseeing"
-      },
-      {
-        "time": "16:30",
-        "title": "Manly Ferry ab Wharf 3 (traumhafte Sunset-Fahrt durch den Hafen)",
-        "description": "Vormittags: Circular Quay, Sydney Opera House, Royal Botanic Garden & Mrs Macquarie’s Chair. Mittags: Historisches Viertel The Rocks und zu Fuß über die Sydney Harbour Bridge. Nachmittags: Fährfahrt nach Manly Beach & Sunset.",
-        "locationName": "Sydney",
-        "coords": [
-          -33.859,
-          151.2085
-        ],
-        "region": "Sydney",
-        "transportMode": "ferry",
-        "durationMinutes": 180,
-        "type": "transport"
-      },
-      {
-        "time": "19:30",
-        "title": "Dinner am Manly Corso & nächtliche Rückfahrt",
-        "description": "Vormittags: Circular Quay, Sydney Opera House, Royal Botanic Garden & Mrs Macquarie’s Chair. Mittags: Historisches Viertel The Rocks und zu Fuß über die Sydney Harbour Bridge. Nachmittags: Fährfahrt nach Manly Beach & Sunset.",
-        "locationName": "Circular Quay & Manly Beach",
-        "coords": [
-          -33.799,
-          151.284
-        ],
-        "region": "Sydney",
-        "transportMode": "car",
-        "durationMinutes": 60,
-        "type": "transport"
-      }
-    ],
-    "sights": [
-      {
-        "id": "spot-2",
-        "spotId": 2,
-        "name": "Sydney Opera House & Mrs Macquarie’s Chair",
-        "highlight": "Weltberühmter Postkartenblick auf Oper und Harbour Bridge im warmen Abendlicht.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Von den Steinstufen am Mrs Macquarie’s Chair – nur hier hat man das Opernhaus und die Harbour Bridge perfekt versetzt in einer gemeinsamen Flucht.",
-        "photoTime": "",
-        "directions": "Bahn/Fähre bis Circular Quay + Spaziergang durch den Royal Botanic Garden.",
-        "mapsUrl": "https://maps.google.com/?q=Mrs%2BMacquaries%2BChair%2BSydney",
-        "coords": [
-          -33.8585,
-          151.2185
-        ],
-        "region": "sydney"
-      },
-      {
-        "id": "spot-3",
-        "spotId": 3,
-        "name": "The Rocks & Harbour Bridge Pylon Walk",
-        "highlight": "Historisches Sandsteinviertel mit Kopfsteinpflaster, Pubs & Fußgängeraufgang auf die Brücke.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Vom Pylon Lookout oder den Cumberland Street Treppen – fängt die massiven genieteten Stahlbögen von schräg unten ein. (☀️ Vormittags (Klarer Himmel))",
-        "photoTime": "",
-        "directions": "Fußgängeraufgang über die Cumberland Street Treppen westlich von Circular Quay.",
-        "mapsUrl": "https://maps.google.com/?q=The%2BRocks%2BSydney",
-        "coords": [
-          -33.859,
-          151.2085
-        ],
-        "region": "sydney"
-      }
-    ],
-    "accommodation": {
-      "cardTitle": "Hotel & Unterkunft",
-      "name": "The Ultimo, Sydney",
-      "location": "Sydney (NSW)",
-      "nights": 1,
-      "bookingLink": "https://www.theultimo.com.au",
-      "bookingLabel": "Hotel Website (The Ultimo)",
-      "mapsLink": "",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": false
-    },
-    "budgetItems": [
-      {
-        "title": "Manly Ferry & The Rocks Harbour Bridge Walk",
-        "costEur": 35,
-        "status": "planned",
-        "statusText": "Geplant",
-        "costFormatted": "35 €"
-      }
-    ],
-    "dayBadge": "TAG 3 · SYDNEY",
-    "dateBadge": "23. MÄRZ (Di)",
-    "driveIcon": "fa-person-walking",
-    "expandTrigger": "Details & Spots",
-    "flightInfo": null,
-    "hasBudgetSubcard": false,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 3,
       "date": "2027-03-23",
-      "title": "Ideen &amp; Vorschläge für Tag 3 Verschlüsselt"
+      "dayOfWeek": "Di",
+      "title": "Sydney – Klassiker am Hafen & Manly Ferry",
+      "routeBadge": "ÖPNV & Fähre",
+      "transportType": "walk",
+      "highlights": [
+        "🎭 Sydney Opera House & Botanic Gardens",
+        "🌉 Harbour Bridge & The Rocks"
+      ],
+      "summary": "Vormittags: Circular Quay, Sydney Opera House, Royal Botanic Garden & Mrs Macquarie’s Chair. Mittags: Historisches Viertel The Rocks und zu Fuß über die Sydney Harbour Bridge. Nachmittags: Fährfahrt nach Manly Beach & Sunset.",
+      "activities": [
+        {
+          "time": "09:00",
+          "title": "Brekkie & Flat White am Circular Quay mit Blick auf die Oper",
+          "description": "Vormittags: Circular Quay, Sydney Opera House, Royal Botanic Garden & Mrs Macquarie’s Chair. Mittags: Historisches Viertel The Rocks und zu Fuß über die Sydney Harbour Bridge. Nachmittags: Fährfahrt nach Manly Beach & Sunset.",
+          "locationName": "The Ultimo Sydney",
+          "coords": [
+            -33.8807,
+            151.2034
+          ],
+          "region": "Sydney",
+          "transportMode": "walk",
+          "durationMinutes": 210,
+          "type": "sightseeing"
+        },
+        {
+          "time": "12:30",
+          "title": "Historischer Bummel durch The Rocks & Spaziergang über die Harbour Bridge",
+          "description": "Vormittags: Circular Quay, Sydney Opera House, Royal Botanic Garden & Mrs Macquarie’s Chair. Mittags: Historisches Viertel The Rocks und zu Fuß über die Sydney Harbour Bridge. Nachmittags: Fährfahrt nach Manly Beach & Sunset.",
+          "locationName": "The Rocks & Harbour Bridge Pylon Walk",
+          "coords": [
+            -33.859,
+            151.2085
+          ],
+          "region": "sydney",
+          "transportMode": "walk",
+          "durationMinutes": 240,
+          "type": "sightseeing"
+        },
+        {
+          "time": "16:30",
+          "title": "Manly Ferry ab Wharf 3 (traumhafte Sunset-Fahrt durch den Hafen)",
+          "description": "Vormittags: Circular Quay, Sydney Opera House, Royal Botanic Garden & Mrs Macquarie’s Chair. Mittags: Historisches Viertel The Rocks und zu Fuß über die Sydney Harbour Bridge. Nachmittags: Fährfahrt nach Manly Beach & Sunset.",
+          "locationName": "Sydney",
+          "coords": [
+            -33.859,
+            151.2085
+          ],
+          "region": "Sydney",
+          "transportMode": "ferry",
+          "durationMinutes": 180,
+          "type": "transport"
+        },
+        {
+          "time": "19:30",
+          "title": "Dinner am Manly Corso & nächtliche Rückfahrt",
+          "description": "Vormittags: Circular Quay, Sydney Opera House, Royal Botanic Garden & Mrs Macquarie’s Chair. Mittags: Historisches Viertel The Rocks und zu Fuß über die Sydney Harbour Bridge. Nachmittags: Fährfahrt nach Manly Beach & Sunset.",
+          "locationName": "Circular Quay & Manly Beach",
+          "coords": [
+            -33.799,
+            151.284
+          ],
+          "region": "Sydney",
+          "transportMode": "car",
+          "durationMinutes": 60,
+          "type": "transport"
+        }
+      ],
+      "sights": [
+        {
+          "id": "spot-2",
+          "spotId": 2,
+          "name": "Sydney Opera House & Mrs Macquarie’s Chair",
+          "highlight": "Weltberühmter Postkartenblick auf Oper und Harbour Bridge im warmen Abendlicht.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Von den Steinstufen am Mrs Macquarie’s Chair – nur hier hat man das Opernhaus und die Harbour Bridge perfekt versetzt in einer gemeinsamen Flucht.",
+          "photoTime": "",
+          "directions": "Bahn/Fähre bis Circular Quay + Spaziergang durch den Royal Botanic Garden.",
+          "mapsUrl": "https://maps.google.com/?q=Mrs%2BMacquaries%2BChair%2BSydney",
+          "coords": [
+            -33.8585,
+            151.2185
+          ],
+          "region": "sydney"
+        },
+        {
+          "id": "spot-3",
+          "spotId": 3,
+          "name": "The Rocks & Harbour Bridge Pylon Walk",
+          "highlight": "Historisches Sandsteinviertel mit Kopfsteinpflaster, Pubs & Fußgängeraufgang auf die Brücke.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Vom Pylon Lookout oder den Cumberland Street Treppen – fängt die massiven genieteten Stahlbögen von schräg unten ein. (☀️ Vormittags (Klarer Himmel))",
+          "photoTime": "",
+          "directions": "Fußgängeraufgang über die Cumberland Street Treppen westlich von Circular Quay.",
+          "mapsUrl": "https://maps.google.com/?q=The%2BRocks%2BSydney",
+          "coords": [
+            -33.859,
+            151.2085
+          ],
+          "region": "sydney"
+        }
+      ],
+      "accommodation": {
+        "cardTitle": "Hotel & Unterkunft",
+        "name": "The Ultimo, Sydney",
+        "location": "Sydney (NSW)",
+        "nights": 1,
+        "bookingLink": "https://www.theultimo.com.au",
+        "bookingLabel": "Hotel Website (The Ultimo)",
+        "mapsLink": "",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": false
+      },
+      "budgetItems": [
+        {
+          "title": "Manly Ferry & The Rocks Harbour Bridge Walk",
+          "costEur": 35,
+          "status": "planned",
+          "statusText": "Geplant",
+          "costFormatted": "35 €"
+        }
+      ],
+      "dayBadge": "TAG 3 · SYDNEY",
+      "dateBadge": "23. MÄRZ (Di)",
+      "driveIcon": "fa-person-walking",
+      "expandTrigger": "Details & Spots",
+      "flightInfo": null,
+      "hasBudgetSubcard": false,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-03-23",
+        "title": "Ideen &amp; Vorschläge für Tag 3 Verschlüsselt"
+      },
+      "region": "Sydney"
     },
-    "region": "Sydney"
-  },
-  {
-    "dayNumber": 4,
-    "date": "2027-03-24",
-    "dayOfWeek": "Mi",
-    "title": "Sydney – Coastal Walk & Trendviertel",
-    "routeBadge": "Bus & Küstenwanderung",
-    "transportType": "bus",
-    "highlights": [
-      "🏖️ Bondi Beach & Icebergs Pool",
-      "☕ Surry Hills & Crown Street"
-    ],
-    "summary": "Vormittags: Bondi Beach & spektakulärer Bondi to Coogee Coastal Walk. Nachmittags: Café-Kultur, Boutiquen & Street-Art in Surry Hills und Paddington.",
-    "activities": [
-      {
-        "time": "09:30",
-        "title": "Coastal Walk ab Bondi Beach starten (Richtung Bronte / Coogee)",
-        "description": "Vormittags: Bondi Beach & spektakulärer Bondi to Coogee Coastal Walk. Nachmittags: Café-Kultur, Boutiquen & Street-Art in Surry Hills und Paddington.",
-        "locationName": "Bondi Beach & Icebergs Pool",
-        "coords": [
-          -33.8915,
-          151.2767
-        ],
-        "region": "sydney",
-        "transportMode": "walk",
-        "durationMinutes": 210,
-        "type": "sightseeing"
-      },
-      {
-        "time": "13:00",
-        "title": "Mittagssnack & Flat White mit Ozeanblick",
-        "description": "Vormittags: Bondi Beach & spektakulärer Bondi to Coogee Coastal Walk. Nachmittags: Café-Kultur, Boutiquen & Street-Art in Surry Hills und Paddington.",
-        "locationName": "Blue Mountains",
-        "coords": [
-          -33.8915,
-          151.2767
-        ],
-        "region": "Blue Mountains",
-        "transportMode": "walk",
-        "durationMinutes": 60,
-        "type": "sightseeing"
-      },
-      {
-        "time": "14:00",
-        "title": "Vintage-Bummel & Cafés in Surry Hills (Crown St)",
-        "description": "Vormittags: Bondi Beach & spektakulärer Bondi to Coogee Coastal Walk. Nachmittags: Café-Kultur, Boutiquen & Street-Art in Surry Hills und Paddington.",
-        "locationName": "Surry Hills & Paddington (Crown St)",
-        "coords": [
-          -33.886,
-          151.2135
-        ],
-        "region": "sydney",
-        "transportMode": "walk",
-        "durationMinutes": 270,
-        "type": "sightseeing"
-      },
-      {
-        "time": "18:30",
-        "title": "Abendessen & Rooftop-Drinks in Darlinghurst",
-        "description": "Vormittags: Bondi Beach & spektakulärer Bondi to Coogee Coastal Walk. Nachmittags: Café-Kultur, Boutiquen & Street-Art in Surry Hills und Paddington.",
-        "locationName": "Bondi Beach & Surry Hills",
-        "coords": [
-          -33.8915,
-          151.2767
-        ],
-        "region": "Blue Mountains",
-        "transportMode": "walk",
-        "durationMinutes": 60,
-        "type": "restaurant"
-      }
-    ],
-    "sights": [
-      {
-        "id": "spot-4",
-        "spotId": 4,
-        "name": "Bondi Beach & Icebergs Pool",
-        "highlight": "6 km spektakulärer Klippenpfad am Pazifik vorbei an Tamarama, Bronte und dem Icebergs Pool.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Vom Klippenpfad direkt oberhalb des Bondi Icebergs Club – erhöhter Blickwinkel hinab auf die weißen Wellen, die in den Pool schwappen. (☀️ Vormittag (Klares Licht))",
-        "photoTime": "",
-        "directions": "Expressbus 333 ab City (Elizabeth St) direkt bis Bondi Beach.",
-        "mapsUrl": "https://maps.google.com/?q=Bondi%2Bto%2BCoogee%2BWalk%2BSydney",
-        "coords": [
-          -33.8915,
-          151.2767
-        ],
-        "region": "sydney"
-      },
-      {
-        "id": "spot-5",
-        "spotId": 5,
-        "name": "Surry Hills & Paddington (Crown St)",
-        "highlight": "Trendiges Szeneviertel mit viktorianischen Reihenhäusern, Vintage-Boutiquen und Cafés.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Kreuzungsbereich Crown St & Campbell St vor den viktorianischen Gusseisen-Balkonen und Specialty-Cafés. (☕ Nachmittags (Street Life))",
-        "photoTime": "",
-        "directions": "Bus 333/380 bis Taylor Square oder 15 Min. Spaziergang ab Central Station.",
-        "mapsUrl": "https://maps.google.com/?q=Crown%2BStreet%2BSurry%2BHills%2BSydney",
-        "coords": [
-          -33.886,
-          151.2135
-        ],
-        "region": "sydney"
-      }
-    ],
-    "accommodation": {
-      "cardTitle": "Hotel & Unterkunft",
-      "name": "The Ultimo, Sydney",
-      "location": "Sydney (NSW)",
-      "nights": 1,
-      "bookingLink": "https://www.theultimo.com.au",
-      "bookingLabel": "Hotel Website (The Ultimo)",
-      "mapsLink": "",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": false
-    },
-    "budgetItems": [
-      {
-        "title": "Bondi Coastal Walk Verpflegung & Cafés",
-        "costEur": 40,
-        "status": "planned",
-        "statusText": "Geplant",
-        "costFormatted": "40 €"
-      }
-    ],
-    "dayBadge": "TAG 4 · SYDNEY",
-    "dateBadge": "24. MÄRZ (Mi)",
-    "driveIcon": "fa-bus",
-    "expandTrigger": "Details & Spots",
-    "flightInfo": null,
-    "hasBudgetSubcard": false,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 4,
       "date": "2027-03-24",
-      "title": "Ideen &amp; Vorschläge für Tag 4 Verschlüsselt"
-    },
-    "region": "Blue Mountains"
-  },
-  {
-    "dayNumber": 5,
-    "date": "2027-03-25",
-    "dayOfWeek": "Do",
-    "title": "Flug nach Ballina / Byron Bay",
-    "routeBadge": "Flug SYD → BNK",
-    "transportType": "plane",
-    "highlights": [
-      "✈️ Inlandsflug SYD → Ballina",
-      "🌅 Cape Byron Lighthouse & Ostkap"
-    ],
-    "summary": "Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Fahrt nach Byron Bay, Check-in und Spätnachmittag am Cape Byron Lighthouse.",
-    "activities": [
-      {
-        "time": "08:00",
-        "title": "Check-out The Ultimo Sydney &amp; Transfer zum Flughafen",
-        "description": "Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Fahrt nach Byron Bay, Check-in und Spätnachmittag am Cape Byron Lighthouse.",
-        "locationName": "Sydney Kingsford Smith Airport (SYD)",
-        "coords": [
-          -33.9461,
-          151.1772
-        ],
-        "region": "Sydney / Port Stephens",
-        "transportMode": "plane",
-        "durationMinutes": 145,
-        "type": "flight"
+      "dayOfWeek": "Mi",
+      "title": "Sydney – Coastal Walk & Trendviertel",
+      "routeBadge": "Bus & Küstenwanderung",
+      "transportType": "bus",
+      "highlights": [
+        "🏖️ Bondi Beach & Icebergs Pool",
+        "☕ Surry Hills & Crown Street"
+      ],
+      "summary": "Vormittags: Bondi Beach & spektakulärer Bondi to Coogee Coastal Walk. Nachmittags: Café-Kultur, Boutiquen & Street-Art in Surry Hills und Paddington.",
+      "activities": [
+        {
+          "time": "09:30",
+          "title": "Coastal Walk ab Bondi Beach starten (Richtung Bronte / Coogee)",
+          "description": "Vormittags: Bondi Beach & spektakulärer Bondi to Coogee Coastal Walk. Nachmittags: Café-Kultur, Boutiquen & Street-Art in Surry Hills und Paddington.",
+          "locationName": "Bondi Beach & Icebergs Pool",
+          "coords": [
+            -33.8915,
+            151.2767
+          ],
+          "region": "Sydney",
+          "transportMode": "walk",
+          "durationMinutes": 210,
+          "type": "sightseeing"
+        },
+        {
+          "time": "13:00",
+          "title": "Mittagssnack & Flat White mit Ozeanblick",
+          "description": "Vormittags: Bondi Beach & spektakulärer Bondi to Coogee Coastal Walk. Nachmittags: Café-Kultur, Boutiquen & Street-Art in Surry Hills und Paddington.",
+          "locationName": "Blue Mountains",
+          "coords": [
+            -33.8915,
+            151.2767
+          ],
+          "region": "Sydney",
+          "transportMode": "walk",
+          "durationMinutes": 60,
+          "type": "sightseeing"
+        },
+        {
+          "time": "14:00",
+          "title": "Vintage-Bummel & Cafés in Surry Hills (Crown St)",
+          "description": "Vormittags: Bondi Beach & spektakulärer Bondi to Coogee Coastal Walk. Nachmittags: Café-Kultur, Boutiquen & Street-Art in Surry Hills und Paddington.",
+          "locationName": "Surry Hills & Paddington (Crown St)",
+          "coords": [
+            -33.886,
+            151.2135
+          ],
+          "region": "Sydney",
+          "transportMode": "walk",
+          "durationMinutes": 270,
+          "type": "sightseeing"
+        },
+        {
+          "time": "18:30",
+          "title": "Abendessen & Rooftop-Drinks in Darlinghurst",
+          "description": "Vormittags: Bondi Beach & spektakulärer Bondi to Coogee Coastal Walk. Nachmittags: Café-Kultur, Boutiquen & Street-Art in Surry Hills und Paddington.",
+          "locationName": "Bondi Beach & Surry Hills",
+          "coords": [
+            -33.8915,
+            151.2767
+          ],
+          "region": "Sydney",
+          "transportMode": "walk",
+          "durationMinutes": 60,
+          "type": "restaurant"
+        }
+      ],
+      "sights": [
+        {
+          "id": "spot-4",
+          "spotId": 4,
+          "name": "Bondi Beach & Icebergs Pool",
+          "highlight": "6 km spektakulärer Klippenpfad am Pazifik vorbei an Tamarama, Bronte und dem Icebergs Pool.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Vom Klippenpfad direkt oberhalb des Bondi Icebergs Club – erhöhter Blickwinkel hinab auf die weißen Wellen, die in den Pool schwappen. (☀️ Vormittag (Klares Licht))",
+          "photoTime": "",
+          "directions": "Expressbus 333 ab City (Elizabeth St) direkt bis Bondi Beach.",
+          "mapsUrl": "https://maps.google.com/?q=Bondi%2Bto%2BCoogee%2BWalk%2BSydney",
+          "coords": [
+            -33.8915,
+            151.2767
+          ],
+          "region": "sydney"
+        },
+        {
+          "id": "spot-5",
+          "spotId": 5,
+          "name": "Surry Hills & Paddington (Crown St)",
+          "highlight": "Trendiges Szeneviertel mit viktorianischen Reihenhäusern, Vintage-Boutiquen und Cafés.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Kreuzungsbereich Crown St & Campbell St vor den viktorianischen Gusseisen-Balkonen und Specialty-Cafés. (☕ Nachmittags (Street Life))",
+          "photoTime": "",
+          "directions": "Bus 333/380 bis Taylor Square oder 15 Min. Spaziergang ab Central Station.",
+          "mapsUrl": "https://maps.google.com/?q=Crown%2BStreet%2BSurry%2BHills%2BSydney",
+          "coords": [
+            -33.886,
+            151.2135
+          ],
+          "region": "sydney"
+        }
+      ],
+      "accommodation": {
+        "cardTitle": "Hotel & Unterkunft",
+        "name": "The Ultimo, Sydney",
+        "location": "Sydney (NSW)",
+        "nights": 1,
+        "bookingLink": "https://www.theultimo.com.au",
+        "bookingLabel": "Hotel Website (The Ultimo)",
+        "mapsLink": "",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": false
       },
-      {
-        "time": "10:25",
-        "title": "Flug Jetstar JQ 458 nach Ballina Byron Gateway (BNK)",
-        "description": "Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Fahrt nach Byron Bay, Check-in und Spätnachmittag am Cape Byron Lighthouse.",
-        "locationName": "Cape Byron Lighthouse",
-        "coords": [
-          -28.6384,
-          153.6366
-        ],
-        "region": "byron",
-        "transportMode": "plane",
-        "durationMinutes": 155,
-        "type": "flight"
+      "budgetItems": [
+        {
+          "title": "Bondi Coastal Walk Verpflegung & Cafés",
+          "costEur": 40,
+          "status": "planned",
+          "statusText": "Geplant",
+          "costFormatted": "40 €"
+        }
+      ],
+      "dayBadge": "TAG 4 · SYDNEY",
+      "dateBadge": "24. MÄRZ (Mi)",
+      "driveIcon": "fa-bus",
+      "expandTrigger": "Details & Spots",
+      "flightInfo": null,
+      "hasBudgetSubcard": false,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-03-24",
+        "title": "Ideen &amp; Vorschläge für Tag 4 Verschlüsselt"
       },
-      {
-        "time": "13:00",
-        "title": "Mietwagenübernahme am Flughafen Ballina &amp; Fahrt nach Byron Bay",
-        "description": "Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Fahrt nach Byron Bay, Check-in und Spätnachmittag am Cape Byron Lighthouse.",
-        "locationName": "Cape Byron Lighthouse",
-        "coords": [
-          -28.6384,
-          153.6366
-        ],
-        "region": "byron",
-        "transportMode": "plane",
-        "durationMinutes": 180,
-        "type": "flight"
-      },
-      {
-        "time": "16:00",
-        "title": "Sonnenuntergang am Cape Byron Lighthouse &amp; Lookout",
-        "description": "Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Fahrt nach Byron Bay, Check-in und Spätnachmittag am Cape Byron Lighthouse.",
-        "locationName": "Cape Byron Lighthouse",
-        "coords": [
-          -28.6384,
-          153.6366
-        ],
-        "region": "byron",
-        "transportMode": "walk",
-        "durationMinutes": 60,
-        "type": "sightseeing"
-      }
-    ],
-    "sights": [
-      {
-        "id": "spot-6",
-        "spotId": 6,
-        "name": "Cape Byron Lighthouse",
-        "highlight": "Östlichster Punkt des australischen Festlands mit 360°-Ozeanblick und häufigen Delfinsichtungen.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Auf dem Holzsteg-Pfad ca. 100 m unterhalb des Leuchtturms mit Blick nach oben – fängt den Turm samt Klippenkante ein.",
-        "photoTime": "",
-        "directions": "Mietwagen über Lighthouse Road (Parkplatz am Leuchtturm).",
-        "mapsUrl": "https://maps.google.com/?q=Cape%2BByron%2BLighthouse",
-        "coords": [
-          -28.6384,
-          153.6366
-        ],
-        "region": "byron"
-      }
-    ],
-    "accommodation": {
-      "cardTitle": "Unterkunft Byron Bay",
-      "rawHtml": "<strong>AirBnB East Ballina:</strong> 25.03. – 27.03. (2 Nächte)",
-      "name": "AirBnB East Ballina: 25.03. – 27.03.",
-      "location": "2 Nächte",
-      "nights": 1,
-      "bookingLink": "https://www.airbnb.at/rooms/1065553106126009714",
-      "bookingLabel": "AirBnB Link",
-      "mapsLink": "",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": true
+      "region": "Sydney"
     },
-    "budgetItems": [
-      {
-        "title": "Inlandsflug SYD → Ballina (125 €) + Mietwagen (80 €)",
-        "costEur": 205,
-        "status": "planned",
-        "statusText": "Geplant",
-        "costFormatted": "205 €"
-      }
-    ],
-    "dayBadge": "TAG 5 · BYRON BAY",
-    "dateBadge": "25. MÄRZ (Do)",
-    "driveIcon": "fa-plane",
-    "expandTrigger": "Details & Flug",
-    "flightInfo": {
-      "title": "Fluginformationen",
-      "details": "Jetstar - Economy Class - Airbus A320 - JQ 458 / Abflug um 10:25 Uhr",
-      "statusText": "Flug gebucht & bezahlt (54 € p.P.)"
-    },
-    "hasBudgetSubcard": false,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 5,
       "date": "2027-03-25",
-      "title": "Ideen für Byron Bay Verschlüsselt"
-    },
-    "region": "Sydney / Port Stephens"
-  },
-  {
-    "dayNumber": 6,
-    "date": "2027-03-26",
-    "dayOfWeek": "Fr",
-    "title": "Byron Bay & Erlebnisse am Ozean",
-    "routeBadge": "Kajak- oder Bootstour",
-    "transportType": "ferry",
-    "highlights": [
-      "🏄 Wategos Beach & The Pass",
-      "🐬 Delfin-Kajaktour am Ozean"
-    ],
-    "summary": "Vormittags: Geführte Seekajak-Tour (Delfine, Rochen & Meeresschildkröten beobachten!). Nachmittags: Strand-Relaxen am Tallow Beach, Bummel durch die Surfer-Boutiquen und Craft-Bier zum Sonnenuntergang.",
-    "activities": [
-      {
-        "time": "08:30",
-        "title": "Geführte Delfin-Kajaktour ab Main Beach Byron Bay",
-        "description": "Vormittags: Geführte Seekajak-Tour (Delfine, Rochen & Meeresschildkröten beobachten!). Nachmittags: Strand-Relaxen am Tallow Beach, Bummel durch die Surfer-Boutiquen und Craft-Bier zum Sonnenuntergang.",
-        "locationName": "Wategos Beach & The Pass",
-        "coords": [
-          -28.636,
-          153.628
-        ],
-        "region": "byron",
-        "transportMode": "ferry",
-        "durationMinutes": 330,
-        "type": "transport"
+      "dayOfWeek": "Do",
+      "title": "Sydney → Weiterreise nach Ballina",
+      "routeBadge": "Flug SYD → BNK",
+      "transportType": "plane",
+      "highlights": [
+        "✈️ Inlandsflug SYD → Ballina",
+        "🌅 Cape Byron Lighthouse & Ostkap"
+      ],
+      "summary": "Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Fahrt nach Byron Bay, Check-in und Spätnachmittag am Cape Byron Lighthouse.",
+      "activities": [
+        {
+          "time": "08:00",
+          "title": "Check-out The Ultimo Sydney &amp; Transfer zum Flughafen",
+          "description": "Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Fahrt nach Byron Bay, Check-in und Spätnachmittag am Cape Byron Lighthouse.",
+          "locationName": "Sydney Kingsford Smith Airport (SYD)",
+          "coords": [
+            -33.9461,
+            151.1772
+          ],
+          "region": "Sydney / Port Stephens",
+          "transportMode": "plane",
+          "durationMinutes": 145,
+          "type": "flight"
+        },
+        {
+          "time": "10:25",
+          "title": "Flug Jetstar JQ 458 nach Ballina Byron Gateway (BNK)",
+          "description": "Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Fahrt nach Byron Bay, Check-in und Spätnachmittag am Cape Byron Lighthouse.",
+          "locationName": "Cape Byron Lighthouse",
+          "coords": [
+            -28.6384,
+            153.6366
+          ],
+          "region": "byron",
+          "transportMode": "plane",
+          "durationMinutes": 155,
+          "type": "flight"
+        },
+        {
+          "time": "13:00",
+          "title": "Mietwagenübernahme am Flughafen Ballina &amp; Fahrt nach Byron Bay",
+          "description": "Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Fahrt nach Byron Bay, Check-in und Spätnachmittag am Cape Byron Lighthouse.",
+          "locationName": "Cape Byron Lighthouse",
+          "coords": [
+            -28.6384,
+            153.6366
+          ],
+          "region": "byron",
+          "transportMode": "plane",
+          "durationMinutes": 180,
+          "type": "flight"
+        },
+        {
+          "time": "16:00",
+          "title": "Sonnenuntergang am Cape Byron Lighthouse &amp; Lookout",
+          "description": "Morgens Flug SYD → BNK (1,5 Std.). Mietwagen am Flughafen übernehmen. Fahrt nach Byron Bay, Check-in und Spätnachmittag am Cape Byron Lighthouse.",
+          "locationName": "Cape Byron Lighthouse",
+          "coords": [
+            -28.6384,
+            153.6366
+          ],
+          "region": "byron",
+          "transportMode": "walk",
+          "durationMinutes": 60,
+          "type": "sightseeing"
+        }
+      ],
+      "sights": [
+        {
+          "id": "spot-6",
+          "spotId": 6,
+          "name": "Cape Byron Lighthouse",
+          "highlight": "Östlichster Punkt des australischen Festlands mit 360°-Ozeanblick und häufigen Delfinsichtungen.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Auf dem Holzsteg-Pfad ca. 100 m unterhalb des Leuchtturms mit Blick nach oben – fängt den Turm samt Klippenkante ein.",
+          "photoTime": "",
+          "directions": "Mietwagen über Lighthouse Road (Parkplatz am Leuchtturm).",
+          "mapsUrl": "https://maps.google.com/?q=Cape%2BByron%2BLighthouse",
+          "coords": [
+            -28.6384,
+            153.6366
+          ],
+          "region": "byron"
+        }
+      ],
+      "accommodation": {
+        "cardTitle": "Unterkunft Byron Bay",
+        "rawHtml": "<strong>AirBnB East Ballina:</strong> 25.03. – 27.03. (2 Nächte)",
+        "name": "AirBnB East Ballina: 25.03. – 27.03.",
+        "location": "2 Nächte",
+        "nights": 1,
+        "bookingLink": "https://www.airbnb.at/rooms/1065553106126009714",
+        "bookingLabel": "AirBnB Link",
+        "mapsLink": "",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": true
       },
-      {
-        "time": "14:00",
-        "title": "Chillen & Surfen am The Pass & Wategos Beach",
-        "description": "Vormittags: Geführte Seekajak-Tour (Delfine, Rochen & Meeresschildkröten beobachten!). Nachmittags: Strand-Relaxen am Tallow Beach, Bummel durch die Surfer-Boutiquen und Craft-Bier zum Sonnenuntergang.",
-        "locationName": "Wategos Beach & The Pass",
-        "coords": [
-          -28.636,
-          153.628
-        ],
-        "region": "byron",
-        "transportMode": "walk",
-        "durationMinutes": 270,
-        "type": "sightseeing"
+      "budgetItems": [
+        {
+          "title": "Inlandsflug SYD → Ballina (125 €) + Mietwagen (80 €)",
+          "costEur": 205,
+          "status": "planned",
+          "statusText": "Geplant",
+          "costFormatted": "205 €"
+        }
+      ],
+      "dayBadge": "TAG 5 · SYDNEY / BALLINA",
+      "dateBadge": "25. MÄRZ (Do)",
+      "driveIcon": "fa-plane",
+      "expandTrigger": "Details & Flug",
+      "flightInfo": {
+        "title": "Fluginformationen",
+        "details": "Jetstar - Economy Class - Airbus A320 - JQ 458 / Abflug um 10:25 Uhr",
+        "statusText": "Flug gebucht & bezahlt (54 € p.P.)"
       },
-      {
-        "time": "18:30",
-        "title": "Beach Hotel Live-Musik, Craft Beer & entspanntes Abendessen",
-        "description": "Vormittags: Geführte Seekajak-Tour (Delfine, Rochen & Meeresschildkröten beobachten!). Nachmittags: Strand-Relaxen am Tallow Beach, Bummel durch die Surfer-Boutiquen und Craft-Bier zum Sonnenuntergang.",
-        "locationName": "Wategos Beach & The Pass",
-        "coords": [
-          -28.636,
-          153.628
-        ],
-        "region": "byron",
-        "transportMode": "walk",
-        "durationMinutes": 60,
-        "type": "sightseeing"
-      }
-    ],
-    "sights": [
-      {
-        "id": "spot-7",
-        "spotId": 7,
-        "name": "Wategos Beach & The Pass",
-        "highlight": "Berühmter Surf-Break für Longboards, türkisblaues Wasser und Meeresschildkröten.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Vom erhöhten Holz-Aussichtsturm direkt über dem Pass – fantastischer Überblick über Surfer auf den endlosen Wellen.",
-        "photoTime": "",
-        "directions": "Küstenstraße Richtung Leuchtturm oder idyllischer Fußweg ab Clarkes Beach.",
-        "mapsUrl": "https://maps.google.com/?q=Wategos%2BBeach%2BByron%2BBay",
-        "coords": [
-          -28.636,
-          153.628
-        ],
-        "region": "byron"
-      }
-    ],
-    "accommodation": {
-      "cardTitle": "Hotel & Unterkunft",
-      "name": "AirBnB East Ballina",
-      "location": "East Ballina / Byron Bay (NSW)",
-      "nights": 1,
-      "bookingLink": "https://www.airbnb.at/rooms/1065553106126009714",
-      "bookingLabel": "AirBnB Buchung öffnen",
-      "mapsLink": "",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": false
+      "hasBudgetSubcard": false,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-03-25",
+        "title": "Ideen für Byron Bay Verschlüsselt"
+      },
+      "region": "Sydney / Ballina"
     },
-    "budgetItems": [
-      {
-        "title": "AirBnB East Ballina & Kajaktour",
-        "costEur": 65,
-        "status": "planned",
-        "statusText": "Geplant",
-        "costFormatted": "65 €"
-      }
-    ],
-    "dayBadge": "TAG 6 · BYRON BAY",
-    "dateBadge": "26. MÄRZ (Fr)",
-    "driveIcon": "fa-ship",
-    "expandTrigger": "Details & Spots",
-    "flightInfo": null,
-    "hasBudgetSubcard": false,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 6,
       "date": "2027-03-26",
-      "title": "Ideen &amp; Vorschläge für Tag 6 Verschlüsselt"
+      "dayOfWeek": "Fr",
+      "title": "Ballina / Byron Bay – Kajaktour",
+      "routeBadge": "Kajak- oder Bootstour",
+      "transportType": "ferry",
+      "highlights": [
+        "🏄 Wategos Beach & The Pass",
+        "🐬 Delfin-Kajaktour am Ozean"
+      ],
+      "summary": "Vormittags: Geführte Seekajak-Tour (Delfine, Rochen & Meeresschildkröten beobachten!). Nachmittags: Strand-Relaxen am Tallow Beach, Bummel durch die Surfer-Boutiquen und Craft-Bier zum Sonnenuntergang.",
+      "activities": [
+        {
+          "time": "08:30",
+          "title": "Geführte Delfin-Kajaktour ab Main Beach Byron Bay",
+          "description": "Vormittags: Geführte Seekajak-Tour (Delfine, Rochen & Meeresschildkröten beobachten!). Nachmittags: Strand-Relaxen am Tallow Beach, Bummel durch die Surfer-Boutiquen und Craft-Bier zum Sonnenuntergang.",
+          "locationName": "Wategos Beach & The Pass",
+          "coords": [
+            -28.636,
+            153.628
+          ],
+          "region": "Byron Bay",
+          "transportMode": "ferry",
+          "durationMinutes": 330,
+          "type": "transport"
+        },
+        {
+          "time": "14:00",
+          "title": "Chillen & Surfen am The Pass & Wategos Beach",
+          "description": "Vormittags: Geführte Seekajak-Tour (Delfine, Rochen & Meeresschildkröten beobachten!). Nachmittags: Strand-Relaxen am Tallow Beach, Bummel durch die Surfer-Boutiquen und Craft-Bier zum Sonnenuntergang.",
+          "locationName": "Wategos Beach & The Pass",
+          "coords": [
+            -28.636,
+            153.628
+          ],
+          "region": "Byron Bay",
+          "transportMode": "walk",
+          "durationMinutes": 270,
+          "type": "sightseeing"
+        },
+        {
+          "time": "18:30",
+          "title": "Beach Hotel Live-Musik, Craft Beer & entspanntes Abendessen",
+          "description": "Vormittags: Geführte Seekajak-Tour (Delfine, Rochen & Meeresschildkröten beobachten!). Nachmittags: Strand-Relaxen am Tallow Beach, Bummel durch die Surfer-Boutiquen und Craft-Bier zum Sonnenuntergang.",
+          "locationName": "Wategos Beach & The Pass",
+          "coords": [
+            -28.636,
+            153.628
+          ],
+          "region": "Byron Bay",
+          "transportMode": "walk",
+          "durationMinutes": 60,
+          "type": "sightseeing"
+        }
+      ],
+      "sights": [
+        {
+          "id": "spot-7",
+          "spotId": 7,
+          "name": "Wategos Beach & The Pass",
+          "highlight": "Berühmter Surf-Break für Longboards, türkisblaues Wasser und Meeresschildkröten.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Vom erhöhten Holz-Aussichtsturm direkt über dem Pass – fantastischer Überblick über Surfer auf den endlosen Wellen.",
+          "photoTime": "",
+          "directions": "Küstenstraße Richtung Leuchtturm oder idyllischer Fußweg ab Clarkes Beach.",
+          "mapsUrl": "https://maps.google.com/?q=Wategos%2BBeach%2BByron%2BBay",
+          "coords": [
+            -28.636,
+            153.628
+          ],
+          "region": "byron"
+        }
+      ],
+      "accommodation": {
+        "cardTitle": "Hotel & Unterkunft",
+        "name": "AirBnB East Ballina",
+        "location": "East Ballina / Byron Bay (NSW)",
+        "nights": 1,
+        "bookingLink": "https://www.airbnb.at/rooms/1065553106126009714",
+        "bookingLabel": "AirBnB Buchung öffnen",
+        "mapsLink": "",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": false
+      },
+      "budgetItems": [
+        {
+          "title": "AirBnB East Ballina & Kajaktour",
+          "costEur": 65,
+          "status": "planned",
+          "statusText": "Geplant",
+          "costFormatted": "65 €"
+        }
+      ],
+      "dayBadge": "TAG 6 · BYRON BAY",
+      "dateBadge": "26. MÄRZ (Fr)",
+      "driveIcon": "fa-ship",
+      "expandTrigger": "Details & Spots",
+      "flightInfo": null,
+      "hasBudgetSubcard": false,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-03-26",
+        "title": "Ideen &amp; Vorschläge für Tag 6 Verschlüsselt"
+      },
+      "region": "Byron Bay"
     },
-    "region": "Port Stephens / Dorrigo"
-  },
-  {
-    "dayNumber": 7,
-    "date": "2027-03-27",
-    "dayOfWeek": "Sa",
-    "title": "Byron Bay → Gold Coast → Brisbane",
-    "routeBadge": "Byron → Gold Coast → BNE: ca. 2,5 Std.",
-    "transportType": "car",
-    "highlights": [
-      "🏄 Burleigh Heads Surfer-Lookout",
-      "🌉 Howard Smith Wharves & Story Bridge"
-    ],
-    "summary": "Fahrt gen Norden. Zwischenstopp an der Gold Coast: Aussichtspunkt Burleigh Heads oder SkyPoint Q1 Tower. Weiterfahrt nach Brisbane, Check-in und Abend an den belebten Howard Smith Wharves unter der Story Bridge.",
-    "activities": [
-      {
-        "time": "09:30",
-        "title": "Abfahrt Byron Bay Richtung Norden über den Pacific Highway",
-        "description": "Fahrt gen Norden. Zwischenstopp an der Gold Coast: Aussichtspunkt Burleigh Heads oder SkyPoint Q1 Tower. Weiterfahrt nach Brisbane, Check-in und Abend an den belebten Howard Smith Wharves unter der Story Bridge.",
-        "locationName": "Byron Bay",
-        "coords": [
-          -28.643,
-          153.612
-        ],
-        "region": "Dorrigo / Byron Bay",
-        "transportMode": "car",
-        "durationMinutes": 120,
-        "type": "transport"
-      },
-      {
-        "time": "11:30",
-        "title": "Stopp Surfers Paradise & Strandspaziergang Burleigh Heads",
-        "description": "Fahrt gen Norden. Zwischenstopp an der Gold Coast: Aussichtspunkt Burleigh Heads oder SkyPoint Q1 Tower. Weiterfahrt nach Brisbane, Check-in und Abend an den belebten Howard Smith Wharves unter der Story Bridge.",
-        "locationName": "Burleigh Heads Lookout",
-        "coords": [
-          -28.0933,
-          153.456
-        ],
-        "region": "byron",
-        "transportMode": "walk",
-        "durationMinutes": 270,
-        "type": "sightseeing"
-      },
-      {
-        "time": "16:00",
-        "title": "Check-in Hotel Rambla @ South City Square Brisbane",
-        "description": "Fahrt gen Norden. Zwischenstopp an der Gold Coast: Aussichtspunkt Burleigh Heads oder SkyPoint Q1 Tower. Weiterfahrt nach Brisbane, Check-in und Abend an den belebten Howard Smith Wharves unter der Story Bridge.",
-        "locationName": "Dorrigo / Byron Bay",
-        "coords": [
-          -27.4608,
-          153.036
-        ],
-        "region": "Dorrigo / Byron Bay",
-        "transportMode": "car",
-        "durationMinutes": 180,
-        "type": "transport"
-      },
-      {
-        "time": "19:00",
-        "title": "Craft Beer & Dinner bei den Howard Smith Wharves",
-        "description": "Fahrt gen Norden. Zwischenstopp an der Gold Coast: Aussichtspunkt Burleigh Heads oder SkyPoint Q1 Tower. Weiterfahrt nach Brisbane, Check-in und Abend an den belebten Howard Smith Wharves unter der Story Bridge.",
-        "locationName": "Howard Smith Wharves & Story Bridge",
-        "coords": [
-          -27.4608,
-          153.036
-        ],
-        "region": "brisbane",
-        "transportMode": "walk",
-        "durationMinutes": 60,
-        "type": "restaurant"
-      }
-    ],
-    "sights": [
-      {
-        "id": "spot-8",
-        "spotId": 8,
-        "name": "Burleigh Heads Lookout",
-        "highlight": "Spektakulärer Surfer-Point & Panoramablick auf die Hochhaus-Skyline von Surfers Paradise.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Tumgun Lookout im Burleigh Head Nationalpark – Rahmung der Skyline durch die australischen Pinienbäume.",
-        "photoTime": "",
-        "directions": "M1 Richtung Norden, Parkplatz Goodwin Terrace direkt am Nationalpark.",
-        "mapsUrl": "https://maps.google.com/?q=Burleigh%2BHeads%2BLookout",
-        "coords": [
-          -28.0933,
-          153.456
-        ],
-        "region": "byron"
-      },
-      {
-        "id": "spot-9",
-        "spotId": 9,
-        "name": "Howard Smith Wharves & Story Bridge",
-        "highlight": "Brauereien, Bars & erstklassige Lokale direkt unter den Bögen der beleuchteten Story Bridge.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Direkt an der Uferkante der Wharves vor Felons Brewing – Weitwinkel von unten schräg gegen das Brückengerüst.",
-        "photoTime": "",
-        "directions": "Kurzer Fußweg vom Hotel Rambla in Woolloongabba oder mit der Fähre.",
-        "mapsUrl": "https://maps.google.com/?q=Howard%2BSmith%2BWharves%2BBrisbane",
-        "coords": [
-          -27.4608,
-          153.036
-        ],
-        "region": "brisbane"
-      }
-    ],
-    "accommodation": {
-      "cardTitle": "Hotel &amp; Unterkunft",
-      "rawHtml": "<strong>Rambla @ Story House</strong> (Woolloongabba / Kangaroo Point, Brisbane) – 2 Nächte\n                        gebucht",
-      "name": "Rambla @ Story House",
-      "location": "Woolloongabba / Kangaroo Point, Brisbane",
-      "nights": 2,
-      "bookingLink": "https://www.rambla.com.au/locations/story-house",
-      "bookingLabel": "Hotel Link",
-      "mapsLink": "",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": true
-    },
-    "budgetItems": [
-      {
-        "title": "Hotel Brisbane (95 €) + Sprit Anteil (25 €)",
-        "costEur": 120,
-        "status": "planned",
-        "statusText": "Geplant",
-        "costFormatted": "120 €"
-      }
-    ],
-    "dayBadge": "TAG 7 · GOLD COAST & BRISBANE",
-    "dateBadge": "27. MÄRZ (Sa)",
-    "driveIcon": "fa-car",
-    "expandTrigger": "Details & Hotel",
-    "flightInfo": null,
-    "hasBudgetSubcard": false,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 7,
       "date": "2027-03-27",
-      "title": "Ideen für Brisbane Verschlüsselt"
+      "dayOfWeek": "Sa",
+      "title": "Ballina → Gold Coast → Brisbane",
+      "routeBadge": "Byron → Gold Coast → BNE: ca. 2,5 Std.",
+      "transportType": "car",
+      "highlights": [
+        "🏄 Burleigh Heads Surfer-Lookout",
+        "🌉 Howard Smith Wharves & Story Bridge"
+      ],
+      "summary": "Fahrt gen Norden. Zwischenstopp an der Gold Coast: Aussichtspunkt Burleigh Heads oder SkyPoint Q1 Tower. Weiterfahrt nach Brisbane, Check-in und Abend an den belebten Howard Smith Wharves unter der Story Bridge.",
+      "activities": [
+        {
+          "time": "09:30",
+          "title": "Abfahrt Byron Bay Richtung Norden über den Pacific Highway",
+          "description": "Fahrt gen Norden. Zwischenstopp an der Gold Coast: Aussichtspunkt Burleigh Heads oder SkyPoint Q1 Tower. Weiterfahrt nach Brisbane, Check-in und Abend an den belebten Howard Smith Wharves unter der Story Bridge.",
+          "locationName": "Byron Bay",
+          "coords": [
+            -28.643,
+            153.612
+          ],
+          "region": "Dorrigo / Byron Bay",
+          "transportMode": "car",
+          "durationMinutes": 120,
+          "type": "transport"
+        },
+        {
+          "time": "11:30",
+          "title": "Stopp Surfers Paradise & Strandspaziergang Burleigh Heads",
+          "description": "Fahrt gen Norden. Zwischenstopp an der Gold Coast: Aussichtspunkt Burleigh Heads oder SkyPoint Q1 Tower. Weiterfahrt nach Brisbane, Check-in und Abend an den belebten Howard Smith Wharves unter der Story Bridge.",
+          "locationName": "Burleigh Heads Lookout",
+          "coords": [
+            -28.0933,
+            153.456
+          ],
+          "region": "byron",
+          "transportMode": "walk",
+          "durationMinutes": 270,
+          "type": "sightseeing"
+        },
+        {
+          "time": "16:00",
+          "title": "Check-in Hotel Rambla @ South City Square Brisbane",
+          "description": "Fahrt gen Norden. Zwischenstopp an der Gold Coast: Aussichtspunkt Burleigh Heads oder SkyPoint Q1 Tower. Weiterfahrt nach Brisbane, Check-in und Abend an den belebten Howard Smith Wharves unter der Story Bridge.",
+          "locationName": "Dorrigo / Byron Bay",
+          "coords": [
+            -27.4608,
+            153.036
+          ],
+          "region": "Dorrigo / Byron Bay",
+          "transportMode": "car",
+          "durationMinutes": 180,
+          "type": "transport"
+        },
+        {
+          "time": "19:00",
+          "title": "Craft Beer & Dinner bei den Howard Smith Wharves",
+          "description": "Fahrt gen Norden. Zwischenstopp an der Gold Coast: Aussichtspunkt Burleigh Heads oder SkyPoint Q1 Tower. Weiterfahrt nach Brisbane, Check-in und Abend an den belebten Howard Smith Wharves unter der Story Bridge.",
+          "locationName": "Howard Smith Wharves & Story Bridge",
+          "coords": [
+            -27.4608,
+            153.036
+          ],
+          "region": "brisbane",
+          "transportMode": "walk",
+          "durationMinutes": 60,
+          "type": "restaurant"
+        }
+      ],
+      "sights": [
+        {
+          "id": "spot-8",
+          "spotId": 8,
+          "name": "Burleigh Heads Lookout",
+          "highlight": "Spektakulärer Surfer-Point & Panoramablick auf die Hochhaus-Skyline von Surfers Paradise.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Tumgun Lookout im Burleigh Head Nationalpark – Rahmung der Skyline durch die australischen Pinienbäume.",
+          "photoTime": "",
+          "directions": "M1 Richtung Norden, Parkplatz Goodwin Terrace direkt am Nationalpark.",
+          "mapsUrl": "https://maps.google.com/?q=Burleigh%2BHeads%2BLookout",
+          "coords": [
+            -28.0933,
+            153.456
+          ],
+          "region": "byron"
+        },
+        {
+          "id": "spot-9",
+          "spotId": 9,
+          "name": "Howard Smith Wharves & Story Bridge",
+          "highlight": "Brauereien, Bars & erstklassige Lokale direkt unter den Bögen der beleuchteten Story Bridge.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Direkt an der Uferkante der Wharves vor Felons Brewing – Weitwinkel von unten schräg gegen das Brückengerüst.",
+          "photoTime": "",
+          "directions": "Kurzer Fußweg vom Hotel Rambla in Woolloongabba oder mit der Fähre.",
+          "mapsUrl": "https://maps.google.com/?q=Howard%2BSmith%2BWharves%2BBrisbane",
+          "coords": [
+            -27.4608,
+            153.036
+          ],
+          "region": "brisbane"
+        }
+      ],
+      "accommodation": {
+        "cardTitle": "Hotel &amp; Unterkunft",
+        "rawHtml": "<strong>Rambla @ Story House</strong> (Woolloongabba / Kangaroo Point, Brisbane) – 2 Nächte\n                        gebucht",
+        "name": "Rambla @ Story House",
+        "location": "Woolloongabba / Kangaroo Point, Brisbane",
+        "nights": 2,
+        "bookingLink": "https://www.rambla.com.au/locations/story-house",
+        "bookingLabel": "Hotel Link",
+        "mapsLink": "",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": true
+      },
+      "budgetItems": [
+        {
+          "title": "Hotel Brisbane (95 €) + Sprit Anteil (25 €)",
+          "costEur": 120,
+          "status": "planned",
+          "statusText": "Geplant",
+          "costFormatted": "120 €"
+        }
+      ],
+      "dayBadge": "TAG 7 · BALLINA / GOLD COAST / BRISBANE",
+      "dateBadge": "27. MÄRZ (Sa)",
+      "driveIcon": "fa-car",
+      "expandTrigger": "Details & Hotel",
+      "flightInfo": null,
+      "hasBudgetSubcard": false,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-03-27",
+        "title": "Ideen für Brisbane Verschlüsselt"
+      },
+      "region": "Ballina / Gold Coast / Brisbane"
     },
-    "region": "Dorrigo / Byron Bay"
-  },
-  {
-    "dayNumber": 8,
-    "date": "2027-03-28",
-    "dayOfWeek": "So",
-    "title": "Brisbane – Kultur, Fluss & Aussicht",
-    "routeBadge": "CityCat Fähre",
-    "transportType": "ferry",
-    "highlights": [
-      "🏖️ South Bank Streets Beach",
-      "🌄 Mt Coot-tha Summit Lookout"
-    ],
-    "summary": "South Bank Parklands (inkl. Streets Beach Lagune), moderne Kunst in der QAGOMA Galerie, Katamaran-Fahrt mit der CityCat-Fähre, Kangaroo Point Cliffs und Panoramablick zum Sonnenuntergang vom Mount Coot-tha.",
-    "activities": [
-      {
-        "time": "10:00",
-        "title": "CityCat Katamaran-Fahrt auf dem Brisbane River",
-        "description": "South Bank Parklands (inkl. Streets Beach Lagune), moderne Kunst in der QAGOMA Galerie, Katamaran-Fahrt mit der CityCat-Fähre, Kangaroo Point Cliffs und Panoramablick zum Sonnenuntergang vom Mount Coot-tha.",
-        "locationName": "Hotel Rambla (Woolloongabba)",
-        "coords": [
-          -27.485,
-          153.033
-        ],
-        "region": "Gold Coast",
-        "transportMode": "ferry",
-        "durationMinutes": 210,
-        "type": "transport"
-      },
-      {
-        "time": "13:30",
-        "title": "Mittagspause & Spaziergang South Bank Parklands",
-        "description": "South Bank Parklands (inkl. Streets Beach Lagune), moderne Kunst in der QAGOMA Galerie, Katamaran-Fahrt mit der CityCat-Fähre, Kangaroo Point Cliffs und Panoramablick zum Sonnenuntergang vom Mount Coot-tha.",
-        "locationName": "South Bank Parklands & Streets Beach",
-        "coords": [
-          -27.4785,
-          153.0205
-        ],
-        "region": "brisbane",
-        "transportMode": "walk",
-        "durationMinutes": 300,
-        "type": "sightseeing"
-      },
-      {
-        "time": "18:30",
-        "title": "Sunset & Panoramadinner am Mt Coot-tha Summit Lookout",
-        "description": "South Bank Parklands (inkl. Streets Beach Lagune), moderne Kunst in der QAGOMA Galerie, Katamaran-Fahrt mit der CityCat-Fähre, Kangaroo Point Cliffs und Panoramablick zum Sonnenuntergang vom Mount Coot-tha.",
-        "locationName": "Mt Coot-tha Summit Lookout",
-        "coords": [
-          -27.477,
-          152.9535
-        ],
-        "region": "brisbane",
-        "transportMode": "walk",
-        "durationMinutes": 60,
-        "type": "restaurant"
-      }
-    ],
-    "sights": [
-      {
-        "id": "spot-10",
-        "spotId": 10,
-        "name": "South Bank Parklands & Streets Beach",
-        "highlight": "Australiens einziger künstlicher Stadtstrand mitten im Zentrum mit tropischen Gärten.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Von den Holzliegen an Streets Beach mit den Palmen im Vordergrund und den Wolkenkratzern im Hintergrund.",
-        "photoTime": "",
-        "directions": "Über die Fußgängerbrücke Goodwill Bridge oder per CityCat Fähre.",
-        "mapsUrl": "https://maps.google.com/?q=Streets%2BBeach%2BSouth%2BBank%2BBrisbane",
-        "coords": [
-          -27.4785,
-          153.0205
-        ],
-        "region": "brisbane"
-      },
-      {
-        "id": "spot-11",
-        "spotId": 11,
-        "name": "Mt Coot-tha Summit Lookout",
-        "highlight": "Höchster Panoramablick über die Millionenstadt Brisbane bis hin zur Moreton Bay.",
-        "photoSpot": "Foto-Spot &amp; Zeit: An der vorderen steinernen Aussichtsplattform mit Blick genau nach Osten über das gesamte Tal von Brisbane.",
-        "photoTime": "",
-        "directions": "Ca. 20 Minuten Autofahrt westlich des Stadtzentrums.",
-        "mapsUrl": "https://maps.google.com/?q=Mount%2BCoot-tha%2BLookout%2BBrisbane",
-        "coords": [
-          -27.477,
-          152.9535
-        ],
-        "region": "brisbane"
-      }
-    ],
-    "accommodation": {
-      "cardTitle": "Hotel & Unterkunft",
-      "name": "Rambla at Story House",
-      "location": "Brisbane City (QLD)",
-      "nights": 1,
-      "bookingLink": "https://www.rambla.com.au/locations/story-house",
-      "bookingLabel": "Rambla Hotel Website",
-      "mapsLink": "",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": false
-    },
-    "budgetItems": [
-      {
-        "title": "Brisbane CityCat Katamaran & South Bank",
-        "costEur": 25,
-        "status": "planned",
-        "statusText": "Geplant",
-        "costFormatted": "25 €"
-      }
-    ],
-    "dayBadge": "TAG 8 · BRISBANE",
-    "dateBadge": "28. MÄRZ (So)",
-    "driveIcon": "fa-ship",
-    "expandTrigger": "Details & Spots",
-    "flightInfo": null,
-    "hasBudgetSubcard": false,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 8,
       "date": "2027-03-28",
-      "title": "Ideen &amp; Vorschläge für Tag 8 Verschlüsselt"
+      "dayOfWeek": "So",
+      "title": "Brisbane – Kultur, Fluss & Aussicht",
+      "routeBadge": "CityCat Fähre",
+      "transportType": "ferry",
+      "highlights": [
+        "🏖️ South Bank Streets Beach",
+        "🌄 Mt Coot-tha Summit Lookout"
+      ],
+      "summary": "South Bank Parklands (inkl. Streets Beach Lagune), moderne Kunst in der QAGOMA Galerie, Katamaran-Fahrt mit der CityCat-Fähre, Kangaroo Point Cliffs und Panoramablick zum Sonnenuntergang vom Mount Coot-tha.",
+      "activities": [
+        {
+          "time": "10:00",
+          "title": "CityCat Katamaran-Fahrt auf dem Brisbane River",
+          "description": "South Bank Parklands (inkl. Streets Beach Lagune), moderne Kunst in der QAGOMA Galerie, Katamaran-Fahrt mit der CityCat-Fähre, Kangaroo Point Cliffs und Panoramablick zum Sonnenuntergang vom Mount Coot-tha.",
+          "locationName": "Hotel Rambla (Woolloongabba)",
+          "coords": [
+            -27.485,
+            153.033
+          ],
+          "region": "Brisbane",
+          "transportMode": "ferry",
+          "durationMinutes": 210,
+          "type": "transport"
+        },
+        {
+          "time": "13:30",
+          "title": "Mittagspause & Spaziergang South Bank Parklands",
+          "description": "South Bank Parklands (inkl. Streets Beach Lagune), moderne Kunst in der QAGOMA Galerie, Katamaran-Fahrt mit der CityCat-Fähre, Kangaroo Point Cliffs und Panoramablick zum Sonnenuntergang vom Mount Coot-tha.",
+          "locationName": "South Bank Parklands & Streets Beach",
+          "coords": [
+            -27.4785,
+            153.0205
+          ],
+          "region": "Brisbane",
+          "transportMode": "walk",
+          "durationMinutes": 300,
+          "type": "sightseeing"
+        },
+        {
+          "time": "18:30",
+          "title": "Sunset & Panoramadinner am Mt Coot-tha Summit Lookout",
+          "description": "South Bank Parklands (inkl. Streets Beach Lagune), moderne Kunst in der QAGOMA Galerie, Katamaran-Fahrt mit der CityCat-Fähre, Kangaroo Point Cliffs und Panoramablick zum Sonnenuntergang vom Mount Coot-tha.",
+          "locationName": "Mt Coot-tha Summit Lookout",
+          "coords": [
+            -27.477,
+            152.9535
+          ],
+          "region": "Brisbane",
+          "transportMode": "walk",
+          "durationMinutes": 60,
+          "type": "restaurant"
+        }
+      ],
+      "sights": [
+        {
+          "id": "spot-10",
+          "spotId": 10,
+          "name": "South Bank Parklands & Streets Beach",
+          "highlight": "Australiens einziger künstlicher Stadtstrand mitten im Zentrum mit tropischen Gärten.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Von den Holzliegen an Streets Beach mit den Palmen im Vordergrund und den Wolkenkratzern im Hintergrund.",
+          "photoTime": "",
+          "directions": "Über die Fußgängerbrücke Goodwill Bridge oder per CityCat Fähre.",
+          "mapsUrl": "https://maps.google.com/?q=Streets%2BBeach%2BSouth%2BBank%2BBrisbane",
+          "coords": [
+            -27.4785,
+            153.0205
+          ],
+          "region": "brisbane"
+        },
+        {
+          "id": "spot-11",
+          "spotId": 11,
+          "name": "Mt Coot-tha Summit Lookout",
+          "highlight": "Höchster Panoramablick über die Millionenstadt Brisbane bis hin zur Moreton Bay.",
+          "photoSpot": "Foto-Spot &amp; Zeit: An der vorderen steinernen Aussichtsplattform mit Blick genau nach Osten über das gesamte Tal von Brisbane.",
+          "photoTime": "",
+          "directions": "Ca. 20 Minuten Autofahrt westlich des Stadtzentrums.",
+          "mapsUrl": "https://maps.google.com/?q=Mount%2BCoot-tha%2BLookout%2BBrisbane",
+          "coords": [
+            -27.477,
+            152.9535
+          ],
+          "region": "brisbane"
+        }
+      ],
+      "accommodation": {
+        "cardTitle": "Hotel & Unterkunft",
+        "name": "Rambla at Story House",
+        "location": "Brisbane City (QLD)",
+        "nights": 1,
+        "bookingLink": "https://www.rambla.com.au/locations/story-house",
+        "bookingLabel": "Rambla Hotel Website",
+        "mapsLink": "",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": false
+      },
+      "budgetItems": [
+        {
+          "title": "Brisbane CityCat Katamaran & South Bank",
+          "costEur": 25,
+          "status": "planned",
+          "statusText": "Geplant",
+          "costFormatted": "25 €"
+        }
+      ],
+      "dayBadge": "TAG 8 · BRISBANE",
+      "dateBadge": "28. MÄRZ (So)",
+      "driveIcon": "fa-ship",
+      "expandTrigger": "Details & Spots",
+      "flightInfo": null,
+      "hasBudgetSubcard": false,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-03-28",
+        "title": "Ideen &amp; Vorschläge für Tag 8 Verschlüsselt"
+      },
+      "region": "Brisbane"
     },
-    "region": "Gold Coast"
-  },
-  {
-    "dayNumber": 9,
-    "date": "2027-03-29",
-    "dayOfWeek": "Mo",
-    "title": "Brisbane – Riverwalk & Urban Lifestyle",
-    "routeBadge": "Entspanntes Erkunden",
-    "transportType": "walk",
-    "highlights": [
-      "🐊 Australia Zoo Crocodile Hunter",
-      "🏙️ Brisbane Riverwalk & CityCat"
-    ],
-    "summary": "Spaziergang über den Brisbane Riverwalk, Kaffeepause in Fortitude Valley & James Street, Besuch des New Farm Park & Brisbane Powerhouse.",
-    "activities": [
-      {
-        "time": "08:30",
-        "title": "Abfahrt Brisbane Richtung Sunshine Coast Hinterland",
-        "description": "Spaziergang über den Brisbane Riverwalk, Kaffeepause in Fortitude Valley & James Street, Besuch des New Farm Park & Brisbane Powerhouse.",
-        "locationName": "Brisbane City",
-        "coords": [
-          -27.4698,
-          153.0251
-        ],
-        "region": "Brisbane",
-        "transportMode": "car",
-        "durationMinutes": 60,
-        "type": "transport"
-      },
-      {
-        "time": "09:30",
-        "title": "Eintritt Australia Zoo & Kängurus füttern in den offenen Gehegen",
-        "description": "Spaziergang über den Brisbane Riverwalk, Kaffeepause in Fortitude Valley & James Street, Besuch des New Farm Park & Brisbane Powerhouse.",
-        "locationName": "Australia Zoo (Home of the Crocodile Hunter)",
-        "coords": [
-          -26.837,
-          152.961
-        ],
-        "region": "brisbane",
-        "transportMode": "walk",
-        "durationMinutes": 150,
-        "type": "sightseeing"
-      },
-      {
-        "time": "12:00",
-        "title": "Wildlife Warriors Show im Crocoseum (Krokodile, Vögel & Schlangen)",
-        "description": "Spaziergang über den Brisbane Riverwalk, Kaffeepause in Fortitude Valley & James Street, Besuch des New Farm Park & Brisbane Powerhouse.",
-        "locationName": "Brisbane",
-        "coords": [
-          -26.837,
-          152.961
-        ],
-        "region": "Brisbane",
-        "transportMode": "walk",
-        "durationMinutes": 300,
-        "type": "sightseeing"
-      },
-      {
-        "time": "17:00",
-        "title": "Rückfahrt nach Brisbane & entspanntes Abendessen",
-        "description": "Spaziergang über den Brisbane Riverwalk, Kaffeepause in Fortitude Valley & James Street, Besuch des New Farm Park & Brisbane Powerhouse.",
-        "locationName": "Australia Zoo (Beerwah)",
-        "coords": [
-          -26.837,
-          152.961
-        ],
-        "region": "Brisbane",
-        "transportMode": "car",
-        "durationMinutes": 60,
-        "type": "transport"
-      }
-    ],
-    "sights": [
-      {
-        "id": "spot-12",
-        "spotId": 12,
-        "name": "Australia Zoo (Home of the Crocodile Hunter)",
-        "highlight": "Steve Irwins weltberühmter Zoo mit riesigen Freigehegen für Koalas, Kängurus und Krokodile.",
-        "photoSpot": "Foto-Spot &amp; Zeit: In den offenen Roo-Heaven Freigehegen auf Augenhöhe mit den Kängurus und im Crocoseum. (🦘 Vormittags (Fütterungszeit))",
-        "photoTime": "",
-        "directions": "Ca. 60 Min. Fahrt über Bruce Highway (M1) und Steve Irwin Way nach Beerwah.",
-        "mapsUrl": "https://maps.google.com/?q=Australia%2BZoo%2BBeerwah",
-        "coords": [
-          -26.837,
-          152.961
-        ],
-        "region": "brisbane"
-      }
-    ],
-    "accommodation": {
-      "cardTitle": "Hotel & Unterkunft",
-      "name": "Rambla at Story House",
-      "location": "Brisbane City (QLD)",
-      "nights": 1,
-      "bookingLink": "https://www.rambla.com.au/locations/story-house",
-      "bookingLabel": "Rambla Hotel Website",
-      "mapsLink": "",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": false
-    },
-    "budgetItems": [
-      {
-        "title": "Australia Zoo Beerwah Ticket",
-        "costEur": 60,
-        "status": "planned",
-        "statusText": "Geplant",
-        "costFormatted": "60 €"
-      }
-    ],
-    "dayBadge": "TAG 9 · BRISBANE & SUNSHINE COAST",
-    "dateBadge": "29. MÄRZ (Mo)",
-    "driveIcon": "fa-person-walking",
-    "expandTrigger": "Details",
-    "flightInfo": null,
-    "hasBudgetSubcard": false,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 9,
       "date": "2027-03-29",
-      "title": "Ideen für Tag 9 Verschlüsselt"
+      "dayOfWeek": "Mo",
+      "title": "Brisbane – Stadt, South Bank & Kangaroo Point",
+      "routeBadge": "Zu Fuß & mit CityCat",
+      "transportType": "walk",
+      "highlights": [
+        "🌿 South Bank Parklands",
+        "🌉 Kangaroo Point Cliffs",
+        "🌇 Howard Smith Wharves"
+      ],
+      "summary": "Ein ganzer Tag in Brisbane: Queen Street Mall, South Bank Parklands, Kangaroo Point Cliffs und Abendessen an den Howard Smith Wharves.",
+      "activities": [
+        {
+          "time": "09:00",
+          "title": "Queen Street Mall & Brisbane CBD",
+          "description": "Ein ganzer Tag in Brisbane: Queen Street Mall, South Bank Parklands, Kangaroo Point Cliffs und Abendessen an den Howard Smith Wharves.",
+          "locationName": "Queen Street Mall, Brisbane",
+          "coords": [
+            -27.4705,
+            153.0251
+          ],
+          "region": "Brisbane",
+          "transportMode": "walk",
+          "durationMinutes": 120,
+          "type": "sightseeing"
+        },
+        {
+          "time": "11:30",
+          "title": "South Bank Parklands",
+          "description": "Ein ganzer Tag in Brisbane: Queen Street Mall, South Bank Parklands, Kangaroo Point Cliffs und Abendessen an den Howard Smith Wharves.",
+          "locationName": "South Bank Parklands, Brisbane",
+          "coords": [
+            -27.4811,
+            153.0234
+          ],
+          "region": "Brisbane",
+          "transportMode": "ferry",
+          "durationMinutes": 150,
+          "type": "sightseeing"
+        },
+        {
+          "time": "15:00",
+          "title": "Kangaroo Point Cliffs",
+          "description": "Ein ganzer Tag in Brisbane: Queen Street Mall, South Bank Parklands, Kangaroo Point Cliffs und Abendessen an den Howard Smith Wharves.",
+          "locationName": "Kangaroo Point Cliffs, Brisbane",
+          "coords": [
+            -27.4765,
+            153.0365
+          ],
+          "region": "Brisbane",
+          "transportMode": "walk",
+          "durationMinutes": 120,
+          "type": "sightseeing"
+        },
+        {
+          "time": "18:00",
+          "title": "Howard Smith Wharves",
+          "description": "Ein ganzer Tag in Brisbane: Queen Street Mall, South Bank Parklands, Kangaroo Point Cliffs und Abendessen an den Howard Smith Wharves.",
+          "locationName": "Howard Smith Wharves, Brisbane",
+          "coords": [
+            -27.463,
+            153.0352
+          ],
+          "region": "Brisbane",
+          "transportMode": "ferry",
+          "durationMinutes": 180,
+          "type": "restaurant"
+        }
+      ],
+      "sights": [],
+      "accommodation": {
+        "cardTitle": "Hotel & Unterkunft",
+        "name": "Rambla at Story House",
+        "location": "Brisbane City (QLD)",
+        "nights": 1,
+        "bookingLink": "https://www.rambla.com.au/locations/story-house",
+        "bookingLabel": "Rambla Hotel Website",
+        "mapsLink": "",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": false
+      },
+      "budgetItems": [],
+      "dayBadge": "TAG 9 · BRISBANE",
+      "dateBadge": "29. MÄRZ (Mo)",
+      "driveIcon": "fa-person-walking",
+      "expandTrigger": "Details",
+      "flightInfo": null,
+      "hasBudgetSubcard": false,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-03-29",
+        "title": "Ideen für Tag 9 Verschlüsselt"
+      },
+      "region": "Brisbane"
     },
-    "region": "Brisbane"
-  },
-  {
-    "dayNumber": 10,
-    "date": "2027-03-30",
-    "dayOfWeek": "Di",
-    "title": "Brisbane – zusätzlicher Stadttag",
-    "region": "Brisbane",
-    "routeBadge": "Brisbane zu Fuß & mit CityCat",
-    "transportType": "walk",
-    "highlights": [
-      "🌿 South Bank Parklands",
-      "🌉 Kangaroo Point Cliffs",
-      "🌇 Howard Smith Wharves"
-    ],
-    "summary": "Ein voller Tag in Brisbane mit Innenstadt, South Bank, Flusspanorama und entspanntem Abend unter der Story Bridge.",
-    "activities": [
-      {
-        "time": "09:00",
-        "title": "Queen Street Mall & Brisbane CBD",
-        "description": "Spaziergang durch die Innenstadt und Frühstück im CBD.",
-        "locationName": "Queen Street Mall, Brisbane",
-        "coords": [
-          -27.4705,
-          153.0251
-        ],
-        "region": "Brisbane",
-        "transportMode": "walk",
-        "durationMinutes": 120,
-        "type": "sightseeing"
-      },
-      {
-        "time": "11:30",
-        "title": "South Bank Parklands",
-        "description": "Parkanlagen, Promenade und Blick über den Brisbane River.",
-        "locationName": "South Bank Parklands, Brisbane",
-        "coords": [
-          -27.4811,
-          153.0234
-        ],
-        "region": "Brisbane",
-        "transportMode": "ferry",
-        "durationMinutes": 150,
-        "type": "sightseeing"
-      },
-      {
-        "time": "15:00",
-        "title": "Kangaroo Point Cliffs",
-        "description": "Aussicht auf Skyline und Brisbane River.",
-        "locationName": "Kangaroo Point Cliffs, Brisbane",
-        "coords": [
-          -27.4765,
-          153.0365
-        ],
-        "region": "Brisbane",
-        "transportMode": "walk",
-        "durationMinutes": 120,
-        "type": "sightseeing"
-      },
-      {
-        "time": "18:00",
-        "title": "Howard Smith Wharves",
-        "description": "Abendessen und Sonnenuntergang unterhalb der Story Bridge.",
-        "locationName": "Howard Smith Wharves, Brisbane",
-        "coords": [
-          -27.463,
-          153.0352
-        ],
-        "region": "Brisbane",
-        "transportMode": "ferry",
-        "durationMinutes": 180,
-        "type": "restaurant"
-      }
-    ],
-    "sights": [],
-    "accommodation": null,
-    "budgetItems": [],
-    "dayBadge": "TAG 10 · BRISBANE",
-    "dateBadge": "30. MÄRZ (Di)",
-    "driveIcon": "fa-person-walking",
-    "expandTrigger": "Details",
-    "flightInfo": null,
-    "hasBudgetSubcard": false,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 10,
       "date": "2027-03-30",
-      "title": "Ideen für Brisbane"
-    }
-  },
-  {
-    "dayNumber": 11,
-    "date": "2027-03-31",
-    "dayOfWeek": "Mi",
-    "title": "Brisbane → Noosa → Rainbow Beach → Hervey Bay",
-    "routeBadge": "Noosa → Rainbow → Hervey: ca. 2,5 Std.",
-    "transportType": "car",
-    "highlights": [
-      "🦘 Kängurus am Morning Walk",
-      "🏖️ Carlo Sand Blow Riesendüne"
-    ],
-    "summary": "Frühe Abfahrt aus Brisbane über Noosa und Rainbow Beach zur Carlo Sand Blow; anschließend Weiterfahrt nach Hervey Bay.",
-    "activities": [
-      {
-        "time": "07:00",
-        "title": "Abfahrt Brisbane Richtung Noosa",
-        "description": "Früher Start für die Küstenetappe nach Norden.",
-        "locationName": "Brisbane CBD",
-        "coords": [
-          -27.4698,
-          153.0251
-        ],
-        "region": "Brisbane / Noosa / Hervey Bay",
-        "transportMode": "car",
-        "durationMinutes": 120,
-        "type": "transport"
-      },
-      {
-        "time": "13:00",
-        "title": "Fahrt nach Rainbow Beach entlang der Küste",
-        "description": "Frühe Abfahrt aus Brisbane über Noosa und Rainbow Beach zur Carlo Sand Blow; anschließend Weiterfahrt nach Hervey Bay.",
-        "locationName": "Brisbane / Noosa / Hervey Bay",
-        "coords": [
-          -25.908,
-          153.0964
-        ],
-        "region": "Brisbane / Noosa / Hervey Bay",
-        "transportMode": "car",
-        "durationMinutes": 90,
-        "type": "transport"
-      },
-      {
-        "time": "14:30",
-        "title": "Erkundung der Carlo Sand Blow Riesensanddüne",
-        "description": "Frühe Abfahrt aus Brisbane über Noosa und Rainbow Beach zur Carlo Sand Blow; anschließend Weiterfahrt nach Hervey Bay.",
-        "locationName": "Carlo Sand Blow",
-        "coords": [
-          -25.908,
-          153.0964
-        ],
-        "region": "islands",
-        "transportMode": "walk",
-        "durationMinutes": 210,
-        "type": "sightseeing"
-      },
-      {
-        "time": "18:00",
-        "title": "Check-in Fraser Coast Top Tourist Park in Hervey Bay",
-        "description": "Frühe Abfahrt aus Brisbane über Noosa und Rainbow Beach zur Carlo Sand Blow; anschließend Weiterfahrt nach Hervey Bay.",
-        "locationName": "Hervey Bay (Nightcap at Kondari Resort)",
-        "coords": [
-          -25.2986,
-          152.8535
-        ],
-        "region": "Brisbane / Noosa / Hervey Bay",
-        "transportMode": "car",
-        "durationMinutes": 60,
-        "type": "transport"
+      "dayOfWeek": "Di",
+      "title": "Brisbane → Weiterfahrt nach Noosa",
+      "region": "Brisbane / Noosa",
+      "routeBadge": "Brisbane → Noosa: ca. 2 Std.",
+      "transportType": "car",
+      "highlights": [
+        "🚗 Fahrt an die Sunshine Coast",
+        "🏖️ Noosa Main Beach",
+        "🍽️ Hastings Street"
+      ],
+      "summary": "Entspannter Vormittag in Brisbane, danach Fahrt an die Sunshine Coast nach Noosa mit Strandzeit und Abendessen in der Hastings Street.",
+      "activities": [
+        {
+          "time": "09:30",
+          "title": "Frühstück & Check-out in Brisbane",
+          "description": "Entspannter Vormittag in Brisbane, danach Fahrt an die Sunshine Coast nach Noosa mit Strandzeit und Abendessen in der Hastings Street.",
+          "locationName": "Brisbane CBD",
+          "coords": [
+            -27.4698,
+            153.0251
+          ],
+          "region": "Brisbane",
+          "transportMode": "walk",
+          "durationMinutes": 60,
+          "type": "restaurant"
+        },
+        {
+          "time": "10:30",
+          "title": "Fahrt von Brisbane nach Noosa",
+          "description": "Entspannter Vormittag in Brisbane, danach Fahrt an die Sunshine Coast nach Noosa mit Strandzeit und Abendessen in der Hastings Street.",
+          "locationName": "Brisbane → Noosa",
+          "coords": [
+            -27.4698,
+            153.0251
+          ],
+          "region": "Brisbane / Noosa",
+          "transportMode": "car",
+          "durationMinutes": 120,
+          "type": "transport"
+        },
+        {
+          "time": "13:00",
+          "title": "Strandzeit am Noosa Main Beach",
+          "description": "Entspannter Vormittag in Brisbane, danach Fahrt an die Sunshine Coast nach Noosa mit Strandzeit und Abendessen in der Hastings Street.",
+          "locationName": "Noosa Main Beach",
+          "coords": [
+            -26.3875,
+            153.0925
+          ],
+          "region": "Noosa",
+          "transportMode": "walk",
+          "durationMinutes": 150,
+          "type": "sightseeing"
+        },
+        {
+          "time": "16:00",
+          "title": "Spaziergang im Noosa National Park",
+          "description": "Entspannter Vormittag in Brisbane, danach Fahrt an die Sunshine Coast nach Noosa mit Strandzeit und Abendessen in der Hastings Street.",
+          "locationName": "Noosa National Park",
+          "coords": [
+            -26.3836,
+            153.1017
+          ],
+          "region": "Noosa",
+          "transportMode": "walk",
+          "durationMinutes": 120,
+          "type": "sightseeing"
+        },
+        {
+          "time": "18:30",
+          "title": "Abendessen in der Hastings Street",
+          "description": "Entspannter Vormittag in Brisbane, danach Fahrt an die Sunshine Coast nach Noosa mit Strandzeit und Abendessen in der Hastings Street.",
+          "locationName": "Hastings Street, Noosa",
+          "coords": [
+            -26.3866,
+            153.0944
+          ],
+          "region": "Noosa",
+          "transportMode": "walk",
+          "durationMinutes": 90,
+          "type": "restaurant"
+        }
+      ],
+      "sights": [],
+      "accommodation": null,
+      "budgetItems": [],
+      "dayBadge": "TAG 10 · BRISBANE / NOOSA",
+      "dateBadge": "30. MÄRZ (Di)",
+      "driveIcon": "fa-person-walking",
+      "expandTrigger": "Details",
+      "flightInfo": null,
+      "hasBudgetSubcard": false,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-03-30",
+        "title": "Ideen für Brisbane"
       }
-    ],
-    "sights": [
-      {
-        "id": "spot-15",
-        "spotId": 15,
-        "name": "Carlo Sand Blow",
-        "highlight": "Riesige 15 Hektar große Sanddüne direkt über dem Meer mit Blick auf Double Island Point.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Oberer Scheitelkamm der Düne mit Blick nach Westen über den Great Sandy Strait für dramatische Schattenwürfe im Sand.",
-        "photoTime": "",
-        "directions": "Cooloola Drive in Rainbow Beach, 10 Min. Fußweg über den Dünenpfad.",
-        "mapsUrl": "https://maps.google.com/?q=Carlo%2BSand%2BBlow%2BRainbow%2BBeach",
-        "coords": [
-          -25.908,
-          153.0964
-        ],
-        "region": "islands"
-      }
-    ],
-    "accommodation": {
-      "cardTitle": "Hotel &amp; Unterkunft",
-      "rawHtml": "<strong>Woolshed Eco Lodge / Nightcap Hotel</strong> (Hervey Bay) – 1 Nacht gebucht",
-      "name": "Woolshed Eco Lodge / Nightcap Hotel",
-      "location": "Hervey Bay",
-      "nights": 1,
-      "bookingLink": "https://nightcap.nighteliercollective.com.au",
-      "bookingLabel": "Hotel Website",
-      "mapsLink": "",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": true
     },
-    "budgetItems": [
-      {
-        "title": "Hervey Bay Kondari Resort & Rainbow Beach",
-        "costEur": 95,
-        "status": "planned",
-        "statusText": "Geplant",
-        "costFormatted": "95 €"
-      }
-    ],
-    "dayBadge": "TAG 11 · RAINBOW BEACH & HERVEY BAY",
-    "dateBadge": "31. MÄRZ (Mi)",
-    "driveIcon": "fa-car",
-    "expandTrigger": "Details & Hotel",
-    "flightInfo": null,
-    "hasBudgetSubcard": false,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 11,
       "date": "2027-03-31",
-      "title": "Ideen für Tag 11 Verschlüsselt"
+      "dayOfWeek": "Mi",
+      "title": "Noosa → Weiterfahrt nach Hervey Bay",
+      "routeBadge": "Noosa → Hervey Bay: ca. 3 Std.",
+      "transportType": "car",
+      "highlights": [
+        "☕ Frühstück in Noosa",
+        "🏖️ Carlo Sand Blow Riesendüne"
+      ],
+      "summary": "Frühstück in Noosa, dann Weiterfahrt über Rainbow Beach (Carlo Sand Blow) nach Hervey Bay.",
+      "activities": [
+        {
+          "time": "09:00",
+          "title": "Frühstück in Noosa",
+          "description": "Frühstück in Noosa, dann Weiterfahrt über Rainbow Beach (Carlo Sand Blow) nach Hervey Bay.",
+          "locationName": "Hastings Street, Noosa",
+          "coords": [
+            -26.3866,
+            153.0944
+          ],
+          "region": "Noosa",
+          "transportMode": "walk",
+          "durationMinutes": 90,
+          "type": "restaurant"
+        },
+        {
+          "time": "11:00",
+          "title": "Weiterfahrt nach Rainbow Beach",
+          "description": "Frühstück in Noosa, dann Weiterfahrt über Rainbow Beach (Carlo Sand Blow) nach Hervey Bay.",
+          "locationName": "Noosa → Rainbow Beach",
+          "coords": [
+            -26.3875,
+            153.0925
+          ],
+          "region": "Noosa / Hervey Bay",
+          "transportMode": "car",
+          "durationMinutes": 120,
+          "type": "transport"
+        },
+        {
+          "time": "13:30",
+          "title": "Erkundung der Carlo Sand Blow Riesensanddüne",
+          "description": "Frühstück in Noosa, dann Weiterfahrt über Rainbow Beach (Carlo Sand Blow) nach Hervey Bay.",
+          "locationName": "Carlo Sand Blow",
+          "coords": [
+            -25.908,
+            153.0964
+          ],
+          "region": "Rainbow Beach",
+          "transportMode": "walk",
+          "durationMinutes": 120,
+          "type": "sightseeing"
+        },
+        {
+          "time": "17:00",
+          "title": "Weiterfahrt & Check-in in Hervey Bay",
+          "description": "Frühstück in Noosa, dann Weiterfahrt über Rainbow Beach (Carlo Sand Blow) nach Hervey Bay.",
+          "locationName": "Hervey Bay",
+          "coords": [
+            -25.2986,
+            152.8535
+          ],
+          "region": "Hervey Bay",
+          "transportMode": "car",
+          "durationMinutes": 90,
+          "type": "transport"
+        }
+      ],
+      "sights": [
+        {
+          "id": "spot-15",
+          "spotId": 15,
+          "name": "Carlo Sand Blow",
+          "highlight": "Riesige 15 Hektar große Sanddüne direkt über dem Meer mit Blick auf Double Island Point.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Oberer Scheitelkamm der Düne mit Blick nach Westen über den Great Sandy Strait für dramatische Schattenwürfe im Sand.",
+          "photoTime": "",
+          "directions": "Cooloola Drive in Rainbow Beach, 10 Min. Fußweg über den Dünenpfad.",
+          "mapsUrl": "https://maps.google.com/?q=Carlo%2BSand%2BBlow%2BRainbow%2BBeach",
+          "coords": [
+            -25.908,
+            153.0964
+          ],
+          "region": "islands"
+        }
+      ],
+      "accommodation": {
+        "cardTitle": "Hotel &amp; Unterkunft",
+        "rawHtml": "<strong>Woolshed Eco Lodge / Nightcap Hotel</strong> (Hervey Bay) – 1 Nacht gebucht",
+        "name": "Woolshed Eco Lodge / Nightcap Hotel",
+        "location": "Hervey Bay",
+        "nights": 1,
+        "bookingLink": "https://nightcap.nighteliercollective.com.au",
+        "bookingLabel": "Hotel Website",
+        "mapsLink": "",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": true
+      },
+      "budgetItems": [
+        {
+          "title": "Hervey Bay Kondari Resort & Rainbow Beach",
+          "costEur": 95,
+          "status": "planned",
+          "statusText": "Geplant",
+          "costFormatted": "95 €"
+        }
+      ],
+      "dayBadge": "TAG 11 · NOOSA / HERVEY BAY",
+      "dateBadge": "31. MÄRZ (Mi)",
+      "driveIcon": "fa-car",
+      "expandTrigger": "Details & Hotel",
+      "flightInfo": null,
+      "hasBudgetSubcard": false,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-03-31",
+        "title": "Ideen für Tag 11 Verschlüsselt"
+      },
+      "region": "Noosa / Hervey Bay"
     },
-    "region": "Brisbane / Noosa / Hervey Bay"
-  },
-  {
-    "dayNumber": 12,
-    "date": "2027-04-01",
-    "dayOfWeek": "Do",
-    "title": "K’gari (Fraser Island) & Nachtbus nach Norden",
-    "routeBadge": "Tagestour & Nachtbus: 11 Std.",
-    "transportType": "bus",
-    "highlights": [
-      "🏝️ Lake McKenzie Quarzsandsee",
-      "🚢 Maheno Wreck & 75 Mile Beach"
-    ],
-    "summary": "Ganztägige geführte 4WD-Tour auf K’gari: Lake McKenzie (glasklarer Süßwassersee), 75 Mile Beach Sand-Highway, Maheno Shipwreck & Eli Creek. Abends Mietwagenabgabe in Hervey Bay und Greyhound-Nachtbus nach Airlie Beach.",
-    "activities": [
-      {
-        "time": "07:30",
-        "title": "Abfahrt ganztägige 4WD-Explorer-Tour nach K'gari (Fraser Island)",
-        "description": "Ganztägige geführte 4WD-Tour auf K’gari: Lake McKenzie (glasklarer Süßwassersee), 75 Mile Beach Sand-Highway, Maheno Shipwreck & Eli Creek. Abends Mietwagenabgabe in Hervey Bay und Greyhound-Nachtbus nach Airlie Beach.",
-        "locationName": "Lake McKenzie & Maheno Wreck (K’gari)",
-        "coords": [
-          -25.449,
-          153.058
-        ],
-        "region": "islands",
-        "transportMode": "ferry",
-        "durationMinutes": 210,
-        "type": "transport"
-      },
-      {
-        "time": "11:00",
-        "title": "Baden im kristallklaren Lake McKenzie",
-        "description": "Ganztägige geführte 4WD-Tour auf K’gari: Lake McKenzie (glasklarer Süßwassersee), 75 Mile Beach Sand-Highway, Maheno Shipwreck & Eli Creek. Abends Mietwagenabgabe in Hervey Bay und Greyhound-Nachtbus nach Airlie Beach.",
-        "locationName": "Lake McKenzie & Maheno Wreck (K’gari)",
-        "coords": [
-          -25.449,
-          153.058
-        ],
-        "region": "islands",
-        "transportMode": "walk",
-        "durationMinutes": 180,
-        "type": "sightseeing"
-      },
-      {
-        "time": "14:00",
-        "title": "Fahrt über den 75 Mile Beach Highway zum Maheno Schiffswrack",
-        "description": "Ganztägige geführte 4WD-Tour auf K’gari: Lake McKenzie (glasklarer Süßwassersee), 75 Mile Beach Sand-Highway, Maheno Shipwreck & Eli Creek. Abends Mietwagenabgabe in Hervey Bay und Greyhound-Nachtbus nach Airlie Beach.",
-        "locationName": "Lake McKenzie & Maheno Wreck (K’gari)",
-        "coords": [
-          -25.449,
-          153.058
-        ],
-        "region": "islands",
-        "transportMode": "car",
-        "durationMinutes": 180,
-        "type": "transport"
-      },
-      {
-        "time": "17:00",
-        "title": "Rückkehr Hervey Bay & Mietwagen-Rückgabe",
-        "description": "Ganztägige geführte 4WD-Tour auf K’gari: Lake McKenzie (glasklarer Süßwassersee), 75 Mile Beach Sand-Highway, Maheno Shipwreck & Eli Creek. Abends Mietwagenabgabe in Hervey Bay und Greyhound-Nachtbus nach Airlie Beach.",
-        "locationName": "K’gari (Lake McKenzie & Maheno Wreck) → Nachtbus",
-        "coords": [
-          -25.449,
-          153.058
-        ],
-        "region": "K'gari",
-        "transportMode": "car",
-        "durationMinutes": 180,
-        "type": "transport"
-      },
-      {
-        "time": "20:00",
-        "title": "Einstieg in den Greyhound Nachtbus nach Airlie Beach",
-        "description": "Ganztägige geführte 4WD-Tour auf K’gari: Lake McKenzie (glasklarer Süßwassersee), 75 Mile Beach Sand-Highway, Maheno Shipwreck & Eli Creek. Abends Mietwagenabgabe in Hervey Bay und Greyhound-Nachtbus nach Airlie Beach.",
-        "locationName": "K’gari (Lake McKenzie & Maheno Wreck) → Nachtbus",
-        "coords": [
-          -25.449,
-          153.058
-        ],
-        "region": "K'gari",
-        "transportMode": "walk",
-        "durationMinutes": 60,
-        "type": "sightseeing"
-      }
-    ],
-    "sights": [
-      {
-        "id": "spot-16",
-        "spotId": 16,
-        "name": "Lake McKenzie & Maheno Wreck (K’gari)",
-        "highlight": "Schneeweißer Quarzsand, glasklarer Süßwassersee und historisches Schiffswrack am 75 Mile Beach.",
-        "photoSpot": "Foto-Spot &amp; Zeit: 30 Meter schräg vor dem Bug am Strand – die Brandung umspült die Wrackrippen für tolle Kontrastaufnahmen.",
-        "photoTime": "",
-        "directions": "Ausschließlich per geführter 4WD-Tour oder 4x4-Fahrzeug ab Hervey Bay.",
-        "mapsUrl": "https://maps.google.com/?q=Lake%2BMcKenzie%2BFraser%2BIsland",
-        "coords": [
-          -25.449,
-          153.058
-        ],
-        "region": "islands"
-      }
-    ],
-    "accommodation": {
-      "cardTitle": "Hotel & Unterkunft",
-      "name": "Greyhound Australia Nachtbus",
-      "location": "K’gari Fraser Island / Nachtbus",
-      "nights": 1,
-      "bookingLink": "https://www.greyhound.com.au",
-      "bookingLabel": "Greyhound Bus Ticket",
-      "mapsLink": "",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": false
-    },
-    "budgetItems": [
-      {
-        "title": "K’gari 4x4 Offroad-Tour (180 €) + Nachtbus (55 €)",
-        "costEur": 235,
-        "status": "planned",
-        "statusText": "Geplant",
-        "costFormatted": "235 €"
-      }
-    ],
-    "dayBadge": "TAG 12 · K’GARI (FRASER ISLAND)",
-    "dateBadge": "01. APRIL (Do)",
-    "driveIcon": "fa-bus",
-    "expandTrigger": "Details & Ausflug",
-    "flightInfo": null,
-    "hasBudgetSubcard": false,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 12,
       "date": "2027-04-01",
-      "title": "Ideen &amp; Vorschläge für Tag 12 Verschlüsselt"
+      "dayOfWeek": "Do",
+      "title": "Hervey Bay / K’gari (Fraser Island) → Nachtbus nach Airlie Beach",
+      "routeBadge": "Tagestour & Nachtbus: 11 Std.",
+      "transportType": "bus",
+      "highlights": [
+        "🏝️ Lake McKenzie Quarzsandsee",
+        "🚢 Maheno Wreck & 75 Mile Beach"
+      ],
+      "summary": "Ausflug nach K’gari (Fraser Island) bis ca. 17:00, danach Nachtbus nach Airlie Beach.",
+      "activities": [
+        {
+          "time": "07:30",
+          "title": "Abfahrt ganztägige 4WD-Explorer-Tour nach K'gari (Fraser Island)",
+          "description": "Ganztägige geführte 4WD-Tour auf K’gari: Lake McKenzie (glasklarer Süßwassersee), 75 Mile Beach Sand-Highway, Maheno Shipwreck & Eli Creek. Abends Mietwagenabgabe in Hervey Bay und Greyhound-Nachtbus nach Airlie Beach.",
+          "locationName": "Lake McKenzie & Maheno Wreck (K’gari)",
+          "coords": [
+            -25.449,
+            153.058
+          ],
+          "region": "islands",
+          "transportMode": "ferry",
+          "durationMinutes": 210,
+          "type": "transport"
+        },
+        {
+          "time": "11:00",
+          "title": "Baden im kristallklaren Lake McKenzie",
+          "description": "Ganztägige geführte 4WD-Tour auf K’gari: Lake McKenzie (glasklarer Süßwassersee), 75 Mile Beach Sand-Highway, Maheno Shipwreck & Eli Creek. Abends Mietwagenabgabe in Hervey Bay und Greyhound-Nachtbus nach Airlie Beach.",
+          "locationName": "Lake McKenzie & Maheno Wreck (K’gari)",
+          "coords": [
+            -25.449,
+            153.058
+          ],
+          "region": "islands",
+          "transportMode": "walk",
+          "durationMinutes": 180,
+          "type": "sightseeing"
+        },
+        {
+          "time": "14:00",
+          "title": "Fahrt über den 75 Mile Beach Highway zum Maheno Schiffswrack",
+          "description": "Ganztägige geführte 4WD-Tour auf K’gari: Lake McKenzie (glasklarer Süßwassersee), 75 Mile Beach Sand-Highway, Maheno Shipwreck & Eli Creek. Abends Mietwagenabgabe in Hervey Bay und Greyhound-Nachtbus nach Airlie Beach.",
+          "locationName": "Lake McKenzie & Maheno Wreck (K’gari)",
+          "coords": [
+            -25.449,
+            153.058
+          ],
+          "region": "islands",
+          "transportMode": "car",
+          "durationMinutes": 180,
+          "type": "transport"
+        },
+        {
+          "time": "17:00",
+          "title": "Rückkehr Hervey Bay & Mietwagen-Rückgabe",
+          "description": "Ganztägige geführte 4WD-Tour auf K’gari: Lake McKenzie (glasklarer Süßwassersee), 75 Mile Beach Sand-Highway, Maheno Shipwreck & Eli Creek. Abends Mietwagenabgabe in Hervey Bay und Greyhound-Nachtbus nach Airlie Beach.",
+          "locationName": "K’gari (Lake McKenzie & Maheno Wreck) → Nachtbus",
+          "coords": [
+            -25.449,
+            153.058
+          ],
+          "region": "K'gari",
+          "transportMode": "car",
+          "durationMinutes": 180,
+          "type": "transport"
+        },
+        {
+          "time": "20:00",
+          "title": "Einstieg in den Greyhound Nachtbus nach Airlie Beach",
+          "description": "Ganztägige geführte 4WD-Tour auf K’gari: Lake McKenzie (glasklarer Süßwassersee), 75 Mile Beach Sand-Highway, Maheno Shipwreck & Eli Creek. Abends Mietwagenabgabe in Hervey Bay und Greyhound-Nachtbus nach Airlie Beach.",
+          "locationName": "K’gari (Lake McKenzie & Maheno Wreck) → Nachtbus",
+          "coords": [
+            -25.449,
+            153.058
+          ],
+          "region": "K'gari",
+          "transportMode": "walk",
+          "durationMinutes": 60,
+          "type": "sightseeing"
+        }
+      ],
+      "sights": [
+        {
+          "id": "spot-16",
+          "spotId": 16,
+          "name": "Lake McKenzie & Maheno Wreck (K’gari)",
+          "highlight": "Schneeweißer Quarzsand, glasklarer Süßwassersee und historisches Schiffswrack am 75 Mile Beach.",
+          "photoSpot": "Foto-Spot &amp; Zeit: 30 Meter schräg vor dem Bug am Strand – die Brandung umspült die Wrackrippen für tolle Kontrastaufnahmen.",
+          "photoTime": "",
+          "directions": "Ausschließlich per geführter 4WD-Tour oder 4x4-Fahrzeug ab Hervey Bay.",
+          "mapsUrl": "https://maps.google.com/?q=Lake%2BMcKenzie%2BFraser%2BIsland",
+          "coords": [
+            -25.449,
+            153.058
+          ],
+          "region": "islands"
+        }
+      ],
+      "accommodation": {
+        "cardTitle": "Hotel & Unterkunft",
+        "name": "Greyhound Australia Nachtbus",
+        "location": "K’gari Fraser Island / Nachtbus",
+        "nights": 1,
+        "bookingLink": "https://www.greyhound.com.au",
+        "bookingLabel": "Greyhound Bus Ticket",
+        "mapsLink": "",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": false
+      },
+      "budgetItems": [
+        {
+          "title": "K’gari 4x4 Offroad-Tour (180 €) + Nachtbus (55 €)",
+          "costEur": 235,
+          "status": "planned",
+          "statusText": "Geplant",
+          "costFormatted": "235 €"
+        }
+      ],
+      "dayBadge": "TAG 12 · HERVEY BAY / K’GARI",
+      "dateBadge": "01. APRIL (Do)",
+      "driveIcon": "fa-bus",
+      "expandTrigger": "Details & Ausflug",
+      "flightInfo": null,
+      "hasBudgetSubcard": false,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-04-01",
+        "title": "Ideen &amp; Vorschläge für Tag 12 Verschlüsselt"
+      },
+      "region": "Hervey Bay / K’gari"
     },
-    "region": "K'gari"
-  },
-  {
-    "dayNumber": 13,
-    "date": "2027-04-02",
-    "dayOfWeek": "Fr",
-    "title": "Ankunft Airlie Beach & Whitsundays Helikopter-Rundflug",
-    "routeBadge": "Helikopter / Rundflug",
-    "transportType": "helicopter",
-    "highlights": [
-      "🌴 Coral Sea Marina Esplanade",
-      "🚁 Whitsundays Helikopterflug"
-    ],
-    "summary": "Morgens Ankunft mit dem Bus in Airlie Beach. Check-in in den Apartments, Schlaf nachholen & Strandlagune erkunden. Am Nachmittag: Spektakulärer Helikopter- / Rundflug über das berühmte Heart Reef & Whitehaven Beach.",
-    "activities": [
-      {
-        "time": "06:30",
-        "title": "Ankunft Greyhound Nachtbus in Airlie Beach & leckeres Frühstück",
-        "description": "Morgens Ankunft mit dem Bus in Airlie Beach. Check-in in den Apartments, Schlaf nachholen & Strandlagune erkunden. Am Nachmittag: Spektakulärer Helikopter- / Rundflug über das berühmte Heart Reef & Whitehaven Beach.",
-        "locationName": "Airlie Beach Esplanade & Coral Sea Marina",
-        "coords": [
-          -20.2675,
-          148.718
-        ],
-        "region": "islands",
-        "transportMode": "walk",
-        "durationMinutes": 210,
-        "type": "restaurant"
-      },
-      {
-        "time": "10:00",
-        "title": "Frühes Check-in / Gepäckabgabe Whitsunday Terraces Resort",
-        "description": "Morgens Ankunft mit dem Bus in Airlie Beach. Check-in in den Apartments, Schlaf nachholen & Strandlagune erkunden. Am Nachmittag: Spektakulärer Helikopter- / Rundflug über das berühmte Heart Reef & Whitehaven Beach.",
-        "locationName": "Hervey Bay / Airlie Beach",
-        "coords": [
-          -20.2675,
-          148.718
-        ],
-        "region": "Hervey Bay / Airlie Beach",
-        "transportMode": "car",
-        "durationMinutes": 240,
-        "type": "transport"
-      },
-      {
-        "time": "14:00",
-        "title": "Spektakulärer Helikopter-Rundflug über das Heart Reef & Whitehaven Beach",
-        "description": "Morgens Ankunft mit dem Bus in Airlie Beach. Check-in in den Apartments, Schlaf nachholen & Strandlagune erkunden. Am Nachmittag: Spektakulärer Helikopter- / Rundflug über das berühmte Heart Reef & Whitehaven Beach.",
-        "locationName": "Airlie Beach Esplanade & Coral Sea Marina",
-        "coords": [
-          -20.2675,
-          148.718
-        ],
-        "region": "islands",
-        "transportMode": "plane",
-        "durationMinutes": 270,
-        "type": "flight"
-      },
-      {
-        "time": "18:30",
-        "title": "Entspanntes Abendessen an der Esplanade",
-        "description": "Morgens Ankunft mit dem Bus in Airlie Beach. Check-in in den Apartments, Schlaf nachholen & Strandlagune erkunden. Am Nachmittag: Spektakulärer Helikopter- / Rundflug über das berühmte Heart Reef & Whitehaven Beach.",
-        "locationName": "Airlie Beach Esplanade & Coral Sea Marina",
-        "coords": [
-          -20.2675,
-          148.718
-        ],
-        "region": "islands",
-        "transportMode": "walk",
-        "durationMinutes": 60,
-        "type": "sightseeing"
-      }
-    ],
-    "sights": [
-      {
-        "id": "spot-17",
-        "spotId": 17,
-        "name": "Airlie Beach Esplanade & Coral Sea Marina",
-        "highlight": "Tropisches Tor zu den Whitsunday-Inseln mit Palmenpromenade und Marina-Atmosphäre.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Aus dem Helikopter-Fenster mit Blick senkrecht hinab auf das herzförmige Heart Reef im Korallenmeer. (🚁 Nachmittag (Helikopterflug))",
-        "photoTime": "",
-        "directions": "Fußweg ab Greyhound Haltestelle / Hotel.",
-        "mapsUrl": "https://maps.google.com/?q=Coral%2BSea%2BMarina%2BAirlie%2BBeach",
-        "coords": [
-          -20.2675,
-          148.718
-        ],
-        "region": "islands"
-      }
-    ],
-    "accommodation": {
-      "cardTitle": "Unterkunft Airlie Beach",
-      "rawHtml": "<strong>Coral Sea Vista Apartments:</strong> 02.04. – 05.04. (3 Nächte)",
-      "name": "Coral Sea Vista Apartments: 02.04. – 05.04.",
-      "location": "3 Nächte",
-      "nights": 1,
-      "bookingLink": "https://www.booking.com/hotel/au/coral-sea-vista-apartments.de.html",
-      "bookingLabel": "Booking.com Link",
-      "mapsLink": "",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": true
-    },
-    "budgetItems": [
-      {
-        "title": "Coral Sea Vista Whitsundays (110 €) + Heli-Rundflug (220 €)",
-        "costEur": 330,
-        "status": "planned",
-        "statusText": "Geplant",
-        "costFormatted": "330 €"
-      }
-    ],
-    "dayBadge": "TAG 13 · AIRLIE BEACH",
-    "dateBadge": "02. APRIL (Fr)",
-    "driveIcon": "fa-helicopter",
-    "expandTrigger": "Details & Hotel",
-    "flightInfo": null,
-    "hasBudgetSubcard": true,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 13,
       "date": "2027-04-02",
-      "title": "Ideen für Airlie Beach Verschlüsselt"
+      "dayOfWeek": "Fr",
+      "title": "Airlie Beach",
+      "routeBadge": "Ankunft & Erholung",
+      "transportType": "walk",
+      "highlights": [
+        "🌴 Coral Sea Marina Esplanade",
+        "🏊 Airlie Beach Lagoon"
+      ],
+      "summary": "Ankunft mit dem Nachtbus in Airlie Beach, Check-in, Lagune und Esplanade.",
+      "activities": [
+        {
+          "time": "06:30",
+          "title": "Ankunft Greyhound Nachtbus in Airlie Beach & Frühstück",
+          "description": "Ankunft mit dem Nachtbus in Airlie Beach, Check-in, Lagune und Esplanade.",
+          "locationName": "Airlie Beach Esplanade & Coral Sea Marina",
+          "coords": [
+            -20.2675,
+            148.718
+          ],
+          "region": "Airlie Beach",
+          "transportMode": "walk",
+          "durationMinutes": 210,
+          "type": "restaurant"
+        },
+        {
+          "time": "10:00",
+          "title": "Check-in / Gepäckabgabe Unterkunft",
+          "description": "Ankunft mit dem Nachtbus in Airlie Beach, Check-in, Lagune und Esplanade.",
+          "locationName": "Airlie Beach",
+          "coords": [
+            -20.2675,
+            148.718
+          ],
+          "region": "Airlie Beach",
+          "transportMode": "walk",
+          "durationMinutes": 60,
+          "type": "hotel"
+        },
+        {
+          "time": "14:00",
+          "title": "Chillen an der Airlie Beach Lagoon",
+          "description": "Ankunft mit dem Nachtbus in Airlie Beach, Check-in, Lagune und Esplanade.",
+          "locationName": "Airlie Beach Lagoon",
+          "coords": [
+            -20.2685,
+            148.7185
+          ],
+          "region": "Airlie Beach",
+          "transportMode": "walk",
+          "durationMinutes": 240,
+          "type": "sightseeing"
+        },
+        {
+          "time": "18:30",
+          "title": "Abendessen an der Esplanade",
+          "description": "Ankunft mit dem Nachtbus in Airlie Beach, Check-in, Lagune und Esplanade.",
+          "locationName": "Airlie Beach Esplanade & Coral Sea Marina",
+          "coords": [
+            -20.2675,
+            148.718
+          ],
+          "region": "Airlie Beach",
+          "transportMode": "walk",
+          "durationMinutes": 60,
+          "type": "restaurant"
+        }
+      ],
+      "sights": [
+        {
+          "id": "spot-17",
+          "spotId": 17,
+          "name": "Airlie Beach Esplanade & Coral Sea Marina",
+          "highlight": "Tropisches Tor zu den Whitsunday-Inseln mit Palmenpromenade und Marina-Atmosphäre.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Aus dem Helikopter-Fenster mit Blick senkrecht hinab auf das herzförmige Heart Reef im Korallenmeer. (🚁 Nachmittag (Helikopterflug))",
+          "photoTime": "",
+          "directions": "Fußweg ab Greyhound Haltestelle / Hotel.",
+          "mapsUrl": "https://maps.google.com/?q=Coral%2BSea%2BMarina%2BAirlie%2BBeach",
+          "coords": [
+            -20.2675,
+            148.718
+          ],
+          "region": "islands"
+        }
+      ],
+      "accommodation": {
+        "cardTitle": "Unterkunft Airlie Beach",
+        "rawHtml": "<strong>Coral Sea Vista Apartments:</strong> 02.04. – 05.04. (3 Nächte)",
+        "name": "Coral Sea Vista Apartments: 02.04. – 05.04.",
+        "location": "3 Nächte",
+        "nights": 1,
+        "bookingLink": "https://www.booking.com/hotel/au/coral-sea-vista-apartments.de.html",
+        "bookingLabel": "Booking.com Link",
+        "mapsLink": "",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": true
+      },
+      "budgetItems": [
+        {
+          "title": "Coral Sea Vista Whitsundays",
+          "costEur": 110,
+          "status": "planned",
+          "statusText": "Geplant",
+          "costFormatted": "110 €"
+        }
+      ],
+      "dayBadge": "TAG 13 · AIRLIE BEACH",
+      "dateBadge": "02. APRIL (Fr)",
+      "driveIcon": "fa-helicopter",
+      "expandTrigger": "Details & Hotel",
+      "flightInfo": null,
+      "hasBudgetSubcard": true,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-04-02",
+        "title": "Ideen für Airlie Beach Verschlüsselt"
+      },
+      "region": "Airlie Beach"
     },
-    "region": "Hervey Bay / Airlie Beach"
-  },
-  {
-    "dayNumber": 14,
-    "date": "2027-04-03",
-    "dayOfWeek": "Sa",
-    "title": "Whitsundays Highlight-Tag",
-    "routeBadge": "Katamaran Bootstour",
-    "transportType": "ferry",
-    "highlights": [
-      "🏝️ Whitehaven Beach",
-      "🚁 Heart Reef & Hill Inlet"
-    ],
-    "summary": "Ganztägige Katamaran-Tour zu den Whitsunday Islands: Traumstrand Whitehaven Beach, Hill Inlet Lookout (Sandwirbel) & Schnorcheln am Great Barrier Reef.",
-    "activities": [
-      {
-        "time": "08:00",
-        "title": "Boarding Katamaran-Segeltour ab Coral Sea Marina",
-        "description": "Ganztägige Katamaran-Tour zu den Whitsunday Islands: Traumstrand Whitehaven Beach, Hill Inlet Lookout (Sandwirbel) & Schnorcheln am Great Barrier Reef.",
-        "locationName": "Coral Sea Marina (Airlie Beach)",
-        "coords": [
-          -20.2675,
-          148.718
-        ],
-        "region": "Whitsundays",
-        "transportMode": "plane",
-        "durationMinutes": 210,
-        "type": "flight"
-      },
-      {
-        "time": "11:30",
-        "title": "Wanderung zum weltberühmten Hill Inlet Aussichtspunkt",
-        "description": "Ganztägige Katamaran-Tour zu den Whitsunday Islands: Traumstrand Whitehaven Beach, Hill Inlet Lookout (Sandwirbel) & Schnorcheln am Great Barrier Reef.",
-        "locationName": "Hill Inlet Lookout & Whitehaven Beach",
-        "coords": [
-          -20.285,
-          149.038
-        ],
-        "region": "islands",
-        "transportMode": "walk",
-        "durationMinutes": 90,
-        "type": "sightseeing"
-      },
-      {
-        "time": "13:00",
-        "title": "Strandzeit & Schnorcheln am Whitehaven Beach",
-        "description": "Ganztägige Katamaran-Tour zu den Whitsunday Islands: Traumstrand Whitehaven Beach, Hill Inlet Lookout (Sandwirbel) & Schnorcheln am Great Barrier Reef.",
-        "locationName": "Hill Inlet Lookout & Whitehaven Beach",
-        "coords": [
-          -20.285,
-          149.038
-        ],
-        "region": "islands",
-        "transportMode": "ferry",
-        "durationMinutes": 270,
-        "type": "transport"
-      },
-      {
-        "time": "17:30",
-        "title": "Rückkehr nach Airlie Beach & Sundowner Drinks",
-        "description": "Ganztägige Katamaran-Tour zu den Whitsunday Islands: Traumstrand Whitehaven Beach, Hill Inlet Lookout (Sandwirbel) & Schnorcheln am Great Barrier Reef.",
-        "locationName": "Hill Inlet Lookout & Whitehaven Beach",
-        "coords": [
-          -20.285,
-          149.038
-        ],
-        "region": "islands",
-        "transportMode": "walk",
-        "durationMinutes": 60,
-        "type": "restaurant"
-      }
-    ],
-    "sights": [
-      {
-        "id": "spot-18",
-        "spotId": 18,
-        "name": "Hill Inlet Lookout & Whitehaven Beach",
-        "highlight": "Wirbelnde weiße Sandbänke bei Ebbe und der feinste Quarzsandstrand der Erde.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Mittlere Aussichtsplattform des Hill Inlet Lookout – der klassische Panoramablick auf die Sandmuster.",
-        "photoTime": "",
-        "directions": "Ganztägiger Katamaran- oder Segeltrip ab Coral Sea Marina.",
-        "mapsUrl": "https://maps.google.com/?q=Hill%2BInlet%2BLookout%2BWhitsundays",
-        "coords": [
-          -20.285,
-          149.038
-        ],
-        "region": "islands"
-      }
-    ],
-    "accommodation": {
-      "cardTitle": "Hotel & Unterkunft",
-      "name": "Coral Sea Vista Apartments",
-      "location": "Airlie Beach (QLD)",
-      "nights": 1,
-      "bookingLink": "https://www.booking.com/hotel/au/coral-sea-vista-apartments.de.html",
-      "bookingLabel": "Booking.com Buchung",
-      "mapsLink": "",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": false
-    },
-    "budgetItems": [
-      {
-        "title": "Whitsundays Segeltour & Whitehaven Beach",
-        "costEur": 145,
-        "status": "planned",
-        "statusText": "Geplant",
-        "costFormatted": "145 €"
-      }
-    ],
-    "dayBadge": "TAG 14 · WHITSUNDAYS",
-    "dateBadge": "03. APRIL (Sa)",
-    "driveIcon": "fa-ship",
-    "expandTrigger": "Details & Ausflug",
-    "flightInfo": null,
-    "hasBudgetSubcard": false,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 14,
       "date": "2027-04-03",
-      "title": "Ideen &amp; Vorschläge für Tag 14 Verschlüsselt"
-    },
-    "region": "Whitsundays"
-  },
-  {
-    "dayNumber": 15,
-    "date": "2027-04-04",
-    "dayOfWeek": "So",
-    "title": "Airlie Beach & Umgebung (Cedar Creek Falls / Boardwalk)",
-    "routeBadge": "Entspannte Tagesausflüge",
-    "transportType": "car",
-    "highlights": [
-      "🌿 Cedar Creek Falls Naturpool",
-      "🌴 Conway Nationalpark Regenwald"
-    ],
-    "summary": "Entspannter Tag in Airlie Beach: Ausflug zu den natürlichen Rockpools der <i>Cedar Creek Falls</i> im Regenwald, Spaziergang auf dem Bicentennial Boardwalk & Sundowner am Yachthafen.",
-    "activities": [
-      {
-        "time": "10:00",
-        "title": "Ausflug & Erfrischungsbad bei den Cedar Creek Falls",
-        "description": "Entspannter Tag in Airlie Beach: Ausflug zu den natürlichen Rockpools der <i>Cedar Creek Falls</i> im Regenwald, Spaziergang auf dem Bicentennial Boardwalk & Sundowner am Yachthafen.",
-        "locationName": "Cedar Creek Falls & Conway Nationalpark",
-        "coords": [
-          -20.407,
-          148.694
-        ],
-        "region": "islands",
-        "transportMode": "plane",
-        "durationMinutes": 240,
-        "type": "flight"
+      "dayOfWeek": "Sa",
+      "title": "Whitsundays – Bootstour Whitehaven Beach",
+      "routeBadge": "Katamaran Bootstour",
+      "transportType": "ferry",
+      "highlights": [
+        "🏝️ Whitehaven Beach",
+        "🚁 Heart Reef & Hill Inlet"
+      ],
+      "summary": "Ganztägige Katamaran-Tour zu den Whitsunday Islands: Traumstrand Whitehaven Beach, Hill Inlet Lookout (Sandwirbel) & Schnorcheln am Great Barrier Reef.",
+      "activities": [
+        {
+          "time": "08:00",
+          "title": "Boarding Katamaran-Segeltour ab Coral Sea Marina",
+          "description": "Ganztägige Katamaran-Tour zu den Whitsunday Islands: Traumstrand Whitehaven Beach, Hill Inlet Lookout (Sandwirbel) & Schnorcheln am Great Barrier Reef.",
+          "locationName": "Coral Sea Marina (Airlie Beach)",
+          "coords": [
+            -20.2675,
+            148.718
+          ],
+          "region": "Whitsundays",
+          "transportMode": "plane",
+          "durationMinutes": 210,
+          "type": "flight"
+        },
+        {
+          "time": "11:30",
+          "title": "Wanderung zum weltberühmten Hill Inlet Aussichtspunkt",
+          "description": "Ganztägige Katamaran-Tour zu den Whitsunday Islands: Traumstrand Whitehaven Beach, Hill Inlet Lookout (Sandwirbel) & Schnorcheln am Great Barrier Reef.",
+          "locationName": "Hill Inlet Lookout & Whitehaven Beach",
+          "coords": [
+            -20.285,
+            149.038
+          ],
+          "region": "islands",
+          "transportMode": "walk",
+          "durationMinutes": 90,
+          "type": "sightseeing"
+        },
+        {
+          "time": "13:00",
+          "title": "Strandzeit & Schnorcheln am Whitehaven Beach",
+          "description": "Ganztägige Katamaran-Tour zu den Whitsunday Islands: Traumstrand Whitehaven Beach, Hill Inlet Lookout (Sandwirbel) & Schnorcheln am Great Barrier Reef.",
+          "locationName": "Hill Inlet Lookout & Whitehaven Beach",
+          "coords": [
+            -20.285,
+            149.038
+          ],
+          "region": "islands",
+          "transportMode": "ferry",
+          "durationMinutes": 270,
+          "type": "transport"
+        },
+        {
+          "time": "17:30",
+          "title": "Rückkehr nach Airlie Beach & Sundowner Drinks",
+          "description": "Ganztägige Katamaran-Tour zu den Whitsunday Islands: Traumstrand Whitehaven Beach, Hill Inlet Lookout (Sandwirbel) & Schnorcheln am Great Barrier Reef.",
+          "locationName": "Hill Inlet Lookout & Whitehaven Beach",
+          "coords": [
+            -20.285,
+            149.038
+          ],
+          "region": "islands",
+          "transportMode": "walk",
+          "durationMinutes": 60,
+          "type": "restaurant"
+        }
+      ],
+      "sights": [
+        {
+          "id": "spot-18",
+          "spotId": 18,
+          "name": "Hill Inlet Lookout & Whitehaven Beach",
+          "highlight": "Wirbelnde weiße Sandbänke bei Ebbe und der feinste Quarzsandstrand der Erde.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Mittlere Aussichtsplattform des Hill Inlet Lookout – der klassische Panoramablick auf die Sandmuster.",
+          "photoTime": "",
+          "directions": "Ganztägiger Katamaran- oder Segeltrip ab Coral Sea Marina.",
+          "mapsUrl": "https://maps.google.com/?q=Hill%2BInlet%2BLookout%2BWhitsundays",
+          "coords": [
+            -20.285,
+            149.038
+          ],
+          "region": "islands"
+        }
+      ],
+      "accommodation": {
+        "cardTitle": "Hotel & Unterkunft",
+        "name": "Coral Sea Vista Apartments",
+        "location": "Airlie Beach (QLD)",
+        "nights": 1,
+        "bookingLink": "https://www.booking.com/hotel/au/coral-sea-vista-apartments.de.html",
+        "bookingLabel": "Booking.com Buchung",
+        "mapsLink": "",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": false
       },
-      {
-        "time": "14:00",
-        "title": "Chillen an der kostenfreien Airlie Beach Lagoon",
-        "description": "Entspannter Tag in Airlie Beach: Ausflug zu den natürlichen Rockpools der <i>Cedar Creek Falls</i> im Regenwald, Spaziergang auf dem Bicentennial Boardwalk & Sundowner am Yachthafen.",
-        "locationName": "Airlie Beach / Melbourne",
-        "coords": [
-          -20.407,
-          148.694
-        ],
-        "region": "Airlie Beach / Melbourne",
-        "transportMode": "walk",
-        "durationMinutes": 240,
-        "type": "sightseeing"
+      "budgetItems": [
+        {
+          "title": "Whitsundays Segeltour & Whitehaven Beach",
+          "costEur": 145,
+          "status": "planned",
+          "statusText": "Geplant",
+          "costFormatted": "145 €"
+        }
+      ],
+      "dayBadge": "TAG 14 · WHITSUNDAYS",
+      "dateBadge": "03. APRIL (Sa)",
+      "driveIcon": "fa-ship",
+      "expandTrigger": "Details & Ausflug",
+      "flightInfo": null,
+      "hasBudgetSubcard": false,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-04-03",
+        "title": "Ideen &amp; Vorschläge für Tag 14 Verschlüsselt"
       },
-      {
-        "time": "18:00",
-        "title": "Sunset Seafood Dinner am Hafen",
-        "description": "Entspannter Tag in Airlie Beach: Ausflug zu den natürlichen Rockpools der <i>Cedar Creek Falls</i> im Regenwald, Spaziergang auf dem Bicentennial Boardwalk & Sundowner am Yachthafen.",
-        "locationName": "Cedar Creek Falls (Conway Nationalpark)",
-        "coords": [
-          -20.407,
-          148.694
-        ],
-        "region": "Airlie Beach / Melbourne",
-        "transportMode": "walk",
-        "durationMinutes": 60,
-        "type": "restaurant"
-      }
-    ],
-    "sights": [
-      {
-        "id": "spot-19",
-        "spotId": 19,
-        "name": "Cedar Creek Falls & Conway Nationalpark",
-        "highlight": "Natürlicher Süßwasser-Wasserfall mit Badelagune mitten im tropischen Regenwald.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Von den glatten Felsblöcken am Rand des Schwimmbeckens mit Blick direkt in den Wasserfallkessel. (🌿 Vormittags (Weiches Waldlicht))",
-        "photoTime": "",
-        "directions": "Ca. 25 Min. Autofahrt/Shuttle südwestlich von Airlie Beach.",
-        "mapsUrl": "https://maps.google.com/?q=Cedar%2BCreek%2BFalls%2BQueensland",
-        "coords": [
-          -20.407,
-          148.694
-        ],
-        "region": "islands"
-      }
-    ],
-    "accommodation": {
-      "cardTitle": "Hotel & Unterkunft",
-      "name": "Coral Sea Vista Apartments",
-      "location": "Airlie Beach (QLD)",
-      "nights": 1,
-      "bookingLink": "https://www.booking.com/hotel/au/coral-sea-vista-apartments.de.html",
-      "bookingLabel": "Booking.com Buchung",
-      "mapsLink": "",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": false
+      "region": "Airlie Beach"
     },
-    "budgetItems": [
-      {
-        "title": "Cedar Creek Falls & Entspannung Whitsundays",
-        "costEur": 50,
-        "status": "planned",
-        "statusText": "Geplant",
-        "costFormatted": "50 €"
-      }
-    ],
-    "dayBadge": "TAG 15 · WHITSUNDAYS & HINTERLAND",
-    "dateBadge": "04. APRIL (So)",
-    "driveIcon": "fa-car",
-    "expandTrigger": "Details",
-    "flightInfo": null,
-    "hasBudgetSubcard": false,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 15,
       "date": "2027-04-04",
-      "title": "Ideen &amp; Vorschläge für Tag 15 Verschlüsselt"
-    },
-    "region": "Airlie Beach / Melbourne"
-  },
-  {
-    "dayNumber": 16,
-    "date": "2027-04-05",
-    "dayOfWeek": "Mo",
-    "title": "Airlie Beach - Flug nach Melbourne",
-    "routeBadge": "Flug PPP → MEL: ca. 3 Std.",
-    "transportType": "plane",
-    "highlights": [
-      "✈️ Flug Proserpine → Melbourne",
-      "🏙️ Southbank & Yarra River Promenade"
-    ],
-    "summary": "Flug von Proserpine (PPP) nach Melbourne (MEL). Check-in in den Docklands und erster Abend am beleuchteten Yarra River, Federation Square & Southbank.",
-    "activities": [
-      {
-        "time": "08:30",
-        "title": "Transfer zum Whitsunday Coast Airport (PPP)",
-        "description": "Flug von Proserpine (PPP) nach Melbourne (MEL). Check-in in den Docklands und erster Abend am beleuchteten Yarra River, Federation Square & Southbank.",
-        "locationName": "Whitsunday Coast Airport (PPP)",
-        "coords": [
-          -20.495,
-          148.552
-        ],
-        "region": "Melbourne",
-        "transportMode": "plane",
-        "durationMinutes": 165,
-        "type": "flight"
+      "dayOfWeek": "So",
+      "title": "Airlie Beach – Rundflug über das Reef",
+      "routeBadge": "Rundflug Reef",
+      "transportType": "plane",
+      "highlights": [
+        "🚁 Rundflug über das Reef",
+        "🏊 Airlie Beach Lagoon"
+      ],
+      "summary": "Rundflug über das Great Barrier Reef (Heart Reef) ab Airlie Beach, danach Lagune und Abendessen am Hafen.",
+      "activities": [
+        {
+          "time": "09:30",
+          "title": "Rundflug über das Great Barrier Reef & Heart Reef",
+          "description": "Rundflug über das Great Barrier Reef (Heart Reef) ab Airlie Beach, danach Lagune und Abendessen am Hafen.",
+          "locationName": "Whitsunday Airport / Airlie Beach",
+          "coords": [
+            -20.2762,
+            148.7552
+          ],
+          "region": "Airlie Beach",
+          "transportMode": "plane",
+          "durationMinutes": 180,
+          "type": "activity"
+        },
+        {
+          "time": "14:00",
+          "title": "Chillen an der kostenfreien Airlie Beach Lagoon",
+          "description": "Rundflug über das Great Barrier Reef (Heart Reef) ab Airlie Beach, danach Lagune und Abendessen am Hafen.",
+          "locationName": "Airlie Beach Lagoon",
+          "coords": [
+            -20.2685,
+            148.7185
+          ],
+          "region": "Airlie Beach",
+          "transportMode": "walk",
+          "durationMinutes": 240,
+          "type": "sightseeing"
+        },
+        {
+          "time": "18:00",
+          "title": "Abendessen am Hafen",
+          "description": "Rundflug über das Great Barrier Reef (Heart Reef) ab Airlie Beach, danach Lagune und Abendessen am Hafen.",
+          "locationName": "Coral Sea Marina, Airlie Beach",
+          "coords": [
+            -20.2675,
+            148.718
+          ],
+          "region": "Airlie Beach",
+          "transportMode": "walk",
+          "durationMinutes": 60,
+          "type": "restaurant"
+        }
+      ],
+      "sights": [],
+      "accommodation": {
+        "cardTitle": "Hotel & Unterkunft",
+        "name": "Coral Sea Vista Apartments",
+        "location": "Airlie Beach (QLD)",
+        "nights": 1,
+        "bookingLink": "https://www.booking.com/hotel/au/coral-sea-vista-apartments.de.html",
+        "bookingLabel": "Booking.com Buchung",
+        "mapsLink": "",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": false
       },
-      {
-        "time": "11:15",
-        "title": "Flug Jetstar JQ 843 direkt nach Melbourne (MEL)",
-        "description": "Flug von Proserpine (PPP) nach Melbourne (MEL). Check-in in den Docklands und erster Abend am beleuchteten Yarra River, Federation Square & Southbank.",
-        "locationName": "Melbourne Southbank & Yarra River",
-        "coords": [
-          -37.8205,
-          144.964
-        ],
-        "region": "melbourne",
-        "transportMode": "plane",
-        "durationMinutes": 225,
-        "type": "flight"
+      "budgetItems": [
+        {
+          "title": "Rundflug Reef",
+          "costEur": 220,
+          "status": "planned",
+          "statusText": "Geplant",
+          "costFormatted": "220 €"
+        }
+      ],
+      "dayBadge": "TAG 15 · AIRLIE BEACH",
+      "dateBadge": "04. APRIL (So)",
+      "driveIcon": "fa-car",
+      "expandTrigger": "Details",
+      "flightInfo": null,
+      "hasBudgetSubcard": false,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-04-04",
+        "title": "Ideen &amp; Vorschläge für Tag 15 Verschlüsselt"
       },
-      {
-        "time": "15:00",
-        "title": "Check-in Hotel The Sebel Melbourne Docklands",
-        "description": "Flug von Proserpine (PPP) nach Melbourne (MEL). Check-in in den Docklands und erster Abend am beleuchteten Yarra River, Federation Square & Southbank.",
-        "locationName": "Melbourne Southbank & Yarra River",
-        "coords": [
-          -37.8205,
-          144.964
-        ],
-        "region": "melbourne",
-        "transportMode": "car",
-        "durationMinutes": 180,
-        "type": "transport"
-      },
-      {
-        "time": "18:00",
-        "title": "Spaziergang am Yarra River &amp; Dinner in Southbank",
-        "description": "Flug von Proserpine (PPP) nach Melbourne (MEL). Check-in in den Docklands und erster Abend am beleuchteten Yarra River, Federation Square & Southbank.",
-        "locationName": "Melbourne Southbank & Yarra River",
-        "coords": [
-          -37.8205,
-          144.964
-        ],
-        "region": "melbourne",
-        "transportMode": "walk",
-        "durationMinutes": 60,
-        "type": "restaurant"
-      }
-    ],
-    "sights": [
-      {
-        "id": "spot-20",
-        "spotId": 20,
-        "name": "Melbourne Southbank & Yarra River",
-        "highlight": "Lebendige Uferpromenade mit Wolkenkratzer-Kulisse, Straßenmusik und Kulturzentren.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Evan Walker Bridge oder Princes Bridge mit Blick nach Westen über den spiegelnden Fluss und die erleuchtete Skyline.",
-        "photoTime": "",
-        "directions": "Kostenlose City Circle Tram (Linie 35) direkt ab Docklands.",
-        "mapsUrl": "https://maps.google.com/?q=Southbank%2BPromenade%2BMelbourne",
-        "coords": [
-          -37.8205,
-          144.964
-        ],
-        "region": "melbourne"
-      }
-    ],
-    "accommodation": {
-      "cardTitle": "Unterkunft Melbourne",
-      "rawHtml": "<strong>Vibe Hotel Docklands:</strong> 05.04. – 09.04. (4 Nächte)",
-      "name": "Vibe Hotel Docklands: 05.04. – 09.04.",
-      "location": "4 Nächte",
-      "nights": 1,
-      "bookingLink": "https://vibehotels.com",
-      "bookingLabel": "Hotel Website",
-      "mapsLink": "",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": true
+      "region": "Airlie Beach"
     },
-    "budgetItems": [
-      {
-        "title": "Inlandsflug PPP → MEL (140 €) + Vibe Hotel (95 €)",
-        "costEur": 235,
-        "status": "planned",
-        "statusText": "Geplant",
-        "costFormatted": "235 €"
-      }
-    ],
-    "dayBadge": "TAG 16 · MELBOURNE",
-    "dateBadge": "05. APRIL (Mo)",
-    "driveIcon": "fa-plane",
-    "expandTrigger": "Details & Hotel",
-    "flightInfo": {
-      "title": "Fluginformationen",
-      "details": "Jetstar - Economy Class - Airbus A320 - JQ 843 / Abflug um 11:15 Uhr",
-      "statusText": "Flug gebucht & bezahlt (135 € p.P.)"
-    },
-    "hasBudgetSubcard": false,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 16,
       "date": "2027-04-05",
-      "title": "Ideen & Vorschläge für Melbourne Verschlüsselt"
+      "dayOfWeek": "Mo",
+      "title": "Airlie Beach → Weiterreise nach Melbourne",
+      "routeBadge": "Flug PPP → MEL: ca. 3 Std.",
+      "transportType": "plane",
+      "highlights": [
+        "✈️ Flug Proserpine → Melbourne",
+        "🏙️ Southbank & Yarra River Promenade"
+      ],
+      "summary": "Flug von Proserpine (PPP) nach Melbourne (MEL). Check-in in den Docklands und erster Abend am beleuchteten Yarra River, Federation Square & Southbank.",
+      "activities": [
+        {
+          "time": "08:30",
+          "title": "Transfer zum Whitsunday Coast Airport (PPP)",
+          "description": "Flug von Proserpine (PPP) nach Melbourne (MEL). Check-in in den Docklands und erster Abend am beleuchteten Yarra River, Federation Square & Southbank.",
+          "locationName": "Whitsunday Coast Airport (PPP)",
+          "coords": [
+            -20.495,
+            148.552
+          ],
+          "region": "Melbourne",
+          "transportMode": "plane",
+          "durationMinutes": 165,
+          "type": "flight"
+        },
+        {
+          "time": "11:15",
+          "title": "Flug Jetstar JQ 843 direkt nach Melbourne (MEL)",
+          "description": "Flug von Proserpine (PPP) nach Melbourne (MEL). Check-in in den Docklands und erster Abend am beleuchteten Yarra River, Federation Square & Southbank.",
+          "locationName": "Melbourne Southbank & Yarra River",
+          "coords": [
+            -37.8205,
+            144.964
+          ],
+          "region": "melbourne",
+          "transportMode": "plane",
+          "durationMinutes": 225,
+          "type": "flight"
+        },
+        {
+          "time": "15:00",
+          "title": "Check-in Hotel The Sebel Melbourne Docklands",
+          "description": "Flug von Proserpine (PPP) nach Melbourne (MEL). Check-in in den Docklands und erster Abend am beleuchteten Yarra River, Federation Square & Southbank.",
+          "locationName": "Melbourne Southbank & Yarra River",
+          "coords": [
+            -37.8205,
+            144.964
+          ],
+          "region": "melbourne",
+          "transportMode": "car",
+          "durationMinutes": 180,
+          "type": "transport"
+        },
+        {
+          "time": "18:00",
+          "title": "Spaziergang am Yarra River &amp; Dinner in Southbank",
+          "description": "Flug von Proserpine (PPP) nach Melbourne (MEL). Check-in in den Docklands und erster Abend am beleuchteten Yarra River, Federation Square & Southbank.",
+          "locationName": "Melbourne Southbank & Yarra River",
+          "coords": [
+            -37.8205,
+            144.964
+          ],
+          "region": "melbourne",
+          "transportMode": "walk",
+          "durationMinutes": 60,
+          "type": "restaurant"
+        }
+      ],
+      "sights": [
+        {
+          "id": "spot-20",
+          "spotId": 20,
+          "name": "Melbourne Southbank & Yarra River",
+          "highlight": "Lebendige Uferpromenade mit Wolkenkratzer-Kulisse, Straßenmusik und Kulturzentren.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Evan Walker Bridge oder Princes Bridge mit Blick nach Westen über den spiegelnden Fluss und die erleuchtete Skyline.",
+          "photoTime": "",
+          "directions": "Kostenlose City Circle Tram (Linie 35) direkt ab Docklands.",
+          "mapsUrl": "https://maps.google.com/?q=Southbank%2BPromenade%2BMelbourne",
+          "coords": [
+            -37.8205,
+            144.964
+          ],
+          "region": "melbourne"
+        }
+      ],
+      "accommodation": {
+        "cardTitle": "Unterkunft Melbourne",
+        "rawHtml": "<strong>Vibe Hotel Docklands:</strong> 05.04. – 09.04. (4 Nächte)",
+        "name": "Vibe Hotel Docklands: 05.04. – 09.04.",
+        "location": "4 Nächte",
+        "nights": 1,
+        "bookingLink": "https://vibehotels.com",
+        "bookingLabel": "Hotel Website",
+        "mapsLink": "",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": true
+      },
+      "budgetItems": [
+        {
+          "title": "Inlandsflug PPP → MEL (140 €) + Vibe Hotel (95 €)",
+          "costEur": 235,
+          "status": "planned",
+          "statusText": "Geplant",
+          "costFormatted": "235 €"
+        }
+      ],
+      "dayBadge": "TAG 16 · AIRLIE BEACH / MELBOURNE",
+      "dateBadge": "05. APRIL (Mo)",
+      "driveIcon": "fa-plane",
+      "expandTrigger": "Details & Hotel",
+      "flightInfo": {
+        "title": "Fluginformationen",
+        "details": "Jetstar - Economy Class - Airbus A320 - JQ 843 / Abflug um 11:15 Uhr",
+        "statusText": "Flug gebucht & bezahlt (135 € p.P.)"
+      },
+      "hasBudgetSubcard": false,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-04-05",
+        "title": "Ideen & Vorschläge für Melbourne Verschlüsselt"
+      },
+      "region": "Airlie Beach / Melbourne"
     },
-    "region": "Melbourne"
-  },
-  {
-    "dayNumber": 17,
-    "date": "2027-04-06",
-    "dayOfWeek": "Di",
-    "title": "Melbourne – Laneways, Street Art & Pinguine",
-    "routeBadge": "ÖPNV / Tram",
-    "transportType": "train",
-    "highlights": [
-      "🎨 Hosier Lane & Street Art",
-      "🐧 St. Kilda Pier Zwergpinguine"
-    ],
-    "summary": "Graffiti-Laneways (Hosier Lane, AC/DC Lane), weltberühmte Café-Kultur, Queen Victoria Market, Royal Botanic Gardens. Abends: Sonnenuntergang & Zwergpinguine am St. Kilda Pier.",
-    "activities": [
-      {
-        "time": "09:30",
-        "title": "Kulinarischer Rundgang über den Queen Victoria Market",
-        "description": "Graffiti-Laneways (Hosier Lane, AC/DC Lane), weltberühmte Café-Kultur, Queen Victoria Market, Royal Botanic Gardens. Abends: Sonnenuntergang & Zwergpinguine am St. Kilda Pier.",
-        "locationName": "Vibe Hotel Docklands",
-        "coords": [
-          -37.816,
-          144.938
-        ],
-        "region": "Great Ocean Road",
-        "transportMode": "train",
-        "durationMinutes": 270,
-        "type": "train"
-      },
-      {
-        "time": "14:00",
-        "title": "Laneway-Bummel, Vintage & Flat Whites in der Degraves Street",
-        "description": "Graffiti-Laneways (Hosier Lane, AC/DC Lane), weltberühmte Café-Kultur, Queen Victoria Market, Royal Botanic Gardens. Abends: Sonnenuntergang & Zwergpinguine am St. Kilda Pier.",
-        "locationName": "Great Ocean Road",
-        "coords": [
-          -37.8645,
-          144.968
-        ],
-        "region": "Great Ocean Road",
-        "transportMode": "walk",
-        "durationMinutes": 240,
-        "type": "sightseeing"
-      },
-      {
-        "time": "18:00",
-        "title": "Sonnenuntergang & Pinguine beobachten am St. Kilda Pier",
-        "description": "Graffiti-Laneways (Hosier Lane, AC/DC Lane), weltberühmte Café-Kultur, Queen Victoria Market, Royal Botanic Gardens. Abends: Sonnenuntergang & Zwergpinguine am St. Kilda Pier.",
-        "locationName": "St. Kilda Pier (Zwergpinguin-Kolonie)",
-        "coords": [
-          -37.8645,
-          144.968
-        ],
-        "region": "melbourne",
-        "transportMode": "walk",
-        "durationMinutes": 60,
-        "type": "sightseeing"
-      }
-    ],
-    "sights": [
-      {
-        "id": "spot-21",
-        "spotId": 21,
-        "name": "Hosier Lane & Laneways",
-        "highlight": "Melbournes bekannteste Street-Art-Gassen und das pulsierende Zentrum der Kaffeekultur.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Kreuzungsbereich Hosier Lane / Rutledge Lane – Blickwinkel von weit unten nach oben, um die beidseitige Wandhöhe einzufangen.",
-        "photoTime": "",
-        "directions": "Gegenüber der Flinders Street Station (Free Tram Zone).",
-        "mapsUrl": "https://maps.google.com/?q=Hosier%2BLane%2BMelbourne",
-        "coords": [
-          -37.8163,
-          144.969
-        ],
-        "region": "melbourne"
-      },
-      {
-        "id": "spot-22",
-        "spotId": 22,
-        "name": "St. Kilda Pier (Zwergpinguin-Kolonie)",
-        "highlight": "Wilde Kolonie von Zwergpinguinen, die abends am Wellenbrecher an Land kommen.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Am Ende des Holzstegs vor dem Kiosk mit Blick auf die Felsbrocken und den Sonnenuntergang über Port Phillip Bay.",
-        "photoTime": "",
-        "directions": "Tram 16 oder 96 ab Innenstadt direkt bis St Kilda Beach.",
-        "mapsUrl": "https://maps.google.com/?q=St%2BKilda%2BPier%2BMelbourne",
-        "coords": [
-          -37.8645,
-          144.968
-        ],
-        "region": "melbourne"
-      }
-    ],
-    "accommodation": {
-      "cardTitle": "Hotel & Unterkunft",
-      "name": "Vibe Hotel Melbourne Docklands",
-      "location": "Melbourne Docklands (VIC)",
-      "nights": 1,
-      "bookingLink": "https://vibehotels.com",
-      "bookingLabel": "Vibe Hotel Website",
-      "mapsLink": "",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": false
-    },
-    "budgetItems": [
-      {
-        "title": "Vibe Hotel Melbourne (95 €) + Cafés & Pinguine (30 €)",
-        "costEur": 125,
-        "status": "planned",
-        "statusText": "Geplant",
-        "costFormatted": "125 €"
-      }
-    ],
-    "dayBadge": "TAG 17 · MELBOURNE",
-    "dateBadge": "06. APRIL (Di)",
-    "driveIcon": "fa-train-subway",
-    "expandTrigger": "Details & Spots",
-    "flightInfo": null,
-    "hasBudgetSubcard": false,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 17,
       "date": "2027-04-06",
-      "title": "Ideen &amp; Vorschläge für Tag 17 Verschlüsselt"
+      "dayOfWeek": "Di",
+      "title": "Melbourne – Laneways, Street Art & Pinguine",
+      "routeBadge": "ÖPNV / Tram",
+      "transportType": "train",
+      "highlights": [
+        "🎨 Hosier Lane & Street Art",
+        "🐧 St. Kilda Pier Zwergpinguine"
+      ],
+      "summary": "Graffiti-Laneways (Hosier Lane, AC/DC Lane), weltberühmte Café-Kultur, Queen Victoria Market, Royal Botanic Gardens. Abends: Sonnenuntergang & Zwergpinguine am St. Kilda Pier.",
+      "activities": [
+        {
+          "time": "09:30",
+          "title": "Kulinarischer Rundgang über den Queen Victoria Market",
+          "description": "Graffiti-Laneways (Hosier Lane, AC/DC Lane), weltberühmte Café-Kultur, Queen Victoria Market, Royal Botanic Gardens. Abends: Sonnenuntergang & Zwergpinguine am St. Kilda Pier.",
+          "locationName": "Vibe Hotel Docklands",
+          "coords": [
+            -37.816,
+            144.938
+          ],
+          "region": "Great Ocean Road",
+          "transportMode": "train",
+          "durationMinutes": 270,
+          "type": "train"
+        },
+        {
+          "time": "14:00",
+          "title": "Laneway-Bummel, Vintage & Flat Whites in der Degraves Street",
+          "description": "Graffiti-Laneways (Hosier Lane, AC/DC Lane), weltberühmte Café-Kultur, Queen Victoria Market, Royal Botanic Gardens. Abends: Sonnenuntergang & Zwergpinguine am St. Kilda Pier.",
+          "locationName": "Great Ocean Road",
+          "coords": [
+            -37.8645,
+            144.968
+          ],
+          "region": "Great Ocean Road",
+          "transportMode": "walk",
+          "durationMinutes": 240,
+          "type": "sightseeing"
+        },
+        {
+          "time": "18:00",
+          "title": "Sonnenuntergang & Pinguine beobachten am St. Kilda Pier",
+          "description": "Graffiti-Laneways (Hosier Lane, AC/DC Lane), weltberühmte Café-Kultur, Queen Victoria Market, Royal Botanic Gardens. Abends: Sonnenuntergang & Zwergpinguine am St. Kilda Pier.",
+          "locationName": "St. Kilda Pier (Zwergpinguin-Kolonie)",
+          "coords": [
+            -37.8645,
+            144.968
+          ],
+          "region": "melbourne",
+          "transportMode": "walk",
+          "durationMinutes": 60,
+          "type": "sightseeing"
+        }
+      ],
+      "sights": [
+        {
+          "id": "spot-21",
+          "spotId": 21,
+          "name": "Hosier Lane & Laneways",
+          "highlight": "Melbournes bekannteste Street-Art-Gassen und das pulsierende Zentrum der Kaffeekultur.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Kreuzungsbereich Hosier Lane / Rutledge Lane – Blickwinkel von weit unten nach oben, um die beidseitige Wandhöhe einzufangen.",
+          "photoTime": "",
+          "directions": "Gegenüber der Flinders Street Station (Free Tram Zone).",
+          "mapsUrl": "https://maps.google.com/?q=Hosier%2BLane%2BMelbourne",
+          "coords": [
+            -37.8163,
+            144.969
+          ],
+          "region": "melbourne"
+        },
+        {
+          "id": "spot-22",
+          "spotId": 22,
+          "name": "St. Kilda Pier (Zwergpinguin-Kolonie)",
+          "highlight": "Wilde Kolonie von Zwergpinguinen, die abends am Wellenbrecher an Land kommen.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Am Ende des Holzstegs vor dem Kiosk mit Blick auf die Felsbrocken und den Sonnenuntergang über Port Phillip Bay.",
+          "photoTime": "",
+          "directions": "Tram 16 oder 96 ab Innenstadt direkt bis St Kilda Beach.",
+          "mapsUrl": "https://maps.google.com/?q=St%2BKilda%2BPier%2BMelbourne",
+          "coords": [
+            -37.8645,
+            144.968
+          ],
+          "region": "melbourne"
+        }
+      ],
+      "accommodation": {
+        "cardTitle": "Hotel & Unterkunft",
+        "name": "Vibe Hotel Melbourne Docklands",
+        "location": "Melbourne Docklands (VIC)",
+        "nights": 1,
+        "bookingLink": "https://vibehotels.com",
+        "bookingLabel": "Vibe Hotel Website",
+        "mapsLink": "",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": false
+      },
+      "budgetItems": [
+        {
+          "title": "Vibe Hotel Melbourne (95 €) + Cafés & Pinguine (30 €)",
+          "costEur": 125,
+          "status": "planned",
+          "statusText": "Geplant",
+          "costFormatted": "125 €"
+        }
+      ],
+      "dayBadge": "TAG 17 · MELBOURNE",
+      "dateBadge": "06. APRIL (Di)",
+      "driveIcon": "fa-train-subway",
+      "expandTrigger": "Details & Spots",
+      "flightInfo": null,
+      "hasBudgetSubcard": false,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-04-06",
+        "title": "Ideen &amp; Vorschläge für Tag 17 Verschlüsselt"
+      },
+      "region": "Melbourne"
     },
-    "region": "Great Ocean Road"
-  },
-  {
-    "dayNumber": 18,
-    "date": "2027-04-07",
-    "dayOfWeek": "Mi",
-    "title": "Tagesausflug Great Ocean Road",
-    "routeBadge": "Great Ocean Road: ca. 6 - 7 Std.",
-    "transportType": "car",
-    "highlights": [
-      "🌊 Twelve Apostles & Loch Ard Gorge",
-      "🐨 Kennett River Wilde Koalas"
-    ],
-    "summary": "Fahrt entlang einer der spektakulärsten Küstenstraßen der Welt: Bells Beach, Memorial Arch, Koalas in Kennett River, Twelve Apostles, Loch Ard Gorge und Gibson Steps.",
-    "activities": [
-      {
-        "time": "07:00",
-        "title": "Frühstart ab Melbourne auf die legendäre Great Ocean Road",
-        "description": "Fahrt entlang einer der spektakulärsten Küstenstraßen der Welt: Bells Beach, Memorial Arch, Koalas in Kennett River, Twelve Apostles, Loch Ard Gorge und Gibson Steps.",
-        "locationName": "Melbourne CBD",
-        "coords": [
-          -37.8136,
-          144.9631
-        ],
-        "region": "Great Ocean Road",
-        "transportMode": "car",
-        "durationMinutes": 180,
-        "type": "transport"
-      },
-      {
-        "time": "10:00",
-        "title": "Fotostopp am Memorial Arch & Bells Beach",
-        "description": "Fahrt entlang einer der spektakulärsten Küstenstraßen der Welt: Bells Beach, Memorial Arch, Koalas in Kennett River, Twelve Apostles, Loch Ard Gorge und Gibson Steps.",
-        "locationName": "Great Ocean Road",
-        "coords": [
-          -38.6655,
-          143.104
-        ],
-        "region": "Great Ocean Road",
-        "transportMode": "walk",
-        "durationMinutes": 150,
-        "type": "sightseeing"
-      },
-      {
-        "time": "12:30",
-        "title": "Koalas sichten am Kennett River",
-        "description": "Fahrt entlang einer der spektakulärsten Küstenstraßen der Welt: Bells Beach, Memorial Arch, Koalas in Kennett River, Twelve Apostles, Loch Ard Gorge und Gibson Steps.",
-        "locationName": "Kennett River (Wilde Koalas)",
-        "coords": [
-          -38.673,
-          143.864
-        ],
-        "region": "melbourne",
-        "transportMode": "walk",
-        "durationMinutes": 120,
-        "type": "sightseeing"
-      },
-      {
-        "time": "14:30",
-        "title": "Ankunft bei den Twelve Apostles & Loch Ard Gorge",
-        "description": "Fahrt entlang einer der spektakulärsten Küstenstraßen der Welt: Bells Beach, Memorial Arch, Koalas in Kennett River, Twelve Apostles, Loch Ard Gorge und Gibson Steps.",
-        "locationName": "Twelve Apostles & Loch Ard Gorge",
-        "coords": [
-          -38.6655,
-          143.104
-        ],
-        "region": "melbourne",
-        "transportMode": "walk",
-        "durationMinutes": 360,
-        "type": "sightseeing"
-      },
-      {
-        "time": "20:30",
-        "title": "Rückkehr nach Melbourne",
-        "description": "Fahrt entlang einer der spektakulärsten Küstenstraßen der Welt: Bells Beach, Memorial Arch, Koalas in Kennett River, Twelve Apostles, Loch Ard Gorge und Gibson Steps.",
-        "locationName": "Twelve Apostles & Loch Ard Gorge",
-        "coords": [
-          -38.6655,
-          143.104
-        ],
-        "region": "Great Ocean Road",
-        "transportMode": "walk",
-        "durationMinutes": 60,
-        "type": "sightseeing"
-      }
-    ],
-    "sights": [
-      {
-        "id": "spot-23",
-        "spotId": 23,
-        "name": "Twelve Apostles & Loch Ard Gorge",
-        "highlight": "Monumentale Kalksteinfelsen im tosenden Ozean und dramatische Klippenschlucht.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Haupt-Viewing-Platform (Boardwalk Ostseite) für den Blick entlang der Felsnadeln gegen das warme Gegenlicht.",
-        "photoTime": "",
-        "directions": "Great Ocean Road (B100), geführte Tour oder Mietwagen.",
-        "mapsUrl": "https://maps.google.com/?q=Twelve%2BApostles%2BVictoria",
-        "coords": [
-          -38.6655,
-          143.104
-        ],
-        "region": "melbourne"
-      },
-      {
-        "id": "spot-24",
-        "spotId": 24,
-        "name": "Kennett River (Wilde Koalas)",
-        "highlight": "Eine der besten Stellen Australiens für wilde Koalas in den Eukalyptusbäumen.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Die ersten 400 Meter der Grey River Road – Blick in die Astgabeln der Manna-Gumbäume.",
-        "photoTime": "",
-        "directions": "Stopp an der Grey River Road zwischen Lorne und Apollo Bay.",
-        "mapsUrl": "https://maps.google.com/?q=Kennett%2BRiver%2BKoala%2BWalk",
-        "coords": [
-          -38.673,
-          143.864
-        ],
-        "region": "melbourne"
-      }
-    ],
-    "accommodation": {
-      "cardTitle": "Hotel & Unterkunft",
-      "name": "Vibe Hotel Melbourne Docklands",
-      "location": "Melbourne Docklands (VIC)",
-      "nights": 1,
-      "bookingLink": "https://vibehotels.com",
-      "bookingLabel": "Vibe Hotel Website",
-      "mapsLink": "",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": false
-    },
-    "budgetItems": [
-      {
-        "title": "Great Ocean Road Tagestour & Mietwagen Sprit",
-        "costEur": 70,
-        "status": "planned",
-        "statusText": "Geplant",
-        "costFormatted": "70 €"
-      }
-    ],
-    "dayBadge": "TAG 18 · GREAT OCEAN ROAD",
-    "dateBadge": "07. APRIL (Mi)",
-    "driveIcon": "fa-car",
-    "expandTrigger": "Details & Ausflug",
-    "flightInfo": null,
-    "hasBudgetSubcard": false,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 18,
       "date": "2027-04-07",
-      "title": "Ideen &amp; Vorschläge für Tag 18 Verschlüsselt"
+      "dayOfWeek": "Mi",
+      "title": "Melbourne – Botanic Gardens, Kultur & St Kilda",
+      "routeBadge": "Zu Fuß & mit Tram",
+      "transportType": "walk",
+      "highlights": [
+        "🌳 Royal Botanic Gardens",
+        "🎨 Federation Square",
+        "🌅 St Kilda Pier"
+      ],
+      "summary": "Ein weiterer Tag in Melbourne: Royal Botanic Gardens, Federation Square und Sonnenuntergang an der St Kilda Pier.",
+      "activities": [
+        {
+          "time": "10:00",
+          "title": "Royal Botanic Gardens & Shrine of Remembrance",
+          "description": "Ein weiterer Tag in Melbourne: Royal Botanic Gardens, Federation Square und Sonnenuntergang an der St Kilda Pier.",
+          "locationName": "Royal Botanic Gardens Melbourne",
+          "coords": [
+            -37.8304,
+            144.9796
+          ],
+          "region": "Melbourne",
+          "transportMode": "walk",
+          "durationMinutes": 150,
+          "type": "sightseeing"
+        },
+        {
+          "time": "13:00",
+          "title": "Federation Square & Mittagessen",
+          "description": "Ein weiterer Tag in Melbourne: Royal Botanic Gardens, Federation Square und Sonnenuntergang an der St Kilda Pier.",
+          "locationName": "Federation Square, Melbourne",
+          "coords": [
+            -37.818,
+            144.9691
+          ],
+          "region": "Melbourne",
+          "transportMode": "walk",
+          "durationMinutes": 120,
+          "type": "sightseeing"
+        },
+        {
+          "time": "16:30",
+          "title": "St Kilda Beach & Pier",
+          "description": "Ein weiterer Tag in Melbourne: Royal Botanic Gardens, Federation Square und Sonnenuntergang an der St Kilda Pier.",
+          "locationName": "St Kilda Pier, Melbourne",
+          "coords": [
+            -37.8676,
+            144.974
+          ],
+          "region": "Melbourne",
+          "transportMode": "walk",
+          "durationMinutes": 150,
+          "type": "sightseeing"
+        },
+        {
+          "time": "19:30",
+          "title": "Abendessen in St Kilda",
+          "description": "Ein weiterer Tag in Melbourne: Royal Botanic Gardens, Federation Square und Sonnenuntergang an der St Kilda Pier.",
+          "locationName": "Acland Street, St Kilda",
+          "coords": [
+            -37.8676,
+            144.9805
+          ],
+          "region": "Melbourne",
+          "transportMode": "walk",
+          "durationMinutes": 90,
+          "type": "restaurant"
+        }
+      ],
+      "sights": [],
+      "accommodation": {
+        "cardTitle": "Hotel & Unterkunft",
+        "name": "Vibe Hotel Melbourne Docklands",
+        "location": "Melbourne Docklands (VIC)",
+        "nights": 1,
+        "bookingLink": "https://vibehotels.com",
+        "bookingLabel": "Vibe Hotel Website",
+        "mapsLink": "",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": false
+      },
+      "budgetItems": [],
+      "dayBadge": "TAG 18 · MELBOURNE",
+      "dateBadge": "07. APRIL (Mi)",
+      "driveIcon": "fa-car",
+      "expandTrigger": "Details & Ausflug",
+      "flightInfo": null,
+      "hasBudgetSubcard": false,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-04-07",
+        "title": "Ideen &amp; Vorschläge für Tag 18 Verschlüsselt"
+      },
+      "region": "Melbourne"
     },
-    "region": "Great Ocean Road"
-  },
-  {
-    "dayNumber": 19,
-    "date": "2027-04-08",
-    "dayOfWeek": "Do",
-    "title": "Melbourne – Brighton Boxes & Fitzroy / Ausklang",
-    "routeBadge": "Kultur / Stadt",
-    "transportType": "train",
-    "highlights": [
-      "🏖️ Brighton Bathing Boxes",
-      "☕ Fitzroy & Brunswick Street"
-    ],
-    "summary": "Bunte Brighton Bathing Boxes am Strand, Vintage-Bummel im Trendviertel Fitzroy & Brunswick, National Gallery of Victoria (NGV) und Abschieds-Dinner auf einer Rooftop-Bar.",
-    "activities": [
-      {
-        "time": "10:00",
-        "title": "Fotostopp & Strandspaziergang bei den Brighton Bathing Boxes",
-        "description": "Bunte Brighton Bathing Boxes am Strand, Vintage-Bummel im Trendviertel Fitzroy & Brunswick, National Gallery of Victoria (NGV) und Abschieds-Dinner auf einer Rooftop-Bar.",
-        "locationName": "Brighton Bathing Boxes",
-        "coords": [
-          -37.9175,
-          144.985
-        ],
-        "region": "melbourne",
-        "transportMode": "train",
-        "durationMinutes": 240,
-        "type": "train"
-      },
-      {
-        "time": "14:00",
-        "title": "Vintage-Shopping & Cafés in Fitzroy",
-        "description": "Bunte Brighton Bathing Boxes am Strand, Vintage-Bummel im Trendviertel Fitzroy & Brunswick, National Gallery of Victoria (NGV) und Abschieds-Dinner auf einer Rooftop-Bar.",
-        "locationName": "Fitzroy (Brunswick & Gertrude Street)",
-        "coords": [
-          -37.7985,
-          144.9785
-        ],
-        "region": "melbourne",
-        "transportMode": "walk",
-        "durationMinutes": 330,
-        "type": "sightseeing"
-      },
-      {
-        "time": "19:30",
-        "title": "Großes Abschlussdinner auf einer Rooftop-Bar mit Skylineblick",
-        "description": "Bunte Brighton Bathing Boxes am Strand, Vintage-Bummel im Trendviertel Fitzroy & Brunswick, National Gallery of Victoria (NGV) und Abschieds-Dinner auf einer Rooftop-Bar.",
-        "locationName": "Brighton Beach & Fitzroy",
-        "coords": [
-          -37.7985,
-          144.9785
-        ],
-        "region": "Melbourne",
-        "transportMode": "walk",
-        "durationMinutes": 60,
-        "type": "restaurant"
-      }
-    ],
-    "sights": [
-      {
-        "id": "spot-25",
-        "spotId": 25,
-        "name": "Brighton Bathing Boxes",
-        "highlight": "82 bunte historische Badehäuschen direkt am Strand mit Skyline-Blick im Hintergrund.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Auf Höhe von Box 1 Fluchtlinie schräg entlang der Kanten mit der fernen Melbourne-Skyline im Hintergrund.",
-        "photoTime": "",
-        "directions": "Metro Sandringham Line bis Brighton Beach Station (ca. 25 Min.).",
-        "mapsUrl": "https://maps.google.com/?q=Brighton%2BBathing%2BBoxes",
-        "coords": [
-          -37.9175,
-          144.985
-        ],
-        "region": "melbourne"
-      },
-      {
-        "id": "spot-26",
-        "spotId": 26,
-        "name": "Fitzroy (Brunswick & Gertrude Street)",
-        "highlight": "Kreatives Hipster-Viertel mit Vintage-Stores, Plattenläden und Rooftop-Bars.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Von einer der Rooftop-Terrassen (z. B. Naked for Satan) mit Panoramablick auf die Dächer und die City-Skyline.",
-        "photoTime": "",
-        "directions": "Tram 11 oder 96 direkt ab City bis Brunswick Street.",
-        "mapsUrl": "https://maps.google.com/?q=Brunswick%2BStreet%2BFitzroy%2BMelbourne",
-        "coords": [
-          -37.7985,
-          144.9785
-        ],
-        "region": "melbourne"
-      }
-    ],
-    "accommodation": {
-      "cardTitle": "Hotel & Unterkunft",
-      "name": "Vibe Hotel Melbourne Docklands",
-      "location": "Melbourne Docklands (VIC)",
-      "nights": 1,
-      "bookingLink": "https://vibehotels.com",
-      "bookingLabel": "Vibe Hotel Website",
-      "mapsLink": "",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": false
-    },
-    "budgetItems": [
-      {
-        "title": "Melbourne Brighton Beach & Fitzroy Rooftop",
-        "costEur": 65,
-        "status": "planned",
-        "statusText": "Geplant",
-        "costFormatted": "65 €"
-      }
-    ],
-    "dayBadge": "TAG 19 · MELBOURNE & OCEAN ROAD",
-    "dateBadge": "08. APRIL (Do)",
-    "driveIcon": "fa-train",
-    "expandTrigger": "Details",
-    "flightInfo": null,
-    "hasBudgetSubcard": false,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 19,
       "date": "2027-04-08",
-      "title": "Ideen &amp; Vorschläge für Tag 19 Verschlüsselt"
-    },
-    "region": "Melbourne"
-  },
-  {
-    "dayNumber": 20,
-    "date": "2027-04-09",
-    "dayOfWeek": "Fr",
-    "title": "Rückflug nach Wien",
-    "routeBadge": "Rückflug MEL → VIE",
-    "transportType": "plane",
-    "highlights": [
-      "🌿 Royal Botanic Gardens Victoria",
-      "✈️ Heimflug Melbourne → Wien"
-    ],
-    "summary": "Letzter Aussie-Flat-White am Morgen, Transfer zum Flughafen Melbourne Tullamarine (MEL) und Rückflug nach Wien. Ende eines unvergesslichen Abenteuers!",
-    "activities": [
-      {
-        "time": "10:00",
-        "title": "Gemütliches letztes australisches Brekkie & Souvenirs packen",
-        "description": "Letzter Aussie-Flat-White am Morgen, Transfer zum Flughafen Melbourne Tullamarine (MEL) und Rückflug nach Wien. Ende eines unvergesslichen Abenteuers!",
-        "locationName": "Royal Botanic Gardens Victoria",
-        "coords": [
-          -37.8304,
-          144.98
-        ],
-        "region": "Melbourne",
-        "transportMode": "plane",
-        "durationMinutes": 180,
-        "type": "flight"
+      "dayOfWeek": "Do",
+      "title": "Melbourne – Brighton Boxes & Fitzroy / Ausklang",
+      "routeBadge": "Kultur / Stadt",
+      "transportType": "train",
+      "highlights": [
+        "🏖️ Brighton Bathing Boxes",
+        "☕ Fitzroy & Brunswick Street"
+      ],
+      "summary": "Bunte Brighton Bathing Boxes am Strand, Vintage-Bummel im Trendviertel Fitzroy & Brunswick, National Gallery of Victoria (NGV) und Abschieds-Dinner auf einer Rooftop-Bar.",
+      "activities": [
+        {
+          "time": "10:00",
+          "title": "Fotostopp & Strandspaziergang bei den Brighton Bathing Boxes",
+          "description": "Bunte Brighton Bathing Boxes am Strand, Vintage-Bummel im Trendviertel Fitzroy & Brunswick, National Gallery of Victoria (NGV) und Abschieds-Dinner auf einer Rooftop-Bar.",
+          "locationName": "Brighton Bathing Boxes",
+          "coords": [
+            -37.9175,
+            144.985
+          ],
+          "region": "melbourne",
+          "transportMode": "train",
+          "durationMinutes": 240,
+          "type": "train"
+        },
+        {
+          "time": "14:00",
+          "title": "Vintage-Shopping & Cafés in Fitzroy",
+          "description": "Bunte Brighton Bathing Boxes am Strand, Vintage-Bummel im Trendviertel Fitzroy & Brunswick, National Gallery of Victoria (NGV) und Abschieds-Dinner auf einer Rooftop-Bar.",
+          "locationName": "Fitzroy (Brunswick & Gertrude Street)",
+          "coords": [
+            -37.7985,
+            144.9785
+          ],
+          "region": "melbourne",
+          "transportMode": "walk",
+          "durationMinutes": 330,
+          "type": "sightseeing"
+        },
+        {
+          "time": "19:30",
+          "title": "Großes Abschlussdinner auf einer Rooftop-Bar mit Skylineblick",
+          "description": "Bunte Brighton Bathing Boxes am Strand, Vintage-Bummel im Trendviertel Fitzroy & Brunswick, National Gallery of Victoria (NGV) und Abschieds-Dinner auf einer Rooftop-Bar.",
+          "locationName": "Brighton Beach & Fitzroy",
+          "coords": [
+            -37.7985,
+            144.9785
+          ],
+          "region": "Melbourne",
+          "transportMode": "walk",
+          "durationMinutes": 60,
+          "type": "restaurant"
+        }
+      ],
+      "sights": [
+        {
+          "id": "spot-25",
+          "spotId": 25,
+          "name": "Brighton Bathing Boxes",
+          "highlight": "82 bunte historische Badehäuschen direkt am Strand mit Skyline-Blick im Hintergrund.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Auf Höhe von Box 1 Fluchtlinie schräg entlang der Kanten mit der fernen Melbourne-Skyline im Hintergrund.",
+          "photoTime": "",
+          "directions": "Metro Sandringham Line bis Brighton Beach Station (ca. 25 Min.).",
+          "mapsUrl": "https://maps.google.com/?q=Brighton%2BBathing%2BBoxes",
+          "coords": [
+            -37.9175,
+            144.985
+          ],
+          "region": "melbourne"
+        },
+        {
+          "id": "spot-26",
+          "spotId": 26,
+          "name": "Fitzroy (Brunswick & Gertrude Street)",
+          "highlight": "Kreatives Hipster-Viertel mit Vintage-Stores, Plattenläden und Rooftop-Bars.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Von einer der Rooftop-Terrassen (z. B. Naked for Satan) mit Panoramablick auf die Dächer und die City-Skyline.",
+          "photoTime": "",
+          "directions": "Tram 11 oder 96 direkt ab City bis Brunswick Street.",
+          "mapsUrl": "https://maps.google.com/?q=Brunswick%2BStreet%2BFitzroy%2BMelbourne",
+          "coords": [
+            -37.7985,
+            144.9785
+          ],
+          "region": "melbourne"
+        }
+      ],
+      "accommodation": {
+        "cardTitle": "Hotel & Unterkunft",
+        "name": "Vibe Hotel Melbourne Docklands",
+        "location": "Melbourne Docklands (VIC)",
+        "nights": 1,
+        "bookingLink": "https://vibehotels.com",
+        "bookingLabel": "Vibe Hotel Website",
+        "mapsLink": "",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": false
       },
-      {
-        "time": "13:00",
-        "title": "Check-out & Transfer zum Flughafen Melbourne Tullamarine (MEL)",
-        "description": "Letzter Aussie-Flat-White am Morgen, Transfer zum Flughafen Melbourne Tullamarine (MEL) und Rückflug nach Wien. Ende eines unvergesslichen Abenteuers!",
-        "locationName": "Melbourne",
-        "coords": [
-          -37.8304,
-          144.98
-        ],
-        "region": "Melbourne",
-        "transportMode": "plane",
-        "durationMinutes": 210,
-        "type": "flight"
+      "budgetItems": [
+        {
+          "title": "Melbourne Brighton Beach & Fitzroy Rooftop",
+          "costEur": 65,
+          "status": "planned",
+          "statusText": "Geplant",
+          "costFormatted": "65 €"
+        }
+      ],
+      "dayBadge": "TAG 19 · MELBOURNE & OCEAN ROAD",
+      "dateBadge": "08. APRIL (Do)",
+      "driveIcon": "fa-train",
+      "expandTrigger": "Details",
+      "flightInfo": null,
+      "hasBudgetSubcard": false,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-04-08",
+        "title": "Ideen &amp; Vorschläge für Tag 19 Verschlüsselt"
       },
-      {
-        "time": "16:30",
-        "title": "Heimflug Scoot TR 19 nach Singapur & Weiterflug nach Wien",
-        "description": "Letzter Aussie-Flat-White am Morgen, Transfer zum Flughafen Melbourne Tullamarine (MEL) und Rückflug nach Wien. Ende eines unvergesslichen Abenteuers!",
-        "locationName": "Melbourne Tullamarine Airport (MEL) → Wien (VIE)",
-        "coords": [
-          -37.669,
-          144.841
-        ],
-        "region": "Melbourne",
-        "transportMode": "plane",
-        "durationMinutes": 60,
-        "type": "flight"
-      }
-    ],
-    "sights": [
-      {
-        "id": "spot-27",
-        "spotId": 27,
-        "name": "Royal Botanic Gardens Victoria",
-        "highlight": "Eine der prachtvollsten Parkanlagen der Welt mit 8.500 Pflanzenarten und Ruheoasen.",
-        "photoSpot": "Foto-Spot &amp; Zeit: Am Ufer des Ornamental Lake mit der spiegelnden Trauerweide und den Seerosen.",
-        "photoTime": "",
-        "directions": "10 Min. Fußweg südlich von Federation Square über die Princes Bridge.",
-        "mapsUrl": "https://maps.google.com/?q=Royal%2BBotanic%2BGardens%2BVictoria%2BMelbourne",
-        "coords": [
-          -37.8304,
-          144.98
-        ],
-        "region": "melbourne"
-      }
-    ],
-    "accommodation": {
-      "cardTitle": "Hotel & Unterkunft",
-      "name": "Rückflug nach Wien (Scoot TR 25)",
-      "location": "Flughafen / Rückflug",
-      "nights": 1,
-      "bookingLink": "",
-      "bookingLabel": "Flug TR 25 gebucht",
-      "mapsLink": "",
-      "mapsLabel": "Hotel Standort",
-      "costEur": 119,
-      "status": "booked",
-      "hasSubcard": false
+      "region": "Melbourne"
     },
-    "budgetItems": [
-      {
-        "title": "Royal Botanic Gardens & Airport Transfer",
-        "costEur": 45,
-        "status": "planned",
-        "statusText": "Geplant",
-        "costFormatted": "45 €"
-      }
-    ],
-    "dayBadge": "TAG 20 · MELBOURNE → WIEN",
-    "dateBadge": "09. APRIL (Fr)",
-    "driveIcon": "fa-plane",
-    "expandTrigger": "Details",
-    "flightInfo": null,
-    "hasBudgetSubcard": true,
-    "budgetCardTitle": "Budget & Kosten",
-    "suggestions": {
+    {
+      "dayNumber": 20,
       "date": "2027-04-09",
-      "title": "Notizen zur Abreise Verschlüsselt"
-    },
-    "region": "Melbourne"
-  }
-];
+      "dayOfWeek": "Fr",
+      "title": "Heimflug nach Wien",
+      "routeBadge": "Rückflug MEL → VIE",
+      "transportType": "plane",
+      "highlights": [
+        "🌿 Royal Botanic Gardens Victoria",
+        "✈️ Heimflug Melbourne → Wien"
+      ],
+      "summary": "Letzter Aussie-Flat-White am Morgen, Transfer zum Flughafen Melbourne Tullamarine (MEL) und Rückflug nach Wien. Ende eines unvergesslichen Abenteuers!",
+      "activities": [
+        {
+          "time": "10:00",
+          "title": "Gemütliches letztes australisches Brekkie & Souvenirs packen",
+          "description": "Letzter Aussie-Flat-White am Morgen, Transfer zum Flughafen Melbourne Tullamarine (MEL) und Rückflug nach Wien. Ende eines unvergesslichen Abenteuers!",
+          "locationName": "Royal Botanic Gardens Victoria",
+          "coords": [
+            -37.8304,
+            144.98
+          ],
+          "region": "Melbourne",
+          "transportMode": "plane",
+          "durationMinutes": 180,
+          "type": "flight"
+        },
+        {
+          "time": "13:00",
+          "title": "Check-out & Transfer zum Flughafen Melbourne Tullamarine (MEL)",
+          "description": "Letzter Aussie-Flat-White am Morgen, Transfer zum Flughafen Melbourne Tullamarine (MEL) und Rückflug nach Wien. Ende eines unvergesslichen Abenteuers!",
+          "locationName": "Melbourne",
+          "coords": [
+            -37.8304,
+            144.98
+          ],
+          "region": "Melbourne",
+          "transportMode": "plane",
+          "durationMinutes": 210,
+          "type": "flight"
+        },
+        {
+          "time": "16:30",
+          "title": "Heimflug Scoot TR 19 nach Singapur & Weiterflug nach Wien",
+          "description": "Letzter Aussie-Flat-White am Morgen, Transfer zum Flughafen Melbourne Tullamarine (MEL) und Rückflug nach Wien. Ende eines unvergesslichen Abenteuers!",
+          "locationName": "Melbourne Tullamarine Airport (MEL) → Wien (VIE)",
+          "coords": [
+            -37.669,
+            144.841
+          ],
+          "region": "Melbourne",
+          "transportMode": "plane",
+          "durationMinutes": 60,
+          "type": "flight"
+        }
+      ],
+      "sights": [
+        {
+          "id": "spot-27",
+          "spotId": 27,
+          "name": "Royal Botanic Gardens Victoria",
+          "highlight": "Eine der prachtvollsten Parkanlagen der Welt mit 8.500 Pflanzenarten und Ruheoasen.",
+          "photoSpot": "Foto-Spot &amp; Zeit: Am Ufer des Ornamental Lake mit der spiegelnden Trauerweide und den Seerosen.",
+          "photoTime": "",
+          "directions": "10 Min. Fußweg südlich von Federation Square über die Princes Bridge.",
+          "mapsUrl": "https://maps.google.com/?q=Royal%2BBotanic%2BGardens%2BVictoria%2BMelbourne",
+          "coords": [
+            -37.8304,
+            144.98
+          ],
+          "region": "melbourne"
+        }
+      ],
+      "accommodation": {
+        "cardTitle": "Hotel & Unterkunft",
+        "name": "Rückflug nach Wien (Scoot TR 25)",
+        "location": "Flughafen / Rückflug",
+        "nights": 1,
+        "bookingLink": "",
+        "bookingLabel": "Flug TR 25 gebucht",
+        "mapsLink": "",
+        "mapsLabel": "Hotel Standort",
+        "costEur": 119,
+        "status": "booked",
+        "hasSubcard": false
+      },
+      "budgetItems": [
+        {
+          "title": "Royal Botanic Gardens & Airport Transfer",
+          "costEur": 45,
+          "status": "planned",
+          "statusText": "Geplant",
+          "costFormatted": "45 €"
+        }
+      ],
+      "dayBadge": "TAG 20 · MELBOURNE",
+      "dateBadge": "09. APRIL (Fr)",
+      "driveIcon": "fa-plane",
+      "expandTrigger": "Details",
+      "flightInfo": null,
+      "hasBudgetSubcard": true,
+      "budgetCardTitle": "Budget & Kosten",
+      "suggestions": {
+        "date": "2027-04-09",
+        "title": "Notizen zur Abreise Verschlüsselt"
+      },
+      "region": "Melbourne"
+    }
+  ];
 
   let tripDays = [];
   let isLoaded = false;
@@ -2550,7 +2473,7 @@
   // Helper: Event-Bus Notify
   function notify(event, payload) {
     if (/^(activity|day|spot):(created|updated|deleted|changed)$/.test(event) && typeof localStorage !== 'undefined') {
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 2, days: tripDays })); }
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 3, days: tripDays })); }
       catch (error) {
         const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
         if (saved?.days) tripDays = saved.days;
@@ -2586,7 +2509,7 @@
     if (typeof localStorage !== 'undefined') {
       try {
         const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-        if (saved && Array.isArray(saved.days)) {
+        if (saved && saved.version >= 3 && Array.isArray(saved.days)) { // v3 = Reiseplan vom 30.10.2026
           tripDays = saved.days;
           isLoaded = true;
           notify('days:loaded', tripDays);
@@ -3122,7 +3045,7 @@
       if (!Array.isArray(days)) throw new Error('Ungültige Reisetage');
       const copy = deepClone(days);
       // Erst speichern, dann veröffentlichen: bei vollem Speicher bleibt der alte Zustand erhalten.
-      if (typeof localStorage !== 'undefined') localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 2, days: copy }));
+      if (typeof localStorage !== 'undefined') localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 3, days: copy }));
       tripDays = copy;
       isLoaded = true;
       notify('days:loaded', deepClone(tripDays));

@@ -7,7 +7,7 @@ import {randomBytes, timingSafeEqual, createHmac} from 'node:crypto';
 const directory = path.dirname(fileURLToPath(import.meta.url));
 if (fs.existsSync(path.join(directory, '.env')) && process.loadEnvFile) process.loadEnvFile(path.join(directory, '.env'));
 const resources = {splitwise:'https://secure.splitwise.com/#/groups/101615495',photos:'https://photos.app.goo.gl/c8Bkr97b1hc8QrKP7'};
-const routes = new Set(['/', '/index.html', '/dashboard', '/reise', '/organisation', '/finanzen', '/erlebnisse', '/mehr']);
+const routes = new Set(['/', '/index.html', '/dashboard', '/reise']);
 
 export function createApp(options = {}) {
   const app = express(), request = options.fetch || globalThis.fetch;

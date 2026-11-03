@@ -37,7 +37,7 @@
     document.getElementById('trip-day-actions').hidden=!day;
     body.innerHTML=day?C.timeline(day,stops,state.stopId,state.sheet==='expanded'):C.overview(days,repository,map);
     const missing=stops.filter(s=>!M.coords(s)).length;
-    document.getElementById('trip-route-note').textContent=`Route nach Verkehrsmittel${missing?' · '+missing+' Stopps ohne Standort':''}`;
+    document.getElementById('trip-route-note').textContent=`Route nach Verkehrsmittel${missing?', '+missing+' Stopps ohne Standort':''}`;
     if(updateMap&&view.classList.contains('active')&&!document.body.classList.contains('is-locked'))map.render(groups(),state.stopId,refit);
   }
   function selectDay(id) {
@@ -130,7 +130,7 @@
   new ResizeObserver(syncLayout).observe(document.querySelector('.app-header'));
   window.addEventListener('resize',syncLayout);
   window.addEventListener('management:changed',()=>render(false));
-  root.TripPage={selectDayNumber(number){if(!ready){state.pendingDay=number;return;}const day=repository.getDays().find(d=>d.dayNumber===Number(number));if(day)selectDay(day.id);},selectStop, getState:()=>({...state})};
+  root.TripPage={days(){return ready?repository.getDays().map(d=>({dayNumber:d.dayNumber,date:d.date})):[];},nextDay(){if(!ready)return null;const today=new Date().toISOString().slice(0,10),days=repository.getDays();const day=days.find(d=>d.date>=today)||days[days.length-1];return day?{dayNumber:day.dayNumber,title:day.title,date:day.date}:null;},selectDayNumber(number){if(!ready){state.pendingDay=number;return;}const day=repository.getDays().find(d=>d.dayNumber===Number(number));if(day)selectDay(day.id);},selectStop, getState:()=>({...state})};
   function startLocationPicker(session) {
     pickerSession=session;
     const panel=document.getElementById('trip-location-picker');
@@ -140,8 +140,8 @@
     const started=map.startPicking(session.initial,(result,phase)=>{
       session.onChange(result);confirm.disabled=false;
       document.getElementById('trip-location-picker-status').textContent=phase==='loading'?'Ortsname wird ermittelt …':
-        phase==='error'?`${result.latitude}, ${result.longitude} · Ortsname bitte prüfen.`:
-        `${result.locationName||'Ausgewählter Standort'} · ${result.latitude}, ${result.longitude}`;
+        phase==='error'?`${result.latitude}, ${result.longitude}. Ortsname bitte prüfen.`:
+        `${result.locationName||'Ausgewählter Standort'}, ${result.latitude}, ${result.longitude}`;
     });
     if(!started){panel.hidden=true;pickerSession=null;session.onFinish(false);}
   }
@@ -162,6 +162,7 @@
       editor=root.createTripEditor(repository,(result,kind)=>{if(kind==='day'&&result)selectDay(result.id);else if(kind==='stop'&&result){state.dayId=result.dayId;state.stopId=result.id;render();}},startLocationPicker);
       repository.subscribe(()=>render());ready=true;status.hidden=true;workspace.dataset.sheetState=state.sheet;render();syncLayout();
       if(state.pendingDay)root.TripPage.selectDayNumber(state.pendingDay);
+      root.dispatchEvent(new Event('trip:ready'));
       const match=location.hash.match(/(?:day|tag)-(\d+)/);if(match)root.TripPage.selectDayNumber(Number(match[1]));
     }catch(error){notifyError(error);document.getElementById('trip-data-retry').hidden=false;}
   }

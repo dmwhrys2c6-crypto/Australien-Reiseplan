@@ -1,21 +1,21 @@
 /* Leaflet adapter: basemap, route rendering and location picking stay isolated here. */
 (function (root) {
   'use strict';
-  const TILE_URL='https://tile.openstreetmap.de/{z}/{x}/{y}.png';
+  const TILE_URL='https://tile.openstreetmap.org/{z}/{x}/{y}.png';
   const TILE_OPTIONS={
     attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap-Mitwirkende</a>',
     maxZoom:19
   };
+  /* One hue for every route; the mode is told apart by dash pattern and icon. Colours come from the design tokens. */
   const MODES={
-    car:{icon:'car-side',label:'Auto',color:'#007aff'},plane:{icon:'plane',label:'Flug',color:'#007aff'},
-    ferry:{icon:'ship',label:'Fähre',color:'#1687a7'},walk:{icon:'person-walking',label:'Zu Fuß',color:'#5b7184'},
-    train:{icon:'train',label:'Zug',color:'#007aff'},other:{icon:'route',label:'Route',color:'#5b7184'}
+    car:{icon:'car-side',label:'Auto'},plane:{icon:'plane',label:'Flug'},ferry:{icon:'ship',label:'Fähre'},
+    walk:{icon:'person-walking',label:'Zu Fuß'},train:{icon:'train',label:'Zug'},other:{icon:'route',label:'Route'}
   };
   const CATEGORIES={
-    flight:{icon:'plane',color:'#007aff'},hotel:{icon:'hotel',color:'#af52de'},restaurant:{icon:'utensils',color:'#ff9500'},
-    sightseeing:{icon:'camera',color:'#ff3b30'},activity:{icon:'person-hiking',color:'#34c759'},event:{icon:'calendar-day',color:'#af52de'},
-    transport:{icon:'car-side',color:'#0a84ff'},train:{icon:'train',color:'#5856d6'},other:{icon:'location-dot',color:'#5b7184'}
+    flight:{icon:'plane'},hotel:{icon:'hotel'},restaurant:{icon:'utensils'},sightseeing:{icon:'camera'},activity:{icon:'person-hiking'},
+    event:{icon:'calendar-day'},transport:{icon:'car-side'},train:{icon:'train'},other:{icon:'location-dot'}
   };
+  const token=(name,fallback)=>(root.getComputedStyle?.(root.document.documentElement).getPropertyValue(name).trim())||fallback;
 
   root.createTripMap=function(container,onSelect,onStatus){
     let map,markerLayer,routeLayer,pickerLayer,tileLayer,lastGroups=[],picker=null,reverseController=null;
@@ -25,7 +25,7 @@
       ({flight:'plane',transport:'car',activity:'walk'}[stop.type]||'other');
     const markerMeta=stop=>CATEGORIES[stop.type]||CATEGORIES[stop.category]||MODES[modeOf(stop)]||CATEGORIES.other;
     const stopIcon=(stop,active)=>{const meta=markerMeta(stop);return L.divIcon({className:'trip-marker-wrap',
-      html:`<span class="trip-marker ${active?'is-active':''}" style="--marker-color:${meta.color}"><i class="fa-solid fa-${meta.icon}" aria-hidden="true"></i></span>`,
+      html:`<span class="trip-marker ${active?'is-active':''}"><i class="fa-solid fa-${meta.icon}" aria-hidden="true"></i></span>`,
       iconSize:[40,40],iconAnchor:[20,20]});};
     const pickerIcon=()=>L.divIcon({className:'trip-marker-wrap',html:'<span class="trip-marker trip-picker-marker is-active"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></span>',iconSize:[44,44],iconAnchor:[22,40]});
 
@@ -48,8 +48,8 @@
       if(!points.length){map.setView([-28.5,149],5);return;}
       const width=container.clientWidth,height=container.clientHeight,mobile=width<760;
       map.fitBounds(L.latLngBounds(points),{
-        paddingTopLeft:[mobile?24:Math.min(width*.42,560),mobile?160:170],
-        paddingBottomRight:[60,mobile?Math.min(height*.45,330):60],maxZoom:points.length===1?15:14,animate:!reducedMotion()
+        paddingTopLeft:[mobile?24:Math.min(width*.4,500),mobile?120:48],
+        paddingBottomRight:[mobile?24:64,mobile?Math.round(height*.5):48],maxZoom:points.length===1?15:14,animate:!reducedMotion()
       });
     }
     function curvedFlight(a,b){
@@ -62,10 +62,10 @@
     }
     function drawSegment(from,to,mode){
       const meta=MODES[mode]||MODES.other,points=mode==='plane'?curvedFlight(from,to):mode==='ferry'?wavyFerry(from,to):[from,to];
-      L.polyline(points,{className:`trip-route-line is-${mode}`,color:meta.color,weight:mode==='walk'?4:5,opacity:.8,lineCap:'round',lineJoin:'round',dashArray:mode==='plane'?'6, 8':mode==='walk'?'2, 9':null,interactive:true})
+      L.polyline(points,{className:`trip-route-line is-${mode}`,color:token('--route-blue','currentColor'),weight:mode==='walk'?3:4,opacity:.78,lineCap:'round',lineJoin:'round',dashArray:mode==='plane'?'6, 8':mode==='walk'?'2, 9':null,interactive:true})
         .bindTooltip(meta.label,{sticky:true}).addTo(routeLayer);
       const middle=points[Math.floor(points.length/2)];
-      L.marker(middle,{interactive:false,keyboard:false,icon:L.divIcon({className:'trip-route-mode-wrap',html:`<span class="trip-route-mode" style="--route-color:${meta.color}" aria-hidden="true"><i class="fa-solid fa-${meta.icon}"></i></span>`,iconSize:[30,30],iconAnchor:[15,15]})}).addTo(routeLayer);
+      L.marker(middle,{interactive:false,keyboard:false,icon:L.divIcon({className:'trip-route-mode-wrap',html:`<span class="trip-route-mode" aria-hidden="true"><i class="fa-solid fa-${meta.icon}"></i></span>`,iconSize:[30,30],iconAnchor:[15,15]})}).addTo(routeLayer);
     }
     async function reverseGeocode(latitude,longitude){
       reverseController?.abort();reverseController=new AbortController();
@@ -99,9 +99,9 @@
         groups.forEach(group=>{
           const located=group.stops.filter(model.coords);
           located.forEach((stop,index)=>{
-            const marker=L.marker([stop.latitude,stop.longitude],{icon:stopIcon(stop,stop.id===activeId),title:`Tag ${group.number} · Stopp ${index+1}: ${stop.title}`,keyboard:true}).addTo(markerLayer);
+            const marker=L.marker([stop.latitude,stop.longitude],{icon:stopIcon(stop,stop.id===activeId),title:`Tag ${group.number}, Stopp ${index+1}: ${stop.title}`,keyboard:true}).addTo(markerLayer);
             const meta=markerMeta(stop),location=model.escape(stop.locationName||stop.region||'Standort');
-            marker.bindPopup(`<article class="trip-map-popup"><span class="trip-map-popup-label"><i class="fa-solid fa-${meta.icon}" aria-hidden="true"></i> Tag ${group.number} · Stopp ${index+1}</span><strong>${model.escape(stop.title)}</strong><span class="trip-map-popup-location"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> ${location}</span></article>`,{offset:[0,-12],closeButton:false});
+            marker.bindPopup(`<article class="trip-map-popup"><span class="trip-map-popup-label"><i class="fa-solid fa-${meta.icon}" aria-hidden="true"></i> Tag ${group.number}, Stopp ${index+1}</span><strong>${model.escape(stop.title)}</strong><span class="trip-map-popup-location"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> ${location}</span></article>`,{offset:[0,-12],closeButton:false});
             const activate=event=>{event.originalEvent?.stopPropagation();onSelect(stop.id);};
             marker.on('click',activate);
             marker.on('keypress',event=>{if(['Enter',' '].includes(event.originalEvent?.key)||[13,32].includes(event.originalEvent?.keyCode))activate(event);});
@@ -115,7 +115,7 @@
         markers.forEach(({marker,stop},key)=>marker.setIcon(stopIcon(stop,key===id)));
         const entry=markers.get(id);if(!entry||!map)return;
         map.setView(entry.marker.getLatLng(),Math.max(map.getZoom(),13),{animate:!reducedMotion()});
-        map.panBy(container.clientWidth<760?[0,100]:[-Math.min(container.clientWidth*.2,260),0],{animate:false});entry.marker.openPopup();
+        map.panBy(container.clientWidth<760?[0,Math.round(container.clientHeight*.16)]:[-Math.min(container.clientWidth*.18,240),0],{animate:false});entry.marker.openPopup();
       },
       startPicking(initial,onChange){
         if(!init())return false;
@@ -126,7 +126,7 @@
       stopPicking(){if(map)map.off('click');reverseController?.abort();reverseController=null;picker=null;pickerLayer?.clearLayers();container.classList.remove('is-location-picking');},
       zoom(delta){if(map)delta>0?map.zoomIn():map.zoomOut();},fit,resize(){map?.invalidateSize({pan:false});},
       retry(){if(!map)init();else tileLayer?.redraw();},destroy(){if(map)map.remove();map=null;},
-      color:index=>['#176b87','#5367a6','#865a92','#b96845','#49765c','#16889c'][index%6]
+      color:()=>'var(--color-ink-2)'
     };
   };
 }(window));

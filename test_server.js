@@ -10,7 +10,7 @@ try {
   const get=(path,cookie)=>fetch(base+path,{redirect:'manual',headers:cookie?{cookie}:{}});
   assert.equal((await get('/dashboard')).status,302);
   assert.equal((await get('/api/session')).status,401);
-  assert.equal((await get('/js/app.js')).status,401);
+  assert.equal((await get('/js/shell.js')).status,401);
   const post=(path,body,cookie,origin)=>fetch(base+path,{method:'POST',headers:{'Content-Type':'application/json',...(cookie?{cookie}:{}),...(origin?{origin}:{})},body:JSON.stringify(body)});
   assert.equal((await post('/api/verify-auth',{code:'wrong'})).status,403);
   assert.equal((await post('/api/verify-auth',{code:'test-code'},null,'https://other.example')).status,403);

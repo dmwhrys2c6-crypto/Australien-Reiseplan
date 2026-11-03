@@ -39,25 +39,4 @@ const c=context();await c.TripStore.load();assert.equal(c.TripStore.getDays()[0]
 assert.equal(a.TripStore.importMasterJSON({days:[{dayNumber:9,title:'Broken'}]}),false);
 assert.equal(raw.getItem('aus_trip_days_v1'),persisted);
 assert.equal(a.TripModel.safeUrl('javascript:alert(1)'), '');
-// Execute the real budget functions with a small DOM fixture.
-const source=fs.readFileSync('js/app.js','utf8');
-const budget=source.slice(source.indexOf("    const ONSITE_SPEND_KEY"),source.indexOf('    function openFuelTracker'));
-const nodes=Object.fromEntries(['onsite-daily-eur','onsite-total-trip','onsite-spend-input','onsite-spend-slider'].map(id=>[id,{}]));
-const ctx=vm.createContext({window:{},localStorage:a.Persistence.wrap(raw),document:{getElementById:id=>nodes[id]||null},currentMemoryDays:()=>[1,2,3]});
-vm.runInContext(budget,ctx);vm.runInContext("updateOnsiteSpend(10,'input')",ctx);
-assert.equal(nodes['onsite-daily-eur'].textContent,'40 €');assert.equal(nodes['onsite-total-trip'].textContent,'120 € (3 Tage)');
-vm.runInContext("updateOnsiteSpend(0,'input');initOnsiteSpend()",ctx);assert.equal(nodes['onsite-spend-input'].value,0);
-// Real remote-sync handler: stale snapshots, fuel-only changes and conflict refusal.
-const remoteEntries=new Map();const remoteRaw={getItem:k=>remoteEntries.get(k)??null,setItem:(k,v)=>remoteEntries.set(k,String(v)),removeItem:k=>remoteEntries.delete(k)};
-let accept=false,renders=0;
-const remote=vm.createContext({console,Number,JSON,Object,Array,localStorage:a.Persistence.wrap(remoteRaw),window:{confirm:()=>accept},
-  getCustomActivities:()=>({}),storageFailure:()=>{},renderGroceries:()=>renders++,renderFuel:()=>{},applyCheckboxStatesToUI:()=>{},applySubItemsPaidStateToUI:()=>{},renderAllSuggestions:()=>{},renderCustomActivities:()=>{},updateBudgetCalculations:()=>{}});
-vm.runInContext("var GROCERY_STORAGE_KEY='g',FUEL_STORAGE_KEY='f',CHECKBOX_STORAGE_KEY='c',SUGGESTIONS_STORAGE_KEY='s',CUSTOM_ACTIVITIES_KEY='a',groceries=[{text:'Brot'}],fuelEntries=[],checkboxStates={},daySuggestions={},isApplyingRemote=false;",remote);
-vm.runInContext(source.slice(source.indexOf('    function handleRemoteUpdate('),source.indexOf('    async function broadcastState(')),remote);
-remoteEntries.set('aus_sync_local_v2','100');
-const payload={timestamp:99,groceries:[{text:'Brot'}],fuelEntries:[{costAud:20}],checkboxStates:{},daySuggestions:{},customActivities:{}};
-remote.handleRemoteUpdate(payload);assert.equal(renders,0);assert.equal(remoteEntries.has('aus_sync_received_v2'),false);
-payload.timestamp=101;remote.handleRemoteUpdate(payload);assert.equal(renders,0);assert.ok(remoteEntries.has('aus_sync_received_v2'));
-accept=true;remote.handleRemoteUpdate(payload);assert.equal(renders,1);assert.equal(remote.fuelEntries[0].costAud,20);assert.ok(remoteEntries.has('aus_sync_backup_v2'));
-remote.handleRemoteUpdate(payload);assert.equal(renders,1);
-console.log('Regression tests: stale-tab writes, persistent imports, shared repositories, coordinates, duplicate IDs, safe URLs and daily budget passed.');
+console.log('Regression tests: stale-tab writes, persistent imports, shared repositories, coordinates, duplicate IDs, safe URLs passed.');

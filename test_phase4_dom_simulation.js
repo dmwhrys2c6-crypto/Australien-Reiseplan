@@ -125,7 +125,7 @@ const runFn = new Function('root', 'self', tripDataCode);
 runFn(globalThis, globalThis);
 
 const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
-const css = fs.readFileSync(path.join(__dirname, 'css/app.css'), 'utf8');
+const css = fs.readFileSync(path.join(__dirname, 'css/site.css'), 'utf8');
 
 let passed = 0;
 function testAssert(condition, name) {
@@ -169,20 +169,19 @@ TripStore.renderTimeline(mockTimelineEl);
 testAssert(mockTimelineEl.innerHTML.includes('id="day-14"') || html.includes('id="day-14"'), 'Element #day-14 existiert im gerenderten DOM');
 testAssert(mockTimelineEl.innerHTML.includes('TAG 14 · WHITSUNDAYS') || html.includes('TAG 14 · WHITSUNDAYS'), 'Tag 14 hat Badge "TAG 14 · WHITSUNDAYS"');
 
-// 5. Test Zoom & Filter (4 Layer-System)
-console.log('\n5. Test: Filter & Layer-System');
-const expectedLayers = ['destinations', 'highlights', 'accommodations', 'photospots'];
-expectedLayers.forEach(layer => {
-  testAssert(html.includes(`id="layer-chk-${layer}"`), `Layer Toggle Checkbox #layer-chk-${layer} existiert`);
-});
+// 5. Test Karte & Tagesauswahl im neuen Arbeitsbereich
+console.log('\n5. Test: Karte und Tagesauswahl');
+for (const id of ['trip-map', 'trip-day-selector', 'trip-sheet-body']) {
+  testAssert(html.includes(`id="${id}"`), `#${id} existiert`);
+}
+testAssert(html.includes('data-action="fit-map"'), 'Route zentrieren vorhanden');
 
-// 6. Test Mobile View (Mobile Karte & Bottom Sheet)
-console.log('\n6. Test: Mobile Karte & Bottom Sheet');
-testAssert(html.includes('id="mobile-reise-btn-plan"'), 'Mobile Switcher [ Plan ] vorhanden');
-testAssert(html.includes('id="mobile-reise-btn-map"'), 'Mobile Switcher [ Karte ] vorhanden');
-testAssert(html.includes('id="mobile-map-bottom-sheet"'), 'Mobile Bottom Sheet vorhanden');
-testAssert(html.includes('sheet-drag-handle'), 'Bottom Sheet Drag Handle zum Hochziehen vorhanden');
-testAssert(css.includes('.mobile-map-bottom-sheet.sheet-expanded'), 'Bottom Sheet Klasse .sheet-expanded vorhanden');
+// 6. Test Mobile View (Bottom Sheet)
+console.log('\n6. Test: Mobile Bottom Sheet');
+testAssert(html.includes('id="trip-sheet-handle"'), 'Bottom Sheet Handle zum Hochziehen vorhanden');
+testAssert(css.includes('.trip-sheet[data-state="expanded"]'), 'Bottom Sheet Zustand expanded vorhanden');
+testAssert(css.includes('.trip-sheet[data-state="collapsed"]'), 'Bottom Sheet Zustand collapsed vorhanden');
+testAssert(!html.includes('mobile-bottom-nav'), 'Keine feste untere Navigationsleiste mehr');
 
 console.log('\n======================================================');
 console.log(`ALL ${passed} INTERACTION TESTS PASSED SUCCESSFULLY!`);

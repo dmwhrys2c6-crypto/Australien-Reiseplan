@@ -3,39 +3,25 @@
    Offline-Verfügbarkeit für Reisedaten, Assets, Schriftarten & Karten-Tiles
    ========================================================================= */
 
-const CACHE_NAME = 'aus-roadtrip-40fae5f8800e';
+const CACHE_NAME = 'aus-roadtrip-95993cdc0611';
 
 // Statische Kern-Assets für die App-Shell
 const PRECACHE_ASSETS = [
   "./",
   "./index.html",
-  "./css/app.css?v=6dd777e7a532",
-  "./css/hero-dock.css?v=58dfb45a5fb4",
-  "./css/trip.css?v=c7c806b1b0bb",
-  "./css/management.css?v=33ca1b99e570",
-  "./css/design-system.css?v=e5ded5766640",
+  "./css/tokens.css?v=ec2b87e1ecb1",
+  "./css/base.css?v=4552fec622df",
+  "./css/site.css?v=87331b0d16de",
   "./js/persistence.js?v=693c8733bcb9",
-  "./js/session.js?v=b84cab50341e",
-  "./js/trip-store.js?v=3a473727a886",
-  "./js/tripMasterData.js?v=fba73767a093",
-  "./js/tripData.js?v=af7388102f08",
-  "./js/components.js?v=0e3ea73352fa",
-  "./js/router.js?v=ebb76f5fd504",
-  "./js/reiseApp.js?v=2c5dfc9e1c6d",
-  "./js/app.js?v=e66b9d610439",
+  "./js/trip-store.js?v=583c6846cf16",
+  "./js/tripMasterData.js?v=20c4925d7b43",
   "./js/trip/repository.js?v=ad4726c90f15",
-  "./js/trip/map-adapter.js?v=beececae8521",
-  "./js/trip/components.js?v=3d4ab1ecc2c4",
-  "./js/trip/editor.js?v=61ae22ce8ae4",
-  "./js/trip/page.js?v=4164c0d79a3a",
-  "./js/management/repository.js?v=284e225486c8",
-  "./js/management/ui.js?v=a8afe8280c83",
-  "./js/management/editor.js?v=b3df70d2b658",
-  "./js/management/finance.js?v=1cca521ea3ef",
-  "./js/management/page.js?v=cb95dfd929e2",
-  "./js/journal/repository.js?v=2dc36fd4f416",
-  "./js/journal/upload.js?v=1bbf9c488e89",
-  "./js/home.js?v=8f5ab95d9546",
+  "./js/trip/map-adapter.js?v=119da89a87f2",
+  "./js/trip/components.js?v=da3daa07cead",
+  "./js/trip/editor.js?v=7af175d24577",
+  "./js/trip/page.js?v=be84cd83d8f5",
+  "./js/home.js?v=f1c12beaf43e",
+  "./js/shell.js?v=97b4b2b12677",
   "./data/trip-days.json",
   "./manifest.json",
   "./favicon.svg",
@@ -111,8 +97,8 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 2. OpenStreetMap Map Tiles -> Stale-While-Revalidate (offline sichtbare Kartenbereiche)
-  if (url.hostname.includes('tile.openstreetmap.org')) {
+  // 2. Karten-Kacheln (OpenStreetMap) -> Stale-While-Revalidate (offline sichtbare Kartenbereiche)
+  if (url.hostname === 'tile.openstreetmap.org') {
     event.respondWith(
       caches.open(CACHE_NAME).then(async (cache) => {
         const cachedResponse = await cache.match(request);

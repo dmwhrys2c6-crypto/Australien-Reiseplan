@@ -19,44 +19,28 @@ function assert(condition, message) {
 }
 
 // 1. Check HTML Elements
-console.log('1. Fullscreen Map & Floating Overlay DOM Structure:');
+console.log('1. Map workspace DOM structure:');
 const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+for (const id of ['trip-workspace', 'trip-map', 'trip-day-selector', 'trip-sheet', 'trip-sheet-handle', 'trip-sheet-body', 'trip-location-picker', 'view-dashboard', 'view-reise', 'hero-video-player']) {
+  assert(html.includes(`id="${id}"`), `#${id} exists in index.html`);
+}
+for (const action of ['zoom-in', 'zoom-out', 'fit-map']) assert(html.includes(`data-action="${action}"`), `Map control ${action} exists`);
 
-assert(html.includes('id="reise-canvas"'), 'Fullscreen Canvas #reise-canvas exists in index.html');
-assert(html.includes('id="route-interactive-map"'), 'Fullscreen Map Surface #route-interactive-map exists');
-assert(html.includes('id="floating-days-bar"'), 'Floating Days Bar #floating-days-bar exists');
-assert(html.includes('id="floating-day-plan-overlay"'), 'Floating Day Plan Overlay #floating-day-plan-overlay exists');
-assert(html.includes('id="floating-map-controls"'), 'Floating Map Controls #floating-map-controls exists');
-assert(html.includes('id="fab-zoom-in"'), 'Zoom In FAB #fab-zoom-in exists');
-assert(html.includes('id="fab-zoom-out"'), 'Zoom Out FAB #fab-zoom-out exists');
-assert(html.includes('id="fab-reset-view"'), 'Reset View FAB #fab-reset-view exists');
-assert(html.includes('id="fab-layers-toggle"'), 'Layers Toggle FAB #fab-layers-toggle exists');
-assert(html.includes('id="floating-layers-popover"'), 'Floating Layers Popover #floating-layers-popover exists');
-assert(html.includes('id="mobile-map-bottom-sheet"'), 'Mobile Bottom Sheet #mobile-map-bottom-sheet exists');
+// 2. Editor dialogs
+console.log('\n2. Editor dialogs:');
+for (const id of ['trip-editor', 'trip-editor-form', 'trip-confirm', 'manage-live']) assert(html.includes(`id="${id}"`), `#${id} exists`);
 
-// 2. Check In-Place CRUD Modals
-console.log('\n2. In-Place CRUD Modals:');
-assert(html.includes('id="activity-modal-backdrop"'), 'Activity Modal #activity-modal-backdrop exists');
-assert(html.includes('id="activity-modal-form"'), 'Activity Modal Form #activity-modal-form exists');
-assert(html.includes('id="day-modal-backdrop"'), 'Day Modal #day-modal-backdrop exists');
-assert(html.includes('id="day-modal-form"'), 'Day Modal Form #day-modal-form exists');
+// 3. Script inclusions
+console.log('\n3. Script inclusions in index.html:');
+for (const file of ['js/persistence.js', 'js/tripMasterData.js', 'js/trip-store.js', 'js/trip/repository.js', 'js/trip/map-adapter.js', 'js/trip/page.js', 'js/home.js', 'js/shell.js']) assert(html.includes(file), `Script ${file} is linked`);
+assert(!html.includes('js/app.js'), 'Legacy js/app.js is gone');
 
-// 3. Check Script Inclusions
-console.log('\n3. Script Inclusions in index.html:');
-assert(html.includes('js/tripMasterData.js'), 'Script js/tripMasterData.js is linked');
-assert(html.includes('js/trip-store.js'), 'Script js/tripStore.js is linked');
-assert(html.includes('js/reiseApp.js'), 'Script js/reiseApp.js is linked');
-
-// 4. Check CSS Styles
-console.log('\n4. CSS Zielarchitektur Styles:');
-const css = fs.readFileSync(path.join(__dirname, 'css/app.css'), 'utf8');
-assert(css.includes('.reise-fullscreen-canvas'), 'CSS .reise-fullscreen-canvas defined');
-assert(css.includes('.fullscreen-map-surface'), 'CSS .fullscreen-map-surface defined');
-assert(css.includes('.floating-days-bar'), 'CSS .floating-days-bar defined');
-assert(css.includes('.floating-day-plan-overlay'), 'CSS .floating-day-plan-overlay defined');
-assert(css.includes('.map-fab-btn'), 'CSS .map-fab-btn defined');
-assert(css.includes('.crud-modal-backdrop'), 'CSS .crud-modal-backdrop defined');
-assert(css.includes('.crud-modal-card'), 'CSS .crud-modal-card defined');
+// 4. CSS
+console.log('\n4. Stylesheet:');
+const css = fs.readFileSync(path.join(__dirname, 'css/site.css'), 'utf8');
+for (const selector of ['.trip-workspace', '.trip-sheet', '.trip-day-pill', '.hero-bg-video']) assert(css.includes(selector), `CSS ${selector} defined`);
+assert(css.includes('safe-area-inset-bottom'), 'Safe-area insets are respected');
+assert(/viewport-fit=cover/.test(html), 'Viewport covers the notch area');
 
 // 5. TripStore Functionality & Single Source of Truth
 console.log('\n5. TripStore Single Source of Truth:');
@@ -103,6 +87,14 @@ assert(TripStore.getActivity(testAct.id).title === 'VIP Helikopter Rundflug Hear
 // Delete
 TripStore.deleteActivity(testAct.id);
 assert(TripStore.getActivity(testAct.id) === null, 'Activity deleted');
+
+console.log('\n3. Light map (OpenStreetMap, blue routes):');
+const mapAdapter = fs.readFileSync(path.join(__dirname, 'js/trip/map-adapter.js'), 'utf8');
+const tokensCss = fs.readFileSync(path.join(__dirname, 'css/tokens.css'), 'utf8');
+assert(mapAdapter.includes('tile.openstreetmap.org'), 'map adapter uses the OpenStreetMap tiles');
+assert(!mapAdapter.includes('dark_all'), 'map adapter no longer uses dark_all');
+assert(mapAdapter.includes("'--route-blue'"), 'map adapter reads --route-blue');
+assert(tokensCss.includes('--route-blue:'), 'tokens.css defines --route-blue');
 
 console.log('\n======================================================');
 console.log(`ALL ${passed} ZIELARCHITEKTUR VERIFICATION CHECKS PASSED!`);

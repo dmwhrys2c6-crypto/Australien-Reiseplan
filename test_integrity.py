@@ -15,9 +15,6 @@ orig_html = ""  # placeholder to avoid NameError in remaining checks
 with open("index.html", "r", encoding="utf-8") as f:
     new_html = f.read()
 
-with open("js/app.js", "r", encoding="utf-8") as f:
-    new_js = f.read()
-
 # 1. Check all 21 days (Tag 0 through Tag 20) in both data sources
 print("\n--- Checking 21 Reisetage in data/trip-days.json & trip-store.js ---")
 import json
@@ -38,67 +35,24 @@ for d in range(0, 21):
     print(f"  ✓ Tag {d:02d} verified (JSON & Dynamic Store intact)")
 
 
-# 2. Check Data Structures in js/app.js
-print("\n--- Checking Core Data Structures in js/app.js ---")
-data_structures = [
-    'TRIP_DAYS_DATA',
-    'TRIP_DAYS',
-    'DAY_PLANNED_EXPENSES',
-    'ACCOMMODATION_DETAILS',
-    'TRIP_DATES_LONG',
-    'BUDGET_CATEGORIES_CONFIG',
-    'DEFAULT_EXPENSES_LIST',
-    'ALL_SIGHTSEEING_SPOTS',
-    'roadtripRoutes',
-    'flightRoutes',
-    'regionNames',
-    'DEFAULT_FALLBACK_WEATHER',
-    'DEFAULT_BOOKINGS_LIST',
-    'DEFAULT_PACKING_ITEMS',
-    'ORG_CATEGORY_META',
-    'PACKING_CATEGORIES',
-    'restoreSession'
-]
-
-assert "AUSROA" not in new_js, "Public access code must not be bundled"
-for ds in data_structures:
-    assert ds in new_js, f"Missing data structure in js/app.js: {ds}"
-    print(f"  ✓ {ds:26} verified")
-
-# 3. Check Critical Functions in js/app.js
-print("\n--- Checking Critical Functions in js/app.js ---")
-critical_funcs = [
-    'verifyPin', 'unlockAppUI', 'showView', 'jumpToDay',
-    'focusDayOnMap', 'focusSpotOnMap', 'jumpToDayAndHighlight',
-    'initRouteLeafletMap', 'renderCurrentBudgetChart',
-    'updateBudgetCalculations', 'renderBookings', 'renderPackingList',
-    'renderJournalDays', 'renderPhotosGallery', 'openGlobalSearch',
-    'switchMobileReiseMode', 'updateMobileBottomSheet', 'switchFinTab',
-    'switchOrgTab', 'switchExpTab', 'switchMoreTab'
-]
-
-for fn in critical_funcs:
-    assert f'function {fn}' in new_js or f'{fn} =' in new_js, f"Missing critical function: {fn}"
+# 2. Check the shell and the trip modules
+print("\n--- Checking shell and trip modules ---")
+with open("js/shell.js", "r", encoding="utf-8") as f:
+    shell_js = f.read()
+for fn in ['showView', 'jumpToCurrentOrNextDay']:
+    assert f'root.{fn}' in shell_js, f"Missing shell function: {fn}"
     print(f"  ✓ Function {fn:26} verified")
+assert "AUSROA" not in shell_js, "Public access code must not be bundled"
 
-# 4. Check Modals in index.html
-print("\n--- Checking Modals & Security in index.html ---")
-modals = [
- 'booking-modal-backdrop', 'packing-modal-backdrop',
-    'expense-modal-backdrop',
-    'global-search-modal'
-]
-for m in modals:
-    assert f'id="{m}"' in new_html, f"Missing modal: {m}"
-    print(f"  ✓ Modal {m:24} verified")
-
-# 5. Check Navigation in index.html
-print("\n--- Checking Navigation in index.html ---")
-nav_items = ['dashboard', 'reise', 'organisation', 'finanzen', 'erlebnisse', 'mehr']
-for nav in nav_items:
+# 3. Check the two views and the navigation in index.html
+print("\n--- Checking views and navigation in index.html ---")
+for nav in ['dashboard', 'reise']:
     assert f'data-view="{nav}"' in new_html, f"Missing nav item: {nav}"
     assert f'id="view-{nav}"' in new_html, f"Missing view container: view-{nav}"
     print(f"  ✓ View & Nav '{nav}' verified")
+for video in ['assets/video/desktop.mp4', 'assets/video/mobile.mp4']:
+    assert video in new_html, f"Landing video missing: {video}"
+    print(f"  ✓ Landing video {video} verified")
 
 print("\n==============================================")
 print("ALL INTEGRITY CHECKS PASSED WITH 100% SUCCESS!")

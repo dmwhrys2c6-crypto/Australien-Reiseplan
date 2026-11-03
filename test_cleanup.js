@@ -17,6 +17,8 @@ for (const match of html.matchAll(/(?:src|href)=["']([^"']+)["']/g)) {
 }
 for (const file of files) {
   // Login belongs to the optional private Express server, not the static app.
+  // tripData.js is a legacy data file kept for test_phase4; the shell no longer loads it.
+  if (file === 'js/tripData.js') continue;
   const entry = file === 'js/login.js' ? read('login.html') : html;
   assert.ok(entry.includes(file), 'Unreferenced runtime file: ' + file);
 }

@@ -1,14 +1,14 @@
 {
   "name": "Australien Roadtrip 2027 | Wien bis Melbourne",
   "short_name": "Australien 2027",
-  "description": "Interaktiver 21-Tage-Reiseplan, Budgetkalkulation, Reiseorganisation, Reisejournal, Fotogalerie & Offline-Reiseführer für 4 Personen.",
+  "description": "Roadtrip Australien 2027: Reiseplan mit 21 Tagen und Karte für vier Personen, auch offline.",
   "start_url": "./index.html",
   "id": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#f8fafc",
-  "theme_color": "#006d68",
+  "background_color": "#140f0d",
+  "theme_color": "#140f0d",
   "lang": "de-DE",
   "categories": [
     "travel",
@@ -37,46 +37,10 @@
   ],
   "shortcuts": [
     {
-      "name": "21-Tage Reiseplan",
+      "name": "Reiseplan und Karte",
       "short_name": "Reiseplan",
-      "description": "Direkt zum 20-tägigen Roadtrip-Ablauf springen",
+      "description": "Direkt zum Reiseplan mit Karte",
       "url": "./#reise",
-      "icons": [
-        {
-          "src": "./icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Reisejournal",
-      "short_name": "Journal",
-      "description": "Tagebucheintrag schreiben oder Fotos ansehen",
-      "url": "./#erlebnisse/journal",
-      "icons": [
-        {
-          "src": "./icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Reiseorganisation",
-      "short_name": "Buchungen",
-      "description": "Flüge, Hotels, Mietwagen & Packliste",
-      "url": "./#organisation/bookings",
-      "icons": [
-        {
-          "src": "./icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Notfall & Hilfe",
-      "short_name": "Notfall 000",
-      "description": "Notrufnummern & Konsulatskontakte sofort anzeigen",
-      "url": "./#mehr/emergency",
       "icons": [
         {
           "src": "./icon-192.png",

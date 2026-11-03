@@ -4,8 +4,10 @@ const scripts=[...files('js').filter(f=>f.endsWith('.js')),'sw.js'];
 for(const file of scripts)new vm.Script(fs.readFileSync(file,'utf8'),{filename:file});
 const html=fs.readFileSync('index.html','utf8');
 for(const match of html.matchAll(/\bon(?:click|change|input|submit|toggle|keydown|error)="([^"]*)"/g))new vm.Script('(function(event){'+match[1].replaceAll('&amp;','&').replaceAll('&quot;','"').replaceAll('&#39;',"'")+'})');
+const literal=/(?<![&\w])#[0-9a-fA-F]{3,8}\b|(?<![.\w])(?:rgba?|hsla?|oklch|oklab)\(/;
+for(const file of ['css/base.css','css/site.css',...files('js/trip').filter(f=>f.endsWith('.js'))]){const lines=fs.readFileSync(file,'utf8').split('\n');lines.forEach((line,i)=>{if(i<5&&file==='css/site.css')return;if(literal.test(line.replace(/\/\*.*?\*\//g,'')))throw new Error(file+':'+(i+1)+': colour literal outside css/tokens.css, use var(--color-...)');});}
 if(process.argv.includes('--lint')){
- const managed=files('js/management').filter(f=>f.endsWith('.js'));
+ const managed=files('js/trip').filter(f=>f.endsWith('.js'));
  for(const file of managed){const code=fs.readFileSync(file,'utf8');if(/\beval\s*\(/.test(code)||/new\s+Function\s*\(/.test(code))throw new Error(file+': dynamic code is not permitted');if(/[\t ]+$/m.test(code))throw new Error(file+': trailing whitespace');}
  console.log('Project lint: classic-script syntax, inline handlers, whitespace and dynamic-code checks passed.');
 }else console.log('All browser scripts and inline handlers: syntax passed. No TypeScript sources are present.');

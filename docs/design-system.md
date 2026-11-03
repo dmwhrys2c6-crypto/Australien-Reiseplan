@@ -1,36 +1,31 @@
-# Gemeinsames Design-System
+# Design-System
 
-`css/design-system.css` besitzt alle gemeinsamen Oberflächen, Farben und Schatten.
-Die übrigen Stylesheets liegen in `@layer legacy` und liefern bestehende Layouts.
-Unlayered Regeln des Design-Systems haben Vorrang vor diesen Layout-Regeln.
+Dieses Dokument regelt das Aussehen der App. Es ersetzt `css/app.css`, `design-system.css`, `hero-dock.css`, `management.css` und `trip.css`; die Verwaltungs- und Finanzansichten entfallen.
 
-## Komponenten
+Zwei Ansichten: Startseite (`#dashboard`) und Reiseplan mit Karte (`#reise`). Die Routen verwaltet `js/shell.js`.
+Thema "Kiln": fast schwarzer, warmer Grund, cremefarbene Schrift, eine glutorange Signalfarbe.
 
-- `glass-container`: gemeinsamer Slate-Seitenhintergrund, auch auf der Startseite.
-- `glass-card`: transparente Sektion mit Blur, Rahmen und zentralem Schatten.
-- `glass-row-item`: einheitliche Listenzeile mit 16px Padding und 14px Rundung.
-- `glass-pill`: Filter, Status und kompakte Aktionen.
-- `glass-toolbar`, `glass-search`, `glass-filter-bar`: gemeinsame Suche und Filter.
-- `glass-switch`: beschriftete native Checkbox mit sichtbarem Fokus.
+## Dateien
 
-`ManagementUI.row()` in `js/management/ui.js` erzeugt die Zeilenstruktur für
-Buchungen, Ausgaben, Dokumente, Drohnen-Spots und Packliste.
-`ManagementUI.filters()` erzeugt die gemeinsame Such- und Filterstruktur.
-Die Datenfilterung, Speicherung und Pack-Fortschrittsberechnung bleiben in
-`js/app.js`; die wiederverwendbare Zeilenstruktur gehört zum UI-Modul.
+- `css/tokens.css`: alle Farben, Schriften, Abstände, Radien und Zeiten als Custom Properties. Neue Werte nur hier definieren; Regeln verwenden `var(--…)`. Alle Werte (Breiten, Radien, Schriftstufen, Blatt-Höhen) stehen dort, nicht in diesem Dokument. `npm run check` schlägt bei Farbliteralen in `base.css`, `site.css` und `js/trip/` fehl.
+- `css/base.css`: Reset, Typografie, Fokus, Reduced-Motion.
+- `css/site.css`: Shell, Landing, Reiseplan, Karte, Dialoge. Die ersten Zeilen sind der Hallmark-Stempel, ein Kommentar des Design-Werkzeugs mit Thema und Entscheidungen (Details in `.hallmark/`).
 
-## Änderungen und Erweiterungen
+## Regeln
 
-Farben, Rundungen oder Schatten zentral über die `--glass-*` Variablen ändern.
-Neue Oberflächen erhalten die gemeinsamen Klassen. Tab-spezifische Klassen
-dürfen Anordnung und Abstände steuern, aber keine eigene Oberfläche erzeugen.
-Keine Inline-Farben oder Inline-Schatten ergänzen. Dynamische Werte wie eine
-Fortschrittsbreite dürfen weiterhin inline gesetzt werden.
+- Orange (`--color-accent`) ist nur eine Füllung: Hauptaktion, gewählter Tag, gewählter Stopp, Marker. Schrift bleibt creme.
+- Eine Hauptaktion je Bildschirm, eine Containerbreite, ein Radius je Ebene.
+- Keine verschachtelten Cards: Listen im Tagesplan werden durch Haarlinien getrennt, nicht durch Kacheln.
+- Beschriftungen sind Fließtext eine Stufe kleiner, ohne Großbuchstaben und ohne Sperrung.
+- Animiert werden nur `transform` und `opacity`; jede Animation hat einen Reduced-Motion-Fallback.
+- Mobile First: Tippflächen mindestens 44px, Eingaben 16px, Bottom Sheet (`.trip-sheet`, Tagesplan) mit drei Höhen in `dvh`, Safe-Area-Abstände.
 
-Der Dunkelmodus überschreibt dieselben Tokens für alle Seiten gemeinsam.
-Auf kleinen Bildschirmen umbrechen Zeilenaktionen; Filter scrollen innerhalb
-ihrer Leiste. Suchfelder, Filter und Checkboxen bleiben per Tastatur bedienbar.
+## Karte
 
-`test_phase2.js` prüft die zentrale CSS-Zuständigkeit, gemeinsame Zeilenstruktur,
-Packlistenfilter und Fortschrittsberechnung. Zusätzlich die Darstellung im
-Browser prüfen, wenn sich Layout oder responsive Regeln ändern.
+Die Karte ist die einzige helle Fläche: OpenStreetMap-Standardkacheln (CARTO verlangt seit 2025 einen API-Key), die Seite darum bleibt dunkel. Dafür gibt es einen eigenen Block in `css/tokens.css`: `--route-blue` (Strecken), `--map-paper`, `--map-ink`, `--map-rule` (Marker, Popups, Chips) und `--map-ground` (Grund, bis Kacheln laden). Das bricht bewusst die Regel "ein Signalton": neben Creme und Orange kommt hier Blau vor.
+
+`js/trip/map-adapter.js` liest die Routenfarbe aus `--route-blue`. Alle Routen haben eine Farbe. Das Verkehrsmittel zeigt ein Symbol in der Routenmitte; Flug und Gehen haben zusätzlich ein Strichmuster, die übrigen Linien sind durchgezogen. Der aktive Marker bleibt orange. Die Kartenquelle liegt auf dem Handy über dem Blatt (`--sheet-visible`).
+
+## Landing
+
+Unter dem Datum steht eine Textzeile: vor der Reise "Noch N Tage", während der Reise "Tag N von 20", danach entfällt sie. Sie rechnet mit dem Gerätedatum und den Reisetagen (`window.tripCountdown` in `js/shell.js`).

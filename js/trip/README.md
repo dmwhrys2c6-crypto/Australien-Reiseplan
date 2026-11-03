@@ -1,6 +1,6 @@
 # Reisebereich
 
-Der bestehende Router, die Fonts, CSS-Variablen und Leaflet bleiben erhalten. Die Startseite wird durch die Reise-Styles nicht verändert.
+`js/shell.js` ist der Router (`#dashboard`, `#reise`). Fonts und Farben kommen aus `css/tokens.css`, die Karte ist Leaflet mit hellen CARTO-Voyager-Kacheln. Strecken lesen die Farbe `--route-blue`.
 
 - `repository.js`: Stop-Modell, Validierung, Migration und CRUD-Fassade über `TripStore`. Die Aktivitäten eines Tages sind die kanonischen Stops. Vorhandene Fotospots werden einmalig übernommen; bekannte Koordinaten werden zugeordnet, fehlende bleiben `null`.
 - `map-adapter.js`: einzige Leaflet-Abhängigkeit der neuen Ansicht. Render, Focus, Fit, Zoom und Resize können später von einem anderen Provider implementiert werden. Linien verbinden bekannte Standorte direkt; sie sind keine Straßenrouten. Distanzen sind Luftlinie, Fahrzeiten werden nicht geschätzt.
@@ -16,7 +16,6 @@ Ein späteres Backend kann die Repository-Methoden ersetzen. Im Editor werden Sc
 
 Tages-IDs und Stop-IDs bleiben beim Sortieren stabil. Die bisherige `dayNumber` bleibt für Links aus Buchungen und Suche erhalten; sichtbare Tagesnummern folgen der aktuellen Reihenfolge. Originale Budgets/Buchungszuordnungen werden nicht automatisch verschoben oder neu berechnet.
 
-Der versteckte `trip-legacy`-Container hält bestehende DOM-Verträge für Suche, Datendarstellung und ältere Tests aufrecht. Das alte Karten-Rendering ist deaktiviert, sobald `TripPage` verfügbar ist. Navigationslinks zu Tagen werden an die neue Ansicht weitergeleitet.
 
 ## Prüfen
 
