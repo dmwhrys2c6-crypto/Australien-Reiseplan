@@ -7,8 +7,8 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#140f0d",
-  "theme_color": "#140f0d",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "lang": "de-DE",
   "categories": [
     "travel",

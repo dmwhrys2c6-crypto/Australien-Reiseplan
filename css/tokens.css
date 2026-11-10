@@ -1,25 +1,54 @@
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
   --text-xs: 0.75rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.2rem; --text-xl: 1.44rem; --text-2xl: 1.728rem; --text-3xl: 2.074rem;
   --text-display-s: 1.44rem; --text-display: 1.728rem; --text-section: 1.2rem; --text-title: 1rem; --text-lead: 1rem;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
-  --color-error: oklch(72% 0.15 27); --color-success: oklch(76% 0.13 150);
   --container: 1440px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 120px; --section-gap: 144px; --section-gap-l: 176px;
   --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
-  --color-paper: oklch(13% 0.012 40); --color-paper-2: oklch(17.5% 0.016 40); --color-paper-3: oklch(22% 0.018 40);
-  --color-ink: oklch(94% 0.02 80); --color-ink-2: oklch(84% 0.025 70); --color-muted: oklch(72% 0.03 60);
-  --color-rule: oklch(96% 0.01 80 / 0.12);
-  --color-accent: oklch(70% 0.2 45); --color-accent-ink: oklch(14% 0.02 40); --color-focus: oklch(76% 0.19 56);
-  --heat-0: oklch(12% 0.012 40); --heat-1: oklch(22% 0.07 22); --heat-2: oklch(40% 0.16 27); --heat-3: oklch(60% 0.21 36);
-  --heat-4: oklch(76% 0.19 56); --heat-5: oklch(89% 0.14 78); --heat-6: oklch(98% 0.04 95);
   --font-display: "Boska", "Iowan Old Style", Georgia, serif; --font-body: "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-outlier: "Geist Mono", ui-monospace, monospace;
   --radius-card: 28px; --radius-well: 16px; --radius-pill: 999px; --rule-hair: 1px;
-  --shadow-card: 0 50px 90px -30px oklch(8% 0.01 40 / 0.5);
-  /* Karte: helle Fläche im Apple-Maps-Stil, Ausnahme von der Kiln-Palette */
-  --route-blue: oklch(50% 0.19 258); --map-paper: oklch(97.5% 0.006 85); --map-ink: oklch(22% 0.02 60);
-  --map-rule: oklch(22% 0.02 60 / 0.16); --map-ground: oklch(95% 0.008 85);
   --tracking-display: -0.02em; --display-weight: 500;
+}
+
+/* Farben: neutral und clean. Weiß, Grau, Fast-Schwarz, ein Blau als einziger Akzent. Siehe DESIGN.md */
+:root, .theme-light {
+  color-scheme: light;
+  --color-paper: #ffffff; --color-paper-2: #f5f5f5; --color-paper-3: #ebebeb;
+  --color-panel: #ffffff; --shadow-panel: 0 1px 2px rgb(0 0 0 / 0.06), 0 8px 24px -8px rgb(0 0 0 / 0.12);
+  --color-ink: #111111; --color-ink-2: #3d3d3d; --color-muted: #6b6b6b;
+  --color-rule: rgb(0 0 0 / 0.1);
+  --color-accent: #1f5fd1; --color-accent-hover: #1a50b3; --color-accent-active: #154296; --color-accent-ink: #ffffff;
+  --color-focus: #1f5fd1;
+  --color-error: #c62828; --color-success: #2e7d32;
+  --shadow-card: 0 24px 60px -24px rgb(0 0 0 / 0.18);
+  --route-blue: #1f5fd1; --map-paper: #ffffff; --map-ink: #111111; --map-rule: rgb(0 0 0 / 0.14); --map-ground: #f2f2f2;
+}
+/* Über dem Hero-Video bleibt es immer dunkel, damit die Schrift lesbar ist */
+.theme-dark, .hero, body.is-home .app-header {
+  color-scheme: dark; color: var(--color-ink);
+  --color-paper: #111111; --color-paper-2: #1b1b1b; --color-paper-3: #262626;
+  --color-panel: #1b1b1b; --shadow-panel: none;
+  --color-ink: #f2f2f2; --color-ink-2: #d0d0d0; --color-muted: #a0a0a0;
+  --color-rule: rgb(255 255 255 / 0.12);
+  --color-accent: #5b8def; --color-accent-hover: #7aa3f2; --color-accent-active: #4a7be0; --color-accent-ink: #0b0b0b;
+  --color-focus: #7aa3f2;
+  --color-error: #ef6b6b; --color-success: #6cc070;
+  --shadow-card: 0 24px 60px -24px rgb(0 0 0 / 0.6);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not(.theme-light) {
+    color-scheme: dark;
+    --color-paper: #111111; --color-paper-2: #1b1b1b; --color-paper-3: #262626;
+    --color-panel: #1b1b1b; --shadow-panel: none;
+  --color-panel: #1b1b1b; --shadow-panel: none;
+    --color-ink: #f2f2f2; --color-ink-2: #d0d0d0; --color-muted: #a0a0a0;
+    --color-rule: rgb(255 255 255 / 0.12);
+    --color-accent: #5b8def; --color-accent-hover: #7aa3f2; --color-accent-active: #4a7be0; --color-accent-ink: #0b0b0b;
+    --color-focus: #7aa3f2;
+    --color-error: #ef6b6b; --color-success: #6cc070;
+    --shadow-card: 0 24px 60px -24px rgb(0 0 0 / 0.6);
+  }
 }
